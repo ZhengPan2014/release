@@ -3,7 +3,7 @@
 | 版本            | 日期            | 发布人          | 更新内容
 | --------------- | --------------- | --------------- | --------------- 
 | 1.1.0.0_beta    | 2016-05-04      | 张邺            | 修改地图的topic为map_edit2；默认激光头ip地址为192.168.0.72
-| 1.1.0.1_alpha   | 2016-05-05      | 张邺            | 改进了clear_costmaps/map/version/null/hector_mapping等system_shell的功能
+| 1.1.0.1_alpha   | 2016-05-05      | 张邺            | 改进了clear_costmaps/map/version/null/hector等system_shell的功能
 
 ***
 # install system
