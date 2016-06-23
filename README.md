@@ -7,6 +7,7 @@
 | 1.1.1.0_beta    | 2016-05-23      | 韩立芹          | 改进了windows调试，串口权限，开机timeout，ip恢复默认，取消速度滤除
 | 1.1.1.1_beta    | 2016-05-27      | 张邺            | 修改reboot的权限问题
 | 1.1.1.2_beta    | 2016-06-17      | 张邺            | 增加imu设备的相关功能；开机时不启动手柄；增大xy_tolerance参数
+| 1.1.1.3_beta    | 2016-06-23      | 仇隽挺          | 修改gmapping pose，更改robot_pose_ekf位置
 
 ***
 # install system
