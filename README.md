@@ -33,3 +33,7 @@ set dns as network provider
 remember to set the link for network connection if failed to visit websites after installation
 
 >$ sudo ln -s /run/resolvconf/resolv.conf /etc/resolv.conf
+
+***
+# version update
+>$ ln -s ~/workspaces/hitrobot/ros-indigo/ ~/catkin_ws
