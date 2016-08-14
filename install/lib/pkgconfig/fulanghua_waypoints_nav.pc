@@ -1,8 +1,8 @@
-prefix=/home/ouiyeah/catkin_ws/install
+prefix=/home/ouiyeah/workspaces/hitrobot/ros_org/install
 
 Name: fulanghua_waypoints_nav
 Description: Description of fulanghua_waypoints_nav
 Version: 0.1.3
 Cflags: 
-Libs: -L/home/ouiyeah/catkin_ws/install/lib -lfulanghua_waypoints_nav
+Libs: -L/home/ouiyeah/workspaces/hitrobot/ros_org/install/lib -lfulanghua_waypoints_nav
 Requires: 

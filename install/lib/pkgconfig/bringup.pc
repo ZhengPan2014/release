@@ -1,8 +1,8 @@
-prefix=/home/ouiyeah/catkin_ws/install
+prefix=/home/ouiyeah/workspaces/hitrobot/ros_org/install
 
 Name: bringup
 Description: Description of bringup
 Version: 0.0.0
 Cflags: 
-Libs: -L/home/ouiyeah/catkin_ws/install/lib 
+Libs: -L/home/ouiyeah/workspaces/hitrobot/ros_org/install/lib 
 Requires: 
