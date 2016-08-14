@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<launch>
+    <node name="map_edit_as_saver" pkg="map_server" type="map_saver" args="-f $(find bringup)/param/map_edit" output="screen">
+        <remap from="map" to="map_edit_as" />
+    </node>
+</launch>

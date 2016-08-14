@@ -1,0 +1,7 @@
+rostopic pub -1 /system_shell/shell_string std_msgs/String 'git clone https://github.com/hitrobotgroup/ros_org-indigo ~/hitrobot; rostopic pub -1 /system_shell/system_mode std_msgs/String "ok"; '
+sudo sed -i -e "/source ~\/catkin_ws\/devel\/setup.bash/ c source ~/hitrobot/install/setup.bash" ~/.bashrc
+sudo sed -i -e "/source ~\/hitrobot\/install\/setup.bash/ c source ~/catkin_ws/devel/setup.bash" ~/.bashrc
+
+tail -n 3 ~/.bashrc
+
+sed -i '$d' file  

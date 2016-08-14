@@ -1,0 +1,117 @@
+<?xml version="1.0"?>
+<launch>
+    <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch"/>
+ 
+    <node name="tf_base_footprint" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+        <rosparam>
+            frame_id: base_footprint
+            child_frame_id: base_link
+            z: 0.035
+        </rosparam>
+    </node>
+
+    <node name="tf_base_laser" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+        <rosparam>
+            child_frame_id: base_laser
+            x: 0.23
+            z: 0.31
+        </rosparam>
+    </node>
+
+    <node name="tf_base_imu" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+        <rosparam>
+            child_frame_id: base_imu
+            x: -0.12
+            y: -0.08
+            z: 0.88
+        </rosparam>
+    </node>
+
+    <node name="robot_pose_publisher" pkg="robot_pose_publisher" type="robot_pose_publisher" output="screen"/>
+ 
+    <node name="system_shell" pkg="system_shell" type="system_shell" output="screen">
+        <rosparam>
+            time_duration: 7.0
+        </rosparam>
+    </node>
+ 
+    <node name="stm32_driver" pkg="stm32_driver" type="stm32_driver" output="screen">
+        <rosparam>
+            has_encoder: true
+            wheel_separation: 0.4402
+            tty_name: /dev/ttyUSB0
+        </rosparam>
+    </node>
+
+    <node name="jsnode" pkg="joy" type="joy_node" />
+
+    <node name="teleop_joystick" pkg="teleop_joystick" type="teleop_joystick" output="screen">
+        <remap from="teleop_joystick/joy_cmd_vel" to="cmd_vel"/>
+        <remap from="teleop_joystick/joy" to="joy"/>
+        <rosparam>
+            linear_vel_base: 0.5
+            angular_vel_base: 1.0
+            micro_vel_factor: 0.1
+        </rosparam>
+    </node>
+ 
+    <node name="teleop_keyboard" pkg="teleop_keyboard" type="teleop_keyboard" output="screen"/>
+ 
+    <node name="urg_node" pkg="urg_node" type="urg_node" output="screen">
+        <rosparam>
+            ip_address: 192.168.0.10
+            frame_id: base_laser
+            angle_min: -1.57
+            angle_max: 1.57
+        </rosparam>
+    </node>
+ 
+    <node name="scan_filter" pkg="laser_filters" type="scan_to_scan_filter_chain" output="screen">
+        <remap from="scan" to="scan"/>
+        <remap from="scan_filtered" to="scan_filtered"/>
+        <rosparam>
+            scan_filter_chain:
+            - type: LaserArrayFilter
+              name: laser_median_filter
+              params: 
+                range_filter_chain:
+                  - name: median_5
+                    type: MultiChannelMedianFilterFloat 
+                    params:
+                      number_of_observations: 5
+                      unused: 10
+                intensity_filter_chain:
+                  - name: median_5
+                    type: MultiChannelMedianFilterFloat 
+                    params:
+                      number_of_observations: 5
+                      unused: 10
+        </rosparam>
+    </node>
+
+    <node name="scan_rectifier" pkg="bringup" type="scan_rectifier" output="screen">
+        <remap from="scan_input" to="scan_filtered"/>
+        <remap from="scan_output" to="scan_rectified"/>
+        <rosparam>
+            max_range: 20.0
+        </rosparam>
+    </node>
+
+    <node name="map_server" pkg="map_server" type="map_server" args="$(find bringup)/param/map.yaml"/>
+
+    <node name="map_edit_server" pkg="map_server" type="map_server" args="$(find bringup)/param/map_edit.yaml" >
+        <remap from="map" to="map_edit"/>
+    </node>
+ 
+    <node name="map_saver" pkg="map_server" type="map_saver" args="-f $(find bringup)/param/map" output="screen"/>
+
+    <node name="map_as_saver" pkg="map_server" type="map_saver" args="-f $(find bringup)/param/map" output="screen">
+        <remap from="map" to="map_as" />
+    </node>
+
+    <node name="map_edit_saver" pkg="map_server" type="map_saver" args="-f $(find bringup)/param/map_edit" output="screen"/>
+
+    <node name="map_edit_as_saver" pkg="map_server" type="map_saver" args="-f $(find bringup)/param/map_edit" output="screen">
+        <remap from="map" to="map_edit_as" />
+    </node>
+</launch>

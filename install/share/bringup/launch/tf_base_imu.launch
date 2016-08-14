@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<launch>
+    <node name="tf_base_imu" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+        <rosparam>
+            child_frame_id: base_imu
+            x: -0.12
+            z: 0.88
+        </rosparam>
+    </node>
+</launch>

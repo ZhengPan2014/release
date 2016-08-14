@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<launch>
+    <node name="tf_base_footprint" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+        <rosparam>
+            frame_id: base_footprint
+            z: 0.035
+        </rosparam>
+    </node>
+</launch>

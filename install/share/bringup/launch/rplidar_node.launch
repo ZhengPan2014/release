@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<launch>
+    <node name="rplidar_node" pkg="rplidar_ros" type="rplidarNode" output="screen">
+        <rosparam>
+            serial_port: /dev/tty-rplidar
+            serial_baudrate: 115200
+            frame_id: base_laser
+            inverted: false
+            angle_compensate: true
+        </rosparam>
+    </node>
+
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find rplidar_ros)/rviz/rplidar.rviz"/>
+</launch>

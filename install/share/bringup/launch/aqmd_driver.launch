@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<launch>
+    <node pkg="aqmd_driver" type="aqmd_driver" name="aqmd_driver" output="screen">
+        <rosparam>
+            is_pub_tf: true
+            tty_name: /dev/ttyUSB0
+            wheel_mode: omni
+            wheel_speed: 23333
+            wheel_separation: 0.234
+            has_encoder: true
+            encoder_freq: 20.0
+        </rosparam>
+    </node>
+</launch>

@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<launch>
+    <node name="stm32_driver" pkg="stm32_driver" type="stm32_driver" output="screen">
+        <remap from="/imu" to="/imu_data"/>
+        <rosparam>
+            has_encoder: true
+            wheel_separation: 0.4402
+            tty_name: /dev/ttyS4
+        </rosparam>
+    </node>
+</launch>

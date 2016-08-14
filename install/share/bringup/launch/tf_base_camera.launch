@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<launch>
+    <node name="tf_base_camera" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+        <rosparam>
+            child_frame_id: base_camera
+            x: 0.09
+            z: 1.23
+        </rosparam>
+    </node>
+</launch>

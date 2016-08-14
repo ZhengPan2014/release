@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<launch>
+    <include file="$(find bringup)/launch/stm32_driver.launch"/>
+    <include file="$(find bringup)/launch/gmapping.launch"/>
+    <include file="$(find bringup)/launch/move_base.launch"/>
+</launch>

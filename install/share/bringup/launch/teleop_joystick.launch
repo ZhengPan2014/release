@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<launch>
+    <node name="jsnode" pkg="joy" type="joy_node" />
+
+    <node name="teleop_joystick" pkg="teleop_joystick" type="teleop_joystick" output="screen">
+        <remap from="teleop_joystick/joy_cmd_vel" to="cmd_vel"/>
+        <remap from="teleop_joystick/joy" to="joy"/>
+        <rosparam>
+            linear_vel_base: 0.5
+            angular_vel_base: 1.0
+            micro_vel_factor: 0.1
+        </rosparam>
+    </node>
+</launch>
