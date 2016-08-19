@@ -31,6 +31,7 @@
             z: 0.88
         </rosparam>
     </node>
+
     <node name="robot_pose_publisher" pkg="robot_pose_publisher" type="robot_pose_publisher" output="screen"/>
  
     <node name="stm32_driver" pkg="stm32_driver" type="stm32_driver" output="screen">
