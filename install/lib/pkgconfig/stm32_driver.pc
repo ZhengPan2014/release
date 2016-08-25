@@ -1,8 +1,8 @@
-prefix=/home/ouiyeah/workspaces/hitrobot/ros_org/install
+prefix=/home/ouiyeah/catkin_ws/install
 
 Name: stm32_driver
 Description: Description of stm32_driver
 Version: 0.0.0
 Cflags: 
-Libs: -L/home/ouiyeah/workspaces/hitrobot/ros_org/install/lib 
+Libs: -L/home/ouiyeah/catkin_ws/install/lib 
 Requires: 

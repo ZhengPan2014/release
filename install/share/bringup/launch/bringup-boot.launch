@@ -1,4 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-    <include file="$(find bringup)/config/will2-boot.launch"/>
+    <include file="$(find bringup)/launch/bringup-comm.launch"/>
+
+    <include file="$(find bringup)/launch/$(optenv ROS_USER_MODEL)/$(optenv ROS_USER_MODEL bringup)-base.launch"/>
 </launch>

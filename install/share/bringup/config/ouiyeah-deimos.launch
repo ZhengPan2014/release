@@ -1,6 +1,18 @@
 <?xml version="1.0"?>
 <launch>
-    <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch"/>
+    <node name="rosbridge_websocket" pkg="rosbridge_server" type="rosbridge_websocket" output="screen">
+        <rosparam>
+            port: 9090 #16807
+        </rosparam>
+    </node>
+
+    <node name="rosbridge_tcp" pkg="rosbridge_server" type="rosbridge_tcp" output="screen">
+        <rosparam>
+            port: 9090 #9091
+        </rosparam>
+    </node>
+
+    <node name="rosapi" pkg="rosapi" type="rosapi_node" output="screen"/>
  
     <node name="system_shell" pkg="system_shell" type="system_shell" output="screen">
         <rosparam>

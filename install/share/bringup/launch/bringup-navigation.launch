@@ -1,4 +1,4 @@
 <?xml version="1.0"?>
 <launch>
-    <include file="$(find bringup)/config/will2-navigation.launch"/>
+    <include file="$(find bringup)/launch/will2/will2-navigation.launch"/>
 </launch>
