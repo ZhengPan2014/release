@@ -4,7 +4,7 @@
         <remap from="scan" to="scan_rectified"/>
         <rosparam>
             maxUrange: 19.9
-            minimumScore: 300
+            minimumScore: 600
             xmin: -20.0
             ymin: -20.0
             xmax: 20.0
@@ -12,29 +12,6 @@
             delta: 0.05
             transform_publish_period: 0.05
             maxRange: 20.0
-        </rosparam>
-    </node>
-
-    <node name="stm32_driver" pkg="stm32_driver" type="stm32_driver" output="screen">
-        <remap from="imu" to="imu_data" />
-        <rosparam>
-            is_pub_tf: false
-            has_encoder: true
-            wheel_separation: 0.4402
-            tty_name: /dev/ttyS2
-        </rosparam>
-    </node>
-
-
-    <node name="robot_pose_ekf" pkg="robot_pose_ekf" type="robot_pose_ekf">
-        <rosparam>
-            output_frame: odom
-            base_footprint_frame: base_footprint
-            freq: 30.0
-            sensor_timeout: 1.0
-            odom_used: true
-            imu_used: true
-            vo_used: false
         </rosparam>
     </node>
 </launch>

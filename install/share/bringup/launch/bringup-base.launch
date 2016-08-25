@@ -1,3 +1,22 @@
 <?xml version="1.0"?>
 <launch>
+<<<<<<< HEAD
+=======
+    <node name="system_shell" pkg="system_shell" type="system_shell" output="screen">
+        <rosparam>
+            time_duration: 7.0
+            init_cmd: ll
+        </rosparam>
+    </node>
+  
+    <node name="rosbridge_websocket" pkg="rosbridge_server" type="rosbridge_websocket" output="screen"/>
+
+    <node name="rosbridge_tcp" pkg="rosbridge_server" type="rosbridge_tcp" output="screen">
+        <rosparam>
+            port: 9091
+        </rosparam>
+    </node>
+
+    <node name="rosapi" pkg="rosapi" type="rosapi_node" output="screen"/>
+>>>>>>> 3be0cb0aba9a7dd7ac588e73a409285c9533475e
 </launch>
