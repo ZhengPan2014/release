@@ -1,5 +1,14 @@
 <?xml version="1.0"?>
 <launch>
+    <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch"/>
+ 
+    <node name="system_shell" pkg="system_shell" type="system_shell" output="screen">
+        <rosparam>
+            time_duration: 7.0
+            #init_cmd: ll
+        </rosparam>
+    </node>
+ 
     <node name="tf_base_footprint" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
         <rosparam>
             frame_id: base_footprint
@@ -22,7 +31,6 @@
             z: 0.88
         </rosparam>
     </node>
-
     <node name="robot_pose_publisher" pkg="robot_pose_publisher" type="robot_pose_publisher" output="screen"/>
  
     <node name="stm32_driver" pkg="stm32_driver" type="stm32_driver" output="screen">
@@ -31,7 +39,7 @@
             is_pub_tf: false
             has_encoder: true
             wheel_separation: 0.4402
-            tty_name: /dev/ttySx
+            tty_name: /dev/ttyS4
         </rosparam>
     </node>
       
