@@ -241,8 +241,8 @@
     <node name="move_base" pkg="move_base" type="move_base" respawn="false" output="screen">
         <remap from="odom" to="/odom_0"/>
         <rosparam>
-            base_global_planner: global_planner/GlobalPlanner
-            base_local_planner: dwa_local_planner/DWAPlannerROS #teb_local_planner/TebLocalPlannerROS
+            base_global_planner: "global_planner/GlobalPlanner" #"navfn/NavfnROS"
+            base_local_planner: "dwa_local_planner/DWAPlannerROS" #"teb_local_planner/TebLocalPlannerROS"
             recovery_behaviors:
               - name: 'conservative_reset'
                 type: 'clear_costmap_recovery/ClearCostmapRecovery'
