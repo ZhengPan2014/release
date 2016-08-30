@@ -1,0 +1,154 @@
+<?xml version="1.0"?>
+<launch>
+    <node name="map_server" pkg="map_server" type="map_server" args="$(find bringup)/param/map.yaml"/>
+
+    <node name="map_edit_server" pkg="map_server" type="map_server" args="$(find bringup)/param/map_edit.yaml" >
+        <remap from="map" to="map_edit"/>
+    </node>
+
+    <node name="amcl" pkg="amcl" type="amcl" output="screen">
+        <remap from="scan" to="scan_rectified" />
+        <rosparam>
+            use_map_topic: false
+            odom_model_type: diff
+            tf_broadcast: true
+        </rosparam>
+    </node>
+
+    <node name="move_base" pkg="move_base" type="move_base" respawn="false" output="screen">
+        <remap from="odom" to="/odom_0"/>
+        <rosparam>
+            base_global_planner: "navfn/NavfnROS"         
+            base_local_planner: "dwa_local_planner/DWAPlannerROS"
+            recovery_behaviors:
+              - name: 'conservative_reset'
+                type: 'clear_costmap_recovery/ClearCostmapRecovery'
+              - name: 'aggressive_reset'
+                type: 'clear_costmap_recovery/ClearCostmapRecovery'
+            conservative_reset:
+                reset_distance: 3.0
+                layer_names: [obstacle_layer]
+            aggressive_reset:
+                reset_distance: 0.0
+                layer_names: [obstacle_layer]
+            controller_frequency: 5.0
+            planner_patience: 5.0 #0.1
+            controller_patience: 15.0 #0.3
+            conservative_reset_dist: 3.0 #0.25
+            recovery_behavior_enabled: true
+            clearing_rotation_allowed: false
+            oscillation_timeout: 10.0
+            planner_frequency: 1.0 #0.0
+            global_costmap:
+                global_frame: map
+                robot_base_frame: base_footprint
+                transform_tolerance: 0.2 #0.5
+                update_frequency: 2.0 #5.0
+                publish_frequency: 0.5 #0.0
+                static_map: true
+                robot_radius: 0.42 <!-- groovy -->
+                resolution: 0.075
+                plugins:
+                  - name: static_layer
+                    type: "costmap_2d::StaticLayer"
+                  - name: obstacle_layer
+                    type: "costmap_2d::ObstacleLayer"
+                  - name: inflation_layer
+                    type: "costmap_2d::InflationLayer"
+                static_layer:
+                    map_topic: /map_edit
+                obstacle_layer:
+                    observation_sources: scan_rectified
+                    scan_rectified:
+                        expected_update_rate: 5.0
+                        data_type: LaserScan
+                        clearing: true
+                        max_obstacle_height: 1.0
+                        min_obstacle_height: -1.0
+                        inf_is_valid: true
+                    track_unknown_space: false #true
+                    z_voxels: 8
+                inflation_layer:
+                    inflation_radius: 0.75
+                    cost_scaling_factor: 1
+            local_costmap:
+                global_frame: odom
+                robot_base_frame: base_footprint
+                transform_tolerance: 0.2 #0.5
+                update_frequency: 5.0
+                publish_frequency: 2.0 #0.5
+                robot_radius: 0.42 <!-- groovy -->
+                static_map: false
+                rolling_window: true
+                width: 6.0
+                height: 6.0
+                resolution: 0.075
+                plugins:
+                  - name: obstacle_layer
+                    type: "costmap_2d::ObstacleLayer"
+                  - name: inflation_layer
+                    type: "costmap_2d::InflationLayer"
+                obstacle_layer:
+                    observation_sources: scan_rectified
+                    scan_rectified:
+                        expected_update_rate: 5.0
+                        data_type: LaserScan
+                        clearing: true
+                        max_obstacle_height: 1.0
+                        min_obstacle_height: -1.0
+                        inf_is_valid: true
+                    track_unknown_space: false #true
+                    z_voxels: 8
+                inflation_layer:
+                    inflation_radius: 0.75
+                    cost_scaling_factor: 1
+            GlobalPlanner:
+                allow_unknown: false
+            TrajectoryPlannerROS:
+                max_vel_x: 0.5
+                min_vel_x: 0.1
+                max_vel_theta: 1.0
+                min_vel_theta: -1.0
+                min_in_place_vel_theta: 0.4
+                acc_lim_x: 1.0 #2.5
+                acc_lim_y: 0.0 #1.0
+                acc_lim_theta: 2.0 #3.2
+                holonomic_robot: false
+                yaw_goal_tolerance: 0.05 #0.15
+                xy_goal_tolerance: 0.075 #0.15
+                latch_xy_goal_tolerance: false #true
+                meter_scoring: true
+                occdist_scale: 0.5 #0.01
+                heading_scoring: true
+                heading_scoring_timestep: 1.0 #0.8
+                dwa: true
+                #global_frame_id: odom
+                oscillation_reset_dist: 0.075
+            DWAPlannerROS:
+                acc_lim_x: 2.0 #slow 1.0, fast 2.0
+                acc_lim_y: 0.0
+                acc_lim_th: 2.0 #slow 2.0, fast 3.2
+                max_trans_vel: 0.55
+                min_trans_vel: 0.1
+                max_vel_x: 0.55
+                min_vel_x: 0.0
+                max_vel_y: 0.0
+                min_vel_y: 0.0
+                max_rot_vel: 1.0
+                min_rot_vel: 0.4
+                yaw_goal_tolerance: 0.2
+                xy_goal_tolerance: 0.15
+                latch_xy_goal_tolerance: true 
+                sim_time: 1.7
+                sim_granularity: 0.025
+                vx_samples: 6
+                vy_samples: 1
+                vtheta_samples: 20
+                penalize_negative_x: false #true
+                path_distance_bias: 64.0 #32.0
+                goal_distance_bias: 24.0
+                occdist_scale: 0.5
+                oscillation_reset_dist: 0.075
+        </rosparam>
+    </node>
+</launch>

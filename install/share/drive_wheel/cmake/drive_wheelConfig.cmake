@@ -67,7 +67,11 @@ set(drive_wheel_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
+<<<<<<< HEAD
+  set(drive_wheel_SOURCE_PREFIX /home/ouiyeah/workspaces/hitrobot/ros_org/src/drive_wheel)
+=======
   set(drive_wheel_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/drive_wheel)
+>>>>>>> 3be0cb0aba9a7dd7ac588e73a409285c9533475e
   set(drive_wheel_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(drive_wheel_INSTALL_PREFIX "")
   set(drive_wheel_PREFIX ${drive_wheel_DEVEL_PREFIX})
