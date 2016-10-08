@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-    <node name="map_as_saver" pkg="map_server" type="map_saver" args="-f $(find bringup)/param/map" output="screen">
+    <node name="map_as_saver" pkg="map_server" type="map_saver" args="-f map" output="screen">
         <remap from="map" to="map_as" />
     </node>
 </launch>
