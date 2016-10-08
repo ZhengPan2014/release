@@ -67,7 +67,7 @@ set(navfn_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(navfn_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/navigation/navfn)
+  set(navfn_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/navigation-jade-devel/navfn)
   set(navfn_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(navfn_INSTALL_PREFIX "")
   set(navfn_PREFIX ${navfn_DEVEL_PREFIX})

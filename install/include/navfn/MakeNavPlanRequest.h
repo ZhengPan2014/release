@@ -32,6 +32,7 @@ struct MakeNavPlanRequest_
   MakeNavPlanRequest_(const ContainerAllocator& _alloc)
     : start(_alloc)
     , goal(_alloc)  {
+  (void)_alloc;
     }
 
 
@@ -213,7 +214,7 @@ namespace serialization
       stream.next(m.goal);
     }
 
-    ROS_DECLARE_ALLINONE_SERIALIZER;
+    ROS_DECLARE_ALLINONE_SERIALIZER
   }; // struct MakeNavPlanRequest_
 
 } // namespace serialization

@@ -13,7 +13,6 @@ class SetCostmapRequest(genpy.Message):
   _full_text = """uint8[] costs
 uint16 height
 uint16 width
-
 """
   __slots__ = ['costs','height','width']
   _slot_types = ['uint8[]','uint16','uint16']
@@ -67,8 +66,8 @@ uint16 width
         buff.write(struct.pack('<I%ss'%length, length, _x))
       _x = self
       buff.write(_struct_2H.pack(_x.height, _x.width))
-    except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(_x))))
-    except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(_x))))
+    except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
+    except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
   def deserialize(self, str):
     """
@@ -108,8 +107,8 @@ uint16 width
         buff.write(struct.pack('<I%ss'%length, length, _x))
       _x = self
       buff.write(_struct_2H.pack(_x.height, _x.width))
-    except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(_x))))
-    except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(_x))))
+    except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
+    except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
   def deserialize_numpy(self, str, numpy):
     """
@@ -147,8 +146,7 @@ class SetCostmapResponse(genpy.Message):
   _md5sum = "d41d8cd98f00b204e9800998ecf8427e"
   _type = "navfn/SetCostmapResponse"
   _has_header = False #flag to mark the presence of a Header object
-  _full_text = """
-"""
+  _full_text = """"""
   __slots__ = []
   _slot_types = []
 
@@ -182,8 +180,8 @@ class SetCostmapResponse(genpy.Message):
     """
     try:
       pass
-    except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(_x))))
-    except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(_x))))
+    except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
+    except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
   def deserialize(self, str):
     """
@@ -205,8 +203,8 @@ class SetCostmapResponse(genpy.Message):
     """
     try:
       pass
-    except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(_x))))
-    except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(_x))))
+    except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
+    except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
   def deserialize_numpy(self, str, numpy):
     """

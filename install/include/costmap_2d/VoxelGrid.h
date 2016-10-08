@@ -43,6 +43,7 @@ struct VoxelGrid_
     , size_x(0)
     , size_y(0)
     , size_z(0)  {
+  (void)_alloc;
     }
 
 
@@ -102,7 +103,7 @@ namespace message_traits
 
 
 // BOOLTRAITS {'IsFixedSize': False, 'IsMessage': True, 'HasHeader': True}
-// {'nav_msgs': ['/opt/ros/indigo/share/nav_msgs/cmake/../msg'], 'costmap_2d': ['/home/ouiyeah/catkin_ws/src/navigation/costmap_2d/msg'], 'std_msgs': ['/opt/ros/indigo/share/std_msgs/cmake/../msg'], 'actionlib_msgs': ['/opt/ros/indigo/share/actionlib_msgs/cmake/../msg'], 'sensor_msgs': ['/opt/ros/indigo/share/sensor_msgs/cmake/../msg'], 'geometry_msgs': ['/opt/ros/indigo/share/geometry_msgs/cmake/../msg'], 'map_msgs': ['/opt/ros/indigo/share/map_msgs/cmake/../msg']}
+// {'nav_msgs': ['/opt/ros/indigo/share/nav_msgs/cmake/../msg'], 'costmap_2d': ['/home/ouiyeah/catkin_ws/src/navigation-jade-devel/costmap_2d/msg'], 'std_msgs': ['/opt/ros/indigo/share/std_msgs/cmake/../msg'], 'actionlib_msgs': ['/opt/ros/indigo/share/actionlib_msgs/cmake/../msg'], 'sensor_msgs': ['/opt/ros/indigo/share/sensor_msgs/cmake/../msg'], 'geometry_msgs': ['/opt/ros/indigo/share/geometry_msgs/cmake/../msg'], 'map_msgs': ['/opt/ros/indigo/share/map_msgs/cmake/../msg']}
 
 // !!!!!!!!!!! ['__class__', '__delattr__', '__dict__', '__doc__', '__eq__', '__format__', '__getattribute__', '__hash__', '__init__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_parsed_fields', 'constants', 'fields', 'full_name', 'has_header', 'header_present', 'names', 'package', 'parsed_fields', 'short_name', 'text', 'types']
 
@@ -212,6 +213,11 @@ float32 z\n\
 ================================================================================\n\
 MSG: geometry_msgs/Vector3\n\
 # This represents a vector in free space. \n\
+# It is only meant to represent a direction. Therefore, it does not\n\
+# make sense to apply a translation to it (e.g., when applying a \n\
+# generic rigid transformation to a Vector3, tf2 will only apply the\n\
+# rotation). If you want your data to be translatable too, use the\n\
+# geometry_msgs/Point message instead.\n\
 \n\
 float64 x\n\
 float64 y\n\
@@ -243,7 +249,7 @@ namespace serialization
       stream.next(m.size_z);
     }
 
-    ROS_DECLARE_ALLINONE_SERIALIZER;
+    ROS_DECLARE_ALLINONE_SERIALIZER
   }; // struct VoxelGrid_
 
 } // namespace serialization

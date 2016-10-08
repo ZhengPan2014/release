@@ -67,7 +67,7 @@ set(map_server_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(map_server_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/navigation/map_server)
+  set(map_server_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/navigation-jade-devel/map_server)
   set(map_server_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(map_server_INSTALL_PREFIX "")
   set(map_server_PREFIX ${map_server_DEVEL_PREFIX})

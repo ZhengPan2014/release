@@ -67,7 +67,7 @@ set(robot_pose_ekf_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(robot_pose_ekf_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/navigation/robot_pose_ekf)
+  set(robot_pose_ekf_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/navigation-jade-devel/robot_pose_ekf)
   set(robot_pose_ekf_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(robot_pose_ekf_INSTALL_PREFIX "")
   set(robot_pose_ekf_PREFIX ${robot_pose_ekf_DEVEL_PREFIX})

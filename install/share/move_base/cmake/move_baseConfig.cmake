@@ -67,7 +67,7 @@ set(move_base_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(move_base_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/navigation/move_base)
+  set(move_base_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/navigation-jade-devel/move_base)
   set(move_base_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(move_base_INSTALL_PREFIX "")
   set(move_base_PREFIX ${move_base_DEVEL_PREFIX})

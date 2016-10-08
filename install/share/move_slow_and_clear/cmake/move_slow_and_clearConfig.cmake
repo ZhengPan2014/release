@@ -67,7 +67,7 @@ set(move_slow_and_clear_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(move_slow_and_clear_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/navigation/move_slow_and_clear)
+  set(move_slow_and_clear_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/navigation-jade-devel/move_slow_and_clear)
   set(move_slow_and_clear_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(move_slow_and_clear_INSTALL_PREFIX "")
   set(move_slow_and_clear_PREFIX ${move_slow_and_clear_DEVEL_PREFIX})

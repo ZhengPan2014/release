@@ -67,7 +67,7 @@ set(carrot_planner_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(carrot_planner_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/navigation/carrot_planner)
+  set(carrot_planner_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/navigation-jade-devel/carrot_planner)
   set(carrot_planner_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(carrot_planner_INSTALL_PREFIX "")
   set(carrot_planner_PREFIX ${carrot_planner_DEVEL_PREFIX})

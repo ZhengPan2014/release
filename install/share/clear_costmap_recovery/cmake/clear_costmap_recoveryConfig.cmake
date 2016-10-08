@@ -67,7 +67,7 @@ set(clear_costmap_recovery_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(clear_costmap_recovery_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/navigation/clear_costmap_recovery)
+  set(clear_costmap_recovery_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/navigation-jade-devel/clear_costmap_recovery)
   set(clear_costmap_recovery_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(clear_costmap_recovery_INSTALL_PREFIX "")
   set(clear_costmap_recovery_PREFIX ${clear_costmap_recovery_DEVEL_PREFIX})

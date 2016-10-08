@@ -11,8 +11,7 @@ class Position2DInt(genpy.Message):
   _type = "base_local_planner/Position2DInt"
   _has_header = False #flag to mark the presence of a Header object
   _full_text = """int64 x
-int64 y
-"""
+int64 y"""
   __slots__ = ['x','y']
   _slot_types = ['int64','int64']
 
@@ -55,8 +54,8 @@ int64 y
     try:
       _x = self
       buff.write(_struct_2q.pack(_x.x, _x.y))
-    except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(_x))))
-    except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(_x))))
+    except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
+    except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
   def deserialize(self, str):
     """
@@ -83,8 +82,8 @@ int64 y
     try:
       _x = self
       buff.write(_struct_2q.pack(_x.x, _x.y))
-    except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(_x))))
-    except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(_x))))
+    except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
+    except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
   def deserialize_numpy(self, str, numpy):
     """

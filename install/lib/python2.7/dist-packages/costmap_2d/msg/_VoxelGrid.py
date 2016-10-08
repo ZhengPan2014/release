@@ -55,11 +55,15 @@ float32 z
 ================================================================================
 MSG: geometry_msgs/Vector3
 # This represents a vector in free space. 
+# It is only meant to represent a direction. Therefore, it does not
+# make sense to apply a translation to it (e.g., when applying a 
+# generic rigid transformation to a Vector3, tf2 will only apply the
+# rotation). If you want your data to be translatable too, use the
+# geometry_msgs/Point message instead.
 
 float64 x
 float64 y
-float64 z
-"""
+float64 z"""
   __slots__ = ['header','data','origin','resolutions','size_x','size_y','size_z']
   _slot_types = ['std_msgs/Header','uint32[]','geometry_msgs/Point32','geometry_msgs/Vector3','uint32','uint32','uint32']
 
@@ -132,8 +136,8 @@ float64 z
       buff.write(struct.pack(pattern, *self.data))
       _x = self
       buff.write(_struct_3f3d3I.pack(_x.origin.x, _x.origin.y, _x.origin.z, _x.resolutions.x, _x.resolutions.y, _x.resolutions.z, _x.size_x, _x.size_y, _x.size_z))
-    except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(_x))))
-    except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(_x))))
+    except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
+    except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
   def deserialize(self, str):
     """
@@ -201,8 +205,8 @@ float64 z
       buff.write(self.data.tostring())
       _x = self
       buff.write(_struct_3f3d3I.pack(_x.origin.x, _x.origin.y, _x.origin.z, _x.resolutions.x, _x.resolutions.y, _x.resolutions.z, _x.size_x, _x.size_y, _x.size_z))
-    except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(_x))))
-    except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(_x))))
+    except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
+    except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
   def deserialize_numpy(self, str, numpy):
     """

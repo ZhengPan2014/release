@@ -28,6 +28,7 @@ struct GetStatusRequest_
     }
   GetStatusRequest_(const ContainerAllocator& _alloc)
     {
+  (void)_alloc;
     }
 
 
@@ -153,7 +154,7 @@ namespace serialization
     template<typename Stream, typename T> inline static void allInOne(Stream&, T)
     {}
 
-    ROS_DECLARE_ALLINONE_SERIALIZER;
+    ROS_DECLARE_ALLINONE_SERIALIZER
   }; // struct GetStatusRequest_
 
 } // namespace serialization

@@ -67,7 +67,7 @@ set(rotate_recovery_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(rotate_recovery_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/navigation/rotate_recovery)
+  set(rotate_recovery_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/navigation-jade-devel/rotate_recovery)
   set(rotate_recovery_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(rotate_recovery_INSTALL_PREFIX "")
   set(rotate_recovery_PREFIX ${rotate_recovery_DEVEL_PREFIX})

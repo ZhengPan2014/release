@@ -67,7 +67,7 @@ set(costmap_2d_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(costmap_2d_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/navigation/costmap_2d)
+  set(costmap_2d_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/navigation-jade-devel/costmap_2d)
   set(costmap_2d_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(costmap_2d_INSTALL_PREFIX "")
   set(costmap_2d_PREFIX ${costmap_2d_DEVEL_PREFIX})

@@ -248,15 +248,15 @@ int orientation_mode;
 
 
 
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       int lethal_cost;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       int neutral_cost;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       double cost_factor;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       bool publish_potential;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       int orientation_mode;
 //#line 218 "/opt/ros/indigo/share/dynamic_reconfigure/cmake/../templates/ConfigType.h.template"
 
@@ -393,59 +393,59 @@ int orientation_mode;
     GlobalPlannerConfigStatics()
     {
 GlobalPlannerConfig::GroupDescription<GlobalPlannerConfig::DEFAULT, GlobalPlannerConfig> Default("Default", "", 0, 0, true, &GlobalPlannerConfig::groups);
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.lethal_cost = 1;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.lethal_cost = 255;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __default__.lethal_cost = 253;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.abstract_parameters.push_back(GlobalPlannerConfig::AbstractParamDescriptionConstPtr(new GlobalPlannerConfig::ParamDescription<int>("lethal_cost", "int", 0, "Lethal Cost", "", &GlobalPlannerConfig::lethal_cost)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(GlobalPlannerConfig::AbstractParamDescriptionConstPtr(new GlobalPlannerConfig::ParamDescription<int>("lethal_cost", "int", 0, "Lethal Cost", "", &GlobalPlannerConfig::lethal_cost)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.neutral_cost = 1;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.neutral_cost = 255;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __default__.neutral_cost = 50;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.abstract_parameters.push_back(GlobalPlannerConfig::AbstractParamDescriptionConstPtr(new GlobalPlannerConfig::ParamDescription<int>("neutral_cost", "int", 0, "Neutral Cost", "", &GlobalPlannerConfig::neutral_cost)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(GlobalPlannerConfig::AbstractParamDescriptionConstPtr(new GlobalPlannerConfig::ParamDescription<int>("neutral_cost", "int", 0, "Neutral Cost", "", &GlobalPlannerConfig::neutral_cost)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.cost_factor = 0.01;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.cost_factor = 5.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __default__.cost_factor = 3.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.abstract_parameters.push_back(GlobalPlannerConfig::AbstractParamDescriptionConstPtr(new GlobalPlannerConfig::ParamDescription<double>("cost_factor", "double", 0, "Factor to multiply each cost from costmap by", "", &GlobalPlannerConfig::cost_factor)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(GlobalPlannerConfig::AbstractParamDescriptionConstPtr(new GlobalPlannerConfig::ParamDescription<double>("cost_factor", "double", 0, "Factor to multiply each cost from costmap by", "", &GlobalPlannerConfig::cost_factor)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.publish_potential = 0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.publish_potential = 1;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __default__.publish_potential = 1;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.abstract_parameters.push_back(GlobalPlannerConfig::AbstractParamDescriptionConstPtr(new GlobalPlannerConfig::ParamDescription<bool>("publish_potential", "bool", 0, "Publish Potential Costmap", "", &GlobalPlannerConfig::publish_potential)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(GlobalPlannerConfig::AbstractParamDescriptionConstPtr(new GlobalPlannerConfig::ParamDescription<bool>("publish_potential", "bool", 0, "Publish Potential Costmap", "", &GlobalPlannerConfig::publish_potential)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.orientation_mode = 0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.orientation_mode = 3;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __default__.orientation_mode = 1;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      Default.abstract_parameters.push_back(GlobalPlannerConfig::AbstractParamDescriptionConstPtr(new GlobalPlannerConfig::ParamDescription<int>("orientation_mode", "int", 0, "How to set the orientation of each point", "{'enum_description': 'How to set the orientation of each point', 'enum': [{'srcline': 14, 'description': 'No orientations added except goal orientation', 'srcfile': '/home/ouiyeah/catkin_ws/src/navigation/global_planner/cfg/GlobalPlanner.cfg', 'cconsttype': 'const int', 'value': 0, 'ctype': 'int', 'type': 'int', 'name': 'None'}, {'srcline': 15, 'description': 'Orientations point to the next point on the path', 'srcfile': '/home/ouiyeah/catkin_ws/src/navigation/global_planner/cfg/GlobalPlanner.cfg', 'cconsttype': 'const int', 'value': 1, 'ctype': 'int', 'type': 'int', 'name': 'Forward'}, {'srcline': 16, 'description': 'Orientations are a linear blend of start and goal pose', 'srcfile': '/home/ouiyeah/catkin_ws/src/navigation/global_planner/cfg/GlobalPlanner.cfg', 'cconsttype': 'const int', 'value': 2, 'ctype': 'int', 'type': 'int', 'name': 'Interpolate'}, {'srcline': 18, 'description': 'Forward orientation until last straightaway, then a linear blend until the goal pose', 'srcfile': '/home/ouiyeah/catkin_ws/src/navigation/global_planner/cfg/GlobalPlanner.cfg', 'cconsttype': 'const int', 'value': 3, 'ctype': 'int', 'type': 'int', 'name': 'ForwardThenInterpolate'}]}", &GlobalPlannerConfig::orientation_mode)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __param_descriptions__.push_back(GlobalPlannerConfig::AbstractParamDescriptionConstPtr(new GlobalPlannerConfig::ParamDescription<int>("orientation_mode", "int", 0, "How to set the orientation of each point", "{'enum_description': 'How to set the orientation of each point', 'enum': [{'srcline': 14, 'description': 'No orientations added except goal orientation', 'srcfile': '/home/ouiyeah/catkin_ws/src/navigation/global_planner/cfg/GlobalPlanner.cfg', 'cconsttype': 'const int', 'value': 0, 'ctype': 'int', 'type': 'int', 'name': 'None'}, {'srcline': 15, 'description': 'Orientations point to the next point on the path', 'srcfile': '/home/ouiyeah/catkin_ws/src/navigation/global_planner/cfg/GlobalPlanner.cfg', 'cconsttype': 'const int', 'value': 1, 'ctype': 'int', 'type': 'int', 'name': 'Forward'}, {'srcline': 16, 'description': 'Orientations are a linear blend of start and goal pose', 'srcfile': '/home/ouiyeah/catkin_ws/src/navigation/global_planner/cfg/GlobalPlanner.cfg', 'cconsttype': 'const int', 'value': 2, 'ctype': 'int', 'type': 'int', 'name': 'Interpolate'}, {'srcline': 18, 'description': 'Forward orientation until last straightaway, then a linear blend until the goal pose', 'srcfile': '/home/ouiyeah/catkin_ws/src/navigation/global_planner/cfg/GlobalPlanner.cfg', 'cconsttype': 'const int', 'value': 3, 'ctype': 'int', 'type': 'int', 'name': 'ForwardThenInterpolate'}]}", &GlobalPlannerConfig::orientation_mode)));
-//#line 233 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(GlobalPlannerConfig::AbstractParamDescriptionConstPtr(new GlobalPlannerConfig::ParamDescription<int>("orientation_mode", "int", 0, "How to set the orientation of each point", "{'enum_description': 'How to set the orientation of each point', 'enum': [{'srcline': 14, 'description': 'No orientations added except goal orientation', 'srcfile': '/home/ouiyeah/catkin_ws/src/navigation-jade-devel/global_planner/cfg/GlobalPlanner.cfg', 'cconsttype': 'const int', 'value': 0, 'ctype': 'int', 'type': 'int', 'name': 'None'}, {'srcline': 15, 'description': 'Orientations point to the next point on the path', 'srcfile': '/home/ouiyeah/catkin_ws/src/navigation-jade-devel/global_planner/cfg/GlobalPlanner.cfg', 'cconsttype': 'const int', 'value': 1, 'ctype': 'int', 'type': 'int', 'name': 'Forward'}, {'srcline': 16, 'description': 'Orientations are a linear blend of start and goal pose', 'srcfile': '/home/ouiyeah/catkin_ws/src/navigation-jade-devel/global_planner/cfg/GlobalPlanner.cfg', 'cconsttype': 'const int', 'value': 2, 'ctype': 'int', 'type': 'int', 'name': 'Interpolate'}, {'srcline': 18, 'description': 'Forward orientation until last straightaway, then a linear blend until the goal pose', 'srcfile': '/home/ouiyeah/catkin_ws/src/navigation-jade-devel/global_planner/cfg/GlobalPlanner.cfg', 'cconsttype': 'const int', 'value': 3, 'ctype': 'int', 'type': 'int', 'name': 'ForwardThenInterpolate'}]}", &GlobalPlannerConfig::orientation_mode)));
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(GlobalPlannerConfig::AbstractParamDescriptionConstPtr(new GlobalPlannerConfig::ParamDescription<int>("orientation_mode", "int", 0, "How to set the orientation of each point", "{'enum_description': 'How to set the orientation of each point', 'enum': [{'srcline': 14, 'description': 'No orientations added except goal orientation', 'srcfile': '/home/ouiyeah/catkin_ws/src/navigation-jade-devel/global_planner/cfg/GlobalPlanner.cfg', 'cconsttype': 'const int', 'value': 0, 'ctype': 'int', 'type': 'int', 'name': 'None'}, {'srcline': 15, 'description': 'Orientations point to the next point on the path', 'srcfile': '/home/ouiyeah/catkin_ws/src/navigation-jade-devel/global_planner/cfg/GlobalPlanner.cfg', 'cconsttype': 'const int', 'value': 1, 'ctype': 'int', 'type': 'int', 'name': 'Forward'}, {'srcline': 16, 'description': 'Orientations are a linear blend of start and goal pose', 'srcfile': '/home/ouiyeah/catkin_ws/src/navigation-jade-devel/global_planner/cfg/GlobalPlanner.cfg', 'cconsttype': 'const int', 'value': 2, 'ctype': 'int', 'type': 'int', 'name': 'Interpolate'}, {'srcline': 18, 'description': 'Forward orientation until last straightaway, then a linear blend until the goal pose', 'srcfile': '/home/ouiyeah/catkin_ws/src/navigation-jade-devel/global_planner/cfg/GlobalPlanner.cfg', 'cconsttype': 'const int', 'value': 3, 'ctype': 'int', 'type': 'int', 'name': 'ForwardThenInterpolate'}]}", &GlobalPlannerConfig::orientation_mode)));
+//#line 235 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.convertParams();
-//#line 233 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 235 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __group_descriptions__.push_back(GlobalPlannerConfig::AbstractGroupDescriptionConstPtr(new GlobalPlannerConfig::GroupDescription<GlobalPlannerConfig::DEFAULT, GlobalPlannerConfig>(Default)));
 //#line 353 "/opt/ros/indigo/share/dynamic_reconfigure/cmake/../templates/ConfigType.h.template"
 
@@ -522,13 +522,13 @@ GlobalPlannerConfig::GroupDescription<GlobalPlannerConfig::DEFAULT, GlobalPlanne
     return statics;
   }
 
-//#line 14 "/home/ouiyeah/catkin_ws/src/navigation/global_planner/cfg/GlobalPlanner.cfg"
+//#line 14 "/home/ouiyeah/catkin_ws/src/navigation-jade-devel/global_planner/cfg/GlobalPlanner.cfg"
       const int GlobalPlanner_None = 0;
-//#line 15 "/home/ouiyeah/catkin_ws/src/navigation/global_planner/cfg/GlobalPlanner.cfg"
+//#line 15 "/home/ouiyeah/catkin_ws/src/navigation-jade-devel/global_planner/cfg/GlobalPlanner.cfg"
       const int GlobalPlanner_Forward = 1;
-//#line 16 "/home/ouiyeah/catkin_ws/src/navigation/global_planner/cfg/GlobalPlanner.cfg"
+//#line 16 "/home/ouiyeah/catkin_ws/src/navigation-jade-devel/global_planner/cfg/GlobalPlanner.cfg"
       const int GlobalPlanner_Interpolate = 2;
-//#line 18 "/home/ouiyeah/catkin_ws/src/navigation/global_planner/cfg/GlobalPlanner.cfg"
+//#line 18 "/home/ouiyeah/catkin_ws/src/navigation-jade-devel/global_planner/cfg/GlobalPlanner.cfg"
       const int GlobalPlanner_ForwardThenInterpolate = 3;
 }
 

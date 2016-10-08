@@ -67,7 +67,7 @@ set(voxel_grid_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(voxel_grid_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/navigation/voxel_grid)
+  set(voxel_grid_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/navigation-jade-devel/voxel_grid)
   set(voxel_grid_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(voxel_grid_INSTALL_PREFIX "")
   set(voxel_grid_PREFIX ${voxel_grid_DEVEL_PREFIX})

@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<launch>
+    <node name="rosbridge_stm32will2" pkg="rosbridge_driver" type="rosbridge_driver" output="screen">
+        <rosparam>
+            odom_publish: false
+            port_chain:
+              - name: stm32will2
+                type: serial
+                serial_port: /dev/ttySx
+            topic_chain:
+              - name: cmd_vel
+                type: subscribe
+                wheel_model: diff
+                wheel_track: 0.208 #0.416
+                wheel_ratio: 23333.3
+                action_chain:
+                  - name: stm32will2
+                    type: write
+                    byte: [0xaa, 0x55, 0x01, 0x00, 0x04, 0x02, 0x11, vel_left, big, vel_right, big, crc16, little]
+                  - name: stm32will2
+                    type: read
+                    byte: [0xaa, 0x55, 0x01, 0x00, 0x04, 0x02, 0x11, vel_left, big, vel_right, big, crc16, little]
+                    except: [0x02, 0x86, errno, crc16, little]
+              - name: odom
+                type: publish
+                freq: 50.0
+                action_chain:
+                  - name: stm32will2
+                    type: write
+                    byte: [0xaa, 0x55, 0x01, 0x00, 0x00, 0x02, 0x43, crc16, little]
+                  - name: stm32will2
+                    type: read
+                    byte: [0xaa, 0x55, 0x01, 0x00, 0x00, 0x02, 0x43, errmodel, errno, vel_left, big, vel_right, big, crc16, little]
+                    except: [0x02, 0x83, errno, crc16, little]
+              - name: odom_imu
+                type: publish
+                freq: 50.0
+                action_chain:
+                  - name: stm32will2
+                    type: write
+                    byte: [0xaa, 0x55, 0x01, 0x00, 0x00, 0xf0, 0x1a, crc16, little]
+                  - name: stm32will2
+                    type: read
+                    byte: [0xaa, 0x55, 0x01, 0x00, 0x00, 0xf0, 0x1a, errmodel, errno, vel_left, big, vel_right, pos_pitch, little, pos_roll, little, pos_yaw, little, imu_status, little, crc16, little]
+                    except: [0x02, 0x83, errno, crc16, little]
+              - name: diagnostics
+                type: publish
+        </rosparam>
+    </node>
+</launch>

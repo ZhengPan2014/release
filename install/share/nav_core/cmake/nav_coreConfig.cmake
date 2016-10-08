@@ -67,7 +67,7 @@ set(nav_core_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(nav_core_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/navigation/nav_core)
+  set(nav_core_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/navigation-jade-devel/nav_core)
   set(nav_core_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(nav_core_INSTALL_PREFIX "")
   set(nav_core_PREFIX ${nav_core_DEVEL_PREFIX})

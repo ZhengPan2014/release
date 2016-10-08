@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<launch>
+    <node name="rosbridge_aqmd" pkg="rosbridge_driver" type="rosbridge_driver" output="screen">
+        <rosparam>
+            port_chain:
+              - name: left
+                type: serial
+                serial_port: /dev/usb_left
+              - name: right
+                type: serial
+                serial_port: /dev/usb_right
+            topic_chain:
+              - name: cmd_vel
+                type: subscribe
+                wheel_model: diff
+                wheel_track: 0.208 #0.416
+                wheel_ratio: 23333.3
+                action_chain:
+                  - name: left
+                    type: write
+                    byte: [0x02, 0x06, 0x00, 0x43, vel_left, big, crc16, little]
+                  - name: right
+                    type: write
+                    byte: [0x03, 0x06, 0x00, 0x43, vel_right, big, crc16, little]
+                  - name: left
+                    type: read
+                    byte: [0x02, 0x06, 0x00, 0x43, vel_left, big, crc16, little]
+                    except: [0x02, 0x86, errno, crc16, little]
+                  - name: right
+                    type: read
+                    byte: [0x03, 0x06, 0x00, 0x43, vel_right, big, crc16, little]
+                    except: [0x03, 0x86, errno, crc16, little]
+              - name: odom
+                type: publish
+                freq: 50.0
+                action_chain:
+                  - name: left
+                    type: write
+                    byte: [0x02, 0x03, 0x00, 0x22, 0x00, 0x01, 0x24, 0x33]
+                  - name: right
+                    type: write
+                    byte: [0x03, 0x03, 0x00, 0x22, 0x00, 0x01, 0x25, 0xe2]
+                  - name: left
+                    type: read
+                    byte: [0x02, 0x03, 0x02, vel_left, big, crc16, little]
+                    except: [0x02, 0x83, errno, crc16, little]
+                  - name: right
+                    type: read
+                    byte: [0x03, 0x03, 0x02, vel_right, big, crc16, little]
+                    except: [0x03, 0x83, errno, crc16, little]
+              - name: diagnostics
+                type: publish
+        </rosparam>
+    </node>
+</launch>

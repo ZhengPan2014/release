@@ -33,6 +33,7 @@ struct MakeNavPlanResponse_
     : plan_found(0)
     , error_message(_alloc)
     , path(_alloc)  {
+  (void)_alloc;
     }
 
 
@@ -223,7 +224,7 @@ namespace serialization
       stream.next(m.path);
     }
 
-    ROS_DECLARE_ALLINONE_SERIALIZER;
+    ROS_DECLARE_ALLINONE_SERIALIZER
   }; // struct MakeNavPlanResponse_
 
 } // namespace serialization

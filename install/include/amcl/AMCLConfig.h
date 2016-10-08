@@ -316,83 +316,83 @@ bool restore_defaults;
 
 
 
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       int min_particles;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       int max_particles;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       double kld_err;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       double kld_z;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       double update_min_d;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       double update_min_a;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       int resample_interval;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       double transform_tolerance;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       double recovery_alpha_slow;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       double recovery_alpha_fast;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       bool do_beamskip;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       double beam_skip_distance;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       double beam_skip_threshold;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       bool tf_broadcast;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       double gui_publish_rate;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       double save_pose_rate;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       bool use_map_topic;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       bool first_map_only;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       double laser_min_range;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       double laser_max_range;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       int laser_max_beams;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       double laser_z_hit;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       double laser_z_short;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       double laser_z_max;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       double laser_z_rand;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       double laser_sigma_hit;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       double laser_lambda_short;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       double laser_likelihood_max_dist;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       std::string laser_model_type;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       std::string odom_model_type;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       double odom_alpha1;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       double odom_alpha2;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       double odom_alpha3;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       double odom_alpha4;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       double odom_alpha5;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       std::string odom_frame_id;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       std::string base_frame_id;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       std::string global_frame_id;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       bool restore_defaults;
 //#line 218 "/opt/ros/indigo/share/dynamic_reconfigure/cmake/../templates/ConfigType.h.template"
 
@@ -529,399 +529,399 @@ bool restore_defaults;
     AMCLConfigStatics()
     {
 AMCLConfig::GroupDescription<AMCLConfig::DEFAULT, AMCLConfig> Default("Default", "", 0, 0, true, &AMCLConfig::groups);
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.min_particles = 0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.min_particles = 1000;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __default__.min_particles = 100;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.abstract_parameters.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<int>("min_particles", "int", 0, "Minimum allowed number of particles.", "", &AMCLConfig::min_particles)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<int>("min_particles", "int", 0, "Minimum allowed number of particles.", "", &AMCLConfig::min_particles)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.max_particles = 0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.max_particles = 10000;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __default__.max_particles = 5000;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.abstract_parameters.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<int>("max_particles", "int", 0, "Mamimum allowed number of particles.", "", &AMCLConfig::max_particles)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<int>("max_particles", "int", 0, "Mamimum allowed number of particles.", "", &AMCLConfig::max_particles)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.kld_err = 0.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.kld_err = 1.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __default__.kld_err = 0.01;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.abstract_parameters.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<double>("kld_err", "double", 0, "Maximum error between the true distribution and the estimated distribution.", "", &AMCLConfig::kld_err)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<double>("kld_err", "double", 0, "Maximum error between the true distribution and the estimated distribution.", "", &AMCLConfig::kld_err)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.kld_z = 0.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.kld_z = 1.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __default__.kld_z = 0.99;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.abstract_parameters.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<double>("kld_z", "double", 0, "Upper standard normal quantile for (1 - p), where p is the probability that the error on the estimated distrubition will be less than kld_err.", "", &AMCLConfig::kld_z)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<double>("kld_z", "double", 0, "Upper standard normal quantile for (1 - p), where p is the probability that the error on the estimated distrubition will be less than kld_err.", "", &AMCLConfig::kld_z)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.update_min_d = 0.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.update_min_d = 5.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __default__.update_min_d = 0.2;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.abstract_parameters.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<double>("update_min_d", "double", 0, "Translational movement required before performing a filter update.", "", &AMCLConfig::update_min_d)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<double>("update_min_d", "double", 0, "Translational movement required before performing a filter update.", "", &AMCLConfig::update_min_d)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.update_min_a = 0.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.update_min_a = 6.28318530718;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __default__.update_min_a = 0.523598775598;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.abstract_parameters.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<double>("update_min_a", "double", 0, "Rotational movement required before performing a filter update.", "", &AMCLConfig::update_min_a)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<double>("update_min_a", "double", 0, "Rotational movement required before performing a filter update.", "", &AMCLConfig::update_min_a)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.resample_interval = 0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.resample_interval = 20;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __default__.resample_interval = 2;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.abstract_parameters.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<int>("resample_interval", "int", 0, "Number of filter updates required before resampling.", "", &AMCLConfig::resample_interval)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<int>("resample_interval", "int", 0, "Number of filter updates required before resampling.", "", &AMCLConfig::resample_interval)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.transform_tolerance = 0.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.transform_tolerance = 2.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __default__.transform_tolerance = 0.1;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.abstract_parameters.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<double>("transform_tolerance", "double", 0, "Time with which to post-date the transform that is published, to indicate that this transform is valid into the future.", "", &AMCLConfig::transform_tolerance)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<double>("transform_tolerance", "double", 0, "Time with which to post-date the transform that is published, to indicate that this transform is valid into the future.", "", &AMCLConfig::transform_tolerance)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.recovery_alpha_slow = 0.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.recovery_alpha_slow = 0.5;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __default__.recovery_alpha_slow = 0.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.abstract_parameters.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<double>("recovery_alpha_slow", "double", 0, "Exponential decay rate for the slow average weight filter, used in deciding when to recover by adding random poses. A good value might be 0.001.", "", &AMCLConfig::recovery_alpha_slow)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<double>("recovery_alpha_slow", "double", 0, "Exponential decay rate for the slow average weight filter, used in deciding when to recover by adding random poses. A good value might be 0.001.", "", &AMCLConfig::recovery_alpha_slow)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.recovery_alpha_fast = 0.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.recovery_alpha_fast = 1.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __default__.recovery_alpha_fast = 0.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.abstract_parameters.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<double>("recovery_alpha_fast", "double", 0, "Exponential decay rate for the fast average weight filter, used in deciding when to recover by adding random poses. A good value might be 0.1.", "", &AMCLConfig::recovery_alpha_fast)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<double>("recovery_alpha_fast", "double", 0, "Exponential decay rate for the fast average weight filter, used in deciding when to recover by adding random poses. A good value might be 0.1.", "", &AMCLConfig::recovery_alpha_fast)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.do_beamskip = 0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.do_beamskip = 1;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __default__.do_beamskip = 0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.abstract_parameters.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<bool>("do_beamskip", "bool", 0, "When true skips laser scans when a scan doesnt work for a majority of particles", "", &AMCLConfig::do_beamskip)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<bool>("do_beamskip", "bool", 0, "When true skips laser scans when a scan doesnt work for a majority of particles", "", &AMCLConfig::do_beamskip)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.beam_skip_distance = 2.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.beam_skip_distance = 0.5;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __default__.beam_skip_distance = 0.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.abstract_parameters.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<double>("beam_skip_distance", "double", 0, "Distance from a valid map point before scan is considered invalid", "", &AMCLConfig::beam_skip_distance)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<double>("beam_skip_distance", "double", 0, "Distance from a valid map point before scan is considered invalid", "", &AMCLConfig::beam_skip_distance)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.beam_skip_threshold = 1.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.beam_skip_threshold = 0.3;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __default__.beam_skip_threshold = 0.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.abstract_parameters.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<double>("beam_skip_threshold", "double", 0, "Ratio of samples for which the scans are valid to consider as valid scan", "", &AMCLConfig::beam_skip_threshold)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<double>("beam_skip_threshold", "double", 0, "Ratio of samples for which the scans are valid to consider as valid scan", "", &AMCLConfig::beam_skip_threshold)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.tf_broadcast = 0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.tf_broadcast = 1;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __default__.tf_broadcast = 1;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.abstract_parameters.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<bool>("tf_broadcast", "bool", 0, "When true (the default), publish results via TF.  When false, do not.", "", &AMCLConfig::tf_broadcast)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<bool>("tf_broadcast", "bool", 0, "When true (the default), publish results via TF.  When false, do not.", "", &AMCLConfig::tf_broadcast)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.gui_publish_rate = -1.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.gui_publish_rate = 100.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __default__.gui_publish_rate = -1.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.abstract_parameters.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<double>("gui_publish_rate", "double", 0, "Maximum rate (Hz) at which scans and paths are published for visualization, -1.0 to disable.", "", &AMCLConfig::gui_publish_rate)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<double>("gui_publish_rate", "double", 0, "Maximum rate (Hz) at which scans and paths are published for visualization, -1.0 to disable.", "", &AMCLConfig::gui_publish_rate)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.save_pose_rate = 0.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.save_pose_rate = 10.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __default__.save_pose_rate = 0.5;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.abstract_parameters.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<double>("save_pose_rate", "double", 0, "Maximum rate (Hz) at which to store the last estimated pose and covariance to the parameter server, in the variables ~initial_pose_* and ~initial_cov_*. This saved pose will be used on subsequent runs to initialize the filter. -1.0 to disable.", "", &AMCLConfig::save_pose_rate)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<double>("save_pose_rate", "double", 0, "Maximum rate (Hz) at which to store the last estimated pose and covariance to the parameter server, in the variables ~initial_pose_* and ~initial_cov_*. This saved pose will be used on subsequent runs to initialize the filter. -1.0 to disable.", "", &AMCLConfig::save_pose_rate)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.use_map_topic = 0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.use_map_topic = 1;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __default__.use_map_topic = 0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.abstract_parameters.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<bool>("use_map_topic", "bool", 0, "When set to true, AMCL will subscribe to the map topic rather than making a service call to receive its map.", "", &AMCLConfig::use_map_topic)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<bool>("use_map_topic", "bool", 0, "When set to true, AMCL will subscribe to the map topic rather than making a service call to receive its map.", "", &AMCLConfig::use_map_topic)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.first_map_only = 0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.first_map_only = 1;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __default__.first_map_only = 0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.abstract_parameters.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<bool>("first_map_only", "bool", 0, "When set to true, AMCL will only use the first map it subscribes to, rather than updating each time a new one is received.", "", &AMCLConfig::first_map_only)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<bool>("first_map_only", "bool", 0, "When set to true, AMCL will only use the first map it subscribes to, rather than updating each time a new one is received.", "", &AMCLConfig::first_map_only)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.laser_min_range = -1.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.laser_min_range = 1000.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __default__.laser_min_range = -1.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.abstract_parameters.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<double>("laser_min_range", "double", 0, "Minimum scan range to be considered; -1.0 will cause the laser's reported minimum range to be used.", "", &AMCLConfig::laser_min_range)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<double>("laser_min_range", "double", 0, "Minimum scan range to be considered; -1.0 will cause the laser's reported minimum range to be used.", "", &AMCLConfig::laser_min_range)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.laser_max_range = -1.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.laser_max_range = 1000.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __default__.laser_max_range = -1.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.abstract_parameters.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<double>("laser_max_range", "double", 0, "Maximum scan range to be considered; -1.0 will cause the laser's reported maximum range to be used.", "", &AMCLConfig::laser_max_range)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<double>("laser_max_range", "double", 0, "Maximum scan range to be considered; -1.0 will cause the laser's reported maximum range to be used.", "", &AMCLConfig::laser_max_range)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.laser_max_beams = 0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.laser_max_beams = 100;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __default__.laser_max_beams = 30;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.abstract_parameters.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<int>("laser_max_beams", "int", 0, "How many evenly-spaced beams in each scan to be used when updating the filter.", "", &AMCLConfig::laser_max_beams)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<int>("laser_max_beams", "int", 0, "How many evenly-spaced beams in each scan to be used when updating the filter.", "", &AMCLConfig::laser_max_beams)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.laser_z_hit = 0.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.laser_z_hit = 10.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __default__.laser_z_hit = 0.95;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.abstract_parameters.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<double>("laser_z_hit", "double", 0, "Mixture weight for the z_hit part of the model.", "", &AMCLConfig::laser_z_hit)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<double>("laser_z_hit", "double", 0, "Mixture weight for the z_hit part of the model.", "", &AMCLConfig::laser_z_hit)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.laser_z_short = 0.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.laser_z_short = 10.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __default__.laser_z_short = 0.1;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.abstract_parameters.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<double>("laser_z_short", "double", 0, "Mixture weight for the z_short part of the model.", "", &AMCLConfig::laser_z_short)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<double>("laser_z_short", "double", 0, "Mixture weight for the z_short part of the model.", "", &AMCLConfig::laser_z_short)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.laser_z_max = 0.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.laser_z_max = 10.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __default__.laser_z_max = 0.05;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.abstract_parameters.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<double>("laser_z_max", "double", 0, "Mixture weight for the z_max part of the model.", "", &AMCLConfig::laser_z_max)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<double>("laser_z_max", "double", 0, "Mixture weight for the z_max part of the model.", "", &AMCLConfig::laser_z_max)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.laser_z_rand = 0.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.laser_z_rand = 10.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __default__.laser_z_rand = 0.05;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.abstract_parameters.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<double>("laser_z_rand", "double", 0, "Mixture weight for the z_rand part of the model.", "", &AMCLConfig::laser_z_rand)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<double>("laser_z_rand", "double", 0, "Mixture weight for the z_rand part of the model.", "", &AMCLConfig::laser_z_rand)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.laser_sigma_hit = 0.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.laser_sigma_hit = 10.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __default__.laser_sigma_hit = 0.2;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.abstract_parameters.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<double>("laser_sigma_hit", "double", 0, "Standard deviation for Gaussian model used in z_hit part of the model.", "", &AMCLConfig::laser_sigma_hit)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<double>("laser_sigma_hit", "double", 0, "Standard deviation for Gaussian model used in z_hit part of the model.", "", &AMCLConfig::laser_sigma_hit)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.laser_lambda_short = 0.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.laser_lambda_short = 10.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __default__.laser_lambda_short = 0.1;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.abstract_parameters.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<double>("laser_lambda_short", "double", 0, "Exponential decay parameter for z_short part of model.", "", &AMCLConfig::laser_lambda_short)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<double>("laser_lambda_short", "double", 0, "Exponential decay parameter for z_short part of model.", "", &AMCLConfig::laser_lambda_short)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.laser_likelihood_max_dist = 0.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.laser_likelihood_max_dist = 20.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __default__.laser_likelihood_max_dist = 2.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.abstract_parameters.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<double>("laser_likelihood_max_dist", "double", 0, "Maximum distance to do obstacle inflation on map, for use in likelihood_field model.", "", &AMCLConfig::laser_likelihood_max_dist)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<double>("laser_likelihood_max_dist", "double", 0, "Maximum distance to do obstacle inflation on map, for use in likelihood_field model.", "", &AMCLConfig::laser_likelihood_max_dist)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.laser_model_type = "";
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.laser_model_type = "";
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __default__.laser_model_type = "likelihood_field";
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      Default.abstract_parameters.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<std::string>("laser_model_type", "str", 0, "Which model to use, either beam, likelihood_field or likelihood_field_prob.", "{'enum_description': 'Laser Models', 'enum': [{'srcline': 52, 'description': 'Use beam laser model', 'srcfile': '/home/ouiyeah/catkin_ws/src/navigation/amcl/cfg/AMCL.cfg', 'cconsttype': 'const char * const', 'value': 'beam', 'ctype': 'std::string', 'type': 'str', 'name': 'beam_const'}, {'srcline': 52, 'description': 'Use likelihood_field laser model', 'srcfile': '/home/ouiyeah/catkin_ws/src/navigation/amcl/cfg/AMCL.cfg', 'cconsttype': 'const char * const', 'value': 'likelihood_field', 'ctype': 'std::string', 'type': 'str', 'name': 'likelihood_field_const'}]}", &AMCLConfig::laser_model_type)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __param_descriptions__.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<std::string>("laser_model_type", "str", 0, "Which model to use, either beam, likelihood_field or likelihood_field_prob.", "{'enum_description': 'Laser Models', 'enum': [{'srcline': 52, 'description': 'Use beam laser model', 'srcfile': '/home/ouiyeah/catkin_ws/src/navigation/amcl/cfg/AMCL.cfg', 'cconsttype': 'const char * const', 'value': 'beam', 'ctype': 'std::string', 'type': 'str', 'name': 'beam_const'}, {'srcline': 52, 'description': 'Use likelihood_field laser model', 'srcfile': '/home/ouiyeah/catkin_ws/src/navigation/amcl/cfg/AMCL.cfg', 'cconsttype': 'const char * const', 'value': 'likelihood_field', 'ctype': 'std::string', 'type': 'str', 'name': 'likelihood_field_const'}]}", &AMCLConfig::laser_model_type)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<std::string>("laser_model_type", "str", 0, "Which model to use, either beam, likelihood_field or likelihood_field_prob.", "{'enum_description': 'Laser Models', 'enum': [{'srcline': 52, 'description': 'Use beam laser model', 'srcfile': '/home/ouiyeah/catkin_ws/src/navigation-jade-devel/amcl/cfg/AMCL.cfg', 'cconsttype': 'const char * const', 'value': 'beam', 'ctype': 'std::string', 'type': 'str', 'name': 'beam_const'}, {'srcline': 52, 'description': 'Use likelihood_field laser model', 'srcfile': '/home/ouiyeah/catkin_ws/src/navigation-jade-devel/amcl/cfg/AMCL.cfg', 'cconsttype': 'const char * const', 'value': 'likelihood_field', 'ctype': 'std::string', 'type': 'str', 'name': 'likelihood_field_const'}]}", &AMCLConfig::laser_model_type)));
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<std::string>("laser_model_type", "str", 0, "Which model to use, either beam, likelihood_field or likelihood_field_prob.", "{'enum_description': 'Laser Models', 'enum': [{'srcline': 52, 'description': 'Use beam laser model', 'srcfile': '/home/ouiyeah/catkin_ws/src/navigation-jade-devel/amcl/cfg/AMCL.cfg', 'cconsttype': 'const char * const', 'value': 'beam', 'ctype': 'std::string', 'type': 'str', 'name': 'beam_const'}, {'srcline': 52, 'description': 'Use likelihood_field laser model', 'srcfile': '/home/ouiyeah/catkin_ws/src/navigation-jade-devel/amcl/cfg/AMCL.cfg', 'cconsttype': 'const char * const', 'value': 'likelihood_field', 'ctype': 'std::string', 'type': 'str', 'name': 'likelihood_field_const'}]}", &AMCLConfig::laser_model_type)));
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.odom_model_type = "";
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.odom_model_type = "";
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __default__.odom_model_type = "diff";
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      Default.abstract_parameters.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<std::string>("odom_model_type", "str", 0, "Which model to use, diff, omni, diff-corrected, or omni-corrected", "{'enum_description': 'Odom Models', 'enum': [{'srcline': 56, 'description': 'Use diff odom model', 'srcfile': '/home/ouiyeah/catkin_ws/src/navigation/amcl/cfg/AMCL.cfg', 'cconsttype': 'const char * const', 'value': 'diff', 'ctype': 'std::string', 'type': 'str', 'name': 'diff_const'}, {'srcline': 57, 'description': 'Use omni odom model', 'srcfile': '/home/ouiyeah/catkin_ws/src/navigation/amcl/cfg/AMCL.cfg', 'cconsttype': 'const char * const', 'value': 'omni', 'ctype': 'std::string', 'type': 'str', 'name': 'omni_const'}, {'srcline': 58, 'description': 'Use corrected diff odom model', 'srcfile': '/home/ouiyeah/catkin_ws/src/navigation/amcl/cfg/AMCL.cfg', 'cconsttype': 'const char * const', 'value': 'diff-corrected', 'ctype': 'std::string', 'type': 'str', 'name': 'diff_corrected_const'}, {'srcline': 59, 'description': 'Use corrected omni odom model', 'srcfile': '/home/ouiyeah/catkin_ws/src/navigation/amcl/cfg/AMCL.cfg', 'cconsttype': 'const char * const', 'value': 'omni-corrected', 'ctype': 'std::string', 'type': 'str', 'name': 'omni_corrected_const'}]}", &AMCLConfig::odom_model_type)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __param_descriptions__.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<std::string>("odom_model_type", "str", 0, "Which model to use, diff, omni, diff-corrected, or omni-corrected", "{'enum_description': 'Odom Models', 'enum': [{'srcline': 56, 'description': 'Use diff odom model', 'srcfile': '/home/ouiyeah/catkin_ws/src/navigation/amcl/cfg/AMCL.cfg', 'cconsttype': 'const char * const', 'value': 'diff', 'ctype': 'std::string', 'type': 'str', 'name': 'diff_const'}, {'srcline': 57, 'description': 'Use omni odom model', 'srcfile': '/home/ouiyeah/catkin_ws/src/navigation/amcl/cfg/AMCL.cfg', 'cconsttype': 'const char * const', 'value': 'omni', 'ctype': 'std::string', 'type': 'str', 'name': 'omni_const'}, {'srcline': 58, 'description': 'Use corrected diff odom model', 'srcfile': '/home/ouiyeah/catkin_ws/src/navigation/amcl/cfg/AMCL.cfg', 'cconsttype': 'const char * const', 'value': 'diff-corrected', 'ctype': 'std::string', 'type': 'str', 'name': 'diff_corrected_const'}, {'srcline': 59, 'description': 'Use corrected omni odom model', 'srcfile': '/home/ouiyeah/catkin_ws/src/navigation/amcl/cfg/AMCL.cfg', 'cconsttype': 'const char * const', 'value': 'omni-corrected', 'ctype': 'std::string', 'type': 'str', 'name': 'omni_corrected_const'}]}", &AMCLConfig::odom_model_type)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<std::string>("odom_model_type", "str", 0, "Which model to use, diff, omni, diff-corrected, or omni-corrected", "{'enum_description': 'Odom Models', 'enum': [{'srcline': 56, 'description': 'Use diff odom model', 'srcfile': '/home/ouiyeah/catkin_ws/src/navigation-jade-devel/amcl/cfg/AMCL.cfg', 'cconsttype': 'const char * const', 'value': 'diff', 'ctype': 'std::string', 'type': 'str', 'name': 'diff_const'}, {'srcline': 57, 'description': 'Use omni odom model', 'srcfile': '/home/ouiyeah/catkin_ws/src/navigation-jade-devel/amcl/cfg/AMCL.cfg', 'cconsttype': 'const char * const', 'value': 'omni', 'ctype': 'std::string', 'type': 'str', 'name': 'omni_const'}, {'srcline': 58, 'description': 'Use corrected diff odom model', 'srcfile': '/home/ouiyeah/catkin_ws/src/navigation-jade-devel/amcl/cfg/AMCL.cfg', 'cconsttype': 'const char * const', 'value': 'diff-corrected', 'ctype': 'std::string', 'type': 'str', 'name': 'diff_corrected_const'}, {'srcline': 59, 'description': 'Use corrected omni odom model', 'srcfile': '/home/ouiyeah/catkin_ws/src/navigation-jade-devel/amcl/cfg/AMCL.cfg', 'cconsttype': 'const char * const', 'value': 'omni-corrected', 'ctype': 'std::string', 'type': 'str', 'name': 'omni_corrected_const'}]}", &AMCLConfig::odom_model_type)));
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<std::string>("odom_model_type", "str", 0, "Which model to use, diff, omni, diff-corrected, or omni-corrected", "{'enum_description': 'Odom Models', 'enum': [{'srcline': 56, 'description': 'Use diff odom model', 'srcfile': '/home/ouiyeah/catkin_ws/src/navigation-jade-devel/amcl/cfg/AMCL.cfg', 'cconsttype': 'const char * const', 'value': 'diff', 'ctype': 'std::string', 'type': 'str', 'name': 'diff_const'}, {'srcline': 57, 'description': 'Use omni odom model', 'srcfile': '/home/ouiyeah/catkin_ws/src/navigation-jade-devel/amcl/cfg/AMCL.cfg', 'cconsttype': 'const char * const', 'value': 'omni', 'ctype': 'std::string', 'type': 'str', 'name': 'omni_const'}, {'srcline': 58, 'description': 'Use corrected diff odom model', 'srcfile': '/home/ouiyeah/catkin_ws/src/navigation-jade-devel/amcl/cfg/AMCL.cfg', 'cconsttype': 'const char * const', 'value': 'diff-corrected', 'ctype': 'std::string', 'type': 'str', 'name': 'diff_corrected_const'}, {'srcline': 59, 'description': 'Use corrected omni odom model', 'srcfile': '/home/ouiyeah/catkin_ws/src/navigation-jade-devel/amcl/cfg/AMCL.cfg', 'cconsttype': 'const char * const', 'value': 'omni-corrected', 'ctype': 'std::string', 'type': 'str', 'name': 'omni_corrected_const'}]}", &AMCLConfig::odom_model_type)));
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.odom_alpha1 = 0.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.odom_alpha1 = 10.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __default__.odom_alpha1 = 0.2;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.abstract_parameters.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<double>("odom_alpha1", "double", 0, "Specifies the expected noise in odometry's rotation estimate from the rotational component of the robot's motion.", "", &AMCLConfig::odom_alpha1)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<double>("odom_alpha1", "double", 0, "Specifies the expected noise in odometry's rotation estimate from the rotational component of the robot's motion.", "", &AMCLConfig::odom_alpha1)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.odom_alpha2 = 0.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.odom_alpha2 = 10.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __default__.odom_alpha2 = 0.2;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.abstract_parameters.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<double>("odom_alpha2", "double", 0, "Specifies the expected noise in odometry's rotation estimate from the translational component of the robot's motion.", "", &AMCLConfig::odom_alpha2)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<double>("odom_alpha2", "double", 0, "Specifies the expected noise in odometry's rotation estimate from the translational component of the robot's motion.", "", &AMCLConfig::odom_alpha2)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.odom_alpha3 = 0.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.odom_alpha3 = 10.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __default__.odom_alpha3 = 0.2;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.abstract_parameters.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<double>("odom_alpha3", "double", 0, "Specifies the expected noise in odometry's translation estimate from the translational component of the robot's motion.", "", &AMCLConfig::odom_alpha3)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<double>("odom_alpha3", "double", 0, "Specifies the expected noise in odometry's translation estimate from the translational component of the robot's motion.", "", &AMCLConfig::odom_alpha3)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.odom_alpha4 = 0.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.odom_alpha4 = 10.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __default__.odom_alpha4 = 0.2;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.abstract_parameters.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<double>("odom_alpha4", "double", 0, "Specifies the expected noise in odometry's translation  estimate from the rotational component of the robot's motion.", "", &AMCLConfig::odom_alpha4)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<double>("odom_alpha4", "double", 0, "Specifies the expected noise in odometry's translation  estimate from the rotational component of the robot's motion.", "", &AMCLConfig::odom_alpha4)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.odom_alpha5 = 0.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.odom_alpha5 = 10.0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __default__.odom_alpha5 = 0.2;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.abstract_parameters.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<double>("odom_alpha5", "double", 0, "Translation-related noise parameter (only used if model is omni).", "", &AMCLConfig::odom_alpha5)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<double>("odom_alpha5", "double", 0, "Translation-related noise parameter (only used if model is omni).", "", &AMCLConfig::odom_alpha5)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.odom_frame_id = "";
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.odom_frame_id = "";
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __default__.odom_frame_id = "odom";
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.abstract_parameters.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<std::string>("odom_frame_id", "str", 0, "Which frame to use for odometry.", "", &AMCLConfig::odom_frame_id)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<std::string>("odom_frame_id", "str", 0, "Which frame to use for odometry.", "", &AMCLConfig::odom_frame_id)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.base_frame_id = "";
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.base_frame_id = "";
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __default__.base_frame_id = "base_link";
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.abstract_parameters.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<std::string>("base_frame_id", "str", 0, "Which frame to use for the robot base.", "", &AMCLConfig::base_frame_id)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<std::string>("base_frame_id", "str", 0, "Which frame to use for the robot base.", "", &AMCLConfig::base_frame_id)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.global_frame_id = "";
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.global_frame_id = "";
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __default__.global_frame_id = "map";
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.abstract_parameters.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<std::string>("global_frame_id", "str", 0, "The name of the coordinate frame published by the localization system.", "", &AMCLConfig::global_frame_id)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<std::string>("global_frame_id", "str", 0, "The name of the coordinate frame published by the localization system.", "", &AMCLConfig::global_frame_id)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.restore_defaults = 0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.restore_defaults = 1;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __default__.restore_defaults = 0;
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.abstract_parameters.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<bool>("restore_defaults", "bool", 0, "Retsore the default configuration", "", &AMCLConfig::restore_defaults)));
-//#line 262 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(AMCLConfig::AbstractParamDescriptionConstPtr(new AMCLConfig::ParamDescription<bool>("restore_defaults", "bool", 0, "Retsore the default configuration", "", &AMCLConfig::restore_defaults)));
-//#line 233 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 235 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.convertParams();
-//#line 233 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 235 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __group_descriptions__.push_back(AMCLConfig::AbstractGroupDescriptionConstPtr(new AMCLConfig::GroupDescription<AMCLConfig::DEFAULT, AMCLConfig>(Default)));
 //#line 353 "/opt/ros/indigo/share/dynamic_reconfigure/cmake/../templates/ConfigType.h.template"
 
@@ -998,17 +998,17 @@ AMCLConfig::GroupDescription<AMCLConfig::DEFAULT, AMCLConfig> Default("Default",
     return statics;
   }
 
-//#line 52 "/home/ouiyeah/catkin_ws/src/navigation/amcl/cfg/AMCL.cfg"
+//#line 52 "/home/ouiyeah/catkin_ws/src/navigation-jade-devel/amcl/cfg/AMCL.cfg"
       const char * const AMCL_beam_const = "beam";
-//#line 52 "/home/ouiyeah/catkin_ws/src/navigation/amcl/cfg/AMCL.cfg"
+//#line 52 "/home/ouiyeah/catkin_ws/src/navigation-jade-devel/amcl/cfg/AMCL.cfg"
       const char * const AMCL_likelihood_field_const = "likelihood_field";
-//#line 56 "/home/ouiyeah/catkin_ws/src/navigation/amcl/cfg/AMCL.cfg"
+//#line 56 "/home/ouiyeah/catkin_ws/src/navigation-jade-devel/amcl/cfg/AMCL.cfg"
       const char * const AMCL_diff_const = "diff";
-//#line 57 "/home/ouiyeah/catkin_ws/src/navigation/amcl/cfg/AMCL.cfg"
+//#line 57 "/home/ouiyeah/catkin_ws/src/navigation-jade-devel/amcl/cfg/AMCL.cfg"
       const char * const AMCL_omni_const = "omni";
-//#line 58 "/home/ouiyeah/catkin_ws/src/navigation/amcl/cfg/AMCL.cfg"
+//#line 58 "/home/ouiyeah/catkin_ws/src/navigation-jade-devel/amcl/cfg/AMCL.cfg"
       const char * const AMCL_diff_corrected_const = "diff-corrected";
-//#line 59 "/home/ouiyeah/catkin_ws/src/navigation/amcl/cfg/AMCL.cfg"
+//#line 59 "/home/ouiyeah/catkin_ws/src/navigation-jade-devel/amcl/cfg/AMCL.cfg"
       const char * const AMCL_omni_corrected_const = "omni-corrected";
 }
 

@@ -67,7 +67,7 @@ set(fake_localization_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(fake_localization_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/navigation/fake_localization)
+  set(fake_localization_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/navigation-jade-devel/fake_localization)
   set(fake_localization_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(fake_localization_INSTALL_PREFIX "")
   set(fake_localization_PREFIX ${fake_localization_DEVEL_PREFIX})

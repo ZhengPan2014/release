@@ -28,6 +28,7 @@ struct GetStatusResponse_
     }
   GetStatusResponse_(const ContainerAllocator& _alloc)
     : status(_alloc)  {
+  (void)_alloc;
     }
 
 
@@ -158,7 +159,7 @@ namespace serialization
       stream.next(m.status);
     }
 
-    ROS_DECLARE_ALLINONE_SERIALIZER;
+    ROS_DECLARE_ALLINONE_SERIALIZER
   }; // struct GetStatusResponse_
 
 } // namespace serialization

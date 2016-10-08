@@ -32,6 +32,7 @@ struct SetCostmapRequest_
     : costs(_alloc)
     , height(0)
     , width(0)  {
+  (void)_alloc;
     }
 
 
@@ -172,7 +173,7 @@ namespace serialization
       stream.next(m.width);
     }
 
-    ROS_DECLARE_ALLINONE_SERIALIZER;
+    ROS_DECLARE_ALLINONE_SERIALIZER
   }; // struct SetCostmapRequest_
 
 } // namespace serialization

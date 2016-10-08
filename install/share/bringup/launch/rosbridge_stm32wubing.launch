@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<launch>
+    <node name="rosbridge_stm32wubing" pkg="rosbridge_driver" type="rosbridge_driver" output="screen">
+        <rosparam>
+            port_chain:
+              - name: stm32wubing
+                type: socket
+                ip_address: 192.168.0.30
+                ip_port: 9527
+                action_chain:
+                  - name: stm32wubing
+                    type: write
+                    byte: [0x58, 0x58, 0x58, 0x58, 0x58]
+                    lock: false
+            topic_chain:
+              - name: cmd_vel
+                type: subscribe
+                wheel_model: diff
+                wheel_track: 0.208 #0.416
+                wheel_ratio: 23333.3
+                wheel_reverse: false
+                action_chain:
+                  - name: stm32wubing
+                    type: write
+                    byte: [0x55, 0x33, 0x1c, 0x00, vel_left, little, vel_right, little, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, sum8, 0xaa]
+                    lock: false
+                    checksum_bias: 4
+              - name: odom
+                type: publish
+                freq: 50.0
+                action_chain:
+                  - name: stm32wubing
+                    type: read
+                    byte: [0x55, 0x44, 0x4c, 0x00, pos_left_high, little, pos_left_low, little, pos_right_high, little, pos_right_low, little, vel_left, little, vel_right, little, motor1status, motor2status, motor3status, motor4status, motor1circuit, motor2circuit, motor3circuit, motor4circuit, system_voltage, little, system_circuit, little, us1, us2, us3, us4, us5, us6, us7, us8, imu01, little, imu02, little, imu03, little, imu04, little, imu05, little, imu06, little, imu07, little, imu08, little, imu09, little, imu10, little, imu11, little, imu12, little, imu13, little, imu14, little, js1, js2, js3, js4, js5, js6, js7, js8, other_cmd, other_1, other_2, other_3, other_4, other_5, other_6, other_7, sum8, 0xaa]
+                    except: [0x35, 0x38, 0x35, 0x38, 0x35, 0x38, 0x35, 0x38]
+                    checksum_bias: 4
+              - name: diagnostics
+                type: publish
+        </rosparam>
+    </node>
+</launch>

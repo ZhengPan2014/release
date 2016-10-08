@@ -67,7 +67,7 @@ set(amcl_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(amcl_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/navigation/amcl)
+  set(amcl_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/navigation-jade-devel/amcl)
   set(amcl_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(amcl_INSTALL_PREFIX "")
   set(amcl_PREFIX ${amcl_DEVEL_PREFIX})
