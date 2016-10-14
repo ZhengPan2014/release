@@ -1,4 +1,4 @@
 <?xml version="1.0"?>
 <launch>
-    <include file="$(find bringup)/launch/will2/will2-gmapping.launch"/>
+    <include file="$(find bringup)/launch/$(optenv ROS_USER_MODEL)/$(optenv ROS_USER_MODEL)-gmapping.launch"/>
 </launch>

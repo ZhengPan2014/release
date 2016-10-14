@@ -7,7 +7,7 @@ export ROS_USER_IFCONFIG=`ifconfig -a | grep wlan0`
 export ROS_USER_MAC=`echo $ROS_USER_IFCONFIG | awk '{print $5}'`
 
 cd /etc/NetworkManager/system-connections;
-sudo rm *
+sudo rm "`sudo grep -lR "type=802-11-wireless"`"
 
 echo "[connection]"                                 | sudo tee -a $ROS_USER_SSID
 echo "id="$ROS_USER_SSID                            | sudo tee -a $ROS_USER_SSID

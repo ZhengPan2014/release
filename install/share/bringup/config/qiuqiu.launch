@@ -3,8 +3,11 @@
     <node name="aqmd_driver" pkg="aqmd_driver" type="aqmd_driver" output="screen">
         <rosparam>
             is_pub_tf: false
-            wheel_separation: 0.234
-            tty_name: /dev/ttyUSB0
+            has_encoder: false
+            wheel_speed: 4586
+            wheel_track: 0.43
+            tty_name_l: /dev/left_wheel
+            tty_name_r: /dev/right_wheel
         </rosparam>
     </node>
 
