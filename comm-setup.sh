@@ -3,7 +3,7 @@
 #export ROS_USER_IP=192.168.0.7
 export ROS_USER_GATEWAY=`echo $ROS_USER_IP | awk -F '.' '{print $1"."$2"."$3".1"}'`
 export ROS_USER_UUID=`cat /proc/sys/kernel/random/uuid`
-export ROS_USER_IFCONFIG=`ifconfig -a | grep wlan0`
+export ROS_USER_IFCONFIG=`ifconfig -a | grep wlan`
 export ROS_USER_MAC=`echo $ROS_USER_IFCONFIG | awk '{print $5}'`
 
 cd /etc/NetworkManager/system-connections;

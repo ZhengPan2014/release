@@ -1,7 +1,7 @@
 export ROS_USER_SSID=`hostname`
 export ROS_USER_PASSWD=hitrobot
 export ROS_USER_UUID=`cat /proc/sys/kernel/random/uuid`
-export ROS_USER_IFCONFIG=`ifconfig -a | grep wlan0`
+export ROS_USER_IFCONFIG=`ifconfig -a | grep wlan`
 export ROS_USER_MAC=`echo $ROS_USER_IFCONFIG | awk '{print $5}'`
 
 cd /etc/NetworkManager/system-connections;
