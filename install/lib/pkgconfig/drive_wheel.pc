@@ -1,8 +1,0 @@
-prefix=/home/ouiyeah/catkin_ws/install
-
-Name: drive_wheel
-Description: Description of drive_wheel
-Version: 0.0.0
-Cflags: 
-Libs: -L/home/ouiyeah/catkin_ws/install/lib 
-Requires: 

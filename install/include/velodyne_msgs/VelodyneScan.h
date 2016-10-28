@@ -32,6 +32,7 @@ struct VelodyneScan_
   VelodyneScan_(const ContainerAllocator& _alloc)
     : header(_alloc)
     , packets(_alloc)  {
+  (void)_alloc;
     }
 
 
@@ -195,7 +196,7 @@ namespace serialization
       stream.next(m.packets);
     }
 
-    ROS_DECLARE_ALLINONE_SERIALIZER;
+    ROS_DECLARE_ALLINONE_SERIALIZER
   }; // struct VelodyneScan_
 
 } // namespace serialization

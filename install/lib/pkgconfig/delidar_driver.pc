@@ -1,8 +1,0 @@
-prefix=/home/ouiyeah/catkin_ws/install
-
-Name: delidar_driver
-Description: Description of delidar_driver
-Version: 0.0.0
-Cflags: 
-Libs: -L/home/ouiyeah/catkin_ws/install/lib 
-Requires: 
