@@ -6,6 +6,11 @@
               - name: encoder
                 type: serial
                 serial_port: /dev/usb_encoder
+                action_chain:
+                  - name: encoder
+                    type: write
+                    byte: [0x58, 0x58, 0x58, 0x58, 0x58]
+                    lock: false
               - name: steer
                 type: serial
                 serial_port: /dev/usb_steer

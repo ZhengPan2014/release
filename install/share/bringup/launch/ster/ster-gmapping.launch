@@ -15,6 +15,8 @@
         </rosparam>
     </node>
 
+    <include file="$(find bringup)/launch/rosbridge_stm32wangke.launch"/>
+<!--
     <node name="stm32_driver" pkg="stm32_driver" type="stm32_driver" output="screen">
         <remap from="imu" to="imu_data" />
         <rosparam>
@@ -24,7 +26,7 @@
             tty_name: /dev/ttyS2
         </rosparam>
     </node>
-
+-->
 
     <node name="robot_pose_ekf" pkg="robot_pose_ekf" type="robot_pose_ekf">
         <rosparam>

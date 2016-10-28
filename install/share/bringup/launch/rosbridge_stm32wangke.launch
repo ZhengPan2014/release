@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<launch>
+    <node name="rosbridge_stm32wangke" pkg="rosbridge_driver" type="rosbridge_driver" output="screen">
+        <remap from="imu" to="imu_data"/>
+        <rosparam>
+            port_chain:
+              - name: stm32wangke
+                type: serial
+                serial_port: /dev/ttyS2
+            topic_chain:
+              - name: cmd_vel
+                type: subscribe
+                freq: 5.0
+                wheel_model: diff
+                wheel_track: 0.208
+                wheel_ratio: 23333.3
+                wheel_reverse: false
+                action_chain:
+                  - name: stm32wangke
+                    type: write
+                    byte: [0xaa, 0x55, 0x01, 0x00, 0x04, 0x02, 0x11, vel_left, big, vel_right, big, crc16, big]
+                  - name: stm32wangke
+                    type: read
+                    byte: [0xaa, 0x55, 0x01, 0x00, 0x02, 0x02, 0x11, errmodel, errcode, crc16, big]
+                    except: [0xaa, 0x55, 0x01, 0x00, errlen, 0x02, 0x11, errmodel, errcode, crc16, big]
+              - name: odom
+                type: publish
+                freq: 20.0
+                pub_imu: true
+                imu_reverse: true
+                action_chain:
+                  - name: stm32wangke
+                    type: write
+                    # byte: [0xaa, 0x55, 0x01, 0x00, 0x00, 0x02, 0x43, crc16, big]
+                    byte: [0xaa, 0x55, 0x01, 0x00, 0x00, 0xf0, 0x1a, crc16, big]
+                  - name: stm32wangke
+                    type: read
+                    # byte: [0xaa, 0x55, 0x01, 0x00, 0x06, 0x02, 0x43, errmodel, errcode, vel_left, big, vel_right, big, crc16, big]
+                    # except: [0xaa, 0x55, 0x01, 0x00, errlen, 0x02, 0x43, errmodel, errcode, crc16, big]
+                    byte: [0xaa, 0x55, 0x01, 0x00, 0x0e, 0xf0, 0x1a, errmodel, errcode, vel_left, big, vel_right, big, imu_delta, little, int_roll, little, int_yaw, little, imu_status, little, crc16, big]
+                    except: [0xaa, 0x55, 0x01, 0x00, errlen, 0xf0, 0x1a, errmodel, errcode, crc16, big]
+              - name: diagnostics
+                type: publish
+        </rosparam>
+    </node>
+</launch>

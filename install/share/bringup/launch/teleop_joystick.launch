@@ -6,9 +6,19 @@
         <remap from="teleop_joystick/joy_cmd_vel" to="cmd_vel"/>
         <remap from="teleop_joystick/joy" to="joy"/>
         <rosparam>
+            publish_timer_duration: 0.2
             linear_vel_base: 0.5
             angular_vel_base: 1.0
             micro_vel_factor: 0.1
         </rosparam>
     </node>
+
+    <!--<node pkg="nodelet" type="nodelet" name="nodelet_manager_joy" args="manager"/>
+    <node pkg="nodelet" type="nodelet" name="velocity_smoother_joy" args="load yocs_velocity_smoother/VelocitySmootherNodelet nodelet_manager_joy" output="screen">
+        <rosparam file="$(find bringup)/param/y_velocity_smoother.yaml" command="load"/>
+        <remap from="velocity_smoother_joy/odometry" to="odom"/>
+        <remap from="velocity_smoother_joy/robot_cmd_vel" to="cmd_vel"/>
+        <remap from="velocity_smoother_joy/raw_cmd_vel" to="joy_cmd_vel"/>
+        <remap from="velocity_smoother_joy/smooth_cmd_vel" to="cmd_vel"/>
+    </node>-->
 </launch>

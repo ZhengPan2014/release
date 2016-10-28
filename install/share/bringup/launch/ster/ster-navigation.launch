@@ -15,6 +15,9 @@
             tf_broadcast: true
         </rosparam>
     </node>
+
+    <include file="$(find bringup)/launch/rosbridge_stm32wangke.launch"/>
+<!--
     <node name="stm32_driver" pkg="stm32_driver" type="stm32_driver" output="screen">
         <remap from="imu" to="imu_data" />
         <rosparam>
@@ -24,7 +27,7 @@
             tty_name: /dev/ttyS2
         </rosparam>
     </node>
-
+-->
     <node name="robot_pose_publisher" pkg="robot_pose_publisher" type="robot_pose_publisher" output="screen"/>
 
 
@@ -60,7 +63,7 @@
                 publish_frequency: 0.5 #0.0
                 static_map: true
                 #robot_radius: 0.42 <!-- groovy -->
-                footprint: [[0.0, -0.23], [0.0, 0.23], [-0.46, 0.23], [-0.46, -0.23]]
+                footprint: [[0.075, -0.23], [0.075, 0.23], [-0.385, 0.23], [-0.385, -0.23]]
                 resolution: 0.075
                 plugins:
                   - name: static_layer
@@ -83,8 +86,8 @@
                     track_unknown_space: false #true
                     z_voxels: 8
                 inflation_layer:
-                    inflation_radius: 0.75
-                    cost_scaling_factor: 1
+                    inflation_radius: 0.6 #0.75
+                    cost_scaling_factor: 5.0  #1
             local_costmap:
                 global_frame: odom
                 robot_base_frame: base_footprint
@@ -115,8 +118,8 @@
                     track_unknown_space: false #true
                     z_voxels: 8
                 inflation_layer:
-                    inflation_radius: 0.75
-                    cost_scaling_factor: 1
+                    inflation_radius: 0.6 #0.75
+                    cost_scaling_factor: 5.0 #1
             GlobalPlanner:
                 allow_unknown: false
             TrajectoryPlannerROS:

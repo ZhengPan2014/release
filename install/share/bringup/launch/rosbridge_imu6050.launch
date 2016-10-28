@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<launch>
+    <node name="rosbridge_imu6050" pkg="rosbridge_driver" type="rosbridge_driver" output="screen">
+        <remap from="imu" to="imu_data"/>
+        <rosparam>
+            port_chain:
+              - name: mpu6050
+                type: serial
+                serial_port: /dev/usb_right
+                action_chain:
+                  - name: mpu6050
+                    type: write
+                    byte: [0xff, 0xaa, 0x52]
+                    lock: false
+            topic_chain:
+              - name: odom
+                type: publish
+                freq: 10.0
+                pub_odom: false
+                pub_imu: true
+                action_chain:
+                  - name: mpu6050
+                    type: read
+                    byte: [0x55, 0x51, int_acc_x, little, int_acc_y, little, int_acc_z, little, imu_temperature, little, sum81, 0x55, 0x52, int_gyr_x, little, int_gyr_y, little, int_gyr_z, little, imu_temperature, little, sum82, 0x55, 0x53, int_roll, little, int_pitch, little, int_yaw, little, imu_temperature, little, sum83]
+                    lock: true
+                  # - name: mpu6050
+                  #   type: read
+                  #   byte: [0x55, 0x51, int_acc_x, little, int_acc_y, little, int_acc_z, little, imu_temperature, little, sum8]
+                  # - name: mpu6050
+                  #   type: read
+                  #   byte: [0x55, 0x52, int_gyr_x, little, int_gyr_y, little, int_gyr_z, little, imu_temperature, little, sum8]
+                  # - name: mpu6050
+                  #   type: read
+                  #   byte: [0x55, 0x53, int_roll, little, int_pitch, little, int_yaw, little, imu_temperature, little, sum8]
+              - name: diagnostics
+                type: publish
+        </rosparam>
+    </node>
+</launch>
