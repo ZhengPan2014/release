@@ -15,7 +15,6 @@ class Waypoint(genpy.Message):
   _full_text = """Header header
 string name
 geometry_msgs/Pose pose
-
 ================================================================================
 MSG: std_msgs/Header
 # Standard metadata for higher-level stamped data types.

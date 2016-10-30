@@ -15,7 +15,7 @@
             topic_chain:
               - name: odom
                 type: publish
-                freq: 10.0
+                freq: 100.0
                 pub_odom: false
                 pub_imu: true
                 action_chain:

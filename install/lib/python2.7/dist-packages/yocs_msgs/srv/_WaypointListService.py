@@ -113,7 +113,6 @@ MSG: yocs_msgs/Waypoint
 Header header
 string name
 geometry_msgs/Pose pose
-
 ================================================================================
 MSG: std_msgs/Header
 # Standard metadata for higher-level stamped data types.

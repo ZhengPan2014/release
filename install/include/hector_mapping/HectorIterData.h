@@ -37,7 +37,6 @@ struct HectorIterData_
     , determinant(0.0)
     , conditionNum2d(0.0)
     , determinant2d(0.0)  {
-  (void)_alloc;
       hessian.assign(0.0);
   }
 
@@ -92,7 +91,7 @@ namespace message_traits
 
 
 // BOOLTRAITS {'IsFixedSize': True, 'IsMessage': True, 'HasHeader': False}
-// {'hector_mapping': ['/home/ouiyeah/catkin_ws/src/hector_mapping/msg']}
+// {'hector_mapping': ['/home/ouiyeah/workspaces/hitrobot/ros_org/src/hector_mapping/msg']}
 
 // !!!!!!!!!!! ['__class__', '__delattr__', '__dict__', '__doc__', '__eq__', '__format__', '__getattribute__', '__hash__', '__init__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_parsed_fields', 'constants', 'fields', 'full_name', 'has_header', 'header_present', 'names', 'package', 'parsed_fields', 'short_name', 'text', 'types']
 
@@ -189,7 +188,7 @@ namespace serialization
       stream.next(m.determinant2d);
     }
 
-    ROS_DECLARE_ALLINONE_SERIALIZER
+    ROS_DECLARE_ALLINONE_SERIALIZER;
   }; // struct HectorIterData_
 
 } // namespace serialization

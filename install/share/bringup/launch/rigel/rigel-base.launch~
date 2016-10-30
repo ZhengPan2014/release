@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<launch>
+    <node name="system_shell" pkg="system_shell" type="system_shell" output="screen">
+        <rosparam>
+            time_duration: 7.0
+            #init_cmd: ll
+        </rosparam>
+    </node>
+
+    <node name="tf_base_footprint" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+        <rosparam>
+            frame_id: base_footprint
+            z: 0.02
+        </rosparam>
+    </node>
+
+    <node name="tf_base_laser" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+        <rosparam>
+            child_frame_id: base_laser
+            x: 0.335
+            z: 0.08
+            roll: 3.14
+        </rosparam>
+    </node>
+
+    <node name="tf_base_imu" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+        <rosparam>
+            child_frame_id: base_imu
+            x: -0.12
+            z: 0.88
+        </rosparam>
+    </node>
+
+    <node name="robot_pose_publisher" pkg="robot_pose_publisher" type="robot_pose_publisher" output="screen"/>
+
+    <node name="aqmd_driver" pkg="aqmd_driver" type="aqmd_driver" output="screen">
+        <rosparam>
+            is_pub_tf: false
+            wheel_speed: 23333
+            wheel_track: 0.49
+            tty_name_l: /dev/left_wheel
+            tty_name_r: /dev/right_wheel
+        </rosparam>
+    </node>
+
+    <node name="teleop_keyboard" pkg="teleop_keyboard" type="teleop_keyboard" output="screen"/>
+
+    <node name="lms1xx" pkg="lms1xx" type="LMS1xx_node">
+        <rosparam>
+            host: 192.168.0.1
+            frame_id: base_laser
+        </rosparam>
+    </node>
+
+    <node name="scan_filter" pkg="laser_filters" type="scan_to_scan_filter_chain" output="screen">
+        <remap from="scan" to="scan"/>
+        <remap from="scan_filtered" to="scan_filtered"/>
+        <rosparam>
+            scan_filter_chain:
+            - type: laser_filters/LaserArrayFilter
+              name: laser_median_filter
+              params: 
+                range_filter_chain:
+                  - name: median_5
+                    type: filters/MultiChannelMedianFilterFloat 
+                    params:
+                      number_of_observations: 5
+                      unused: 10
+                intensity_filter_chain:
+                  - name: median_5
+                    type: filters/MultiChannelMedianFilterFloat 
+                    params:
+                      number_of_observations: 5
+                      unused: 10
+            scan_filter_chain:
+            - name: laser_cutoff
+              type: laser_filters/LaserScanAngularBoundsFilter
+              params:
+                lower_angle: -1.60876090527
+                upper_angle: 1.60876090527
+        </rosparam>
+    </node>
+
+    <node name="scan_rectifier" pkg="scan_rectifier" type="scan_rectifier" output="screen">
+        <remap from="scan_input" to="scan_filtered"/>
+        <remap from="scan_output" to="scan_rectified"/>
+        <rosparam>
+            max_range: 20.0
+        </rosparam>
+    </node>
+
+    <node name="robot_pose_ekf" pkg="robot_pose_ekf" type="robot_pose_ekf">
+        <rosparam>
+            output_frame: odom
+            base_footprint_frame: base_footprint
+            freq: 30.0
+            sensor_timeout: 1.0
+            odom_used: true
+            imu_used: false
+            vo_used: false
+        </rosparam>
+    </node>
+
+</launch>

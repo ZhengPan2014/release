@@ -46,7 +46,6 @@ MSG: yocs_msgs/Waypoint
 Header header
 string name
 geometry_msgs/Pose pose
-
 ================================================================================
 MSG: geometry_msgs/Pose
 # A representation of pose in free space, composed of postion and orientation. 

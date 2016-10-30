@@ -19,6 +19,7 @@ float64 conditionNum
 float64 determinant
 float64 conditionNum2d
 float64 determinant2d
+
 """
   __slots__ = ['iterData']
   _slot_types = ['hector_mapping/HectorIterData[]']
@@ -63,8 +64,8 @@ float64 determinant2d
         buff.write(_struct_9d.pack(*val1.hessian))
         _x = val1
         buff.write(_struct_4d.pack(_x.conditionNum, _x.determinant, _x.conditionNum2d, _x.determinant2d))
-    except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
-    except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
+    except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(_x))))
+    except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(_x))))
 
   def deserialize(self, str):
     """
@@ -107,8 +108,8 @@ float64 determinant2d
         buff.write(val1.hessian.tostring())
         _x = val1
         buff.write(_struct_4d.pack(_x.conditionNum, _x.determinant, _x.conditionNum2d, _x.determinant2d))
-    except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
-    except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
+    except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(_x))))
+    except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(_x))))
 
   def deserialize_numpy(self, str, numpy):
     """

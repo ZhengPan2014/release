@@ -31,7 +31,6 @@ struct VelodynePacket_
   VelodynePacket_(const ContainerAllocator& _alloc)
     : stamp()
     , data()  {
-  (void)_alloc;
       data.assign(0);
   }
 
@@ -171,7 +170,7 @@ namespace serialization
       stream.next(m.data);
     }
 
-    ROS_DECLARE_ALLINONE_SERIALIZER
+    ROS_DECLARE_ALLINONE_SERIALIZER;
   }; // struct VelodynePacket_
 
 } // namespace serialization

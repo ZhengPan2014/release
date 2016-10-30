@@ -43,6 +43,7 @@ MSG: velodyne_msgs/VelodynePacket
 time stamp              # packet timestamp
 uint8[1206] data        # packet contents
 
+
 """
   __slots__ = ['header','packets']
   _slot_types = ['std_msgs/Header','velodyne_msgs/VelodynePacket[]']
@@ -107,8 +108,8 @@ uint8[1206] data        # packet contents
           buff.write(_struct_1206B.pack(*_x))
         else:
           buff.write(_struct_1206s.pack(_x))
-    except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
-    except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
+    except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(_x))))
+    except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(_x))))
 
   def deserialize(self, str):
     """
@@ -184,8 +185,8 @@ uint8[1206] data        # packet contents
           buff.write(_struct_1206B.pack(*_x))
         else:
           buff.write(_struct_1206s.pack(_x))
-    except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
-    except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
+    except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(_x))))
+    except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(_x))))
 
   def deserialize_numpy(self, str, numpy):
     """

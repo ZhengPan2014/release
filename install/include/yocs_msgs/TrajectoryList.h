@@ -171,7 +171,6 @@ MSG: yocs_msgs/Waypoint\n\
 Header header\n\
 string name\n\
 geometry_msgs/Pose pose\n\
-\n\
 ================================================================================\n\
 MSG: geometry_msgs/Pose\n\
 # A representation of pose in free space, composed of postion and orientation. \n\
