@@ -32,6 +32,10 @@ analyzers:
         </rosparam>
     </node>
 
+    <include file="$(find yocs_waypoint_provider)/launch/provider.launch"/>
+
+    <include file="$(find yocs_waypoints_navi)/launch/waypoints_navi.launch"/>
+
     <node name="tf_base_footprint" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
         <rosparam>
             frame_id: base_footprint
