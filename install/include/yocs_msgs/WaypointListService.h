@@ -40,7 +40,7 @@ template<>
 struct MD5Sum< ::yocs_msgs::WaypointListService > {
   static const char* value()
   {
-    return "3b776b847c407c971555820af7e3f3b1";
+    return "291d721e24b1b156928381717be109f0";
   }
 
   static const char* value(const ::yocs_msgs::WaypointListService&) { return value(); }

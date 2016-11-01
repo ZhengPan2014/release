@@ -10,7 +10,7 @@ import geometry_msgs.msg
 import std_msgs.msg
 
 class Trajectory(genpy.Message):
-  _md5sum = "ff318cb77adf15ade6b9b9b13aff3a64"
+  _md5sum = "3fe1123759286ae3f272de8f46b94040"
   _type = "yocs_msgs/Trajectory"
   _has_header = True #flag to mark the presence of a Header object
   _full_text = """# A named list of way points
@@ -41,6 +41,9 @@ MSG: yocs_msgs/Waypoint
 Header header
 string name
 geometry_msgs/Pose pose
+float32 close_enough
+float32 goal_timeout
+string failure_mode
 ================================================================================
 MSG: geometry_msgs/Pose
 # A representation of pose in free space, composed of postion and orientation. 
@@ -159,6 +162,17 @@ float64 w
         _v5 = _v3.orientation
         _x = _v5
         buff.write(_struct_4d.pack(_x.x, _x.y, _x.z, _x.w))
+        _x = val1
+        buff.write(_struct_2f.pack(_x.close_enough, _x.goal_timeout))
+        _x = val1.failure_mode
+        length = len(_x)
+        if python3 or type(_x) == unicode:
+          _x = _x.encode('utf-8')
+          length = len(_x)
+        if python3:
+          buff.write(struct.pack('<I%sB'%length, length, *_x))
+        else:
+          buff.write(struct.pack('<I%ss'%length, length, _x))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
@@ -239,6 +253,19 @@ float64 w
         start = end
         end += 32
         (_x.x, _x.y, _x.z, _x.w,) = _struct_4d.unpack(str[start:end])
+        _x = val1
+        start = end
+        end += 8
+        (_x.close_enough, _x.goal_timeout,) = _struct_2f.unpack(str[start:end])
+        start = end
+        end += 4
+        (length,) = _struct_I.unpack(str[start:end])
+        start = end
+        end += length
+        if python3:
+          val1.failure_mode = str[start:end].decode('utf-8')
+        else:
+          val1.failure_mode = str[start:end]
         self.waypoints.append(val1)
       return self
     except struct.error as e:
@@ -305,6 +332,17 @@ float64 w
         _v15 = _v13.orientation
         _x = _v15
         buff.write(_struct_4d.pack(_x.x, _x.y, _x.z, _x.w))
+        _x = val1
+        buff.write(_struct_2f.pack(_x.close_enough, _x.goal_timeout))
+        _x = val1.failure_mode
+        length = len(_x)
+        if python3 or type(_x) == unicode:
+          _x = _x.encode('utf-8')
+          length = len(_x)
+        if python3:
+          buff.write(struct.pack('<I%sB'%length, length, *_x))
+        else:
+          buff.write(struct.pack('<I%ss'%length, length, _x))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
@@ -386,13 +424,27 @@ float64 w
         start = end
         end += 32
         (_x.x, _x.y, _x.z, _x.w,) = _struct_4d.unpack(str[start:end])
+        _x = val1
+        start = end
+        end += 8
+        (_x.close_enough, _x.goal_timeout,) = _struct_2f.unpack(str[start:end])
+        start = end
+        end += 4
+        (length,) = _struct_I.unpack(str[start:end])
+        start = end
+        end += length
+        if python3:
+          val1.failure_mode = str[start:end].decode('utf-8')
+        else:
+          val1.failure_mode = str[start:end]
         self.waypoints.append(val1)
       return self
     except struct.error as e:
       raise genpy.DeserializationError(e) #most likely buffer underfill
 
 _struct_I = genpy.struct_I
-_struct_4d = struct.Struct("<4d")
+_struct_2f = struct.Struct("<2f")
 _struct_3I = struct.Struct("<3I")
+_struct_4d = struct.Struct("<4d")
 _struct_2I = struct.Struct("<2I")
 _struct_3d = struct.Struct("<3d")

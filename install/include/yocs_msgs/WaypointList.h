@@ -114,12 +114,12 @@ struct MD5Sum< ::yocs_msgs::WaypointList_<ContainerAllocator> >
 {
   static const char* value()
   {
-    return "66731005e3cf60fadb987aba363410ed";
+    return "0970063215e6a21f951429327cc73a2d";
   }
 
   static const char* value(const ::yocs_msgs::WaypointList_<ContainerAllocator>&) { return value(); }
-  static const uint64_t static_value1 = 0x66731005e3cf60faULL;
-  static const uint64_t static_value2 = 0xdb987aba363410edULL;
+  static const uint64_t static_value1 = 0x0970063215e6a21fULL;
+  static const uint64_t static_value2 = 0x951429327cc73a2dULL;
 };
 
 template<class ContainerAllocator>
@@ -147,6 +147,9 @@ MSG: yocs_msgs/Waypoint\n\
 Header header\n\
 string name\n\
 geometry_msgs/Pose pose\n\
+float32 close_enough\n\
+float32 goal_timeout\n\
+string failure_mode\n\
 ================================================================================\n\
 MSG: std_msgs/Header\n\
 # Standard metadata for higher-level stamped data types.\n\

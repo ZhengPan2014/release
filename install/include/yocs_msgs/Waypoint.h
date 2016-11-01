@@ -28,12 +28,18 @@ struct Waypoint_
   Waypoint_()
     : header()
     , name()
-    , pose()  {
+    , pose()
+    , close_enough(0.0)
+    , goal_timeout(0.0)
+    , failure_mode()  {
     }
   Waypoint_(const ContainerAllocator& _alloc)
     : header(_alloc)
     , name(_alloc)
-    , pose(_alloc)  {
+    , pose(_alloc)
+    , close_enough(0.0)
+    , goal_timeout(0.0)
+    , failure_mode(_alloc)  {
   (void)_alloc;
     }
 
@@ -47,6 +53,15 @@ struct Waypoint_
 
    typedef  ::geometry_msgs::Pose_<ContainerAllocator>  _pose_type;
   _pose_type pose;
+
+   typedef float _close_enough_type;
+  _close_enough_type close_enough;
+
+   typedef float _goal_timeout_type;
+  _goal_timeout_type goal_timeout;
+
+   typedef std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other >  _failure_mode_type;
+  _failure_mode_type failure_mode;
 
 
 
@@ -125,12 +140,12 @@ struct MD5Sum< ::yocs_msgs::Waypoint_<ContainerAllocator> >
 {
   static const char* value()
   {
-    return "802b0b337613cbb2ae61383dbb20b755";
+    return "7c499445f2468eda4c049f13f4ec88c2";
   }
 
   static const char* value(const ::yocs_msgs::Waypoint_<ContainerAllocator>&) { return value(); }
-  static const uint64_t static_value1 = 0x802b0b337613cbb2ULL;
-  static const uint64_t static_value2 = 0xae61383dbb20b755ULL;
+  static const uint64_t static_value1 = 0x7c499445f2468edaULL;
+  static const uint64_t static_value2 = 0x4c049f13f4ec88c2ULL;
 };
 
 template<class ContainerAllocator>
@@ -152,6 +167,9 @@ struct Definition< ::yocs_msgs::Waypoint_<ContainerAllocator> >
     return "Header header\n\
 string name\n\
 geometry_msgs/Pose pose\n\
+float32 close_enough\n\
+float32 goal_timeout\n\
+string failure_mode\n\
 ================================================================================\n\
 MSG: std_msgs/Header\n\
 # Standard metadata for higher-level stamped data types.\n\
@@ -212,6 +230,9 @@ namespace serialization
       stream.next(m.header);
       stream.next(m.name);
       stream.next(m.pose);
+      stream.next(m.close_enough);
+      stream.next(m.goal_timeout);
+      stream.next(m.failure_mode);
     }
 
     ROS_DECLARE_ALLINONE_SERIALIZER
@@ -238,6 +259,12 @@ struct Printer< ::yocs_msgs::Waypoint_<ContainerAllocator> >
     s << indent << "pose: ";
     s << std::endl;
     Printer< ::geometry_msgs::Pose_<ContainerAllocator> >::stream(s, indent + "  ", v.pose);
+    s << indent << "close_enough: ";
+    Printer<float>::stream(s, indent + "  ", v.close_enough);
+    s << indent << "goal_timeout: ";
+    Printer<float>::stream(s, indent + "  ", v.goal_timeout);
+    s << indent << "failure_mode: ";
+    Printer<std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other > >::stream(s, indent + "  ", v.failure_mode);
   }
 };
 

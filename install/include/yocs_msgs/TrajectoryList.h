@@ -114,12 +114,12 @@ struct MD5Sum< ::yocs_msgs::TrajectoryList_<ContainerAllocator> >
 {
   static const char* value()
   {
-    return "f0901d378c8ac2d2d3d8feafaa343a58";
+    return "870268257a2c94b73c22bac4eafbac7a";
   }
 
   static const char* value(const ::yocs_msgs::TrajectoryList_<ContainerAllocator>&) { return value(); }
-  static const uint64_t static_value1 = 0xf0901d378c8ac2d2ULL;
-  static const uint64_t static_value2 = 0xd3d8feafaa343a58ULL;
+  static const uint64_t static_value1 = 0x870268257a2c94b7ULL;
+  static const uint64_t static_value2 = 0x3c22bac4eafbac7aULL;
 };
 
 template<class ContainerAllocator>
@@ -171,6 +171,9 @@ MSG: yocs_msgs/Waypoint\n\
 Header header\n\
 string name\n\
 geometry_msgs/Pose pose\n\
+float32 close_enough\n\
+float32 goal_timeout\n\
+string failure_mode\n\
 ================================================================================\n\
 MSG: geometry_msgs/Pose\n\
 # A representation of pose in free space, composed of postion and orientation. \n\
