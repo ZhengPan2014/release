@@ -25,11 +25,13 @@ struct NavigationControlStatus_
 
   NavigationControlStatus_()
     : status(0)
-    , status_desc()  {
+    , status_desc()
+    , waypoint_name()  {
     }
   NavigationControlStatus_(const ContainerAllocator& _alloc)
     : status(0)
-    , status_desc(_alloc)  {
+    , status_desc(_alloc)
+    , waypoint_name(_alloc)  {
   (void)_alloc;
     }
 
@@ -41,6 +43,9 @@ struct NavigationControlStatus_
    typedef std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other >  _status_desc_type;
   _status_desc_type status_desc;
 
+   typedef std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other >  _waypoint_name_type;
+  _waypoint_name_type waypoint_name;
+
 
     enum { ERROR = -1 };
      enum { IDLING = 0 };
@@ -48,6 +53,7 @@ struct NavigationControlStatus_
      enum { PAUSED = 2 };
      enum { COMPLETED = 3 };
      enum { CANCELLED = 4 };
+     enum { SUB_CANCELLED = 5 };
  
 
   typedef boost::shared_ptr< ::yocs_msgs::NavigationControlStatus_<ContainerAllocator> > Ptr;
@@ -61,6 +67,8 @@ typedef boost::shared_ptr< ::yocs_msgs::NavigationControlStatus > NavigationCont
 typedef boost::shared_ptr< ::yocs_msgs::NavigationControlStatus const> NavigationControlStatusConstPtr;
 
 // constants requiring out of line definition
+
+   
 
    
 
@@ -136,12 +144,12 @@ struct MD5Sum< ::yocs_msgs::NavigationControlStatus_<ContainerAllocator> >
 {
   static const char* value()
   {
-    return "f97c2c5903b273dd04cfb815fadb9f56";
+    return "076964b68104f4eaca05f848602cc7e5";
   }
 
   static const char* value(const ::yocs_msgs::NavigationControlStatus_<ContainerAllocator>&) { return value(); }
-  static const uint64_t static_value1 = 0xf97c2c5903b273ddULL;
-  static const uint64_t static_value2 = 0x04cfb815fadb9f56ULL;
+  static const uint64_t static_value1 = 0x076964b68104f4eaULL;
+  static const uint64_t static_value2 = 0xca05f848602cc7e5ULL;
 };
 
 template<class ContainerAllocator>
@@ -169,9 +177,11 @@ int8 RUNNING   = 1\n\
 int8 PAUSED    = 2\n\
 int8 COMPLETED = 3\n\
 int8 CANCELLED = 4\n\
+int8 SUB_CANCELLED = 5\n\
 \n\
 # Human-readable status description\n\
 string status_desc\n\
+string waypoint_name\n\
 ";
   }
 
@@ -192,6 +202,7 @@ namespace serialization
     {
       stream.next(m.status);
       stream.next(m.status_desc);
+      stream.next(m.waypoint_name);
     }
 
     ROS_DECLARE_ALLINONE_SERIALIZER
@@ -214,6 +225,8 @@ struct Printer< ::yocs_msgs::NavigationControlStatus_<ContainerAllocator> >
     Printer<int8_t>::stream(s, indent + "  ", v.status);
     s << indent << "status_desc: ";
     Printer<std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other > >::stream(s, indent + "  ", v.status_desc);
+    s << indent << "waypoint_name: ";
+    Printer<std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other > >::stream(s, indent + "  ", v.waypoint_name);
   }
 };
 

@@ -7,6 +7,8 @@ int8 RUNNING   = 1
 int8 PAUSED    = 2
 int8 COMPLETED = 3
 int8 CANCELLED = 4
+int8 SUB_CANCELLED = 5
 
 # Human-readable status description
 string status_desc
+string waypoint_name

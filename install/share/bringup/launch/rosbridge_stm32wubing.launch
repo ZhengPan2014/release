@@ -3,7 +3,6 @@
     <node name="rosbridge_stm32wubing" pkg="rosbridge_driver" type="rosbridge_driver" output="screen">
         <remap from="imu" to="imu_data"/>
         <rosparam>
-            odom_child_frame_id: base_footprint
             port_chain:
               - name: stm32wubing
                 type: socket
@@ -17,13 +16,13 @@
             topic_chain:
               - name: cmd_vel
                 type: subscribe
-                freq: 10.0
+                freq: 5.0
                 freq_underflow: false
                 vel_left: 0
                 vel_right: 0
                 wheel_model: diff
-                wheel_seperation: 0.42
-                wheel_ratio: 23333.3
+                wheel_track: 0.2085
+                wheel_ratio: 17721.0
                 wheel_reverse: false
                 action_chain:
                   - name: stm32wubing
@@ -34,7 +33,6 @@
               - name: odom
                 type: publish
                 freq: 20.0
-                pub_imu: true
                 action_chain:
                   - name: stm32wubing
                     type: read
