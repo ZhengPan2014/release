@@ -29,6 +29,7 @@ struct HectorDebugInfo_
     }
   HectorDebugInfo_(const ContainerAllocator& _alloc)
     : iterData(_alloc)  {
+  (void)_alloc;
     }
 
 
@@ -70,7 +71,7 @@ namespace message_traits
 
 
 // BOOLTRAITS {'IsFixedSize': False, 'IsMessage': True, 'HasHeader': False}
-// {'hector_mapping': ['/home/ouiyeah/workspaces/hitrobot/ros_org/src/hector_mapping/msg']}
+// {'hector_mapping': ['/home/ouiyeah/catkin_ws/src/hector_mapping/msg']}
 
 // !!!!!!!!!!! ['__class__', '__delattr__', '__dict__', '__doc__', '__eq__', '__format__', '__getattribute__', '__hash__', '__init__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_parsed_fields', 'constants', 'fields', 'full_name', 'has_header', 'header_present', 'names', 'package', 'parsed_fields', 'short_name', 'text', 'types']
 
@@ -166,7 +167,7 @@ namespace serialization
       stream.next(m.iterData);
     }
 
-    ROS_DECLARE_ALLINONE_SERIALIZER;
+    ROS_DECLARE_ALLINONE_SERIALIZER
   }; // struct HectorDebugInfo_
 
 } // namespace serialization

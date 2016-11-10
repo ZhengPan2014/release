@@ -16,6 +16,11 @@
     :reader status_desc
     :initarg :status_desc
     :type cl:string
+    :initform "")
+   (waypoint_name
+    :reader waypoint_name
+    :initarg :waypoint_name
+    :type cl:string
     :initform ""))
 )
 
@@ -36,6 +41,11 @@
 (cl:defmethod status_desc-val ((m <NavigationControlStatus>))
   (roslisp-msg-protocol:msg-deprecation-warning "Using old-style slot reader yocs_msgs-msg:status_desc-val is deprecated.  Use yocs_msgs-msg:status_desc instead.")
   (status_desc m))
+
+(cl:ensure-generic-function 'waypoint_name-val :lambda-list '(m))
+(cl:defmethod waypoint_name-val ((m <NavigationControlStatus>))
+  (roslisp-msg-protocol:msg-deprecation-warning "Using old-style slot reader yocs_msgs-msg:waypoint_name-val is deprecated.  Use yocs_msgs-msg:waypoint_name instead.")
+  (waypoint_name m))
 (cl:defmethod roslisp-msg-protocol:symbol-codes ((msg-type (cl:eql '<NavigationControlStatus>)))
     "Constants for message type '<NavigationControlStatus>"
   '((:ERROR . -1)
@@ -65,6 +75,12 @@
     (cl:write-byte (cl:ldb (cl:byte 8 16) __ros_str_len) ostream)
     (cl:write-byte (cl:ldb (cl:byte 8 24) __ros_str_len) ostream))
   (cl:map cl:nil #'(cl:lambda (c) (cl:write-byte (cl:char-code c) ostream)) (cl:slot-value msg 'status_desc))
+  (cl:let ((__ros_str_len (cl:length (cl:slot-value msg 'waypoint_name))))
+    (cl:write-byte (cl:ldb (cl:byte 8 0) __ros_str_len) ostream)
+    (cl:write-byte (cl:ldb (cl:byte 8 8) __ros_str_len) ostream)
+    (cl:write-byte (cl:ldb (cl:byte 8 16) __ros_str_len) ostream)
+    (cl:write-byte (cl:ldb (cl:byte 8 24) __ros_str_len) ostream))
+  (cl:map cl:nil #'(cl:lambda (c) (cl:write-byte (cl:char-code c) ostream)) (cl:slot-value msg 'waypoint_name))
 )
 (cl:defmethod roslisp-msg-protocol:deserialize ((msg <NavigationControlStatus>) istream)
   "Deserializes a message object of type '<NavigationControlStatus>"
@@ -79,6 +95,14 @@
       (cl:setf (cl:slot-value msg 'status_desc) (cl:make-string __ros_str_len))
       (cl:dotimes (__ros_str_idx __ros_str_len msg)
         (cl:setf (cl:char (cl:slot-value msg 'status_desc) __ros_str_idx) (cl:code-char (cl:read-byte istream)))))
+    (cl:let ((__ros_str_len 0))
+      (cl:setf (cl:ldb (cl:byte 8 0) __ros_str_len) (cl:read-byte istream))
+      (cl:setf (cl:ldb (cl:byte 8 8) __ros_str_len) (cl:read-byte istream))
+      (cl:setf (cl:ldb (cl:byte 8 16) __ros_str_len) (cl:read-byte istream))
+      (cl:setf (cl:ldb (cl:byte 8 24) __ros_str_len) (cl:read-byte istream))
+      (cl:setf (cl:slot-value msg 'waypoint_name) (cl:make-string __ros_str_len))
+      (cl:dotimes (__ros_str_idx __ros_str_len msg)
+        (cl:setf (cl:char (cl:slot-value msg 'waypoint_name) __ros_str_idx) (cl:code-char (cl:read-byte istream)))))
   msg
 )
 (cl:defmethod roslisp-msg-protocol:ros-datatype ((msg (cl:eql '<NavigationControlStatus>)))
@@ -89,24 +113,26 @@
   "yocs_msgs/NavigationControlStatus")
 (cl:defmethod roslisp-msg-protocol:md5sum ((type (cl:eql '<NavigationControlStatus>)))
   "Returns md5sum for a message object of type '<NavigationControlStatus>"
-  "f97c2c5903b273dd04cfb815fadb9f56")
+  "027304ab109f6a479d3756bfbd6905b3")
 (cl:defmethod roslisp-msg-protocol:md5sum ((type (cl:eql 'NavigationControlStatus)))
   "Returns md5sum for a message object of type 'NavigationControlStatus"
-  "f97c2c5903b273dd04cfb815fadb9f56")
+  "027304ab109f6a479d3756bfbd6905b3")
 (cl:defmethod roslisp-msg-protocol:message-definition ((type (cl:eql '<NavigationControlStatus>)))
   "Returns full string definition for message of type '<NavigationControlStatus>"
-  (cl:format cl:nil "# Control the way point/trajectory navigation~%int8 status~%~%int8 ERROR     = -1~%int8 IDLING    = 0~%int8 RUNNING   = 1~%int8 PAUSED    = 2~%int8 COMPLETED = 3~%int8 CANCELLED = 4~%~%# Human-readable status description~%string status_desc~%~%"))
+  (cl:format cl:nil "# Control the way point/trajectory navigation~%int8 status~%~%int8 ERROR     = -1~%int8 IDLING    = 0~%int8 RUNNING   = 1~%int8 PAUSED    = 2~%int8 COMPLETED = 3~%int8 CANCELLED = 4~%~%# Human-readable status description~%string status_desc~%string waypoint_name~%~%~%"))
 (cl:defmethod roslisp-msg-protocol:message-definition ((type (cl:eql 'NavigationControlStatus)))
   "Returns full string definition for message of type 'NavigationControlStatus"
-  (cl:format cl:nil "# Control the way point/trajectory navigation~%int8 status~%~%int8 ERROR     = -1~%int8 IDLING    = 0~%int8 RUNNING   = 1~%int8 PAUSED    = 2~%int8 COMPLETED = 3~%int8 CANCELLED = 4~%~%# Human-readable status description~%string status_desc~%~%"))
+  (cl:format cl:nil "# Control the way point/trajectory navigation~%int8 status~%~%int8 ERROR     = -1~%int8 IDLING    = 0~%int8 RUNNING   = 1~%int8 PAUSED    = 2~%int8 COMPLETED = 3~%int8 CANCELLED = 4~%~%# Human-readable status description~%string status_desc~%string waypoint_name~%~%~%"))
 (cl:defmethod roslisp-msg-protocol:serialization-length ((msg <NavigationControlStatus>))
   (cl:+ 0
      1
      4 (cl:length (cl:slot-value msg 'status_desc))
+     4 (cl:length (cl:slot-value msg 'waypoint_name))
 ))
 (cl:defmethod roslisp-msg-protocol:ros-message-to-list ((msg <NavigationControlStatus>))
   "Converts a ROS message object to a list"
   (cl:list 'NavigationControlStatus
     (cl:cons ':status (status msg))
     (cl:cons ':status_desc (status_desc msg))
+    (cl:cons ':waypoint_name (waypoint_name msg))
 ))

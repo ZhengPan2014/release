@@ -3,4 +3,6 @@
           STATUS
           STATUS_DESC-VAL
           STATUS_DESC
+          WAYPOINT_NAME-VAL
+          WAYPOINT_NAME
 ))

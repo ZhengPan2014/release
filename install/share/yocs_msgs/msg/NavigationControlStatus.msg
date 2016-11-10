@@ -10,3 +10,4 @@ int8 CANCELLED = 4
 
 # Human-readable status description
 string status_desc
+string waypoint_name

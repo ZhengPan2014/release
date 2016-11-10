@@ -25,11 +25,13 @@ struct NavigationControlStatus_
 
   NavigationControlStatus_()
     : status(0)
-    , status_desc()  {
+    , status_desc()
+    , waypoint_name()  {
     }
   NavigationControlStatus_(const ContainerAllocator& _alloc)
     : status(0)
-    , status_desc(_alloc)  {
+    , status_desc(_alloc)
+    , waypoint_name(_alloc)  {
   (void)_alloc;
     }
 
@@ -40,6 +42,9 @@ struct NavigationControlStatus_
 
    typedef std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other >  _status_desc_type;
   _status_desc_type status_desc;
+
+   typedef std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other >  _waypoint_name_type;
+  _waypoint_name_type waypoint_name;
 
 
     enum { ERROR = -1 };
@@ -136,12 +141,12 @@ struct MD5Sum< ::yocs_msgs::NavigationControlStatus_<ContainerAllocator> >
 {
   static const char* value()
   {
-    return "f97c2c5903b273dd04cfb815fadb9f56";
+    return "027304ab109f6a479d3756bfbd6905b3";
   }
 
   static const char* value(const ::yocs_msgs::NavigationControlStatus_<ContainerAllocator>&) { return value(); }
-  static const uint64_t static_value1 = 0xf97c2c5903b273ddULL;
-  static const uint64_t static_value2 = 0x04cfb815fadb9f56ULL;
+  static const uint64_t static_value1 = 0x027304ab109f6a47ULL;
+  static const uint64_t static_value2 = 0x9d3756bfbd6905b3ULL;
 };
 
 template<class ContainerAllocator>
@@ -172,6 +177,7 @@ int8 CANCELLED = 4\n\
 \n\
 # Human-readable status description\n\
 string status_desc\n\
+string waypoint_name\n\
 ";
   }
 
@@ -192,6 +198,7 @@ namespace serialization
     {
       stream.next(m.status);
       stream.next(m.status_desc);
+      stream.next(m.waypoint_name);
     }
 
     ROS_DECLARE_ALLINONE_SERIALIZER
@@ -214,6 +221,8 @@ struct Printer< ::yocs_msgs::NavigationControlStatus_<ContainerAllocator> >
     Printer<int8_t>::stream(s, indent + "  ", v.status);
     s << indent << "status_desc: ";
     Printer<std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other > >::stream(s, indent + "  ", v.status_desc);
+    s << indent << "waypoint_name: ";
+    Printer<std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other > >::stream(s, indent + "  ", v.waypoint_name);
   }
 };
 

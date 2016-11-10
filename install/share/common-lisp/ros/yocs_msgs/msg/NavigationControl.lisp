@@ -89,10 +89,10 @@
   "f2ddf02b376d1d00aed5addfb5cfe0ba")
 (cl:defmethod roslisp-msg-protocol:message-definition ((type (cl:eql '<NavigationControl>)))
   "Returns full string definition for message of type '<NavigationControl>"
-  (cl:format cl:nil "# control the way point/trajectory navigation~%int8 control~%~%int8 STOP  = 0~%int8 START = 1~%int8 PAUSE = 2~%~%# name of the way point(s) / trajectory to be execute~%# leave empty, when stopping or pausing~%string goal_name~%~%"))
+  (cl:format cl:nil "# control the way point/trajectory navigation~%int8 control~%~%int8 STOP  = 0~%int8 START = 1~%int8 PAUSE = 2~%~%# name of the way point(s) / trajectory to be execute~%# leave empty, when stopping or pausing~%string goal_name~%~%~%"))
 (cl:defmethod roslisp-msg-protocol:message-definition ((type (cl:eql 'NavigationControl)))
   "Returns full string definition for message of type 'NavigationControl"
-  (cl:format cl:nil "# control the way point/trajectory navigation~%int8 control~%~%int8 STOP  = 0~%int8 START = 1~%int8 PAUSE = 2~%~%# name of the way point(s) / trajectory to be execute~%# leave empty, when stopping or pausing~%string goal_name~%~%"))
+  (cl:format cl:nil "# control the way point/trajectory navigation~%int8 control~%~%int8 STOP  = 0~%int8 START = 1~%int8 PAUSE = 2~%~%# name of the way point(s) / trajectory to be execute~%# leave empty, when stopping or pausing~%string goal_name~%~%~%"))
 (cl:defmethod roslisp-msg-protocol:serialization-length ((msg <NavigationControl>))
   (cl:+ 0
      1

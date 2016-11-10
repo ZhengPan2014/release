@@ -7,7 +7,7 @@ import struct
 
 
 class NavigationControlStatus(genpy.Message):
-  _md5sum = "f97c2c5903b273dd04cfb815fadb9f56"
+  _md5sum = "027304ab109f6a479d3756bfbd6905b3"
   _type = "yocs_msgs/NavigationControlStatus"
   _has_header = False #flag to mark the presence of a Header object
   _full_text = """# Control the way point/trajectory navigation
@@ -21,7 +21,9 @@ int8 COMPLETED = 3
 int8 CANCELLED = 4
 
 # Human-readable status description
-string status_desc"""
+string status_desc
+string waypoint_name
+"""
   # Pseudo-constants
   ERROR = -1
   IDLING = 0
@@ -30,8 +32,8 @@ string status_desc"""
   COMPLETED = 3
   CANCELLED = 4
 
-  __slots__ = ['status','status_desc']
-  _slot_types = ['int8','string']
+  __slots__ = ['status','status_desc','waypoint_name']
+  _slot_types = ['int8','string','string']
 
   def __init__(self, *args, **kwds):
     """
@@ -41,7 +43,7 @@ string status_desc"""
     changes.  You cannot mix in-order arguments and keyword arguments.
 
     The available fields are:
-       status,status_desc
+       status,status_desc,waypoint_name
 
     :param args: complete set of field values, in .msg order
     :param kwds: use keyword arguments corresponding to message field names
@@ -54,9 +56,12 @@ string status_desc"""
         self.status = 0
       if self.status_desc is None:
         self.status_desc = ''
+      if self.waypoint_name is None:
+        self.waypoint_name = ''
     else:
       self.status = 0
       self.status_desc = ''
+      self.waypoint_name = ''
 
   def _get_types(self):
     """
@@ -72,6 +77,15 @@ string status_desc"""
     try:
       buff.write(_struct_b.pack(self.status))
       _x = self.status_desc
+      length = len(_x)
+      if python3 or type(_x) == unicode:
+        _x = _x.encode('utf-8')
+        length = len(_x)
+      if python3:
+        buff.write(struct.pack('<I%sB'%length, length, *_x))
+      else:
+        buff.write(struct.pack('<I%ss'%length, length, _x))
+      _x = self.waypoint_name
       length = len(_x)
       if python3 or type(_x) == unicode:
         _x = _x.encode('utf-8')
@@ -102,6 +116,15 @@ string status_desc"""
         self.status_desc = str[start:end].decode('utf-8')
       else:
         self.status_desc = str[start:end]
+      start = end
+      end += 4
+      (length,) = _struct_I.unpack(str[start:end])
+      start = end
+      end += length
+      if python3:
+        self.waypoint_name = str[start:end].decode('utf-8')
+      else:
+        self.waypoint_name = str[start:end]
       return self
     except struct.error as e:
       raise genpy.DeserializationError(e) #most likely buffer underfill
@@ -116,6 +139,15 @@ string status_desc"""
     try:
       buff.write(_struct_b.pack(self.status))
       _x = self.status_desc
+      length = len(_x)
+      if python3 or type(_x) == unicode:
+        _x = _x.encode('utf-8')
+        length = len(_x)
+      if python3:
+        buff.write(struct.pack('<I%sB'%length, length, *_x))
+      else:
+        buff.write(struct.pack('<I%ss'%length, length, _x))
+      _x = self.waypoint_name
       length = len(_x)
       if python3 or type(_x) == unicode:
         _x = _x.encode('utf-8')
@@ -147,6 +179,15 @@ string status_desc"""
         self.status_desc = str[start:end].decode('utf-8')
       else:
         self.status_desc = str[start:end]
+      start = end
+      end += 4
+      (length,) = _struct_I.unpack(str[start:end])
+      start = end
+      end += length
+      if python3:
+        self.waypoint_name = str[start:end].decode('utf-8')
+      else:
+        self.waypoint_name = str[start:end]
       return self
     except struct.error as e:
       raise genpy.DeserializationError(e) #most likely buffer underfill
