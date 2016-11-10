@@ -53,7 +53,8 @@
     (:RUNNING . 1)
     (:PAUSED . 2)
     (:COMPLETED . 3)
-    (:CANCELLED . 4))
+    (:CANCELLED . 4)
+    (:SUB_CANCELLED . 5))
 )
 (cl:defmethod roslisp-msg-protocol:symbol-codes ((msg-type (cl:eql 'NavigationControlStatus)))
     "Constants for message type 'NavigationControlStatus"
@@ -62,7 +63,8 @@
     (:RUNNING . 1)
     (:PAUSED . 2)
     (:COMPLETED . 3)
-    (:CANCELLED . 4))
+    (:CANCELLED . 4)
+    (:SUB_CANCELLED . 5))
 )
 (cl:defmethod roslisp-msg-protocol:serialize ((msg <NavigationControlStatus>) ostream)
   "Serializes a message object of type '<NavigationControlStatus>"
@@ -113,16 +115,16 @@
   "yocs_msgs/NavigationControlStatus")
 (cl:defmethod roslisp-msg-protocol:md5sum ((type (cl:eql '<NavigationControlStatus>)))
   "Returns md5sum for a message object of type '<NavigationControlStatus>"
-  "027304ab109f6a479d3756bfbd6905b3")
+  "076964b68104f4eaca05f848602cc7e5")
 (cl:defmethod roslisp-msg-protocol:md5sum ((type (cl:eql 'NavigationControlStatus)))
   "Returns md5sum for a message object of type 'NavigationControlStatus"
-  "027304ab109f6a479d3756bfbd6905b3")
+  "076964b68104f4eaca05f848602cc7e5")
 (cl:defmethod roslisp-msg-protocol:message-definition ((type (cl:eql '<NavigationControlStatus>)))
   "Returns full string definition for message of type '<NavigationControlStatus>"
-  (cl:format cl:nil "# Control the way point/trajectory navigation~%int8 status~%~%int8 ERROR     = -1~%int8 IDLING    = 0~%int8 RUNNING   = 1~%int8 PAUSED    = 2~%int8 COMPLETED = 3~%int8 CANCELLED = 4~%~%# Human-readable status description~%string status_desc~%string waypoint_name~%~%~%"))
+  (cl:format cl:nil "# Control the way point/trajectory navigation~%int8 status~%~%int8 ERROR     = -1~%int8 IDLING    = 0~%int8 RUNNING   = 1~%int8 PAUSED    = 2~%int8 COMPLETED = 3~%int8 CANCELLED = 4~%int8 SUB_CANCELLED = 5~%~%# Human-readable status description~%string status_desc~%string waypoint_name~%~%~%"))
 (cl:defmethod roslisp-msg-protocol:message-definition ((type (cl:eql 'NavigationControlStatus)))
   "Returns full string definition for message of type 'NavigationControlStatus"
-  (cl:format cl:nil "# Control the way point/trajectory navigation~%int8 status~%~%int8 ERROR     = -1~%int8 IDLING    = 0~%int8 RUNNING   = 1~%int8 PAUSED    = 2~%int8 COMPLETED = 3~%int8 CANCELLED = 4~%~%# Human-readable status description~%string status_desc~%string waypoint_name~%~%~%"))
+  (cl:format cl:nil "# Control the way point/trajectory navigation~%int8 status~%~%int8 ERROR     = -1~%int8 IDLING    = 0~%int8 RUNNING   = 1~%int8 PAUSED    = 2~%int8 COMPLETED = 3~%int8 CANCELLED = 4~%int8 SUB_CANCELLED = 5~%~%# Human-readable status description~%string status_desc~%string waypoint_name~%~%~%"))
 (cl:defmethod roslisp-msg-protocol:serialization-length ((msg <NavigationControlStatus>))
   (cl:+ 0
      1

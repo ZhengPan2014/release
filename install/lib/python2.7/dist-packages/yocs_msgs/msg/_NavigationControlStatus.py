@@ -7,7 +7,7 @@ import struct
 
 
 class NavigationControlStatus(genpy.Message):
-  _md5sum = "027304ab109f6a479d3756bfbd6905b3"
+  _md5sum = "076964b68104f4eaca05f848602cc7e5"
   _type = "yocs_msgs/NavigationControlStatus"
   _has_header = False #flag to mark the presence of a Header object
   _full_text = """# Control the way point/trajectory navigation
@@ -19,6 +19,7 @@ int8 RUNNING   = 1
 int8 PAUSED    = 2
 int8 COMPLETED = 3
 int8 CANCELLED = 4
+int8 SUB_CANCELLED = 5
 
 # Human-readable status description
 string status_desc
@@ -31,6 +32,7 @@ string waypoint_name
   PAUSED = 2
   COMPLETED = 3
   CANCELLED = 4
+  SUB_CANCELLED = 5
 
   __slots__ = ['status','status_desc','waypoint_name']
   _slot_types = ['int8','string','string']

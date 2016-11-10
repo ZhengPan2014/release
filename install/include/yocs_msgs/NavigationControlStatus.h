@@ -53,6 +53,7 @@ struct NavigationControlStatus_
      enum { PAUSED = 2 };
      enum { COMPLETED = 3 };
      enum { CANCELLED = 4 };
+     enum { SUB_CANCELLED = 5 };
  
 
   typedef boost::shared_ptr< ::yocs_msgs::NavigationControlStatus_<ContainerAllocator> > Ptr;
@@ -66,6 +67,8 @@ typedef boost::shared_ptr< ::yocs_msgs::NavigationControlStatus > NavigationCont
 typedef boost::shared_ptr< ::yocs_msgs::NavigationControlStatus const> NavigationControlStatusConstPtr;
 
 // constants requiring out of line definition
+
+   
 
    
 
@@ -141,12 +144,12 @@ struct MD5Sum< ::yocs_msgs::NavigationControlStatus_<ContainerAllocator> >
 {
   static const char* value()
   {
-    return "027304ab109f6a479d3756bfbd6905b3";
+    return "076964b68104f4eaca05f848602cc7e5";
   }
 
   static const char* value(const ::yocs_msgs::NavigationControlStatus_<ContainerAllocator>&) { return value(); }
-  static const uint64_t static_value1 = 0x027304ab109f6a47ULL;
-  static const uint64_t static_value2 = 0x9d3756bfbd6905b3ULL;
+  static const uint64_t static_value1 = 0x076964b68104f4eaULL;
+  static const uint64_t static_value2 = 0xca05f848602cc7e5ULL;
 };
 
 template<class ContainerAllocator>
@@ -174,6 +177,7 @@ int8 RUNNING   = 1\n\
 int8 PAUSED    = 2\n\
 int8 COMPLETED = 3\n\
 int8 CANCELLED = 4\n\
+int8 SUB_CANCELLED = 5\n\
 \n\
 # Human-readable status description\n\
 string status_desc\n\

@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <launch>
-    <node name="map_server" pkg="map_server" type="map_server" args="$(find bringup)/param/map.yaml"/>
+    <node name="map_server" pkg="map_server" type="map_server" args="map.yaml"/>
 
-    <node name="map_edit_server" pkg="map_server" type="map_server" args="$(find bringup)/param/map_edit.yaml" >
+    <node name="map_edit_server" pkg="map_server" type="map_server" args="map_edit.yaml" >
         <remap from="map" to="map_edit"/>
     </node>
 
@@ -18,7 +18,6 @@
     <!--<include file="$(find bringup)/launch/rosbridge_stm32wubing.launch"/>-->
 
     <node name="robot_pose_publisher" pkg="robot_pose_publisher" type="robot_pose_publisher" output="screen"/>
-
 
     <node name="move_base" pkg="move_base" type="move_base" respawn="false" output="screen">
         <remap from="odom" to="/odom_0"/>
