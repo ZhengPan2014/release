@@ -15,7 +15,8 @@
         </rosparam>
     </node>
 
-    <!-- <node name="stm32_driver" pkg="stm32_driver" type="stm32_driver" output="screen">
+ <!-- 
+    <node name="stm32_driver" pkg="stm32_driver" type="stm32_driver" output="screen">
         <remap from="imu" to="imu_data" />
         <rosparam>
             is_pub_tf: false
@@ -23,9 +24,11 @@
             wheel_separation: 0.4402
             tty_name: /dev/ttyS2
         </rosparam>
-    </node>-->
+    </node>
 
     <include file="$(find bringup)/launch/rosbridge_stm32wubing.launch"/>
+-->
+    <include file="$(find bringup)/launch/rosbridge_aqmd.launch"/>
 
     <node name="robot_pose_ekf" pkg="robot_pose_ekf" type="robot_pose_ekf">
         <rosparam>

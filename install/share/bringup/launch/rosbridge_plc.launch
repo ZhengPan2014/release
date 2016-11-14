@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<launch>
+    <node name="rosbridge_plc" pkg="rosbridge_driver" type="rosbridge_driver" output="screen">
+        <rosparam>
+            port_chain:
+              - name: plc
+                type: serial
+                serial_port: /dev/usb_right
+                serial_baud: 19200
+                serial_stop: 1
+            topic_chain:
+              - name: waypoint_user_pub
+                type: subscribe
+              - name: door_one_open
+                type: event
+                action_chain:
+                  - name: plc
+                    type: write
+                    byte: [0x06, 0x10, 0x00, 0x00, 0x00, 0x03, 0x06, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, crc16, little]
+                    lock: false
+              - name: door_one_close
+                type: event
+                action_chain:
+                  - name: plc
+                    type: write
+                    byte: [0x06, 0x10, 0x00, 0x00, 0x00, 0x03, 0x06, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, crc16, little]
+                    lock: false
+              - name: door_two_open
+                type: event
+                action_chain:
+                  - name: plc
+                    type: write
+                    byte: [0x06, 0x10, 0x00, 0x00, 0x00, 0x03, 0x06, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, crc16, little]
+                    lock: false
+              - name: door_two_close
+                type: event
+                action_chain:
+                  - name: plc
+                    type: write
+                    byte: [0x06, 0x10, 0x00, 0x00, 0x00, 0x03, 0x06, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, crc16, little]
+                    lock: false
+              - name: diagnostics
+                type: publish
+        </rosparam>
+    </node>
+</launch>

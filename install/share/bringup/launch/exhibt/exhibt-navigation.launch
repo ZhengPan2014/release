@@ -1,10 +1,8 @@
 <?xml version="1.0"?>
 <launch>
-    <node name="map_server" pkg="map_server" type="map_server" args="map.yaml"/>
+    <include file="$(find bringup)/launch/map_server.launch"/>
 
-    <node name="map_edit_server" pkg="map_server" type="map_server" args="map_edit.yaml" >
-        <remap from="map" to="map_edit"/>
-    </node>
+    <include file="$(find bringup)/launch/map_edit_server.launch"/>
 
     <node name="amcl" pkg="amcl" type="amcl" output="screen">
         <remap from="scan" to="scan_rectified" />
@@ -48,10 +46,10 @@
                 global_frame: map
                 robot_base_frame: base_footprint
                 transform_tolerance: 0.5
-                update_frequency: 2.0 #5.0
+                update_frequency: 1.0 #2.0
                 publish_frequency: 0.5 #0.0
                 static_map: true
-                robot_radius: 0.33 #0.42 <!-- groovy -->
+                footprint: [[0.37, -0.275], [0.37, 0.275], [-0.37, 0.275], [-0.37, -0.275]]
                 resolution: 0.075
                 plugins:
                   - name: static_layer
@@ -63,14 +61,24 @@
                 static_layer:
                     map_topic: /map_edit
                 obstacle_layer:
-                    observation_sources: scan_rectified
+                    observation_sources: scan_rectified sensor_pointcloud
                     scan_rectified:
+                        topic: /scan_rectified
                         expected_update_rate: 5.0
                         data_type: LaserScan
                         clearing: true
+                        marking: true
                         max_obstacle_height: 1.0
                         min_obstacle_height: -1.0
                         inf_is_valid: true
+                    sensor_pointcloud:
+                        topic: /camera/depth/points
+                        data_type: PointCloud2
+                        clearing: true
+                        marking: true
+                        max_obstacle_height: 2.0
+                        min_obstacle_height: 0.0          
+
                     track_unknown_space: false #true
                     z_voxels: 8
                 inflation_layer:
@@ -80,9 +88,9 @@
                 global_frame: odom
                 robot_base_frame: base_footprint
                 transform_tolerance: 0.5
-                update_frequency: 5.0
+                update_frequency: 2.0 #5.0
                 publish_frequency: 2.0 #0.5
-                robot_radius: 0.42 <!-- groovy -->
+                footprint: [[0.37, -0.275], [0.37, 0.275], [-0.37, 0.275], [-0.37, -0.275]]
                 static_map: false
                 rolling_window: true
                 width: 6.0
@@ -94,7 +102,7 @@
                   - name: inflation_layer
                     type: "costmap_2d::InflationLayer"
                 obstacle_layer:
-                    observation_sources: scan_rectified
+                    observation_sources: scan_rectified sensor_pointcloud
                     scan_rectified:
                         expected_update_rate: 5.0
                         data_type: LaserScan
@@ -102,6 +110,13 @@
                         max_obstacle_height: 1.0
                         min_obstacle_height: -1.0
                         inf_is_valid: true
+                    sensor_pointcloud:
+                        topic: /camera/depth/points
+                        data_type: PointCloud2
+                        clearing: true
+                        marking: true
+                        max_obstacle_height: 2.0
+                        min_obstacle_height: 0.0
                     track_unknown_space: false #true
                     z_voxels: 8
                 inflation_layer:

@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<launch>
+    <node name="rosbridge_wangjin" pkg="rosbridge_driver" type="rosbridge_driver" output="screen">
+        <remap from="waypoint_user_sub" to="shell_feedback"/>
+        <rosparam>
+            port_chain:
+              - name: wangjin
+                type: serial
+                serial_port: /dev/usb_right
+                serial_stop: 1
+            topic_chain:
+              - name: waypoint_user_pub
+                type: subscribe
+              - name: wangjin_open
+                type: event
+                action_chain:
+                  - name: wangjin
+                    type: write
+                    byte: [0xaa, 0x55, 0x01, 0x00, 0x02, 0xbb, 0x01, 0x01, 0x00, crc16, little]
+                  - name: wangjin
+                    type: read
+                    byte: [0xaa, 0x55, 0x01, 0x00, 0x02, 0xbb, 0x01, 0x01, 0x00, crc16, little]
+              - name: wangjin_close
+                type: event
+                action_chain:
+                  - name: wangjin
+                    type: write
+                    byte: [0xaa, 0x55, 0x01, 0x00, 0x02, 0xbb, 0x01, 0x00, 0x01, crc16, little]
+                  - name: wangjin
+                    type: read
+                    byte: [0xaa, 0x55, 0x01, 0x00, 0x02, 0xbb, 0x01, 0x00, 0x01, crc16, little]
+              - name: wangjin_status
+                type: event
+                action_chain:
+                  - name: wangjin
+                    type: write
+                    byte: [0xaa, 0x55, 0x01, 0x00, 0x02, 0xbb, 0x02, 0x00, 0x00, crc16, little]
+                  - name: wangjin
+                    type: read
+                    byte: [0xaa, 0x55, 0x01, 0x00, 0x02, 0xbb, 0x02, user_status, little, crc16, little]
+                echo: user_status
+              - name: diagnostics
+                type: publish
+        </rosparam>
+    </node>
+</launch>
