@@ -12,8 +12,8 @@
                 type: subscribe
                 freq: 5.0
                 wheel_model: diff
-                wheel_track: 0.208
-                wheel_ratio: 23333.3
+                wheel_track: 0.221 #0.2225
+                wheel_ratio: 23334.0
                 wheel_reverse: false
                 action_chain:
                   - name: stm32wangke
