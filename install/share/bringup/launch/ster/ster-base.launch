@@ -32,6 +32,8 @@ analyzers:
         </rosparam>
     </node>
 
+    <include file="$(find bringup)/launch/rosbridge_wangjin.launch"/>
+
     <include file="$(find yocs_waypoint_provider)/launch/provider.launch"/>
 
     <include file="$(find yocs_waypoints_navi)/launch/waypoints_navi.launch"/>

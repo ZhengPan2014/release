@@ -5,7 +5,7 @@
             port_chain:
               - name: ttyUSB0
                 type: serial
-                serial_port: /dev/usb_right
+                serial_port: /dev/ttyUSB0
             topic_chain:
               - name: cmd_vel
                 type: subscribe

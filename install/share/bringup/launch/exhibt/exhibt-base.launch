@@ -64,7 +64,8 @@ analyzers:
         <rosparam>
             child_frame_id: camera_link
             x: 0.33
-            z: 0.40
+            y: 0.05
+            z: 0.39
             
         </rosparam>
     </node>
@@ -137,7 +138,8 @@ analyzers:
             vo_used: false
         </rosparam>
     </node>
-    
+    <param name="camera/driver/data_skip" value="9"/>
     <include file="$(find bringup)/launch/3dsensor.launch"/>
+
 
 </launch>
