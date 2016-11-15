@@ -1,0 +1,283 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <script type="text/javascript" src="js/eventemitter2.min.js"></script>
+    <script type="text/javascript" src="js/roslib.min.js"></script>
+    <script src="js/three.min.js"></script>
+
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css">
+	<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
+	<!-- mjpeg -->
+	<script type="text/javascript" src="http://cdn.robotwebtools.org/mjpegcanvasjs/current/mjpegcanvas.min.js"></script>
+
+
+	<style type="text/css">
+		div.img{
+			position: absolute;
+			left:25%
+		}
+	</style>
+
+	<script type="text/javascript">
+		var dataContainerOrientation;
+		var dataContainerMotion;
+		var lock=false;
+		window.onload=function()
+		{
+			dataContainerOrientation = document.getElementById('dataContainerOrientation');
+	    	dataContainerMotion = document.getElementById('dataContainerMotion');
+
+	   		// document.getElementById("clutch").addEventListener("touchstart",touch,false);
+	    	// document.getElementById("clutch").addEventListener("touchend",touch,false);
+
+	    	// document.getElementById("body").addEventListener("touchstart",touch,false);
+	    	// document.getElementById("body").addEventListener("touchend",touch,false);
+	    	// document.getElementById("body").addEventListener("mousedown",touch,false);
+	    	// document.getElementById("body").addEventListener("mouseup",touch,false);
+
+	    	document.getElementById("myImg").addEventListener("touchstart",init,false);
+	    	document.getElementById("myImg").addEventListener("mousedown",touch,false);
+
+	    	function init(event)
+	    	{
+	    		var event = event || window.event;
+	    		switch (event.type)
+	    		{
+	    			case "touchstart":
+	    			case "mousedown":
+	    				document.getElementById('myImg').style.display = 'none';
+	    				mjpeg_init();
+	    				document.getElementById("body").addEventListener("touchstart",touch,false);
+				    	document.getElementById("body").addEventListener("touchend",touch,false);
+				    	document.getElementById("body").addEventListener("mousedown",touch,false);
+				    	document.getElementById("body").addEventListener("mouseup",touch,false);
+
+				    	document.getElementById("myImg").removeEventListener("touchstart",init,false);
+				    	document.getElementById("myImg").removeEventListener("mousedown",init,false);
+				    	break;
+	    		}
+	    	}
+
+	        function touch(event) 
+	        {
+	            var event = event || window.event;
+
+	            switch (event.type) 
+	            {
+	            	case "touchstart":
+	            	case "mousedown":
+	          			event.preventDefault=false;
+						lock=true;
+	                	console.log("touchstart");
+	                    break;
+	                case "touchend":
+	                case "mouseup":
+	                	lock=false;
+	                 	console.log("touchend");
+	                    break;
+	            }
+	        }//function
+
+		}//window.onload
+	</script>
+
+    <script type="text/javascript">
+        function imuSnapShot()
+        {
+        	if (lock) 
+        	{
+	            var beta_radian = ((beta + 360) / 360 * 2 * Math.PI) % (2 * Math.PI);
+	            var gamma_radian = ((gamma + 360) / 360 * 2 * Math.PI) % (2 * Math.PI);
+	            var alpha_radian = ((alpha + 360) / 360 * 2 * Math.PI) % (2 * Math.PI);
+	            var eurlerpose = new THREE.Euler(beta_radian, gamma_radian, alpha_radian);
+	            var quaternionpose = new THREE.Quaternion;
+	            quaternionpose.setFromEuler(eurlerpose);
+
+	            var imuMessage = new ROSLIB.Message({
+	                header : { 
+	                frame_id : "world"
+	                },
+	                orientation : {
+	                    x : quaternionpose.x,
+	                    y : quaternionpose.y,
+	                    z : quaternionpose.z,
+	                    w : quaternionpose.w
+	                },
+	                orientation_covariance : [0,0,0,0,0,0,0,0,0],
+	                
+	                angular_velocity : {
+	                    x : r.beta,
+	                    y : r.gamma,
+	                    z : r.alpha
+	                },
+	                
+	                angular_velocity_covariance  : [0,0,0,0,0,0,0,0,0],
+	                linear_acceleration : {
+	                    x : x,
+	                    y : y,
+	                    z : z
+	                },
+	                linear_acceleration_covariance  : [0,0,0,0,0,0,0,0,0],
+	                });
+
+	            // display imu
+	            if (alpha != null || beta != null || gamma != null)
+	            	dataContainerOrientation.innerHTML = 'Orientation: <br />' + 'alpha: ' + alpha.toFixed(2) + '<br/>beta: ' + beta.toFixed(2) + '<br />gamma: ' + gamma.toFixed(2);
+
+	            var html = 'Acceleration:<br />';
+	            html += 'x: ' + x.toFixed(2) + '<br />y: ' + y.toFixed(2) + '<br/>z: ' + z.toFixed(2) + '<br />';
+	            
+	            html += '<br />Rotation rate:<br />';
+	            if (r != null) 
+	            	html += 'alpha: ' + r.alpha.toFixed(2) + '<br />beta: ' + r.beta.toFixed(2) + '<br/>gamma: ' + r.gamma.toFixed(2) + '<br />';
+	            dataContainerMotion.innerHTML = html;
+
+            imuTopic.publish(imuMessage); 
+        	}//if
+
+        	else
+        	{
+        		var imuMessage = new ROSLIB.Message({
+                header : { 
+                frame_id : "world"
+                },
+                orientation : {
+                    x : -1,
+                    y : -1,
+                    z : -1,
+                    w : -1
+                },
+                orientation_covariance : [0,0,0,0,0,0,0,0,0],
+                
+                angular_velocity : {
+                    x : -1,
+                    y : -1,
+                    z : -1
+                },
+                
+                angular_velocity_covariance  : [0,0,0,0,0,0,0,0,0],
+                linear_acceleration : {
+                    x : -1,
+                    y : -1,
+                    z : -1
+                },
+                linear_acceleration_covariance  : [0,0,0,0,0,0,0,0,0],
+                });
+
+                imuTopic.publish(imuMessage); 
+        	}//else
+        }//function
+    </script>
+
+    <script type="text/javascript">
+        var alpha, gamma, beta;
+        var x, y, z, r;
+
+        var ros = new ROSLIB.Ros({ 
+                                    //url: 'ws://192.168.0.123:9090'
+                                    url: "ws://" + window.location.hostname + ":9090"
+                                });
+
+        var imuTopic = new ROSLIB.Topic({
+                                            ros: ros,
+                                            name: '/mobile_imu',
+                                            messageType: 'sensor_msgs/Imu'
+                                            });
+
+        // var imgListener = new ROSLIB.Topic({
+        // 									ros: ros,
+        // 									name: '/h5_image',
+        // 									messageType: '/std_msgs/String'
+        // 									});
+
+        var cmdVelListener = new ROSLIB.Topic({
+											ros: ros,
+											name: '/cmd_vel',
+											messageType: 'geometry_msgs/Twist'
+						    				});
+
+
+        if (window.DeviceOrientationEvent && window.DeviceMotionEvent) 
+            {
+                    window.addEventListener('deviceorientation', 
+                                            function (event) {
+                                                                alpha = event.alpha;
+                                                                beta = event.beta;
+                                                                gamma = event.gamma;
+                                                             }, 
+                                            false);
+
+                     window.addEventListener('devicemotion', 
+                                            function (event) {
+                                                                x = event.accelerationIncludingGravity.x;
+                                                                y = event.accelerationIncludingGravity.y;
+                                                                z = event.accelerationIncludingGravity.z;
+                                                                r = event.rotationRate;
+                                                            });
+            }//if
+
+        var imuPubTimer = setInterval(function () {imuSnapShot();},100);//publish imu
+	        
+        // imgListener.subscribe(function(msg){
+        // 									var image = "data:image/png;base64,";
+    				// 						image += msg.data;
+    				// 						document.getElementById("myImg").src = image;
+        // 									})
+
+        cmdVelListener.subscribe(function(msg){
+        									var linear_vel = msg.linear.x;
+        									var angular_vel = msg.angular.z;
+        									linear_vel = "Linear Vel: " + linear_vel.toFixed(2);
+        									angular_vel = "Angular Vel: " + angular_vel.toFixed(2);
+        									document.getElementById("linear_vel").innerHTML = linear_vel;
+        									document.getElementById("angular_vel").innerHTML = angular_vel;
+        									})
+    </script>
+
+    <script type="text/javascript">
+    	function mjpeg_init()
+    	{
+    		//Create the main viewer
+    		var viewer = new MJPEGCANVAS.Viewer(
+    		{
+	      		divID : 'mjpeg',
+	      		host : 'localhost',
+	      		width : 480,
+	      		height : 320,
+	      		topic : '/h5_image'
+    		});
+    	}
+    </script>
+</head>
+
+<body id="body">
+    <p id="linear_vel" align="center">
+    	Linear Vel: 0.00
+    </p>
+    <p id="angular_vel" align="center">
+    	Angular Vel: 0.00
+    </p>
+
+    <div id="mjpeg" class="img">
+    	<img id="myImg" src="images/hrg_logo.png">
+    </div>
+
+<!--     <p id="status" style="font-size: 1em">Orientation:</p>
+ -->
+    <p id="dataContainerOrientation" style="font-size: 1em">
+        Orientation:<br/>alpha: 0.00<br/>beta: 0.00<br />gamma: 0.00
+    </p>
+    <p id="dataContainerMotion" style="font-size: 1em">
+        Acceleration:<br />
+	    x: 0.00<br />y: 0.00<br/>z: 0.00<br />
+	    <br />Rotation rate:<br />
+	    alpha: 0.00<br />beta: 0.00<br/>gamma: 0.00<br />
+    </p>
+
+
+   	
+</body>
+</html>
+

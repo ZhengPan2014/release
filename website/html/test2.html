@@ -1,0 +1,306 @@
+﻿<html>
+<head>
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="jquery/jquery.mobile-1.3.2.min.css">
+    <script src="jquery/jquery-1.8.3.min.js"></script>
+    <script>
+        $(document).bind('mobileinit', function () {
+            $.mobile.changePage.defaults.changeHash = false;
+            $.mobile.hashListeningEnabled = false;
+            $.mobile.pushStateEnabled = false;
+        });
+    </script>
+    <script src="jquery/jquery.mobile-1.3.2.min.js"></script>
+    <style>
+        .ui-icon-voice {
+            background-image: url(icons/icon1.png);
+        }
+    </style>
+    <script>
+        $(function () {
+            $("body").bind('swiperight', function () {
+                $.mobile.changePage("#page3", { transition: "slide", reverse: true }, false);
+            }).bind('swipeleft', function () {
+                $.mobile.changePage("#page1", { transition: "slide" }, true);
+            }).bind('taphold', function () {
+                $.mobile.changePage("#page5", { transition: "slide" });
+            }).bind('tap', function () {
+           
+            });
+            /*
+            scrollSupressionThreshold (默认: 10px) – 水平方向拖拽大于这个值，将不触发。
+            durationThreshold (默认: 1000ms) – 滑动时间超过这个数值就不会产生滑动事件。
+            horizontalDistanceThreshold (默认: 30px) – 水平划动距离超过这个数值才会产生滑动事件。
+            verticalDistanceThreshold (默认: 75px) – 竖直划动距离小于这个数值才会产生滑动事件。
+            */
+            //$.event.special.swipe.scrollSupressionThreshold("30px")
+            //$.event.special.swipe.durationThreshold("3000ms")
+            //$.event.special.swipe.horizontalDistanceThreshold("10px");
+            //$.event.special.swipe.verticalDistanceThreshold("75px");
+
+
+
+      
+        });
+    </script>
+</head>
+<body>
+
+    <!--    页面一-->
+    <div data-role="page" id="page1" data-fullscreen="true">
+        <div data-role="header" data-position="inline">
+            <h1>First Page</h1>
+        </div>
+        <div data-role="content">
+            <p>This is the main content of the page.</p>
+            <p>You can go to the <a href="#page5" data-rel="dialog" data-transition="flip">对话框</a></p>
+
+        </div>
+        <div data-role="footer" data-id="menu" data-position="fixed">
+            <div data-role="navbar">
+                <ul>
+                    <li><a data-transition="flip" data-icon="voice" class="ui-btn-active ui-state-persist">选项 1</a>
+                    <li><a href="#page2" data-transition="flip" data-icon="voice">选项 2</a>
+                    <li><a href="#page3" data-icon="voice" data-transition="flip">选项 3</a>
+                    <li><a href="#page4" data-transition="flip" data-icon="voice">选项 4</a>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!--    页面二-->
+    <div data-role="page" id="page2" data-title="This is the second page" data-fullscreen="true" data-add-back-btn="true">
+        <div data-role="header">
+            <h1>Second page</h1>
+        </div>
+        <div data-role="content">
+            <div data-role="collapsible">
+                <h2>History of Rome</h2>
+                <p>
+                    There is archaeological evidence of human occupation of the Rome area
+from at least 14,000 years, but the dense layer of much younger debris
+obscures Palaeolithic and Neolithic sites.[11] Evidence of stone tools,
+pottery and stone weapons attest to at least 10,000 years of human
+presence.
+                </p>
+            </div>
+            <div data-role="collapsible" data-collapsed="true">
+                <h2>Government of Rome</h2>
+                <p>
+                    Rome constitutes one of Italy's 8,101 communes, and is the largest both
+in terms of land area and population. It is governed by a mayor,
+currently Gianni Alemanno, and a city council.
+                </p>
+            </div>
+        </div>
+        <div data-role="footer" data-id="menu" data-position="fixed">
+
+            <div data-role="navbar">
+                <ul>
+                    <li><a href="#page1" data-transition="flip" data-icon="voice">选项 1</a>
+                    <li><a data-transition="flip" data-icon="voice" class="ui-btn-active ui-state-persist">选项 2</a>
+                    <li><a href="#page3" data-transition="flip" data-icon="voice">选项 3</a>
+                    <li><a href="#page4" data-transition="flip" data-icon="voice">选项 4</a>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!--    页面三-->
+    <div data-role="page" id="page3" data-title="This is the third page" data-fullscreen="true" data-add-back-btn="true">
+        <div data-role="header">
+            <h1>Third page</h1>
+        </div>
+        <div data-role="content">
+            <ol data-role="listview" data-inset="true" data-filter="true">
+                <li data-role="list-divider">
+                The Mobile Jungle
+                <li>
+                Mobile Browsing
+                <li>
+                Architecture and Design
+                <li>
+                Setting up your environment
+                <li>
+                Markups and Standards
+                <li>
+                Coding Markup
+                <li data-role="list-divider">
+                CSS for Mobile Browsers
+                <li>
+                JavaScript Mobile
+                <li>
+                Ajax, RIA and HTML5
+                <li>
+                Server-Side Browser Detection
+                <li data-role="list-divider">
+                Geolocation and Maps
+                <li>
+                Widgets and Offline webapps
+                <li>
+                Testing, Debugging and Performance
+                <li>
+                Distribution and Social Web 2.0
+            </ol>
+        </div>
+        <div data-role="footer" data-id="menu" data-position="fixed">
+            <div data-role="navbar">
+                <ul>
+                    <li><a href="#page1" data-transition="flip" data-icon="voice">选项 1</a>
+                    <li><a href="#page2" data-transition="flip" data-icon="voice">选项 2</a>
+                    <li><a data-icon="voice" class="ui-btn-active ui-state-persist">选项 3</a>
+                    <li><a href="#page4" data-transition="flip" data-icon="voice">选项 4</a>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+    <!--    页面四-->
+    <div data-role="page" id="page4" data-title="This is the fourth page" data-fullscreen="true" data-add-back-btn="true">
+        <div data-role="header">
+            <h1>Fourth page</h1>
+        </div>
+        <div data-role="content">
+            <div data-role="fieldcontainer">
+                <label for="qty">Quantity:</label>
+                <input type="range" id="qty" name="qty" min="1" max="100" value="5"
+                    data-theme="e" data-track-theme="b">
+            </div>
+
+            <label for="updated">Receive updates</label>
+            <select id="updated" name="updated" data-role="slider">
+                <option value="no">No</option>
+                <option value="yes">Yes</option>
+            </select>
+
+            <label for="training">Training</label>
+            <select id="training" name="training">
+                <option value="1">HTML5</option>
+                <option value="2">jQuery Mobile</option>
+                <option value="3">iOS</option>
+                <option value="4">Android</option>
+                <option value="5">BlackBerry</option>
+                <option value="6">Qt for Meego</option>
+            </select>
+
+            <label for="lang">Languages you like</label>
+            <select id="lang" name="lang" multiple>
+                <option value="1">C/C++</option>
+                <option value="2">Objective-C</option>
+                <option value="3">Java</option>
+                <option value="4">C#</option>
+                <option value="5">Visual Basic</option>
+                <option value="6">ActionScript</option>
+                <option value="7">Delphi</option>
+                <option value="8">Phyton</option>
+                <option value="9">JavaScript</option>
+                <option value="10">Ruby</option>
+                <option value="11">PHP</option>
+            </select>
+            <div data-role="controlgroup">
+                <p>Color and Size</p>
+                <select id="color" name="color">
+                    <option value="1">Blue</option>
+                    <option value="2">White</option>
+                    <option value="3">Red</option>
+                    <option value="4">Black</option>
+                    <option value="5">Pink</option>
+                </select>
+                <select id="size" name="size">
+                    <option value="1">X-Small</option>
+                    <option value="2">Small</option>
+                    <option value="3">Medium</option>
+                    <option value="4">Large</option>
+                    <option value="5">X-Large</option>
+                </select>
+            </div>
+            <div data-role="controlgroup" data-type="horizontal">
+                <p>Week day and time</p>
+                <select id="weekday" name="weekday" multiple>
+                    <option value="1">Mon</option>
+                    <option value="2">Tue</option>
+                    <option value="3">Wed</option>
+                    <option value="4">Thu</option>
+                    <option value="5">Fri</option>
+                </select>
+                <select id="time" name="time">
+                    <option value="1">Morning</option>
+                    <option value="2">Midday</option>
+                    <option value="3">Afternoon</option>
+                </select>
+            </div>
+            <div data-role="fieldcontainer">
+                <label for="birth">Your Birthdate:</label>
+                <input type="date" id="birth" name="birth">
+                <label for="favmonth">Your favorite month:</label>
+                <input type="month" id="favmonth" name="favmonth">
+            </div>
+            <p>Menu type</p>
+            <div data-role="controlgroup">
+                <label for="menuNative1">Native menu, single selection</label>
+                <input type="radio" id="menuNative1" name="menuType" value="1">
+                <label for="menuNative2">Native menu, multiple selection</label>
+                <input type="radio" id="menuNative2" name="menuType" value="2">
+                <label for="menuNonNative1">Non-native menu, single selection</label>
+                <input type="radio" id="menuNonNative1" name="menuType" value="3">
+                <label for="menuNonNative2">Non-native menu, multiple selection</label>
+                <input type="radio" id="menuNonNative2" name="menuType" value="4">
+            </div>
+
+            <p>Delivery options</p>
+            <div data-role="controlgroup">
+                <label for="optionGift">Pack it as a Gift</label>
+                <input type="checkbox" id="optionGift" name="optionGift" value="yes">
+                <label for="optionBag">Send it with a bag</label>
+                <input type="checkbox" id="optionBag" name="optionBag" value="yes">
+                <label for="optionRemove">Remove the box</label>
+                <input type="checkbox" id="optionRemove" name="optionRemove" value="yes">
+            </div>
+
+
+        </div>
+        <div data-role="footer" data-id="menu" data-position="fixed">
+            <div data-role="navbar">
+                <ul>
+                    <li><a href="#page1" data-transition="flip" data-icon="voice">选项 1</a>
+                    <li><a href="#page2" data-transition="flip" data-icon="voice">选项 2</a>
+                    <li><a href="#page3" data-transition="flip" data-icon="voice">选项 3</a>
+                    <li><a data-icon="voice" class="ui-btn-active ui-state-persist">选项 4</a>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div data-role="page" id="page5">
+        <div data-role="header">
+            <h1>标记点设置</h1>
+        </div>
+        <div data-role="content">
+            <div data-rel="fieldcontainer">
+                <label for="name">Mark:</label>
+                <input type="text" id="name" required placeholder="请输入标记名称">
+                <label for="age">Text:</label>
+                <input type="text" id="age" required placeholder="请输入语音介绍">
+
+                <label for="pos_x">Postion.X:</label>
+                <input type="text" id="pos_x" required placeholder="0.0000">
+                <label for="pos_y">Postion.Y:</label>
+                <input type="text" id="pos_y" required placeholder="0.0000">
+                <label for="ori_z">Orientation.Z:</label>
+                <input type="text" id="ori_z" required placeholder="0.00">
+                <label for="ori_w">Orientation.W:</label>
+                <input type="text" id="ori_w" required placeholder="0.00">
+
+                <a data-role="button" data-theme="b">提 交</a>
+            </div>
+        </div>
+        <div data-role="footer">
+            <h4>噼里啪啦</h4>
+        </div>
+    </div>
+</body>
+</html>
