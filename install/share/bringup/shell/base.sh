@@ -10,4 +10,3 @@ else
 fi
 
 export ROS_USER_IP=`hostname -I | awk -F '.' '{print $1"."$2"."$3".7"}'`
-
