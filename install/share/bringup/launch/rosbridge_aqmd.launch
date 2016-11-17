@@ -7,6 +7,53 @@
                 type: serial
                 serial_port: /dev/usb_left
             topic_chain:
+              - name: waypoint_user_pub
+                type: subscribe
+              - name: normal_stop
+                type: event
+                action_chain:
+                  - name: ttyUSB0
+                    type: write
+                    byte: [0x02, 0x06, 0x00, 0x40, 0x00, 0x00, crc16, little]
+                  - name: ttyUSB0
+                    type: read
+                    byte: [0x02, 0x06, 0x00, 0x40, 0x00, 0x00, crc16, little]
+                  - name: ttyUSB0
+                    type: write
+                    byte: [0x03, 0x06, 0x00, 0x40, 0x00, 0x00, crc16, little]
+                  - name: ttyUSB0
+                    type: read
+                    byte: [0x03, 0x06, 0x00, 0x40, 0x00, 0x00, crc16, little]
+              - name: emergency_stop
+                type: event
+                action_chain:
+                  - name: ttyUSB0
+                    type: write
+                    byte: [0x02, 0x06, 0x00, 0x40, 0x00, 0x01, crc16, little]
+                  - name: ttyUSB0
+                    type: read
+                    byte: [0x02, 0x06, 0x00, 0x40, 0x00, 0x01, crc16, little]
+                  - name: ttyUSB0
+                    type: write
+                    byte: [0x03, 0x06, 0x00, 0x40, 0x00, 0x01, crc16, little]
+                  - name: ttyUSB0
+                    type: read
+                    byte: [0x03, 0x06, 0x00, 0x40, 0x00, 0x01, crc16, little]
+              - name: free_stop
+                type: event
+                action_chain:
+                  - name: ttyUSB0
+                    type: write
+                    byte: [0x02, 0x06, 0x00, 0x40, 0x00, 0x02, crc16, little]
+                  - name: ttyUSB0
+                    type: read
+                    byte: [0x02, 0x06, 0x00, 0x40, 0x00, 0x02, crc16, little]
+                  - name: ttyUSB0
+                    type: write
+                    byte: [0x03, 0x06, 0x00, 0x40, 0x00, 0x02, crc16, little]
+                  - name: ttyUSB0
+                    type: read
+                    byte: [0x03, 0x06, 0x00, 0x40, 0x00, 0x02, crc16, little]
               - name: cmd_vel
                 type: subscribe
                 wheel_model: diff

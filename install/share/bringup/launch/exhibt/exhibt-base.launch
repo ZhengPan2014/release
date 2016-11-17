@@ -1,40 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-    <node name="rosbridge_shell" pkg="rosbridge_shell" type="rosbridge_shell" output="screen"/>
-
-    <!-- Use this to debug aggregator node in GDB -->
-    <!-- launch-prefix="xterm -e gdb -args"  -->
-    <node name="diagnostic_aggregator" pkg="diagnostic_aggregator" type="aggregator_node" args="CPP" output="screen">
-        <rosparam>
-analyzers:
-  device:
-    type: diagnostic_aggregator/AnalyzerGroup
-    path: device
-    analyzers:
-      odom_left:
-        type: diagnostic_aggregator/GenericAnalyzer
-        path: odom_l
-        timeout: 5.0
-        find_and_remove_prefix: left
-        num_items: 2
-      odom_right:
-        type: diagnostic_aggregator/GenericAnalyzer
-        path: odom_r
-        timeout: 5.0
-        find_and_remove_prefix: right
-        num_items: 2
-      joystick:
-        type: diagnostic_aggregator/GenericAnalyzer
-        path: 'joystick'
-        timeout: 5.0
-        startswith: ['Battery', 'Charging State', 'Connection', 'ps3_joy']
-        remove_prefix: 'ps3_joy'
-        </rosparam>
-    </node>
-
-    <include file="$(find yocs_waypoint_provider)/launch/provider.launch"/>
-
-    <include file="$(find yocs_waypoints_navi)/launch/waypoints_navi.launch"/>
+    <include file="$(find bringup)/launch/bringup-base.launch"/>
 
     <node name="tf_base_footprint" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
         <rosparam>
@@ -56,7 +22,6 @@ analyzers:
             child_frame_id: base_imu
             x: 0.0
             z: 0.6
-    
         </rosparam>
     </node>
 
@@ -65,24 +30,12 @@ analyzers:
             child_frame_id: camera_link
             x: 0.33
             y: 0.05
-            z: 0.39
-            
+            z: 0.39            
         </rosparam>
     </node>
 
     <node name="robot_pose_publisher" pkg="robot_pose_publisher" type="robot_pose_publisher" output="screen"/>
-<!-- 
-    <node name="stm32_driver" pkg="stm32_driver" type="stm32_driver" output="screen">
-        <remap from="imu" to="imu_data" />
-        <rosparam>
-            is_pub_tf: false
-            has_encoder: true
-            wheel_separation: 0.42
-            tty_name: /dev/ttySx
-        </rosparam>
-    </node>
-    <include file="$(find bringup)/launch/rosbridge_stm32wubing.launch"/>
--->
+
     <include file="$(find bringup)/launch/rosbridge_aqmd.launch"/>
 
     <node name="urg_node" pkg="urg_node" type="urg_node" output="screen">
@@ -138,8 +91,37 @@ analyzers:
             vo_used: false
         </rosparam>
     </node>
+    
     <param name="camera/driver/data_skip" value="9"/>
     <include file="$(find bringup)/launch/3dsensor.launch"/>
 
-
+    <!-- Use this to debug aggregator node in GDB -->
+    <!-- launch-prefix="xterm -e gdb -args"  -->
+    <node name="diagnostic_aggregator" pkg="diagnostic_aggregator" type="aggregator_node" args="CPP" output="screen">
+        <rosparam>
+analyzers:
+  device:
+    type: diagnostic_aggregator/AnalyzerGroup
+    path: device
+    analyzers:
+      odom_left:
+        type: diagnostic_aggregator/GenericAnalyzer
+        path: odom_l
+        timeout: 5.0
+        find_and_remove_prefix: left
+        num_items: 2
+      odom_right:
+        type: diagnostic_aggregator/GenericAnalyzer
+        path: odom_r
+        timeout: 5.0
+        find_and_remove_prefix: right
+        num_items: 2
+      joystick:
+        type: diagnostic_aggregator/GenericAnalyzer
+        path: 'joystick'
+        timeout: 5.0
+        startswith: ['Battery', 'Charging State', 'Connection', 'ps3_joy']
+        remove_prefix: 'ps3_joy'
+        </rosparam>
+    </node>
 </launch>

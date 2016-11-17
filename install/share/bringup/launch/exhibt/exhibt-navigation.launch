@@ -4,6 +4,10 @@
 
     <include file="$(find bringup)/launch/map_edit_server.launch"/>
 
+    <include file="$(find yocs_waypoint_provider)/launch/provider.launch"/>
+
+    <include file="$(find yocs_waypoints_navi)/launch/waypoints_navi.launch"/>
+
     <include file="$(find bringup)/launch/amcl.launch">
        <arg name="scan_topic" value="/scan_rectified" />
        <arg name="initial_pose_x" value="0.0"/>
