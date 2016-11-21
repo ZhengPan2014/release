@@ -2,10 +2,15 @@
     REVISION: '0.0.0.1-2016-10-19'
 };
 
+NavEvent.machine = {
+    exhibt: "exhibt",
+    ster: "ster",
+    liebao: "liebao"
+}
 
 NavEvent.Url = "ws://" + window.location.hostname + ":9090";
 //NavEvent.Url = "ws://192.168.0.7:9090";
-//NavEvent.Url = "ws://192.168.0.233:9090";
+//NavEvent.Url = "ws://192.168.0.107:9090";
 NavEvent.ros = new ROSLIB.Ros();
 NavEvent.ros.connect(NavEvent.Url);
 NavEvent.ImuTimer = null;
@@ -31,6 +36,7 @@ NavEvent.data = {
     LoginName: "",
     LoginPassword: "",
     LockScreen: false,
+    Machine:"none"
 
 }
 
@@ -66,7 +72,8 @@ NavEvent.CmdEnum = {
     plc_close: "rostopic pub -1 /waypoint_user_pub std_msgs/String \"wangjin_close\"",
     plc_status: "rostopic pub -1 /waypoint_user_pub std_msgs/String \"wangjin_status\"",
 
-
+    User_Model: "user_model",
+    User_Auth: "user_auth",
 
 }
 NavEvent.diagnosticsNameEnum = {
@@ -262,7 +269,15 @@ NavEvent.ros.on('connection', function () {
    
                         $("#btn-plc").buttonMarkup({ icon: "hty-error-stop" });
                     }
-                    hty_plc_status = HTY_PLC_STATUS.temp[1];
+                    hty_plc_status = temp[1];
+                }
+                else if (temp[0] == "user_auth") {
+                    console.log(temp[1]);
+                    NavEvent.data.Machine = temp[1];
+                    if (temp[1]=="false") {
+                        $.mobile.changePage("#hrg-creatmap", { transition: "slide" });
+                        NavEvent.data.LoginName = "super";
+                    }
                 }
                 break;
         }
@@ -272,16 +287,18 @@ NavEvent.ros.on('connection', function () {
     NavEvent.shellTopic.publish(msg);
     var msg1 = new NavEvent.Msg(NavEvent.CmdEnum.Version);
     NavEvent.cmdTopic.publish(msg1);
+
+
+    var msg2 = new NavEvent.Msg(NavEvent.CmdEnum.User_Auth);
+    NavEvent.cmdTopic.publish(msg2);
+
 });
 
 NavEvent.ros.on('close', function () {
     NavEvent.data.Connect = false;
     $(".networkstatus").buttonMarkup({ icon: "hrg-networkerror" });
 });
-NavEvent.ros.on('error', function () {
-    NavEvent.data.Connect = false;
-    $(".networkstatus").buttonMarkup({ icon: "hrg-networkerror" });
-});
+
 NavEvent.Msg = function (cmd) {
     return new ROSLIB.Message({
         data: cmd
@@ -533,17 +550,6 @@ NavEvent.Site = function (name, postionX, postionY, OrientationZ, OrientationW, 
     this.going = status;
     this.waittime = waittime;
 }
-Array.prototype.del = function (index) {
-    if (isNaN(index) || index >= this.length) {
-        return false;
-    }
-    for (var i = 0, n = 0; i < this.length; i++) {
-        if (this[i] != this[index]) {
-            this[n++] = this[i];
-        }
-    }
-    this.length -= 1;
-};
 
 function MapEditDataConvert() {
     var MapEditArray = new Array();

@@ -45,6 +45,9 @@ $("#login").click(function () {
 });
 $("#logout").click(function () {
     var username = NavEvent.data.LoginName;
+    if (username=="super") {
+        return;
+    }
     var url = "http://" + window.location.hostname + ":8808/logout";
     $.ajax({
         type: 'post',
