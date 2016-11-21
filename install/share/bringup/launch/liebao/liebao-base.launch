@@ -118,6 +118,10 @@
         </rosparam>
     </node>
 
+    <include file="$(find yocs_waypoint_provider)/launch/provider.launch"/>
+
+    <include file="$(find yocs_waypoints_navi)/launch/waypoints_navi.launch"/>
+
     <!-- Use this to debug aggregator node in GDB -->
     <!-- launch-prefix="xterm -e gdb -args"  -->
     <node name="diagnostic_aggregator" pkg="diagnostic_aggregator" type="aggregator_node" args="CPP" output="screen">

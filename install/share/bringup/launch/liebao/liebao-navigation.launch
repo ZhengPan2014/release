@@ -4,10 +4,6 @@
 
     <include file="$(find bringup)/launch/map_edit_server.launch"/>
 
-    <include file="$(find yocs_waypoint_provider)/launch/provider.launch"/>
-
-    <include file="$(find yocs_waypoints_navi)/launch/waypoints_navi.launch"/>
-
     <node name="amcl" pkg="amcl" type="amcl" output="screen">
         <remap from="scan" to="scan_rectified" />
         <rosparam>
