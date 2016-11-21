@@ -1,11 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-    <node name="system_shell" pkg="system_shell" type="system_shell" output="screen">
-        <rosparam>
-            time_duration: 7.0
-            #init_cmd: ll
-        </rosparam>
-    </node>
+    <include file="$(find bringup)/launch/bringup-base.launch"/>
 
     <node name="tf_base_footprint" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
         <rosparam>
