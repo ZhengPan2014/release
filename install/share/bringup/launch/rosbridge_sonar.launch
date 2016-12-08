@@ -3,25 +3,113 @@
     <node name="rosbridge_sonar" pkg="rosbridge_driver" type="rosbridge_driver" output="screen">
         <rosparam>
             port_chain:
-              - name: sonar
+              - name: sonar11
                 type: serial
-                serial_port: /dev/usb_right
+                serial_port: /dev/usb_left11
                 serial_baud: 9600
                 serial_stop: 1
+              - name: sonar12
+                type: serial
+                serial_port: /dev/usb_left12
+                serial_baud: 9600
+                serial_stop: 1
+              - name: sonar13
+                type: serial
+                serial_port: /dev/usb_left13
+                serial_baud: 9600
+                serial_stop: 1
+              - name: sonar14
+                type: serial
+                serial_port: /dev/usb_left14
+                serial_baud: 9600
+                serial_stop: 1
+              - name: sonar21
+                type: serial
+                serial_port: /dev/usb_left21
+                serial_baud: 9600
+                serial_stop: 1
+              - name: sonar22
+                type: serial
+                serial_port: /dev/usb_left22
+                serial_baud: 9600
+                serial_stop: 1
+              - name: sonar23
+                type: serial
+                serial_port: /dev/usb_left23
+                serial_baud: 9600
+                serial_stop: 1
+              - name: sonar24
+                type: serial
+                serial_port: /dev/usb_left24
+                serial_baud: 9600
+                serial_stop: 1
+              - name: sonar3
+                type: serial
             topic_chain:
-              - name: waypoint_user_pub
-                type: subscribe
-              - name: sonar_test
-                type: event
+              - name: sonar
+                type: publish
+                freq: 10.0
+                field_of_view: 0.5
+                max_range: 0.2
+                echo: [sonar_data11, sonar_data12, sonar_data13, sonar_data14, sonar_data21, sonar_data22, sonar_data23, sonar_data24]
+                frame_id: [base_sonar11, base_sonar12, base_sonar13, base_sonar14, base_sonar21, base_sonar22, base_sonar23, base_sonar24]
                 action_chain:
-                  - name: sonar
+                  - name: sonar11
                     type: write
                     byte: [0x55]
-                  - name: sonar
+                  - name: sonar12
+                    type: write
+                    byte: [0x55]
+                  - name: sonar13
+                    type: write
+                    byte: [0x55]
+                  - name: sonar14
+                    type: write
+                    byte: [0x55]
+                  - name: sonar21
+                    type: write
+                    byte: [0x55]
+                  - name: sonar22
+                    type: write
+                    byte: [0x55]
+                  - name: sonar23
+                    type: write
+                    byte: [0x55]
+                  - name: sonar24
+                    type: write
+                    byte: [0x55]
+                  - name: sonar11
                     type: read
-                    byte: [sonar_data, big]
+                    byte: [sonar_data11, big]
                     time_out: 0.2
-                echo: sonar_data
+                  - name: sonar12
+                    type: read
+                    byte: [sonar_data12, big]
+                    time_out: 0.2
+                  - name: sonar13
+                    type: read
+                    byte: [sonar_data13, big]
+                    time_out: 0.2
+                  - name: sonar14
+                    type: read
+                    byte: [sonar_data14, big]
+                    time_out: 0.2
+                  - name: sonar21
+                    type: read
+                    byte: [sonar_data21, big]
+                    time_out: 0.2
+                  - name: sonar22
+                    type: read
+                    byte: [sonar_data22, big]
+                    time_out: 0.2
+                  - name: sonar23
+                    type: read
+                    byte: [sonar_data23, big]
+                    time_out: 0.2
+                  - name: sonar24
+                    type: read
+                    byte: [sonar_data24, big]
+                    time_out: 0.2
               - name: diagnostics
                 type: publish
         </rosparam>

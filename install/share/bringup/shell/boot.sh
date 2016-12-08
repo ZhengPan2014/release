@@ -1,4 +1,4 @@
-sleep 10s;
+sleep 2s;
 
 source ~/catkin_ws/base.sh;
 

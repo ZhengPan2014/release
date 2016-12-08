@@ -35,6 +35,7 @@
                 freq: 20.0
                 pub_imu: true
                 imu_reverse: true
+                imu_angle_ratio: 0.00009587
                 action_chain:
                   - name: stm32wubing
                     type: read

@@ -1,10 +1,8 @@
 <?xml version="1.0"?>
 <launch>
-    <node name="map_server" pkg="map_server" type="map_server" args="$(find bringup)/param/map.yaml"/>
+    <include file="$(find bringup)/launch/map_server.launch"/>
 
-    <node name="map_edit_server" pkg="map_server" type="map_server" args="$(find bringup)/param/map_edit.yaml" >
-        <remap from="map" to="map_edit"/>
-    </node>
+    <include file="$(find bringup)/launch/map_edit_server.launch"/>
 
     <node name="amcl" pkg="amcl" type="amcl" output="screen">
         <remap from="scan" to="scan_rectified" />
@@ -16,7 +14,6 @@
     </node>
 
     <node name="robot_pose_publisher" pkg="robot_pose_publisher" type="robot_pose_publisher" output="screen"/>
-
 
     <node name="move_base" pkg="move_base" type="move_base" respawn="false" output="screen">
         <remap from="odom" to="/odom_0"/>
@@ -154,5 +151,4 @@
                 oscillation_reset_dist: 0.075
         </rosparam>
     </node>
-
 </launch>

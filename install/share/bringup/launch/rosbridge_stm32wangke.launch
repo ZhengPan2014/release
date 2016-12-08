@@ -6,7 +6,7 @@
             port_chain:
               - name: stm32wangke
                 type: serial
-                serial_port: /dev/ttyS2
+                serial_port: /dev/ttySx
             topic_chain:
               - name: cmd_vel
                 type: subscribe
@@ -28,6 +28,7 @@
                 freq: 20.0
                 pub_imu: true
                 imu_reverse: true
+                imu_angle_ratio: 0.00009587
                 action_chain:
                   - name: stm32wangke
                     type: write

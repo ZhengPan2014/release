@@ -32,60 +32,46 @@
 
     <node name="robot_pose_publisher" pkg="robot_pose_publisher" type="robot_pose_publisher" output="screen"/>
  
-    <node name="stm32_driver" pkg="stm32_driver" type="stm32_driver" output="screen">
-        <remap from="imu" to="imu_data" />
-        <rosparam>
-            is_pub_tf: false
-            has_encoder: true
-            wheel_separation: 0.4402
-            tty_name: /dev/ttySx
-        </rosparam>
-    </node>
-
-    <node name="rosbridge_stm32" pkg="rosbridge_driver" type="rosbridge_driver" output="screen">
+    <node name="rosbridge_stm32wangke" pkg="rosbridge_driver" type="rosbridge_driver" output="screen">
+        <remap from="imu" to="imu_data"/>
         <rosparam>
             port_chain:
-              - name: main
+              - name: stm32wangke
                 type: serial
                 serial_port: /dev/ttySx
             topic_chain:
               - name: cmd_vel
                 type: subscribe
+                freq: 5.0
                 wheel_model: diff
-                wheel_track: 0.22
-                wheel_ratio: 23333.3
+                wheel_track: 0.2201
+                wheel_ratio: 23333.0
+                wheel_reverse: false
                 action_chain:
-                  - name: left
+                  - name: stm32wangke
                     type: write
-                    byte: [0x02, 0x06, 0x00, 0x43, left, big, crc16, little]
-                  - name: right
-                    type: write
-                    byte: [0x03, 0x06, 0x00, 0x43, right, big, crc16, little]
-                  - name: left
+                    byte: [0xaa, 0x55, 0x01, 0x00, 0x04, 0x02, 0x11, vel_left, big, vel_right, big, crc16, big]
+                  - name: stm32wangke
                     type: read
-                    byte: [0x02, 0x06, 0x00, 0x43, left, big, crc16, little]
-                    except: [0x02, 0x86, errno, crc16, little]
-                  - name: right
-                    type: read
-                    byte: [0x03, 0x06, 0x00, 0x43, right, big, crc16, little]
-                    except: [0x03, 0x86, errno, crc16, little]
+                    byte: [0xaa, 0x55, 0x01, 0x00, 0x02, 0x02, 0x11, errmodel, errcode, crc16, big]
+                    except: [0xaa, 0x55, 0x01, 0x00, errlen, 0x02, 0x11, errmodel, errcode, crc16, big]
               - name: odom
                 type: publish
+                freq: 20.0
+                pub_imu: true
+                imu_reverse: true
+                imu_angle_ratio: 0.00009587
                 action_chain:
-                  - name: left
+                  - name: stm32wangke
                     type: write
-                    byte: [0x02, 0x03, 0x00 0x22, 0x00, 0x01, 0x24, 0x33]
-                  - name: right
-                    type: write
-                    byte: [0x03, 0x03, 0x00 0x22, 0x00, 0x01, 0x25, 0xe2]
-                  - name: left
+                    # byte: [0xaa, 0x55, 0x01, 0x00, 0x00, 0x02, 0x43, crc16, big]
+                    byte: [0xaa, 0x55, 0x01, 0x00, 0x00, 0xf0, 0x1a, crc16, big]
+                  - name: stm32wangke
                     type: read
-                    byte: [0x02, 0x03, 0x02, left, big, crc16, little]
-                    except: [0x02, 0x83, errno, crc16, little]
-                  - name: right
-                    type: read
-                    byte: [0x03, 0x06, 0x02, right, big, crc16, little]
-                    except: [0x03, 0x83, errno, crc16, little]
+                    # byte: [0xaa, 0x55, 0x01, 0x00, 0x06, 0x02, 0x43, errmodel, errcode, vel_left, big, vel_right, big, crc16, big]
+                    # except: [0xaa, 0x55, 0x01, 0x00, errlen, 0x02, 0x43, errmodel, errcode, crc16, big]
+                    byte: [0xaa, 0x55, 0x01, 0x00, 0x0e, 0xf0, 0x1a, errmodel, errcode, vel_left, big, vel_right, big, imu_delta, little, int_roll, little, int_yaw, little, imu_status, little, crc16, big]
+                    except: [0xaa, 0x55, 0x01, 0x00, errlen, 0xf0, 0x1a, errmodel, errcode, crc16, big]
               - name: diagnostics
                 type: publish
         </rosparam>
@@ -144,5 +130,4 @@
             vo_used: false
         </rosparam>
     </node>
-
 </launch>

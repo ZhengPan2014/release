@@ -1,0 +1,8 @@
+prefix=/home/ouiyeah/catkin_ws/install
+
+Name: teb_local
+Description: Description of teb_local
+Version: 0.2.0
+Cflags: 
+Libs: -L/home/ouiyeah/catkin_ws/install/lib 
+Requires: 

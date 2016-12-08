@@ -1,87 +1,146 @@
 <?xml version="1.0"?>
 <launch>
-    <node name="rosbridge_forklift" pkg="rosbridge_driver" type="rosbridge_driver" output="screen">
+    <node name="rosbridge_plc" pkg="rosbridge_driver" type="rosbridge_driver" output="screen">
         <rosparam>
             port_chain:
-              - name: encoder
-                type: serial
-                serial_port: /dev/usb_encoder
-                action_chain:
-                  - name: encoder
-                    type: write
-                    byte: [0x58, 0x58, 0x58, 0x58, 0x58]
-                    lock: false
-              - name: steer
-                type: serial
-                serial_port: /dev/usb_steer
-              - name: left
-                type: serial
-                serial_port: /dev/usb_left
-              - name: right
+              - name: plc
                 type: serial
                 serial_port: /dev/usb_right
-            topic_chain:
-              - name: init_steer
-                type: subscribe
+                serial_baud: 115200
+                serial_stop: 1
                 action_chain:
-                  - name: encoder
+                  - name: plc
                     type: write
-                    byte: [0x11, 0x03, 0xaa, 0x16, 0x0a, 0x76]
-                  - name: encoder
+                    byte: [0x06, 0x10, 0x00, 0x64, 0x00, 0x01, 0x02, 0xcf, 0xfd, crc16, little]
+                  - name: plc
                     type: read
-                    byte: [0x11, 0x03, pos_steer, big, 0x0a, 0x76]
+                    byte: [0x06, 0x10, 0x00, 0x64, 0x00, 0x01, crc16, little]
+            topic_chain:
               - name: cmd_vel
                 type: subscribe
-                wheel_model: diff
-                wheel_track: 0.208 #0.416
-                wheel_ratio: 23333.3
+                wheel_model: acke
+                fork_a: 4.0 #2.296(v)/0.555(m/s)
+                fork_b: 4.1
+                plc_a: 3125.0 #3149.2
+                plc_b: 0.0903
+                stop_mode: move_stop
                 action_chain:
-                  - name: steer
+                  - name: plc
                     type: write
-                    byte: [0x05, 0x10, 0x00, 0x44, 0x00, 0x04, 0x08, 0xff, 0xff, 0x00, 0x00, pos_steer_high, big, pos_steer_low, big, crc16, little]
-                  - name: left
-                    type: write
-                    byte: [0x02, 0x06, 0x00, 0x43, vel_left, big, crc16, little]
-                  - name: right
-                    type: write
-                    byte: [0x03, 0x06, 0x00, 0x43, vel_right, big, crc16, little]
-                  - name: steer
+                    byte: [0x06, 0x10, 0x00, 0x64, 0x00, 0x09, 0x12, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, speed_plc, big, angle_left, big, angle_right, big, crc16, little]
+                  - name: plc
                     type: read
-                    byte: [0x05, 0x10, 0x00, 0x44, 0x00, 0x04, crc16, little]
-                    except: [0x05, 0x90, errno, crc16, little]
-                  - name: left
-                    type: read
-                    byte: [0x02, 0x06, 0x00, 0x43, vel_left, big, crc16, little]
-                    except: [0x02, 0x86, errno, crc16, little]
-                  - name: right
-                    type: read
-                    byte: [0x03, 0x06, 0x00, 0x43, vel_right, big, crc16, little]
-                    except: [0x03, 0x86, errno, crc16, little]
-              - name: odom
-                type: publish
-                freq: 50.0
+                    byte: [0x06, 0x06, 0x00, 0x64, 0x00, 0x09, crc16, little]
+              - name: waypoint_user_pub
+                type: subscribe
+              - name: move_enable
+                type: event
                 action_chain:
-                  - name: steer
+                  - name: plc
                     type: write
-                    byte: [0x05, 0x03, 0x00, 0x24, 0x00, 0x02, 0x85, 0x84]
-                  - name: left
+                    byte: [0x06, 0x06, 0x00, 0x02, 0x04, 0x00, crc16, little]
+                  - name: plc
+                    type: read
+                    byte: [0x06, 0x06, 0x00, 0x02, 0x04, 0x00, crc16, little]
+              - name: move_stop
+                type: event
+                speed_0: 13926
+                action_chain:
+                  - name: plc
                     type: write
-                    byte: [0x02, 0x03, 0x00, 0x22, 0x00, 0x01, 0x24, 0x33]
-                  - name: right
+                    byte: [0x06, 0x06, 0x00, 0x07, speed_0, big, crc16, little]
+                  - name: plc
+                    type: read
+                    byte: [0x06, 0x06, 0x00, 0x07, speed_00, big, crc16, little]
+                  - name: plc
                     type: write
-                    byte: [0x03, 0x03, 0x00, 0x22, 0x00, 0x01, 0x25, 0xe2]
-                  - name: steer
+                    byte: [0x06, 0x06, 0x00, 0x02, 0x00, 0x00, crc16, little]
+                  - name: plc
                     type: read
-                    byte: [0x05, 0x03, 0x02, pos_steer, big, crc16, little]
-                    except: [0x05, 0x83, errno, crc16, little]
-                  - name: left
+                    byte: [0x06, 0x06, 0x00, 0x02, 0x00, 0x00, crc16, little]
+              - name: move_disable
+                type: event
+                action_chain:
+                  - name: plc
+                    type: write
+                    byte: [0x06, 0x06, 0x00, 0x02, 0x00, 0x00, crc16, little]
+                  - name: plc
                     type: read
-                    byte: [0x02, 0x03, 0x02, vel_left, big, crc16, little]
-                    except: [0x02, 0x83, errno, crc16, little]
-                  - name: right
+                    byte: [0x06, 0x06, 0x00, 0x02, 0x00, 0x00, crc16, little]
+              - name: move_forward
+                type: event
+                speed_1: 7830
+                action_chain:
+                  - name: plc
+                    type: write
+                    byte: [0x06, 0x06, 0x00, 0x07, speed_1, big, crc16, little]
+                  - name: plc
                     type: read
-                    byte: [0x03, 0x03, 0x02, vel_right, big, crc16, little]
-                    except: [0x03, 0x83, errno, crc16, little]
+                    byte: [0x06, 0x06, 0x00, 0x07, speed_11, big, crc16, little]
+              - name: move_backward
+                type: event
+                speed_2: 18250
+                action_chain:
+                  - name: plc
+                    type: write
+                    byte: [0x06, 0x06, 0x00, 0x07, speed_2, big, crc16, little]
+                  - name: plc
+                    type: read
+                    byte: [0x06, 0x06, 0x00, 0x07, speed_22, big, crc16, little]
+              - name: steer_1
+                type: event
+                angle_1: 18250
+                action_chain:
+                  - name: plc
+                    type: write
+                    byte: [0x06, 0x06, 0x00, 0x0c, angle_1, big, crc16, little]
+                  - name: plc
+                    type: read
+                    byte: [0x06, 0x06, 0x00, 0x0c, angle_11, big, crc16, little]
+              - name: steer_2
+                type: event
+                angle_2: 9830
+                action_chain:
+                  - name: plc
+                    type: write
+                    byte: [0x06, 0x06, 0x00, 0x11, angle_2, big, crc16, little]
+                  - name: plc
+                    type: read
+                    byte: [0x06, 0x06, 0x00, 0x11, angle_22, big, crc16, little]
+              - name: steer_pwm
+                type: event
+                angle: 125
+                action_chain:
+                  - name: plc
+                    type: write
+                    byte: [0x06, 0x10, 0x00, 0x15, 0x00, 0x03, 0x06, 0x01, 0x00, 0x00, 0xfa, angle, big, crc16, little]
+                  - name: plc
+                    type: read
+                    byte: [0x06, 0x10, 0x00, 0x15, 0x00, 0x03, crc16, little]
+              - name: steer_left
+                type: event
+                angle: 125
+                angle_111: 23588
+                angle_222: 2533
+                action_chain:
+                  - name: plc
+                    type: write
+                    byte: [0x06, 0x06, 0x00, 0x11, angle_222, big, crc16, little]
+                  - name: plc
+                    type: read
+                    byte: [0x06, 0x06, 0x00, 0x11, angle_22, big, crc16, little]
+                  - name: plc
+                    type: write
+                    byte: [0x06, 0x06, 0x00, 0x0c, angle_111, big, crc16, little]
+                  - name: plc
+                    type: read
+                    byte: [0x06, 0x06, 0x00, 0x0c, angle_11, big, crc16, little]
+                  - name: plc
+                    type: write
+                    byte: [0x06, 0x10, 0x00, 0x15, 0x00, 0x03, 0x06, 0x01, 0x00, 0x00, 0xfa, angle, big, crc16, little]
+                  - name: plc
+                    type: read
+                    byte: [0x06, 0x10, 0x00, 0x15, 0x00, 0x03, crc16, little]
               - name: diagnostics
                 type: publish
         </rosparam>

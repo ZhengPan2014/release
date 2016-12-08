@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<launch>
+    <node name="rosbridge_sonar11" pkg="rosbridge_driver" type="rosbridge_driver" output="screen">
+        <rosparam>
+            port_chain:
+              - name: sonar
+                type: serial
+                serial_port: /dev/usb_right11
+                serial_baud: 9600
+                serial_stop: 1
+            topic_chain:
+              - name: sonar
+                type: publish
+                freq: 10.0
+                action_chain:
+                  - name: sonar
+                    type: write
+                    byte: [0x55]
+                  - name: sonar
+                    type: read
+                    byte: [sonar_data, big]
+                    time_out: 0.2
+                echo: sonar_data
+              - name: diagnostics
+                type: publish
+        </rosparam>
+    </node>
+</launch>

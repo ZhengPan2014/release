@@ -1,11 +1,8 @@
 <?xml version="1.0"?>
 <launch>
+    <include file="$(find bringup)/launch/map_server.launch"/>
 
-    <node name="map_server" pkg="map_server" type="map_server" args="map.yaml"/>
-
-    <node name="map_edit_server" pkg="map_server" type="map_server" args="map_edit.yaml" >
-        <remap from="map" to="map_edit"/>
-    </node>
+    <include file="$(find bringup)/launch/map_edit_server.launch"/>
 
     <node name="amcl" pkg="amcl" type="amcl" output="screen">
         <remap from="scan" to="scan_rectified" />

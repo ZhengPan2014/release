@@ -20,11 +20,12 @@
     <node name="tf_base_imu" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
         <rosparam>
             child_frame_id: base_imu
-            x: 0.0
-            z: 0.6
+            x: 0.28
+            z: 0.28
         </rosparam>
     </node>
 
+<!--
     <node name="tf_base_camera" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
         <rosparam>
             child_frame_id: camera_link
@@ -33,10 +34,107 @@
             z: 0.39            
         </rosparam>
     </node>
+-->
+
+    <node name="tf_base_laser_right" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+        <rosparam>
+            child_frame_id: base_laser_right
+            x: 0.00
+            y: -0.31
+            z: 0.24
+            yaw: 1.57
+            pitch: -1.57
+        </rosparam>
+    </node>
+
+    <node name="tf_base_sonar11" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+        <rosparam>
+            child_frame_id: base_sonar11
+            x: 0.34
+            y: 0.19
+            z: 0.30
+            yaw: 0.45
+        </rosparam>
+    </node>
+
+    <node name="tf_base_sonar12" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+        <rosparam>
+            child_frame_id: base_sonar12
+            x: 0.26
+            y: 0.23
+            z: 0.30
+            yaw: 1.34
+        </rosparam>
+    </node>
+
+    <node name="tf_base_sonar13" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+        <rosparam>
+            child_frame_id: base_sonar13
+            x: -0.26
+            y: 0.23
+            z: 0.30
+            yaw: 1.80
+        </rosparam>
+    </node>
+
+    <node name="tf_base_sonar14" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+        <rosparam>
+            child_frame_id: base_sonar14
+            x: -0.34
+            y: 0.19
+            z: 0.30
+            yaw: 2.69
+        </rosparam>
+    </node>
+
+    <node name="tf_base_sonar21" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+        <rosparam>
+            child_frame_id: base_sonar21
+            x: 0.34
+            y: -0.19
+            z: 0.30
+            yaw: -0.45
+        </rosparam>
+    </node>
+
+    <node name="tf_base_sonar22" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+        <rosparam>
+            child_frame_id: base_sonar22
+            x: 0.26
+            y: -0.23
+            z: 0.30
+            yaw: -1.34
+        </rosparam>
+    </node>
+
+    <node name="tf_base_sonar23" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+        <rosparam>
+            child_frame_id: base_sonar23
+            x: -0.26
+            y: -0.23
+            z: 0.30
+            yaw: -1.80
+        </rosparam>
+    </node>
+
+    <node name="tf_base_sonar24" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+        <rosparam>
+            child_frame_id: base_sonar24
+            x: -0.34
+            y: -0.19
+            z: 0.30
+            yaw: -2.69
+        </rosparam>
+    </node>
 
     <node name="robot_pose_publisher" pkg="robot_pose_publisher" type="robot_pose_publisher" output="screen"/>
 
-    <include file="$(find bringup)/launch/rosbridge_aqmd.launch"/>
+    <include file="$(find bringup)/launch/rosbridge_aqmd.launch">       
+    </include>
+    <include file="$(find bringup)/launch/rosbridge_imu6050.launch">       
+    </include>
+   <!--<include file="$(find bringup)/launch/rosbridge_sonar.launch">       
+    </include>-->
 
     <node name="urg_node" pkg="urg_node" type="urg_node" output="screen">
         <rosparam>
@@ -92,8 +190,30 @@
         </rosparam>
     </node>
     
-    <param name="camera/driver/data_skip" value="9"/>
-    <include file="$(find bringup)/launch/3dsensor.launch"/>
+    <param name="camera/driver/data_skip" value="5"/>
+    <!-- include file="$(find bringup)/launch/3dsensor.launch"/-->
+    <include file="$(find yocs_cmd_vel_mux)/launch/standalone.launch"/>
+    <!-- <node name="rplidar_right" pkg="rplidar_ros" type="rplidarNode" output="screen">
+        <remap from="scan" to="scan_right"/>
+        <rosparam>
+            serial_port: /dev/usb_right
+            serial_baudrate: 115200
+            frame_id: base_laser_right
+            inverted: false
+            angle_compensate: true
+        </rosparam>
+    </node>
+
+    <node name="scan_point_right" pkg="laser_assembler" type="laser_scan_assembler" output="screen">
+        <remap from="scan" to="scan_right"/>
+        <rosparam>
+            fixed_frame: base_laser_right
+        </rosparam>
+    </node>
+
+    <node name="periodic_snapshotter_right" pkg="periodic_snapshotter" type="periodic_snapshotter" output="screen">
+        <remap from="assembled_cloud" to="assembled_cloud_right"/>
+    </node>-->
 
     <!-- Use this to debug aggregator node in GDB -->
     <!-- launch-prefix="xterm -e gdb -args"  -->
