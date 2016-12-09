@@ -37,6 +37,14 @@
               - name: stm32wangke
                 type: serial
                 serial_port: /dev/ttySx
+                action_chain:
+                  - name: stm32wangke
+                    type: write
+                    byte: [0xaa, 0x55, 0x01, 0x00, 0x00, 0x02, 0x0a, crc16, big]
+                  - name: stm32wangke
+                    type: read
+                    byte: [0xaa, 0x55, 0x01, 0x00, 0x02, 0x02, 0x0a, errmodel, errcode, crc16, big]
+                    except: [0xaa, 0x55, 0x01, 0x00, errlen, 0x02, 0x0a, errmodel, errcode, crc16, big]
             topic_chain:
               - name: cmd_vel
                 type: subscribe
