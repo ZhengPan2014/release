@@ -41,6 +41,7 @@
               - name: cmd_vel
                 type: subscribe
                 freq: 5.0
+                stop_mode: free_stop
                 wheel_model: diff
                 wheel_track: 0.2201
                 wheel_ratio: 23333.0
