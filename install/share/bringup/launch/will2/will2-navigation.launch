@@ -13,8 +13,6 @@
         </rosparam>
     </node>
 
-    <node name="robot_pose_publisher" pkg="robot_pose_publisher" type="robot_pose_publisher" output="screen"/>
-
     <node name="move_base" pkg="move_base" type="move_base" respawn="false" output="screen">
         <remap from="odom" to="/odom_0"/>
         <rosparam>

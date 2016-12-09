@@ -29,8 +29,6 @@
             z: 0.88
         </rosparam>
     </node>
-
-    <node name="robot_pose_publisher" pkg="robot_pose_publisher" type="robot_pose_publisher" output="screen"/>
  
     <node name="rosbridge_stm32wangke" pkg="rosbridge_driver" type="rosbridge_driver" output="screen">
         <remap from="imu" to="imu_data"/>
@@ -130,4 +128,6 @@
             vo_used: false
         </rosparam>
     </node>
+
+    <node name="robot_pose_publisher" pkg="robot_pose_publisher" type="robot_pose_publisher" output="screen"/>
 </launch>
