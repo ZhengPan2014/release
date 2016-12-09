@@ -1,8 +1,12 @@
 source ~/catkin_ws/base.sh;
 
 roscd bringup;
-if [ -d "auth/$ROS_USER_MODEL" ]; then
-    ROS_USER_AUTH="true";
+if [ true == $ROS_USER_VALID ]; then
+    if [ -d "auth/$ROS_USER_MODEL" ]; then
+        ROS_USER_AUTH="true";
+    else
+        ROS_USER_AUTH="false";
+    fi;
 else
     ROS_USER_AUTH="false";
 fi;
