@@ -36,6 +36,7 @@ analyzers:
         <rosparam>
             time_duration: 7.0
             init_cmd: invalid
+            string_prefix: "gnome-terminal -x bash -c '"
         </rosparam>
     </node>
 
