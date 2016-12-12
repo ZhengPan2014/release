@@ -1,8 +1,0 @@
-prefix=/home/ouiyeah/catkin_ws/install
-
-Name: fulanghua_mcl
-Description: Description of fulanghua_mcl
-Version: 0.0.0
-Cflags: 
-Libs: -L/home/ouiyeah/catkin_ws/install/lib 
-Requires: 
