@@ -1,0 +1,382 @@
+<?xml version="1.0"?>
+<launch>
+    <node name="rosbridge_websocket" pkg="rosbridge_server" type="rosbridge_websocket" output="screen">
+        <rosparam>
+            port: 9090 #16807
+        </rosparam>
+    </node>
+
+    <node name="rosbridge_tcp" pkg="rosbridge_server" type="rosbridge_tcp" output="screen">
+        <rosparam>
+            port: 9090 #9091
+        </rosparam>
+    </node>
+
+    <node name="rosapi" pkg="rosapi" type="rosapi_node" output="screen"/>
+ 
+    <node name="system_shell" pkg="system_shell" type="system_shell" output="screen">
+        <rosparam>
+            time_duration: 7.0
+            string_prefix: lxterminal -e 'bash -c "source /opt/ros/indigo/setup.bash; source ~/catkin_ws/devel/setup.bash; "
+            init_cmd: ls
+        </rosparam>
+    </node>
+ 
+    <node name="tf_base_footprint" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+        <rosparam>
+            pub_rate: 50
+            frame_id: base_footprint
+            z: 0.0
+        </rosparam>
+    </node>
+
+    <node name="tf_base_laser" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+        <rosparam>
+            pub_rate: 50
+            child_frame_id: base_laser
+            x: 0.0
+            z: 0.0
+        </rosparam>
+    </node>
+
+    <node name="tf_base_imu" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+        <rosparam>
+            pub_rate: 50
+            child_frame_id: base_imu
+            x: 0.0
+            y: 0.0
+            z: 0.0
+        </rosparam>
+    </node>
+
+    <node name="tf_base_carema" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+        <rosparam>
+            pub_rate: 50
+            child_frame_id: base_camera
+            x: 0.09
+            z: 1.23
+        </rosparam>
+    </node>
+ 
+    <node name="robot_pose_publisher" pkg="robot_pose_publisher" type="robot_pose_publisher" output="screen"/>
+ 
+    <node name="stm32_driver" pkg="stm32_driver" type="stm32_driver" output="screen">
+        <rosparam>
+            has_encoder: true
+            wheel_separation: 0.4402
+            tty_name: /dev/ttyUSB0
+        </rosparam>
+    </node>
+      
+    <node name="aqmd_driver" pkg="aqmd_driver" type="aqmd_driver" output="screen">
+        <remap from="cmd_vel" to="cmd_vel_smoothed"/>
+        <rosparam>
+            is_pub_tf: true
+            wheel_mode: diff
+            wheel_speed: 23333
+            wheel_separation: 0.43
+            tty_name: /dev/ttyUSB0
+            has_encoder: true
+            encoder_freq: 50.0
+        </rosparam>
+    </node>
+
+    <node name="cob_base_velocity_smoother" pkg="cob_base_velocity_smoother" type="cob_base_velocity_smoother" output="screen">
+        <remap from="input" to="cmd_vel"/>
+        <remap from="output" to="cmd_vel_smoothed"/>
+        <rosparam>
+            circular_buffer_capacity: 12
+            maximal_time_delay: 0.2
+            thresh_max_acc: 0.5
+            loop_rate: 7.0 #30.0
+            min_input_rate: 0.1 #9.0
+            maximal_time_delay_to_stop: 4.0
+        </rosparam>
+    </node> 
+
+    <node name="jsnode" pkg="joy" type="joy_node" />
+
+    <node name="teleop_joystick" pkg="teleop_joystick" type="teleop_joystick" output="screen">
+        <remap from="teleop_joystick/joy_cmd_vel" to="cmd_vel"/>
+        <remap from="teleop_joystick/joy" to="joy"/>
+        <rosparam>
+            linear_vel_base: 0.5
+            angular_vel_base: 1.0
+            micro_vel_factor: 0.1
+        </rosparam>
+    </node>
+ 
+    <node name="teleop_keyboard" pkg="teleop_keyboard" type="teleop_keyboard" output="screen"/>
+ 
+    <node name="urg_node" pkg="urg_node" type="urg_node" output="screen">
+        <rosparam>
+            ip_address: #192.168.0.10
+            frame_id: laser #base_laser
+            publish_multiecho: false #true
+            angle_min: -&pi #-1.57
+            angle_max: &pi #1.57
+            skip: 0 #1
+        </rosparam>
+    </node>
+ 
+    <node name="rplidar_node" pkg="rplidar_ros" type="rplidarNode" output="screen">
+        <rosparam>
+            serial_port: /dev/tty-rplidar
+            serial_baudrate: 115200
+            frame_id: base_laser
+            inverted: false
+            angle_compensate: true
+        </rosparam>
+    </node>
+ 
+    <include file="$(find velodyne_pointcloud)/launch/VLP16_points.launch"/>
+  
+    <node name="scan_filter" pkg="laser_filters" type="scan_to_scan_filter_chain" output="screen">
+        <remap from="scan" to="scan"/>
+        <remap from="scan_filtered" to="scan_filtered"/>
+        <rosparam>
+            scan_filter_chain:
+            - type: laser_filters/LaserArrayFilter
+              name: laser_median_filter
+              params: 
+                range_filter_chain:
+                  - name: median_5
+                    type: filters/MultiChannelMedianFilterFloat 
+                    params:
+                      number_of_observations: 5
+                      unused: 10
+                intensity_filter_chain:
+                  - name: median_5
+                    type: filters/MultiChannelMedianFilterFloat 
+                    params:
+                      number_of_observations: 5
+                      unused: 10
+        </rosparam>
+    </node>
+
+    <node name="cob_scan_unifier" pkg="cob_scan_unifier" type="scan_unifier_node" output="screen">
+        <rosparam>
+            input_scans: ["first", "last"]
+            loop_rate: 30.0
+        </rosparam>
+    </node>
+
+    <node name="scan_rectifier" pkg="bringup" type="scan_rectifier" output="screen">
+        <remap from="scan_input" to="scan_unified"/>
+        <remap from="scan_output" to="scan_rectified"/>
+        <rosparam>
+            max_range: 20.0
+        </rosparam>
+    </node>
+
+    <node name="robot_pose_ekf" pkg="robot_pose_ekf" type="robot_pose_ekf">
+        <remap from="imu_data" to="gyro" />
+        <rosparam>
+            output_frame: odom
+            base_footprint_frame: base_footprint
+            freq: 20.0
+            sensor_timeout: 1.0
+            odom_used: true
+            imu_used: false
+            vo_used: false
+        </rosparam>
+    </node>
+
+    <node name="map_server" pkg="map_server" type="map_server" args="$(find bringup)/param/map.yaml"/>
+
+    <node name="map_edit_server" pkg="map_server" type="map_server" args="$(find bringup)/param/map_edit.yaml" >
+        <remap from="map" to="map_edit"/>
+    </node>
+
+    <node name="map_saver" pkg="map_server" type="map_saver" args="-f $(find bringup)/param/map" output="screen"/>
+
+    <node name="map_as_saver" pkg="map_server" type="map_saver" args="-f $(find bringup)/param/map" output="screen">
+        <remap from="map" to="map_as" />
+    </node>
+
+    <node name="map_edit_saver" pkg="map_server" type="map_saver" args="-f $(find bringup)/param/map_edit" output="screen"/>
+
+    <node name="map_edit_as_saver" pkg="map_server" type="map_saver" args="-f $(find bringup)/param/map_edit" output="screen">
+        <remap from="map" to="map_edit_as" />
+    </node>
+
+    <node name="slam_gmapping" pkg="gmapping" type="slam_gmapping" output="screen">
+        <remap from="scan" to="scan_rectified"/>
+        <rosparam>
+            maxUrange: 80.0 #19.9
+            minimumScore: 0.0 #600
+            xmin: -100.0 #-20.0
+            ymin: -100.0 #-20.0
+            xmax: 100.0 #20.0
+            ymax: 100.0 #20.0
+            delta: 0.05 #0.075
+            transform_publish_period: 0.05 #0.0
+            maxRange: #20.0 #maxUrange < maximum range of the real sensor <= maxRange
+        </rosparam>
+    </node>
+
+    <node name="hector_mapping" pkg="hector_mapping" type="hector_mapping" output="screen">
+        <rosparam>
+            map_frame: map_link #map
+            map_resolution: 0.025 #0.075
+            map_size: 1024 #2048
+            map_pub_period: 2.0 #10.0
+            laser_max_dist: 30.0 #80.0
+            pub_map_odom_transform: true #false
+            scan_subscriber_queue_size: 5 #50
+            pub_map_scanmatch_transform: true #false
+            tf_map_scanmatch_transform_frame_name: scanmatcher_frame #odom
+        </rosparam>
+    </node>
+
+    <node name="amcl" pkg="amcl" type="amcl" output="screen">
+        <remap from="scan" to="scan_rectified" />
+        <rosparam>
+            use_map_topic: false #true
+            odom_model_type: diff #omni
+            tf_broadcast: true #false
+        </rosparam>
+    </node>
+
+    <node name="move_base" pkg="move_base" type="move_base" respawn="false" output="screen">
+        <remap from="odom" to="/odom_0"/>
+        <rosparam>
+            base_global_planner: "global_planner/GlobalPlanner" #"navfn/NavfnROS"
+            base_local_planner: "dwa_local_planner/DWAPlannerROS" #"teb_local_planner/TebLocalPlannerROS"
+            recovery_behaviors:
+              - name: 'conservative_reset'
+                type: 'clear_costmap_recovery/ClearCostmapRecovery'
+              - name: 'aggressive_reset'
+                type: 'clear_costmap_recovery/ClearCostmapRecovery'
+            conservative_reset:
+                reset_distance: 3.0 #0.0
+                layer_names: [obstacles] #[obstacle_layer]
+            rotate_recovery:
+                frequency: 20.0 #10.0
+            aggressive_reset:
+                reset_distance: 3.0 #0.0
+                layer_names: [obstacles] #[obstacle_layer]
+            controller_frequency: 5.0
+            planner_patience: 5.0 #0.1
+            controller_patience: 15.0 #0.3
+            conservative_reset_dist: 3.0 #0.25
+            recovery_behavior_enabled: true #false
+            clearing_rotation_allowed: true #false
+            oscillation_timeout: 10.0
+            planner_frequency: 0.0 #1.0
+            global_costmap:
+                global_frame: map
+                robot_base_frame: base_footprint
+                transform_tolerance: 0.2 #0.5
+                update_frequency: 2.0 #5.0
+                publish_frequency: 0.5 #0.0
+                static_map: true
+                robot_radius: 0.25 <!-- groovy -->
+                resolution: 0.075
+                plugins:
+                  - name: static_layer
+                    type: "costmap_2d::StaticLayer"
+                  - name: obstacle_layer
+                    type: "costmap_2d::ObstacleLayer"
+                  - name: inflation_layer
+                    type: "costmap_2d::InflationLayer"
+                static_layer:
+                    map_topic: /map_edit
+                obstacle_layer:
+                    observation_sources: scan_rectified
+                    scan_rectified:
+                        expected_update_rate: 5.0
+                        data_type: LaserScan
+                        clearing: true
+                        max_obstacle_height: 1.0
+                        min_obstacle_height: -1.0
+                        inf_is_valid: true
+                    track_unknown_space: false #true
+                    z_voxels: 8
+                inflation_layer:
+                    inflation_radius: 0.6 #0.55
+                    cost_scaling_factor: 5 #10
+            local_costmap:
+                global_frame: odom
+                robot_base_frame: base_footprint
+                transform_tolerance: 0.2 #0.5
+                update_frequency: 5.0
+                publish_frequency: 2.0 #0.5
+                robot_radius: 0.25 <!-- groovy -->
+                static_map: false
+                rolling_window: true
+                width: 6.0
+                height: 6.0
+                resolution: 0.075
+                plugins:
+                  - name: obstacle_layer
+                    type: "costmap_2d::ObstacleLayer"
+                  - name: inflation_layer
+                    type: "costmap_2d::InflationLayer"
+                obstacle_layer:
+                    observation_sources: scan_rectified
+                    scan_rectified:
+                        expected_update_rate: 5.0
+                        data_type: LaserScan
+                        clearing: true
+                        max_obstacle_height: 1.0
+                        min_obstacle_height: -1.0
+                        inf_is_valid: true
+                    track_unknown_space: false #true
+                    z_voxels: 8
+                inflation_layer:
+                    inflation_radius: 0.6 #0.55
+                    cost_scaling_factor: 5 #10
+            GlobalPlanner:
+                allow_unknown: true #false
+            TrajectoryPlannerROS:
+                acc_lim_x: 2.5 #1.0
+                acc_lim_y: 2.5 #0.0 #1.0
+                acc_lim_theta: 3.2 #2.0
+                holonomic_robot: true #false
+                yaw_goal_tolerance: 0.05 #0.15
+                xy_goal_tolerance: 0.10 #0.15
+                latch_xy_goal_tolerance: false #true
+                meter_scoring: true
+                occdist_scale: 0.5 #0.01
+                heading_scoring: true
+                heading_scoring_timestep: 1.0 #0.8
+                dwa: true
+                #global_frame_id: odom
+                oscillation_reset_dist: 0.075
+            DWAPlannerROS:
+                acc_lim_x: 2.0 #slow 1.0, fast 2.0
+                acc_lim_y: 2.0
+                acc_lim_th: 2.0 #slow 2.0, fast 3.2
+                max_trans_vel: 1.0
+                min_trans_vel: 0.1
+                max_vel_x: 1.0
+                min_vel_x: 0.0
+                max_vel_y: 1.0
+                min_vel_y: -1.0
+                yaw_goal_tolerance: 0.2 #0.05
+                xy_goal_tolerance: 0.075 #0.10
+                latch_xy_goal_tolerance: true 
+                sim_granularity: 0.025 #0.075
+                vx_samples: 6
+                vy_samples: 1
+                penalize_negative_x: false #true
+                path_distance_bias: 64.0 #32.0
+                occdist_scale: 0.5
+                oscillation_reset_dist: 0.075
+            TebLocalPlannerROS:
+                min_turning_radius: 0.5
+                wheelbase: 0.4
+                cmd_angle_instead_rotvel: True
+                footprint_model: # types: "point", "circular", "two_circles", "line", "polygon"
+                    type: "line"
+                    line_start: [0.0, 0.0] # for type "line"
+                    line_end: [0.4, 0.0] # for type "line"
+                min_obstacle_dist: 0.25
+        </rosparam>
+    </node>
+
+<!-- 
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find rplidar_ros)/rviz/rplidar.rviz"/>
+ -->
+</launch>

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<launch>
+    <node name="aqmd_driver" pkg="aqmd_driver" type="aqmd_driver" output="screen">
+        <rosparam>
+            is_pub_tf: false
+            has_encoder: false
+            wheel_speed: 4586
+            wheel_track: 0.43
+            tty_name_l: /dev/left_wheel
+            tty_name_r: /dev/right_wheel
+        </rosparam>
+    </node>
+
+    <node name="teleop_keyboard" pkg="teleop_keyboard" type="teleop_keyboard" output="screen"/>
+</launch>
