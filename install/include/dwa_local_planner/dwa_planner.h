@@ -71,7 +71,7 @@ namespace dwa_local_planner {
     public:
       /**
        * @brief  Constructor for the planner
-       * @param name The name of the planner 
+       * @param name The name of the planner
        * @param costmap_ros A pointer to the costmap instance the planner should use
        * @param global_frame the frame id of the tf frame to use
        */
@@ -101,16 +101,15 @@ namespace dwa_local_planner {
 
       /**
        * @brief Given the current position and velocity of the robot, find the best trajectory to exectue
-       * @param global_pose The current position of the robot 
-       * @param global_vel The current velocity of the robot 
+       * @param global_pose The current position of the robot
+       * @param global_vel The current velocity of the robot
        * @param drive_velocities The velocities to send to the robot base
        * @return The highest scoring trajectory. A cost >= 0 means the trajectory is legal to execute.
        */
       base_local_planner::Trajectory findBestPath(
           tf::Stamped<tf::Pose> global_pose,
           tf::Stamped<tf::Pose> global_vel,
-          tf::Stamped<tf::Pose>& drive_velocities,
-          std::vector<geometry_msgs::Point> footprint_spec);
+          tf::Stamped<tf::Pose>& drive_velocities);
 
       /**
        * @brief  Take in a new global plan for the local planner to follow, and adjust local costmaps
@@ -141,6 +140,11 @@ namespace dwa_local_planner {
        * sets new plan and resets state
        */
       bool setPlan(const std::vector<geometry_msgs::PoseStamped>& orig_global_plan);
+
+      /**
+       * sets footprint_spec_
+       */
+      void setFootprintSpec(std::vector<geometry_msgs::Point> footprint_spec);
 
     private:
 
