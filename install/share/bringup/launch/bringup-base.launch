@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <launch>
     <node name="rosbridge_shell" pkg="rosbridge_shell" type="rosbridge_shell" output="screen">
-        <rosparam unless="$(optenv ROS_USER_VALID true)">
-            init_cmd: invalid
+        <rosparam if="$(optenv ROS_USER_VALID false)">
+            init_cmd: navigation
         </rosparam>
     </node>
 </launch>

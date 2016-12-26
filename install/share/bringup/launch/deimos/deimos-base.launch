@@ -1,34 +1,43 @@
 <?xml version="1.0"?>
 <launch>
-    <node name="rosbridge_shell" pkg="rosbridge_shell" type="rosbridge_shell" output="screen"/>
+    <include file="$(find bringup)/launch/bringup-base.launch"/>
 
     <!-- Use this to debug aggregator node in GDB -->
     <!-- launch-prefix="xterm -e gdb -args"  -->
     <node name="diagnostic_aggregator" pkg="diagnostic_aggregator" type="aggregator_node" args="CPP" output="screen">
         <rosparam>
-analyzers:
-  device:
-    type: diagnostic_aggregator/AnalyzerGroup
-    path: device
-    analyzers:
-      odom_left:
-        type: diagnostic_aggregator/GenericAnalyzer
-        path: odom_l
-        timeout: 5.0
-        find_and_remove_prefix: left
-        num_items: 2
-      odom_right:
-        type: diagnostic_aggregator/GenericAnalyzer
-        path: odom_r
-        timeout: 5.0
-        find_and_remove_prefix: right
-        num_items: 2
-      joystick:
-        type: diagnostic_aggregator/GenericAnalyzer
-        path: 'joystick'
-        timeout: 5.0
-        startswith: ['Battery', 'Charging State', 'Connection', 'ps3_joy']
-        remove_prefix: 'ps3_joy'
+            analyzers:
+              status:
+                type: diagnostic_aggregator/AnalyzerGroup
+                path: status
+                analyzers:
+                  ros_mode:
+                    type: diagnostic_aggregator/GenericAnalyzer
+                    path: ros_mode
+                    timeout: 5.0
+                    find_prefix: ros
+              device:
+                type: diagnostic_aggregator/AnalyzerGroup
+                path: device
+                analyzers:
+                  odom_left:
+                    type: diagnostic_aggregator/GenericAnalyzer
+                    path: odom_l
+                    timeout: 5.0
+                    find_and_remove_prefix: left
+                    num_items: 2
+                  odom_right:
+                    type: diagnostic_aggregator/GenericAnalyzer
+                    path: odom_r
+                    timeout: 5.0
+                    find_and_remove_prefix: right
+                    num_items: 2
+                  joystick:
+                    type: diagnostic_aggregator/GenericAnalyzer
+                    path: 'joystick'
+                    timeout: 5.0
+                    startswith: ['Battery', 'Charging State', 'Connection', 'ps3_joy']
+                    remove_prefix: 'ps3_joy'
         </rosparam>
     </node>
 
@@ -55,32 +64,7 @@ analyzers:
             z: 0.07
         </rosparam>
     </node>
-    
-    <node name="robot_pose_publisher" pkg="robot_pose_publisher" type="robot_pose_publisher" output="screen"/>
-<!-- 
-    <include file="$(find bringup)/launch/rosbridge_stm32wangke.launch"/>
 
-    <node name="stm32_driver" pkg="stm32_driver" type="stm32_driver" output="screen">
-        <remap from="imu" to="imu_data" />
-        <rosparam>
-            is_pub_tf: false
-            has_encoder: true
-            wheel_separation: 0.37
-            tty_name: /dev/ttyS2
-        </rosparam>
-    </node>
--->
-    <node name="urg_node" pkg="urg_node" type="urg_node" output="screen">
-        <rosparam>
-            ip_address: 192.168.0.10
-            frame_id: base_laser
-            publish_multiecho: false
-            angle_min: -2.27
-            angle_max: 2.27
-            skip: 0
-        </rosparam>
-    </node>
-  
     <node name="scan_filter" pkg="laser_filters" type="scan_to_scan_filter_chain" output="screen">
         <remap from="scan" to="scan"/>
         <remap from="scan_filtered" to="scan_filtered"/>
@@ -124,4 +108,5 @@ analyzers:
         </rosparam>
     </node>
 
+    <node name="robot_pose_publisher" pkg="robot_pose_publisher" type="robot_pose_publisher"/>
 </launch>
