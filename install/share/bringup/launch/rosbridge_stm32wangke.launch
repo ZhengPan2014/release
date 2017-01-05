@@ -39,7 +39,7 @@
                     type: read
                     # byte: [0xaa, 0x55, 0x01, 0x00, 0x06, 0x02, 0x43, errmodel, errcode, vel_left, big, vel_right, big, crc16, big]
                     # except: [0xaa, 0x55, 0x01, 0x00, errlen, 0x02, 0x43, errmodel, errcode, crc16, big]
-                    byte: [0xaa, 0x55, 0x01, 0x00, 0x0e, 0xf0, 0x1a, errmodel, errcode, vel_left, big, vel_right, big, imu_delta, little, int_roll, little, int_yaw, little, imu_status, little, crc16, big]
+                    byte: [0xaa, 0x55, 0x01, 0x00, 0x0e, 0xf0, 0x1a, errmodel, errcode, vel_left, big, vel_right, big, int_gyr_z, little, int_roll, little, int_yaw, little, imu_status, little, crc16, big]
                     except: [0xaa, 0x55, 0x01, 0x00, errlen, 0xf0, 0x1a, errmodel, errcode, crc16, big]
               - name: waypoint_user_pub
                 type: subscribe

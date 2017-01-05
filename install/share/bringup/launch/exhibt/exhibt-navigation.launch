@@ -15,13 +15,12 @@
        <arg name="initial_pose_a" value="0.0"/>
     </include>
 
-    <!--<include file="$(find bringup)/launch/rosbridge_stm32wubing.launch"/>-->
 
     <node name="robot_pose_publisher" pkg="robot_pose_publisher" type="robot_pose_publisher" output="screen"/>
 
     <node name="move_base" pkg="move_base" type="move_base" respawn="false" output="screen">
         <remap from="odom" to="/odom_0"/>
-        <remap from="cmd_vel" to="/yocs_cmd_vel_mux/input/navigation"/>
+        <remap from="cmd_vel" to="/yocs_cmd_vel_mux/input/navigation"/> 
         <rosparam>
             base_global_planner: "navfn/NavfnROS"
             base_local_planner: "dwa_local_planner/DWAPlannerROS"
@@ -81,7 +80,7 @@
                         min_obstacle_height: 0.2          
                     track_unknown_space: false #true
                     z_voxels: 8
-       
+
                 inflation_layer:
                     inflation_radius: 0.75
                     cost_scaling_factor: 5.0
@@ -99,8 +98,7 @@
                 resolution: 0.075
                 plugins:
                   - name: obstacle_layer
-                    type: "costmap_2d::ObstacleLayer"
-              
+                    type: "costmap_2d::ObstacleLayer"            
                   - name: inflation_layer
                     type: "costmap_2d::InflationLayer"
                 obstacle_layer:
@@ -122,7 +120,7 @@
                         min_obstacle_height: 0.2
                     track_unknown_space: false #true
                     z_voxels: 8
-  
+
                 inflation_layer:
                     inflation_radius: 0.75
                     cost_scaling_factor: 5.0 #1
@@ -176,12 +174,4 @@
         </rosparam>
     </node>
       
-    <!--<node pkg="nodelet" type="nodelet" name="nodelet_manager_nav" args="manager"/>
-    <node pkg="nodelet" type="nodelet" name="velocity_smoother_nav" args="load yocs_velocity_smoother/VelocitySmootherNodelet nodelet_manager_nav" output="screen">
-        <rosparam file="$(find bringup)/param/y_velocity_smoother.yaml" command="load"/>
-        <remap from="velocity_smoother_nav/odometry" to="odom"/>
-        <remap from="velocity_smoother_nav/robot_cmd_vel" to="cmd_vel"/>
-        <remap from="velocity_smoother_nav/raw_cmd_vel" to="nav_cmd_vel"/>
-        <remap from="velocity_smoother_nav/smooth_cmd_vel" to="cmd_vel"/>
-    </node-->
 </launch>

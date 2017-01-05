@@ -87,13 +87,21 @@
         </rosparam>
     </node>
 
-    <node name="tf_base_sonar21" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+ <!--   <node name="tf_base_sonar21" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
         <rosparam>
             child_frame_id: base_sonar21
             x: 0.34
             y: -0.19
             z: 0.30
             yaw: -0.45
+        </rosparam>
+    </node>-->
+    <node name="tf_base_sonar21" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+        <rosparam>
+            child_frame_id: base_sonar21
+            x: 0.34
+            y: 0.0
+            z: 0.05
         </rosparam>
     </node>
 
@@ -105,8 +113,8 @@
             z: 0.30
             yaw: -1.34
         </rosparam>
-    </node>
-
+    </node> 
+            
     <node name="tf_base_sonar23" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
         <rosparam>
             child_frame_id: base_sonar23
@@ -131,10 +139,10 @@
 
     <include file="$(find bringup)/launch/rosbridge_aqmd.launch">       
     </include>
-    <include file="$(find bringup)/launch/rosbridge_imu6050.launch">       
+    <include file="$(find bringup)/launch/rosbridge_imu9250.launch">       
     </include>
-   <!--<include file="$(find bringup)/launch/rosbridge_sonar.launch">       
-    </include>-->
+    <include file="$(find bringup)/launch/rosbridge_sonar.launch">       
+    </include> 
 
     <node name="urg_node" pkg="urg_node" type="urg_node" output="screen">
         <rosparam>
@@ -193,30 +201,7 @@
     <param name="camera/driver/data_skip" value="5"/>
     <!-- include file="$(find bringup)/launch/3dsensor.launch"/-->
     <include file="$(find yocs_cmd_vel_mux)/launch/standalone.launch"/>
-    <!-- <node name="rplidar_right" pkg="rplidar_ros" type="rplidarNode" output="screen">
-        <remap from="scan" to="scan_right"/>
-        <rosparam>
-            serial_port: /dev/usb_right
-            serial_baudrate: 115200
-            frame_id: base_laser_right
-            inverted: false
-            angle_compensate: true
-        </rosparam>
-    </node>
 
-    <node name="scan_point_right" pkg="laser_assembler" type="laser_scan_assembler" output="screen">
-        <remap from="scan" to="scan_right"/>
-        <rosparam>
-            fixed_frame: base_laser_right
-        </rosparam>
-    </node>
-
-    <node name="periodic_snapshotter_right" pkg="periodic_snapshotter" type="periodic_snapshotter" output="screen">
-        <remap from="assembled_cloud" to="assembled_cloud_right"/>
-    </node>-->
-
-    <!-- Use this to debug aggregator node in GDB -->
-    <!-- launch-prefix="xterm -e gdb -args"  -->
     <node name="diagnostic_aggregator" pkg="diagnostic_aggregator" type="aggregator_node" args="CPP" output="screen">
         <rosparam>
 analyzers:
