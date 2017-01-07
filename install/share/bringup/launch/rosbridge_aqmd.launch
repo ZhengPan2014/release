@@ -35,6 +35,7 @@
               - name: odom
                 type: publish
                 freq: 50.0
+                odom_yaw_covariance: 0.5
                 action_chain:
                   - name: wheel_left
                     type: write
