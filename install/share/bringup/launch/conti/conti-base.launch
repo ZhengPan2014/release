@@ -31,8 +31,8 @@
             x: 0.135
             y: 0.321
             z: 0.200
-            yaw: 1.57
-            pitch: -1.57
+            yaw: 2.356
+            pitch: 1.57
         </rosparam>
     </node>
 
@@ -42,7 +42,7 @@
             x: 0.135
             y: -0.321
             z: 0.200
-            yaw: 1.57
+            yaw: -2.356
             pitch: -1.57
         </rosparam>
     </node>
@@ -50,9 +50,10 @@
     <node name="robot_pose_publisher" pkg="robot_pose_publisher" type="robot_pose_publisher" output="screen"/>
 
     <include file="$(find bringup)/launch/$(optenv ROS_USER_MODEL)/$(optenv ROS_USER_MODEL rosbridge)-driver.launch"/>       
+<!--
     <include file="$(find bringup)/launch/rosbridge_imu9250.launch">       
     </include>
-
+-->
     <node name="teleop_keyboard" pkg="teleop_keyboard" type="teleop_keyboard" output="screen"/>
 
     <node name="sick_tim551_2050001" pkg="sick_tim" type="sick_tim551_2050001" respawn="false" output="screen">
@@ -71,7 +72,7 @@
       <param name="range_max" type="double" value="25.0" />
     <!-- Uncomment this to enable TCP instead of USB connection; 'hostname' is the host name or IP address of the laser scanner
     In cases where a race condition exists and the computer boots up before the TIM is ready, increase 'timelimit.'-->
-         <param name="hostname" type="string" value="192.168.0.83" />
+         <param name="hostname" type="string" value="192.168.1.188" />
          <param name="port" type="string" value="2112" />
          <param name="timelimit" type="int" value="5" />
     </node>

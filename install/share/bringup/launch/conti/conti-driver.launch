@@ -5,17 +5,17 @@
             port_chain:
               - name: wheel_left
                 type: serial
-                serial_port: /dev/usb_top
+                serial_port: /dev/usb_left1
               - name: wheel_right
                 type: serial
-                serial_port: /dev/usb_bottom
+                serial_port: /dev/usb_left2
             topic_chain:
               - name: cmd_vel
                 type: subscribe
                 stop_mode: free_stop #emergency_stop
                 wheel_model: diff
-                wheel_track: 0.2287
-                wheel_ratio: 17721.0
+                wheel_track: 0.265 #0.2287
+                wheel_ratio: 23333.3
                 wheel_phase_reverse: true
                 action_chain:
                   - name: wheel_left
