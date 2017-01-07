@@ -49,8 +49,7 @@
 
     <node name="robot_pose_publisher" pkg="robot_pose_publisher" type="robot_pose_publisher" output="screen"/>
 
-    <include file="$(find bringup)/launch/rosbridge_aqmd.launch">       
-    </include>
+    <include file="$(find bringup)/launch/$(optenv ROS_USER_MODEL)/$(optenv ROS_USER_MODEL rosbridge)-driver.launch"/>       
     <include file="$(find bringup)/launch/rosbridge_imu9250.launch">       
     </include>
 

@@ -15,7 +15,7 @@
         </rosparam>
     </node>
 
-    <include file="$(find bringup)/launch/rosbridge_aqmd.launch"/>
+    <include file="$(find bringup)/launch/$(optenv ROS_USER_MODEL)/$(optenv ROS_USER_MODEL rosbridge)-driver.launch"/>       
 
     <node name="robot_pose_ekf" pkg="robot_pose_ekf" type="robot_pose_ekf">
         <rosparam>

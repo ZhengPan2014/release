@@ -1,0 +1,165 @@
+<?xml version="1.0"?>
+<launch>
+    <node name="rosbridge_aqmd" pkg="rosbridge_driver" type="rosbridge_driver" output="screen">
+        <rosparam>
+            port_chain:
+              - name: wheel_left
+                type: serial
+                serial_port: /dev/usb_top
+              - name: wheel_right
+                type: serial
+                serial_port: /dev/usb_bottom
+            topic_chain:
+              - name: cmd_vel
+                type: subscribe
+                stop_mode: free_stop #emergency_stop
+                wheel_model: diff
+                wheel_track: 0.2287
+                wheel_ratio: 17721.0
+                wheel_phase_reverse: true
+                action_chain:
+                  - name: wheel_left
+                    type: write
+                    byte: [0x02, 0x06, 0x00, 0x43, vel_left, big, crc16, little]
+                  - name: wheel_right
+                    type: write
+                    byte: [0x03, 0x06, 0x00, 0x43, vel_right, big, crc16, little]
+                  - name: wheel_left
+                    type: read
+                    byte: [0x02, 0x06, 0x00, 0x43, vel_left, big, crc16, little]
+                    except: [0x02, 0x86, errno, crc16, little]
+                  - name: wheel_right
+                    type: read
+                    byte: [0x03, 0x06, 0x00, 0x43, vel_right, big, crc16, little]
+                    except: [0x03, 0x86, errno, crc16, little]
+              - name: odom
+                type: publish
+                freq: 50.0
+                odom_yaw_covariance: 0.5
+                action_chain:
+                  - name: wheel_left
+                    type: write
+                    byte: [0x02, 0x03, 0x00, 0x22, 0x00, 0x01, 0x24, 0x33]
+                  - name: wheel_right
+                    type: write
+                    byte: [0x03, 0x03, 0x00, 0x22, 0x00, 0x01, 0x25, 0xe2]
+                  - name: wheel_left
+                    type: read
+                    byte: [0x02, 0x03, 0x02, vel_left, big, crc16, little]
+                    except: [0x02, 0x83, errno, crc16, little]
+                  - name: wheel_right
+                    type: read
+                    byte: [0x03, 0x03, 0x02, vel_right, big, crc16, little]
+                    except: [0x03, 0x83, errno, crc16, little]
+              - name: waypoint_user_pub
+                type: subscribe
+              - name: normal_stop
+                type: event
+                action_chain:
+                  - name: wheel_left
+                    type: write
+                    byte: [0x02, 0x06, 0x00, 0x40, 0x00, 0x00, crc16, little]
+                  - name: wheel_right
+                    type: write
+                    byte: [0x03, 0x06, 0x00, 0x40, 0x00, 0x00, crc16, little]
+                  - name: wheel_left
+                    type: read
+                    byte: [0x02, 0x06, 0x00, 0x40, 0x00, 0x00, crc16, little]
+                  - name: wheel_right
+                    type: read
+                    byte: [0x03, 0x06, 0x00, 0x40, 0x00, 0x00, crc16, little]
+              - name: emergency_stop
+                type: event
+                action_chain:
+                  - name: wheel_left
+                    type: write
+                    byte: [0x02, 0x06, 0x00, 0x40, 0x00, 0x01, crc16, little]
+                  - name: wheel_right
+                    type: write
+                    byte: [0x03, 0x06, 0x00, 0x40, 0x00, 0x01, crc16, little]
+                  - name: wheel_left
+                    type: read
+                    byte: [0x02, 0x06, 0x00, 0x40, 0x00, 0x01, crc16, little]
+                  - name: wheel_right
+                    type: read
+                    byte: [0x03, 0x06, 0x00, 0x40, 0x00, 0x01, crc16, little]
+              - name: free_stop
+                type: event
+                action_chain:
+                  - name: wheel_left
+                    type: write
+                    byte: [0x02, 0x06, 0x00, 0x40, 0x00, 0x02, crc16, little]
+                  - name: wheel_right
+                    type: write
+                    byte: [0x03, 0x06, 0x00, 0x40, 0x00, 0x02, crc16, little]
+                  - name: wheel_left
+                    type: read
+                    byte: [0x02, 0x06, 0x00, 0x40, 0x00, 0x02, crc16, little]
+                  - name: wheel_right
+                    type: read
+                    byte: [0x03, 0x06, 0x00, 0x40, 0x00, 0x02, crc16, little]
+              - name: set_velocity_mode
+                type: event
+                action_chain:
+                  - name: wheel_left
+                    type: write
+                    byte: [0x02, 0x06, 0x00, 0x70, 0x00, 0x00, crc16, little]
+                  - name: wheel_left
+                    type: read
+                    byte: [0x02, 0x06, 0x00, 0x70, 0x00, 0x00, crc16, little]
+                  - name: wheel_right
+                    type: write
+                    byte: [0x03, 0x06, 0x00, 0x70, 0x00, 0x00, crc16, little]
+                  - name: wheel_right
+                    type: read
+                    byte: [0x03, 0x06, 0x00, 0x70, 0x00, 0x00, crc16, little]
+              - name: set_position_mode
+                type: event
+                action_chain:
+                  - name: wheel_left
+                    type: write
+                    byte: [0x02, 0x06, 0x00, 0x70, 0x00, 0x01, crc16, little]
+                  - name: wheel_left
+                    type: read
+                    byte: [0x02, 0x06, 0x00, 0x70, 0x00, 0x01, crc16, little]
+                  - name: wheel_right
+                    type: write
+                    byte: [0x03, 0x06, 0x00, 0x70, 0x00, 0x01, crc16, little]
+                  - name: wheel_right
+                    type: read
+                    byte: [0x03, 0x06, 0x00, 0x70, 0x00, 0x01, crc16, little]
+              - name: set_stall_stop
+                type: event
+                action_chain:
+                  - name: wheel_left
+                    type: write
+                    byte: [0x02, 0x06, 0x00, 0x8e, 0x00, 0x05, crc16, little]
+                  - name: wheel_left
+                    type: read
+                    byte: [0x02, 0x06, 0x00, 0x8e, 0x00, 0x05, crc16, little]
+                  - name: wheel_right
+                    type: write
+                    byte: [0x03, 0x06, 0x00, 0x8e, 0x00, 0x05, crc16, little]
+                  - name: wheel_right
+                    type: read
+                    byte: [0x03, 0x06, 0x00, 0x8e, 0x00, 0x05, crc16, little]
+              - name: set_timeout_stop
+                type: event
+                action_chain:
+                  - name: wheel_left
+                    type: write
+                    byte: [0x02, 0x06, 0x00, 0x95, 0x00, 0x05, crc16, little]
+                  - name: wheel_left
+                    type: read
+                    byte: [0x02, 0x06, 0x00, 0x95, 0x00, 0x05, crc16, little]
+                  - name: wheel_right
+                    type: write
+                    byte: [0x03, 0x06, 0x00, 0x95, 0x00, 0x05, crc16, little]
+                  - name: wheel_right
+                    type: read
+                    byte: [0x03, 0x06, 0x00, 0x95, 0x00, 0x05, crc16, little]
+              - name: diagnostics
+                type: publish
+        </rosparam>
+    </node>
+</launch>
