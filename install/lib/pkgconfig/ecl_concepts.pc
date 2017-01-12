@@ -1,0 +1,8 @@
+prefix=/home/ouiyeah/catkin_ws/install
+
+Name: ecl_concepts
+Description: Description of ecl_concepts
+Version: 0.61.15
+Cflags: -I/home/ouiyeah/catkin_ws/install/include
+Libs: -L/home/ouiyeah/catkin_ws/install/lib 
+Requires: ecl_config ecl_type_traits

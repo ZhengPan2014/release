@@ -1,0 +1,8 @@
+prefix=/home/ouiyeah/catkin_ws/install
+
+Name: ecl_ipc
+Description: Description of ecl_ipc
+Version: 0.61.15
+Cflags: -I/home/ouiyeah/catkin_ws/install/include
+Libs: -L/home/ouiyeah/catkin_ws/install/lib -lecl_ipc
+Requires: ecl_config ecl_errors ecl_time_lite ecl_exceptions ecl_time

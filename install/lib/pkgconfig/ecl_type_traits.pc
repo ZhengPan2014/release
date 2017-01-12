@@ -1,0 +1,8 @@
+prefix=/home/ouiyeah/catkin_ws/install
+
+Name: ecl_type_traits
+Description: Description of ecl_type_traits
+Version: 0.61.15
+Cflags: -I/home/ouiyeah/catkin_ws/install/include
+Libs: -L/home/ouiyeah/catkin_ws/install/lib -lecl_type_traits
+Requires: ecl_config ecl_mpl

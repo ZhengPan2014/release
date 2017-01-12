@@ -1,0 +1,8 @@
+prefix=/home/ouiyeah/catkin_ws/install
+
+Name: ecl_linear_algebra
+Description: Description of ecl_linear_algebra
+Version: 0.61.15
+Cflags: -I/home/ouiyeah/catkin_ws/install/include -I/opt/ros/indigo/share/sophus/../../include -I/usr/include/eigen3
+Libs: -L/home/ouiyeah/catkin_ws/install/lib -lecl_linear_algebra
+Requires: ecl_build ecl_eigen ecl_exceptions ecl_formatters ecl_math

@@ -1,0 +1,8 @@
+prefix=/home/ouiyeah/catkin_ws/install
+
+Name: ecl_manipulators
+Description: Description of ecl_manipulators
+Version: 0.60.2
+Cflags: -I/home/ouiyeah/catkin_ws/install/include
+Libs: -L/home/ouiyeah/catkin_ws/install/lib -lecl_manipulators
+Requires: ecl_build ecl_exceptions ecl_geometry ecl_formatters

@@ -1,0 +1,8 @@
+prefix=/home/ouiyeah/catkin_ws/install
+
+Name: ecl_devices
+Description: Description of ecl_devices
+Version: 0.61.15
+Cflags: -I/home/ouiyeah/catkin_ws/install/include
+Libs: -L/home/ouiyeah/catkin_ws/install/lib -lecl_devices
+Requires: ecl_config ecl_errors ecl_mpl ecl_type_traits ecl_utilities ecl_containers ecl_threads

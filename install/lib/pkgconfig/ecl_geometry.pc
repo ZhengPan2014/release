@@ -1,0 +1,8 @@
+prefix=/home/ouiyeah/catkin_ws/install
+
+Name: ecl_geometry
+Description: Description of ecl_geometry
+Version: 0.61.15
+Cflags: -I/home/ouiyeah/catkin_ws/install/include
+Libs: -L/home/ouiyeah/catkin_ws/install/lib -lecl_geometry
+Requires: ecl_build ecl_config ecl_type_traits ecl_containers ecl_formatters ecl_linear_algebra ecl_exceptions ecl_math ecl_mpl

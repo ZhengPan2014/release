@@ -1,0 +1,8 @@
+prefix=/home/ouiyeah/catkin_ws/install
+
+Name: ecl_core_apps
+Description: Description of ecl_core_apps
+Version: 0.61.15
+Cflags: 
+Libs: -L/home/ouiyeah/catkin_ws/install/lib 
+Requires: 
