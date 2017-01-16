@@ -6,3 +6,4 @@ git checkout $ROS_DISTRO;
 git branch -D $ROS_USER_PARAM;
 roscd bringup;
 source shell/dbparam-select.sh;
+roslaunch bringup bringup-dbparam.launch;
