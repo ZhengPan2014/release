@@ -1,3 +1,5 @@
+export NODE_HOME=/usr/lib/node;
+export PATH=${NODE_HOME}/bin:$PATH;
 source /opt/ros/indigo/setup.bash;
 source ~/catkin_ws/devel/setup.bash;
 

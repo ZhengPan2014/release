@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-    <node name="rosbridge_shell" pkg="rosbridge_shell" type="rosbridge_shell" output="screen"/>
+    <include file="$(find bringup)/launch/bringup-base.launch"/>
 
     <!-- Use this to debug aggregator node in GDB -->
     <!-- launch-prefix="xterm -e gdb -args"  -->
@@ -32,12 +32,6 @@ analyzers:
         </rosparam>
     </node>
 
-    <include file="$(find bringup)/launch/rosbridge_wangjin.launch"/>
-
-    <include file="$(find yocs_waypoint_provider)/launch/provider.launch"/>
-
-    <include file="$(find yocs_waypoints_navi)/launch/waypoints_navi.launch"/>
-
     <node name="tf_base_footprint" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
         <rosparam>
             frame_id: base_footprint
@@ -65,17 +59,9 @@ analyzers:
     <node name="robot_pose_publisher" pkg="robot_pose_publisher" type="robot_pose_publisher" output="screen"/>
 
     <include file="$(find bringup)/launch/rosbridge_stm32wangke.launch"/>
-<!-- 
-    <node name="stm32_driver" pkg="stm32_driver" type="stm32_driver" output="screen">
-        <remap from="imu" to="imu_data" />
-        <rosparam>
-            is_pub_tf: false
-            has_encoder: true
-            wheel_separation: 0.37
-            tty_name: /dev/ttyS2
-        </rosparam>
-    </node>
--->
+
+    <include file="$(find bringup)/launch/rosbridge_wangjin.launch"/>
+
     <!--node name="urg_node" pkg="urg_node" type="urg_node" output="screen">
         <rosparam>
             ip_address: 192.168.0.10
@@ -131,5 +117,6 @@ analyzers:
             vo_used: false
         </rosparam>
     </node>
-
+    
+    <node name="robot_pose_publisher" pkg="robot_pose_publisher" type="robot_pose_publisher" output="screen"/>
 </launch>

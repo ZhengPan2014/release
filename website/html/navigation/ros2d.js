@@ -1,41 +1,1215 @@
-﻿var ROS2D=ROS2D||{REVISION:"0.8.0-SNAPSHOT"},myScene;createjs.Stage.prototype.globalToRos=function(a,b){return new ROSLIB.Vector3({x:(a-this.x)/this.scaleX,y:(this.y-b)/this.scaleY})};createjs.Stage.prototype.rosToGlobal=function(a){return{x:a.x*this.scaleX+this.x,y:a.y*this.scaleY+this.y}};createjs.Stage.prototype.rosQuaternionToGlobalTheta=function(a){var b=a.y,c=a.z;return 180*-Math.atan2(2*(a.w*c+a.x*b),1-2*(b*b+c*c))/Math.PI};
-ROS2D.ImageMap=function(a){a=a||{};var b=a.message;a=a.image;this.pose=new ROSLIB.Pose({position:b.origin.position,orientation:b.origin.orientation});this.width=b.width;this.height=b.height;createjs.Bitmap.call(this,a);this.y=-this.height*b.resolution;this.scaleY=this.scaleX=b.resolution;this.width*=this.scaleX;this.height*=this.scaleY;this.x+=this.pose.position.x;this.y-=this.pose.position.y};ROS2D.ImageMap.prototype.__proto__=createjs.Bitmap.prototype;
-ROS2D.ImageMapClient=function(a){var b=this;a=a||{};var c=a.ros,d=a.topic||"/map_metadata";this.image=a.image;this.rootObject=a.rootObject||new createjs.Container;this.currentImage=new createjs.Shape;var f=new ROSLIB.Topic({ros:c,name:d,messageType:"nav_msgs/MapMetaData"});f.subscribe(function(a){f.unsubscribe();b.currentImage=new ROS2D.ImageMap({message:a,image:b.image});b.rootObject.addChild(b.currentImage);b.rootObject.addChild(new ROS2D.Grid({size:1}));b.emit("change")})};
-ROS2D.ImageMapClient.prototype.__proto__=EventEmitter2.prototype;
-ROS2D.OccupancyGrid=function(a){a=a||{};a=a.message;var b=document.createElement("canvas"),c=b.getContext("2d");this.pose=new ROSLIB.Pose({position:a.info.origin.position,orientation:a.info.origin.orientation});this.width=a.info.width;this.height=a.info.height;b.width=this.width;b.height=this.height;(new Date).getTime();for(var d=c.createImageData(this.width,this.height),f=0;f<this.height;f++)for(var h=0;h<this.width;h++){var e=a.data[h+(this.height-f-1)*this.width],e=100===e?0:0===e?255:127,g=4*
-(h+f*this.width);d.data[g]=e;d.data[++g]=e;d.data[++g]=e;d.data[++g]=255}c.putImageData(d,0,0);createjs.Bitmap.call(this,b);$("#nav-load").hide();b=document.getElementById(CanvasID);b.scrollLeft=b.scrollWidth/2-100;b.scrollTop=b.scrollHeight/2-100;this.y=-this.height*a.info.resolution;this.scaleY=this.scaleX=a.info.resolution;this.width*=this.scaleX;this.height*=this.scaleY;this.x+=this.pose.position.x;this.y-=this.pose.position.y};ROS2D.OccupancyGrid.prototype.__proto__=createjs.Bitmap.prototype;
-ROS2D.OccupancyGridClient=function(a){var b=this;a=a||{};var c=a.ros,d=a.topic||"/map";this.continuous=a.continuous;this.rootObject=a.rootObject||new createjs.Container;this.currentGrid=new createjs.Shape;this.rootObject.addChild(this.currentGrid);this.rootObject.addChild(new ROS2D.Grid({size:1}));var f=new ROSLIB.Topic({ros:c,name:d,messageType:"nav_msgs/OccupancyGrid",compression:"png"});(new Date).getTime();f.subscribe(function(a){var c=null;b.currentGrid&&(c=b.rootObject.getChildIndex(b.currentGrid),
-b.rootObject.removeChild(b.currentGrid));b.currentGrid=new ROS2D.OccupancyGrid({message:a});null!==c?b.rootObject.addChildAt(b.currentGrid,c):b.rootObject.addChild(b.currentGrid);b.emit("change");b.continuous||f.unsubscribe()})};ROS2D.OccupancyGridClient.prototype.__proto__=EventEmitter2.prototype;
-ROS2D.OccupancyGridSrvClient=function(a){var b=this;a=a||{};var c=a.ros,d=a.service||"/static_map";this.rootObject=a.rootObject||new createjs.Container;this.currentGrid=null;(new ROSLIB.Service({ros:c,name:d,serviceType:"nav_msgs/GetMap",compression:"png"})).callService(new ROSLIB.ServiceRequest,function(a){b.currentGrid&&b.rootObject.removeChild(b.currentGrid);b.currentGrid=new ROS2D.OccupancyGrid({message:a.map});b.rootObject.addChild(b.currentGrid);b.emit("change",b.currentGrid)})};
-ROS2D.OccupancyGridSrvClient.prototype.__proto__=EventEmitter2.prototype;
-ROS2D.ArrowShape=function(a){var b=this;a=a||{};var c=a.size||10,d=a.strokeSize||3,f=a.strokeColor||createjs.Graphics.getRGB(0,0,0),h=a.fillColor||createjs.Graphics.getRGB(255,0,0);a=a.pulse;var e=new createjs.Graphics,g=c/3,l=2*g/3;e.setStrokeStyle(d);e.beginStroke(f);e.moveTo(0,0);e.lineTo(c-g,0);e.beginFill(h);e.moveTo(c,0);e.lineTo(c-g,l/2);e.lineTo(c-g,-l/2);e.closePath();e.endFill();e.endStroke();createjs.Shape.call(this,e);if(a){var m=0,k=!0;createjs.Ticker.addEventListener("tick",function(){k?
-(b.scaleX*=1.035,b.scaleY*=1.035,k=10>++m):(b.scaleX/=1.035,b.scaleY/=1.035,k=0>--m)})}};ROS2D.ArrowShape.prototype.__proto__=createjs.Shape.prototype;
-ROS2D.Grid=function(a){a=a||{};var b=a.size||10,c=a.cellSize||.1,d=a.lineWidth||.001;a=new createjs.Graphics;a.setStrokeStyle(5*d);a.beginStroke(createjs.Graphics.getRGB(0,0,0));a.beginFill(createjs.Graphics.getRGB(255,0,0));a.moveTo(-b*c,0);a.lineTo(b*c,0);a.moveTo(0,-b*c);a.lineTo(0,b*c);a.endFill();a.endStroke();a.setStrokeStyle(d);a.beginStroke(createjs.Graphics.getRGB(0,0,0));a.beginFill(createjs.Graphics.getRGB(255,0,0));for(d=-b;d<=b;d++)a.moveTo(-b*c,d*c),a.lineTo(b*c,d*c),a.moveTo(d*c,-b*
-c),a.lineTo(d*c,b*c);a.endFill();a.endStroke();createjs.Shape.call(this,a)};ROS2D.Grid.prototype.__proto__=createjs.Shape.prototype;
-ROS2D.NavigationArrow=function(a){var b=this;a=a||{};var c=a.size||10,d=a.strokeSize||3,f=a.strokeColor||createjs.Graphics.getRGB(0,0,0),h=a.fillColor||createjs.Graphics.getRGB(255,0,0);a=a.pulse;var e=new createjs.Graphics;e.setStrokeStyle(d);e.moveTo(-c/2,-c/2);e.beginStroke(f);e.beginFill(h);e.lineTo(c,0);e.lineTo(-c/2,c/2);e.closePath();e.endFill();e.endStroke();createjs.Shape.call(this,e);if(a){var g=0,l=!0;createjs.Ticker.addEventListener("tick",function(){l?(b.scaleX*=1.035,b.scaleY*=1.035,
-l=10>++g):(b.scaleX/=1.035,b.scaleY/=1.035,l=0>--g)})}};ROS2D.NavigationArrow.prototype.__proto__=createjs.Shape.prototype;
-ROS2D.NavigationImage=function(a){var b=this;a=a||{};var c=a.size||10,d=a.image,f=a.pulse,h=a.alpha||1,e={},g=new Image;g.onload=function(){createjs.Bitmap.call(b,g);var a=c/g.width;b.alpha=h;b.scaleX=a;b.scaleY=a;b.regY=b.image.height/2;b.regX=b.image.width/2;e.rotation=b.rotation;Object.defineProperty(b,"rotation",{get:function(){return e.rotation+90},set:function(a){e.rotation=a}});if(f){var d=0,k=!0;createjs.Ticker.addEventListener("tick",function(){k?(b.scaleX*=1.02,b.scaleY*=1.02,k=10>++d):
-(b.scaleX/=1.02,b.scaleY/=1.02,k=0>--d)})}};g.src=d};ROS2D.NavigationImage.prototype.__proto__=createjs.Bitmap.prototype;
-ROS2D.PathShape=function(a){a=a||{};var b=a.path;this.strokeSize=a.strokeSize||3;this.strokeColor=a.strokeColor||createjs.Graphics.getRGB(0,0,0);this.graphics=new createjs.Graphics;if(null!==b&&"undefined"!==typeof b){this.graphics.setStrokeStyle(this.strokeSize);this.graphics.beginStroke(this.strokeColor);this.graphics.moveTo(b.poses[0].pose.position.x/this.scaleX,b.poses[0].pose.position.y/-this.scaleY);for(a=1;a<b.poses.length;++a)this.graphics.lineTo(b.poses[a].pose.position.x/this.scaleX,b.poses[a].pose.position.y/
--this.scaleY);this.graphics.endStroke()}createjs.Shape.call(this,this.graphics)};
-ROS2D.PathShape.prototype.setPath=function(a){this.graphics.clear();if(null!==a&&"undefined"!==typeof a){this.graphics.setStrokeStyle(this.strokeSize);this.graphics.beginStroke(this.strokeColor);this.graphics.moveTo(a.poses[0].pose.position.x/this.scaleX,a.poses[0].pose.position.y/-this.scaleY);for(var b=1;b<a.poses.length;++b)this.graphics.lineTo(a.poses[b].pose.position.x/this.scaleX,a.poses[b].pose.position.y/-this.scaleY);this.graphics.endStroke()}};ROS2D.PathShape.prototype.__proto__=createjs.Shape.prototype;
-ROS2D.PolygonMarker=function(a){a=a||{};this.lineSize=a.lineSize||3;this.lineColor=a.lineColor||createjs.Graphics.getRGB(0,0,255,.66);this.pointSize=a.pointSize||10;this.pointColor=a.pointColor||createjs.Graphics.getRGB(255,0,0,.66);this.fillColor=a.pointColor||createjs.Graphics.getRGB(0,255,0,.33);this.lineCallBack=a.lineCallBack;this.pointCallBack=a.pointCallBack;this.pointContainer=new createjs.Container;this.lineContainer=new createjs.Container;this.fillShape=new createjs.Shape;createjs.Container.call(this);
-this.addChild(this.fillShape);this.addChild(this.lineContainer);this.addChild(this.pointContainer)};ROS2D.PolygonMarker.prototype.createLineShape=function(a,b){var c=new createjs.Shape;this.editLineShape(c,a,b);var d=this;c.addEventListener("mousedown",function(a){null!==d.lineCallBack&&"undefined"!==typeof d.lineCallBack&&d.lineCallBack("mousedown",a,d.lineContainer.getChildIndex(a.target))});return c};
-ROS2D.PolygonMarker.prototype.editLineShape=function(a,b,c){a.graphics.clear();a.graphics.setStrokeStyle(this.lineSize);a.graphics.beginStroke(this.lineColor);a.graphics.moveTo(b.x,b.y);a.graphics.lineTo(c.x,c.y)};
-ROS2D.PolygonMarker.prototype.createPointShape=function(a){var b=new createjs.Shape;b.graphics.beginFill(this.pointColor);b.graphics.drawCircle(0,0,this.pointSize);b.x=a.x;b.y=-a.y;var c=this;b.addEventListener("mousedown",function(a){null!==c.pointCallBack&&"undefined"!==typeof c.pointCallBack&&c.pointCallBack("mousedown",a,c.pointContainer.getChildIndex(a.target))});return b};
-ROS2D.PolygonMarker.prototype.addPoint=function(a){a=this.createPointShape(a);this.pointContainer.addChild(a);var b=this.pointContainer.getNumChildren();if(!(2>b)&&3>b){var c=this.createLineShape(this.pointContainer.getChildAt(b-2),a);this.lineContainer.addChild(c)}2<b&&this.editLineShape(this.lineContainer.getChildAt(b-2),this.pointContainer.getChildAt(b-2),a);1<b&&(a=this.createLineShape(a,this.pointContainer.getChildAt(0)),this.lineContainer.addChild(a));this.drawFill()};
-ROS2D.PolygonMarker.prototype.remPoint=function(a){a=a instanceof createjs.Shape?this.pointContainer.getChildIndex(a):a;var b=this.pointContainer.getNumChildren();2>b||(3>b?this.lineContainer.removeAllChildren():(this.editLineShape(this.lineContainer.getChildAt((a-1+b)%b),this.pointContainer.getChildAt((a-1+b)%b),this.pointContainer.getChildAt((a+1)%b)),this.lineContainer.removeChildAt(a)));this.pointContainer.removeChildAt(a);this.drawFill()};
-ROS2D.PolygonMarker.prototype.movePoint=function(a,b){var c,d;a instanceof createjs.Shape?(c=this.pointContainer.getChildIndex(a),d=a):(c=a,d=this.pointContainer.getChildAt(c));d.x=b.x;d.y=-b.y;var f=this.pointContainer.getNumChildren();if(1<f){var h=this.lineContainer.getChildAt((c-1+f)%f);this.editLineShape(h,this.pointContainer.getChildAt((c-1+f)%f),d);h=this.lineContainer.getChildAt(c);this.editLineShape(h,d,this.pointContainer.getChildAt((c+1)%f))}this.drawFill()};
-ROS2D.PolygonMarker.prototype.splitLine=function(a){var b;a instanceof createjs.Shape?b=this.lineContainer.getChildIndex(a):(b=a,a=this.lineContainer.getChildAt(b));var c=this.pointContainer.getNumChildren(),d=this.pointContainer.getChildAt(b).x,f=this.pointContainer.getChildAt(b).y,h=this.pointContainer.getChildAt((b+1)%c).x,e=this.pointContainer.getChildAt((b+1)%c).y,d=new ROSLIB.Vector3({x:(d+h)/2,y:-((f+e)/2)}),d=this.createPointShape(d);this.pointContainer.addChildAt(d,b+1);++c;c=this.createLineShape(d,
-this.pointContainer.getChildAt((b+2)%c));this.lineContainer.addChildAt(c,b+1);this.editLineShape(a,this.pointContainer.getChildAt(b),d);this.drawFill()};
-ROS2D.PolygonMarker.prototype.drawFill=function(){var a=this.pointContainer.getNumChildren();if(2<a){var b=this.fillShape.graphics;b.clear();b.setStrokeStyle(0);b.moveTo(this.pointContainer.getChildAt(0).x,this.pointContainer.getChildAt(0).y);b.beginStroke();b.beginFill(this.fillColor);for(var c=1;c<a;++c)b.lineTo(this.pointContainer.getChildAt(c).x,this.pointContainer.getChildAt(c).y);b.closePath();b.endFill();b.endStroke()}else this.fillShape.graphics.clear()};
-ROS2D.PolygonMarker.prototype.__proto__=createjs.Container.prototype;
-ROS2D.TraceShape=function(a){a=a||{};var b=a.pose;this.strokeSize=a.strokeSize||3;this.strokeColor=a.strokeColor||createjs.Graphics.getRGB(0,0,0);this.maxPoses=a.maxPoses||100;this.minDist=a.minDist||.05;this.minDist*=this.minDist;this.poses=[];this.graphics=new createjs.Graphics;this.graphics.setStrokeStyle(this.strokeSize);this.graphics.beginStroke(this.strokeColor);null!==b&&"undefined"!==typeof b&&this.poses.push(b);createjs.Shape.call(this,this.graphics)};
-ROS2D.TraceShape.prototype.addPose=function(a){var b=this.poses.length-1;if(0>b)this.poses.push(a),this.graphics.moveTo(a.position.x/this.scaleX,a.position.y/-this.scaleY);else{var c=a.position.x-this.poses[b].position.x,b=a.position.y-this.poses[b].position.y;c*c+b*b>this.minDist&&(this.graphics.lineTo(a.position.x/this.scaleX,a.position.y/-this.scaleY),this.poses.push(a))}0<this.maxPoses&&this.maxPoses<this.poses.length&&this.popFront()};
-ROS2D.TraceShape.prototype.popFront=function(){if(0<this.poses.length){this.poses.shift();this.graphics.clear();this.graphics.setStrokeStyle(this.strokeSize);this.graphics.beginStroke(this.strokeColor);this.graphics.lineTo(this.poses[0].position.x/this.scaleX,this.poses[0].position.y/-this.scaleY);for(var a=1;a<this.poses.length;++a)this.graphics.lineTo(this.poses[a].position.x/this.scaleX,this.poses[a].position.y/-this.scaleY)}};ROS2D.TraceShape.prototype.__proto__=createjs.Shape.prototype;
-ROS2D.PanView=function(a){a=a||{};this.rootObject=a.rootObject;this.stage=this.rootObject instanceof createjs.Stage?this.rootObject:this.rootObject.getStage();this.startPos=new ROSLIB.Vector3};ROS2D.PanView.prototype.startPan=function(a,b){this.startPos.x=a;this.startPos.y=b};ROS2D.PanView.prototype.pan=function(a,b){this.stage.x+=a-this.startPos.x;this.startPos.x=a;this.stage.y+=b-this.startPos.y;this.startPos.y=b};var CanvasID="";
-ROS2D.Viewer=function(a){a=a||{};var b=a.divID;CanvasID=b;this.width=a.width;this.height=a.height;a=a.background||"#111111";var c=document.createElement("canvas");c.width=this.width;c.height=this.height;c.style.background=a;c.style.display="none";$("#"+b).append(c);$("#"+b+" canvas").slideUp("slow",function(){$(this).show(500,function(){$("#nav-load").show()})});myScene=this.scene=new createjs.Stage(c);this.scene.y=this.height;document.getElementById(b).appendChild(c);createjs.Ticker.setFPS(30);createjs.Ticker.addEventListener("tick",
-this.scene)};ROS2D.Viewer.prototype.addObject=function(a){this.scene.addChild(a)};ROS2D.Viewer.prototype.scaleToDimensions=function(a,b){this.scene.x="undefined"!==typeof this.scene.x_prev_shift?this.scene.x_prev_shift:this.scene.x;this.scene.y="undefined"!==typeof this.scene.y_prev_shift?this.scene.y_prev_shift:this.scene.y;this.scene.scaleX=this.width/a;this.scene.scaleY=this.height/b};
-ROS2D.Viewer.prototype.shift=function(a,b){this.scene.x_prev_shift=this.scene.x;this.scene.y_prev_shift=this.scene.y;this.scene.x-=a*this.scene.scaleX;this.scene.y+=b*this.scene.scaleY};ROS2D.ZoomView=function(a){a=a||{};this.rootObject=a.rootObject;this.minScale=a.minScale||.001;this.stage=this.rootObject instanceof createjs.Stage?this.rootObject:this.rootObject.getStage();this.center=new ROSLIB.Vector3;this.startShift=new ROSLIB.Vector3;this.startScale=new ROSLIB.Vector3};
-ROS2D.ZoomView.prototype.startZoom=function(a,b){this.center.x=a;this.center.y=b;this.startShift.x=this.stage.x;this.startShift.y=this.stage.y;this.startScale.x=this.stage.scaleX;this.startScale.y=this.stage.scaleY};
-ROS2D.ZoomView.prototype.zoom=function(a){this.startScale.x*a<this.minScale&&(a=this.minScale/this.startScale.x);this.startScale.y*a<this.minScale&&(a=this.minScale/this.startScale.y);this.stage.scaleX=this.startScale.x*a;this.stage.scaleY=this.startScale.y*a;this.stage.x=this.startShift.x-(this.center.x-this.startShift.x)*(this.stage.scaleX/this.startScale.x-1);this.stage.y=this.startShift.y-(this.center.y-this.startShift.y)*(this.stage.scaleY/this.startScale.y-1)};
+﻿/**
+ * @author Russell Toris - rctoris@wpi.edu
+ */
+
+var ROS2D = ROS2D || {
+    REVISION: '0.8.0-SNAPSHOT'
+};
+var myScene;
+// convert the given global Stage coordinates to ROS coordinates
+createjs.Stage.prototype.globalToRos = function (x, y) {
+    var rosX = (x - this.x) / this.scaleX;
+    var rosY = (this.y - y) / this.scaleY;
+    return new ROSLIB.Vector3({
+        x: rosX,
+        y: rosY
+    });
+};
+
+// convert the given ROS coordinates to global Stage coordinates
+createjs.Stage.prototype.rosToGlobal = function (pos) {
+    var x = pos.x * this.scaleX + this.x;
+    var y = pos.y * this.scaleY + this.y;
+    return {
+        x: x,
+        y: y
+    };
+};
+
+// convert a ROS quaternion to theta in degrees
+createjs.Stage.prototype.rosQuaternionToGlobalTheta = function (orientation) {
+    // See https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles#Rotation_matrices
+    // here we use [x y z] = R * [1 0 0]
+    var q0 = orientation.w;
+    var q1 = orientation.x;
+    var q2 = orientation.y;
+    var q3 = orientation.z;
+    // Canvas rotation is clock wise and in degrees
+    return -Math.atan2(2 * (q0 * q3 + q1 * q2), 1 - 2 * (q2 * q2 + q3 * q3)) * 180.0 / Math.PI;
+};
+
+/**
+ * @author Russell Toris - rctoris@wpi.edu
+ */
+
+/**
+ * An image map is a PNG image scaled to fit to the dimensions of a OccupancyGrid.
+ *
+ * @constructor
+ * @param options - object with following keys:
+ *   * message - the occupancy grid map meta data message
+ *   * image - the image URL to load
+ */
+ROS2D.ImageMap = function (options) {
+    options = options || {};
+    var message = options.message;
+    var image = options.image;
+
+    // save the metadata we need
+    this.pose = new ROSLIB.Pose({
+        position: message.origin.position,
+        orientation: message.origin.orientation
+    });
+
+    // set the size
+    this.width = message.width;
+    this.height = message.height;
+
+    // create the bitmap
+    createjs.Bitmap.call(this, image);
+    // change Y direction
+    this.y = -this.height * message.resolution;
+
+    // scale the image
+    this.scaleX = message.resolution;
+    this.scaleY = message.resolution;
+    this.width *= this.scaleX;
+    this.height *= this.scaleY;
+
+    // set the pose
+    this.x += this.pose.position.x;
+    this.y -= this.pose.position.y;
+};
+ROS2D.ImageMap.prototype.__proto__ = createjs.Bitmap.prototype;
+
+/**
+ * @author Russell Toris - rctoris@wpi.edu
+ */
+
+/**
+ * A image map is a PNG image scaled to fit to the dimensions of a OccupancyGrid.
+ *
+ * Emits the following events:
+ *   * 'change' - there was an update or change in the map
+ *
+ * @constructor
+ * @param options - object with following keys:
+ *   * ros - the ROSLIB.Ros connection handle
+ *   * topic (optional) - the map meta data topic to listen to
+ *   * image - the image URL to load
+ *   * rootObject (optional) - the root object to add this marker to
+ */
+ROS2D.ImageMapClient = function (options) {
+    var that = this;
+    options = options || {};
+    var ros = options.ros;
+    var topic = options.topic || '/map_metadata';
+    this.image = options.image;
+    this.rootObject = options.rootObject || new createjs.Container();
+
+    // create an empty shape to start with
+    this.currentImage = new createjs.Shape();
+
+    // subscribe to the topic
+    var rosTopic = new ROSLIB.Topic({
+        ros: ros,
+        name: topic,
+        messageType: 'nav_msgs/MapMetaData'
+    });
+
+    rosTopic.subscribe(function (message) {
+        // we only need this once
+        rosTopic.unsubscribe();
+
+        // create the image
+        that.currentImage = new ROS2D.ImageMap({
+            message: message,
+            image: that.image
+        });
+        that.rootObject.addChild(that.currentImage);
+        // work-around for a bug in easeljs -- needs a second object to render correctly
+        that.rootObject.addChild(new ROS2D.Grid({ size: 1 }));
+
+        that.emit('change');
+    });
+};
+ROS2D.ImageMapClient.prototype.__proto__ = EventEmitter2.prototype;
+
+/**
+ * @author Russell Toris - rctoris@wpi.edu
+ */
+
+/**
+ * An OccupancyGrid can convert a ROS occupancy grid message into a createjs Bitmap object.
+ *
+ * @constructor
+ * @param options - object with following keys:
+ *   * message - the occupancy grid message
+ */
+ROS2D.OccupancyGrid = function (options) {
+    options = options || {};
+    var message = options.message;
+
+    // internal drawing canvas
+    var canvas = document.createElement('canvas');
+    var context = canvas.getContext('2d');
+
+    // save the metadata we need
+    this.pose = new ROSLIB.Pose({
+        position: message.info.origin.position,
+        orientation: message.info.origin.orientation
+    });
+
+    // set the size
+    this.width = message.info.width;
+    this.height = message.info.height;
+    canvas.width = this.width;
+    canvas.height = this.height;
+    var a = new Date().getTime();
+
+    var imageData = context.createImageData(this.width, this.height);
+ 
+    for (var row = 0; row < this.height; row++) {
+        for (var col = 0; col < this.width; col++) {
+            // determine the index into the map data
+            var mapI = col + ((this.height - row - 1) * this.width);
+            // determine the value
+            var data = message.data[mapI];
+            var val;
+            if (data === 100) {
+                val = 0;
+            } else if (data === 0) {
+                val = 255;
+            } else {
+                val = 127;
+            }
+
+            // determine the index into the image data array
+            var i = (col + (row * this.width)) * 4;
+            // r
+            imageData.data[i] = val;
+            // g
+            imageData.data[++i] = val;
+            // b
+            imageData.data[++i] = val;
+            // a
+            imageData.data[++i] = 255;
+        }
+    }
+    context.putImageData(imageData, 0, 0);
+
+    // create the bitmap
+    createjs.Bitmap.call(this, canvas);
+
+    // change Y direction
+
+    //$("#nav-load").hide();
+
+    var test = document.getElementById(CanvasID);
+    test.scrollLeft = test.scrollWidth / 2 - 100;
+    test.scrollTop = test.scrollHeight / 2 - 100;
+
+    this.y = -this.height * message.info.resolution;
+
+    // scale the image
+    this.scaleX = message.info.resolution;
+    this.scaleY = message.info.resolution;
+
+    this.width *= this.scaleX;
+    this.height *= this.scaleY;
+
+    // set the pose
+    this.x += this.pose.position.x;
+    this.y -= this.pose.position.y;
+};
+ROS2D.OccupancyGrid.prototype.__proto__ = createjs.Bitmap.prototype;
+
+/**
+ * @author Russell Toris - rctoris@wpi.edu
+ */
+
+/**
+ * A map that listens to a given occupancy grid topic.
+ *
+ * Emits the following events:
+ *   * 'change' - there was an update or change in the map
+ *
+ * @constructor
+ * @param options - object with following keys:
+ *   * ros - the ROSLIB.Ros connection handle
+ *   * topic (optional) - the map topic to listen to
+ *   * rootObject (optional) - the root object to add this marker to
+ *   * continuous (optional) - if the map should be continuously loaded (e.g., for SLAM)
+ */
+ROS2D.OccupancyGridClient = function (options) {
+    var that = this;
+    options = options || {};
+    var ros = options.ros;
+    var topic = options.topic || '/map';
+    this.continuous = options.continuous;
+    this.rootObject = options.rootObject || new createjs.Container();
+
+    // current grid that is displayed
+    // create an empty shape to start with, so that the order remains correct.
+    this.currentGrid = new createjs.Shape();
+    this.rootObject.addChild(this.currentGrid);
+    // work-around for a bug in easeljs -- needs a second object to render correctly
+    this.rootObject.addChild(new ROS2D.Grid({ size: 1 }));
+
+    // subscribe to the topic
+    var rosTopic = new ROSLIB.Topic({
+        ros: ros,
+        name: topic,
+        messageType: 'nav_msgs/OccupancyGrid',
+        compression: 'png'
+    });
+    var b = new Date().getTime();
+    rosTopic.subscribe(function (message) {
+     //alert("get map message:"+(new Date().getTime()-b)+"ms");
+       //console.log(message);
+        // check for an old map
+        var index = null;
+        if (that.currentGrid) {
+            index = that.rootObject.getChildIndex(that.currentGrid);
+            that.rootObject.removeChild(that.currentGrid);
+        }
+
+        that.currentGrid = new ROS2D.OccupancyGrid({
+            message: message
+        });
+        if (index !== null) {
+            that.rootObject.addChildAt(that.currentGrid, index);
+        }
+        else {
+            that.rootObject.addChild(that.currentGrid);
+        }
+
+        that.emit('change');
+
+        // check if we should unsubscribe
+        if (!that.continuous) {
+            rosTopic.unsubscribe();
+        }
+    });
+};
+ROS2D.OccupancyGridClient.prototype.__proto__ = EventEmitter2.prototype;
+
+/**
+ * @author Jihoon Lee- jihoonlee.in@gmail.com
+ * @author Russell Toris - rctoris@wpi.edu
+ */
+
+/**
+ * A static map that receives from map_server.
+ *
+ * Emits the following events:
+ *   * 'change' - there was an update or change in the map
+ *
+ * @constructor
+ * @param options - object with following keys:
+ *   * ros - the ROSLIB.Ros connection handle
+ *   * service (optional) - the map topic to listen to, like '/static_map'
+ *   * rootObject (optional) - the root object to add this marker to
+ */
+ROS2D.OccupancyGridSrvClient = function (options) {
+    var that = this;
+    options = options || {};
+    var ros = options.ros;
+    var service = options.service || '/static_map';
+    this.rootObject = options.rootObject || new createjs.Container();
+
+    // current grid that is displayed
+    this.currentGrid = null;
+
+    // Setting up to the service
+    var rosService = new ROSLIB.Service({
+        ros: ros,
+        name: service,
+        serviceType: 'nav_msgs/GetMap',
+        compression: 'png'
+    });
+
+    rosService.callService(new ROSLIB.ServiceRequest(), function (response) {
+        // check for an old map
+        if (that.currentGrid) {
+            that.rootObject.removeChild(that.currentGrid);
+        }
+
+        that.currentGrid = new ROS2D.OccupancyGrid({
+            message: response.map
+        });
+        that.rootObject.addChild(that.currentGrid);
+
+        that.emit('change', that.currentGrid);
+    });
+};
+ROS2D.OccupancyGridSrvClient.prototype.__proto__ = EventEmitter2.prototype;
+
+/**
+ * @author Bart van Vliet - bart@dobots.nl
+ */
+
+/**
+ * An arrow with line and triangular head, based on the navigation arrow.
+ * Aims to the left at 0 rotation, as would be expected.
+ *
+ * @constructor
+ * @param options - object with following keys:
+ *   * size (optional) - the size of the marker
+ *   * strokeSize (optional) - the size of the outline
+ *   * strokeColor (optional) - the createjs color for the stroke
+ *   * fillColor (optional) - the createjs color for the fill
+ *   * pulse (optional) - if the marker should "pulse" over time
+ */
+ROS2D.ArrowShape = function (options) {
+    var that = this;
+    options = options || {};
+    var size = options.size || 10;
+    var strokeSize = options.strokeSize || 3;
+    var strokeColor = options.strokeColor || createjs.Graphics.getRGB(0, 0, 0);
+    var fillColor = options.fillColor || createjs.Graphics.getRGB(255, 0, 0);
+    var pulse = options.pulse;
+
+    // draw the arrow
+    var graphics = new createjs.Graphics();
+
+    var headLen = size / 3.0;
+    var headWidth = headLen * 2.0 / 3.0;
+
+    graphics.setStrokeStyle(strokeSize);
+    graphics.beginStroke(strokeColor);
+    graphics.moveTo(0, 0);
+    graphics.lineTo(size - headLen, 0);
+
+    graphics.beginFill(fillColor);
+    graphics.moveTo(size, 0);
+    graphics.lineTo(size - headLen, headWidth / 2.0);
+    graphics.lineTo(size - headLen, -headWidth / 2.0);
+    graphics.closePath();
+    graphics.endFill();
+    graphics.endStroke();
+
+    // create the shape
+    createjs.Shape.call(this, graphics);
+
+    // check if we are pulsing
+    if (pulse) {
+        // have the model "pulse"
+        var growCount = 0;
+        var growing = true;
+        createjs.Ticker.addEventListener('tick', function () {
+            if (growing) {
+                that.scaleX *= 1.035;
+                that.scaleY *= 1.035;
+                growing = (++growCount < 10);
+            } else {
+                that.scaleX /= 1.035;
+                that.scaleY /= 1.035;
+                growing = (--growCount < 0);
+            }
+        });
+    }
+};
+ROS2D.ArrowShape.prototype.__proto__ = createjs.Shape.prototype;
+
+/**
+ * @author Raffaello Bonghi - raffaello.bonghi@officinerobotiche.it
+ */
+
+/**
+ * A Grid object draw in map.
+ *
+ * @constructor
+ * @param options - object with following keys:
+ *  * size (optional) - the size of the grid
+ *  * cellSize (optional) - the cell size of map
+ *  * lineWidth (optional) - the width of the lines in the grid
+ */
+ROS2D.Grid = function (options) {
+    var that = this;
+    options = options || {};
+    var size = options.size || 10;
+    var cellSize = options.cellSize || 0.1;
+    var lineWidth = options.lineWidth || 0.001;
+    // draw the arrow
+    var graphics = new createjs.Graphics();
+    // line width
+    graphics.setStrokeStyle(lineWidth * 5);
+    graphics.beginStroke(createjs.Graphics.getRGB(0, 0, 0));
+    graphics.beginFill(createjs.Graphics.getRGB(255, 0, 0));
+    graphics.moveTo(-size * cellSize, 0);
+    graphics.lineTo(size * cellSize, 0);
+    graphics.moveTo(0, -size * cellSize);
+    graphics.lineTo(0, size * cellSize);
+    graphics.endFill();
+    graphics.endStroke();
+
+    graphics.setStrokeStyle(lineWidth);
+    graphics.beginStroke(createjs.Graphics.getRGB(0, 0, 0));
+    graphics.beginFill(createjs.Graphics.getRGB(255, 0, 0));
+    for (var i = -size; i <= size; i++) {
+        graphics.moveTo(-size * cellSize, i * cellSize);
+        graphics.lineTo(size * cellSize, i * cellSize);
+        graphics.moveTo(i * cellSize, -size * cellSize);
+        graphics.lineTo(i * cellSize, size * cellSize);
+    }
+    graphics.endFill();
+    graphics.endStroke();
+    // create the shape
+    createjs.Shape.call(this, graphics);
+
+};
+ROS2D.Grid.prototype.__proto__ = createjs.Shape.prototype;
+
+/**
+ * @author Russell Toris - rctoris@wpi.edu
+ */
+
+/**
+ * A navigation arrow is a directed triangle that can be used to display orientation.
+ *
+ * @constructor
+ * @param options - object with following keys:
+ *   * size (optional) - the size of the marker
+ *   * strokeSize (optional) - the size of the outline
+ *   * strokeColor (optional) - the createjs color for the stroke
+ *   * fillColor (optional) - the createjs color for the fill
+ *   * pulse (optional) - if the marker should "pulse" over time
+ */
+ROS2D.NavigationArrow = function (options) {
+    var that = this;
+    options = options || {};
+    var size = options.size || 10;
+    var strokeSize = options.strokeSize || 3;
+    var strokeColor = options.strokeColor || createjs.Graphics.getRGB(0, 0, 0);
+    var fillColor = options.fillColor || createjs.Graphics.getRGB(255, 0, 0);
+    var pulse = options.pulse;
+
+    // draw the arrow
+    var graphics = new createjs.Graphics();
+    // line width
+    graphics.setStrokeStyle(strokeSize);
+    graphics.moveTo(-size / 2.0, -size / 2.0);
+    graphics.beginStroke(strokeColor);
+    graphics.beginFill(fillColor);
+    graphics.lineTo(size, 0);
+    graphics.lineTo(-size / 2.0, size / 2.0);
+    graphics.closePath();
+    graphics.endFill();
+    graphics.endStroke();
+
+    // create the shape
+    createjs.Shape.call(this, graphics);
+
+    // check if we are pulsing
+    if (pulse) {
+        // have the model "pulse"
+        var growCount = 0;
+        var growing = true;
+        createjs.Ticker.addEventListener('tick', function () {
+            if (growing) {
+                that.scaleX *= 1.035;
+                that.scaleY *= 1.035;
+                growing = (++growCount < 10);
+            } else {
+                that.scaleX /= 1.035;
+                that.scaleY /= 1.035;
+                growing = (--growCount < 0);
+            }
+        });
+    }
+};
+ROS2D.NavigationArrow.prototype.__proto__ = createjs.Shape.prototype;
+
+/**
+ * @author Inigo Gonzalez - ingonza85@gmail.com
+ */
+
+/**
+ * A navigation image that can be used to display orientation.
+ *
+ * @constructor
+ * @param options - object with following keys:
+ *   * size (optional) - the size of the marker
+ *   * image - the image to use as a marker
+ *   * pulse (optional) - if the marker should "pulse" over time
+ */
+ROS2D.NavigationImage = function (options) {
+    var that = this;
+    options = options || {};
+    var size = options.size || 10;
+    var image_url = options.image;
+    var pulse = options.pulse;
+    var alpha = options.alpha || 1;
+
+    var originals = {};
+
+    var paintImage = function () {
+        createjs.Bitmap.call(that, image);
+        var scale = calculateScale(size);
+        that.alpha = alpha;
+        that.scaleX = scale;
+        that.scaleY = scale;
+        that.regY = that.image.height / 2;
+        that.regX = that.image.width / 2;
+        originals['rotation'] = that.rotation;
+        Object.defineProperty(that, 'rotation', {
+            get: function () { return originals['rotation'] + 90; },
+            set: function (value) { originals['rotation'] = value; }
+        });
+        if (pulse) {
+            // have the model "pulse"
+            var growCount = 0;
+            var growing = true;
+            var SCALE_SIZE = 1.020;
+            createjs.Ticker.addEventListener('tick', function () {
+                if (growing) {
+                    that.scaleX *= SCALE_SIZE;
+                    that.scaleY *= SCALE_SIZE;
+                    growing = (++growCount < 10);
+                } else {
+                    that.scaleX /= SCALE_SIZE;
+                    that.scaleY /= SCALE_SIZE;
+                    growing = (--growCount < 0);
+                }
+            });
+        }
+    };
+
+    var calculateScale = function (_size) {
+        return _size / image.width;
+    };
+
+    var image = new Image();
+    image.onload = paintImage;
+    image.src = image_url;
+
+};
+
+ROS2D.NavigationImage.prototype.__proto__ = createjs.Bitmap.prototype;
+
+/**
+ * @author Bart van Vliet - bart@dobots.nl
+ */
+
+/**
+ * A shape to draw a nav_msgs/Path msg
+ *
+ * @constructor
+ * @param options - object with following keys:
+ *   * path (optional) - the initial path to draw
+ *   * strokeSize (optional) - the size of the outline
+ *   * strokeColor (optional) - the createjs color for the stroke
+ */
+ROS2D.PathShape = function (options) {
+    options = options || {};
+    var path = options.path;
+    this.strokeSize = options.strokeSize || 3;
+    this.strokeColor = options.strokeColor || createjs.Graphics.getRGB(0, 0, 0);
+
+    // draw the line
+    this.graphics = new createjs.Graphics();
+
+    if (path !== null && typeof path !== 'undefined') {
+        this.graphics.setStrokeStyle(this.strokeSize);
+        this.graphics.beginStroke(this.strokeColor);
+        this.graphics.moveTo(path.poses[0].pose.position.x / this.scaleX, path.poses[0].pose.position.y / -this.scaleY);
+        for (var i = 1; i < path.poses.length; ++i) {
+            this.graphics.lineTo(path.poses[i].pose.position.x / this.scaleX, path.poses[i].pose.position.y / -this.scaleY);
+        }
+        this.graphics.endStroke();
+    }
+
+    // create the shape
+    createjs.Shape.call(this, this.graphics);
+};
+
+/**
+ * Set the path to draw
+ *
+ * @param path of type nav_msgs/Path
+ */
+ROS2D.PathShape.prototype.setPath = function (path) {
+    this.graphics.clear();
+    if (path !== null && typeof path !== 'undefined') {
+        this.graphics.setStrokeStyle(this.strokeSize);
+        this.graphics.beginStroke(this.strokeColor);
+        this.graphics.moveTo(path.poses[0].pose.position.x / this.scaleX, path.poses[0].pose.position.y / -this.scaleY);
+        for (var i = 1; i < path.poses.length; ++i) {
+            this.graphics.lineTo(path.poses[i].pose.position.x / this.scaleX, path.poses[i].pose.position.y / -this.scaleY);
+        }
+        this.graphics.endStroke();
+    }
+};
+
+ROS2D.PathShape.prototype.__proto__ = createjs.Shape.prototype;
+
+/**
+ * @author Bart van Vliet - bart@dobots.nl
+ */
+
+/**
+ * A polygon that can be edited by an end user
+ *
+ * @constructor
+ * @param options - object with following keys:
+ *   * pose (optional) - the first pose of the trace
+ *   * lineSize (optional) - the width of the lines
+ *   * lineColor (optional) - the createjs color of the lines
+ *   * pointSize (optional) - the size of the points
+ *   * pointColor (optional) - the createjs color of the points
+ *   * fillColor (optional) - the createjs color to fill the polygon
+ *   * lineCallBack (optional) - callback function for mouse interaction with a line
+ *   * pointCallBack (optional) - callback function for mouse interaction with a point
+ */
+ROS2D.PolygonMarker = function (options) {
+    //	var that = this;
+    options = options || {};
+    this.lineSize = options.lineSize || 3;
+    this.lineColor = options.lineColor || createjs.Graphics.getRGB(0, 0, 255, 0.66);
+    this.pointSize = options.pointSize || 10;
+    this.pointColor = options.pointColor || createjs.Graphics.getRGB(255, 0, 0, 0.66);
+    this.fillColor = options.pointColor || createjs.Graphics.getRGB(0, 255, 0, 0.33);
+    this.lineCallBack = options.lineCallBack;
+    this.pointCallBack = options.pointCallBack;
+
+    // Array of point shapes
+    //	this.points = [];
+    this.pointContainer = new createjs.Container();
+
+    // Array of line shapes
+    //	this.lines = [];
+    this.lineContainer = new createjs.Container();
+
+    this.fillShape = new createjs.Shape();
+
+    // Container with all the lines and points
+    createjs.Container.call(this);
+
+    this.addChild(this.fillShape);
+    this.addChild(this.lineContainer);
+    this.addChild(this.pointContainer);
+};
+
+/**
+ * Internal use only
+ */
+ROS2D.PolygonMarker.prototype.createLineShape = function (startPoint, endPoint) {
+    var line = new createjs.Shape();
+    //	line.graphics.setStrokeStyle(this.strokeSize);
+    //	line.graphics.beginStroke(this.strokeColor);
+    //	line.graphics.moveTo(startPoint.x, startPoint.y);
+    //	line.graphics.lineTo(endPoint.x, endPoint.y);
+    this.editLineShape(line, startPoint, endPoint);
+
+    var that = this;
+    line.addEventListener('mousedown', function (event) {
+        if (that.lineCallBack !== null && typeof that.lineCallBack !== 'undefined') {
+            that.lineCallBack('mousedown', event, that.lineContainer.getChildIndex(event.target));
+        }
+    });
+
+    return line;
+};
+
+/**
+ * Internal use only
+ */
+ROS2D.PolygonMarker.prototype.editLineShape = function (line, startPoint, endPoint) {
+    line.graphics.clear();
+    line.graphics.setStrokeStyle(this.lineSize);
+    line.graphics.beginStroke(this.lineColor);
+    line.graphics.moveTo(startPoint.x, startPoint.y);
+    line.graphics.lineTo(endPoint.x, endPoint.y);
+};
+
+/**
+ * Internal use only
+ */
+ROS2D.PolygonMarker.prototype.createPointShape = function (pos) {
+    var point = new createjs.Shape();
+    point.graphics.beginFill(this.pointColor);
+    point.graphics.drawCircle(0, 0, this.pointSize);
+    point.x = pos.x;
+    point.y = -pos.y;
+
+    var that = this;
+    point.addEventListener('mousedown', function (event) {
+        if (that.pointCallBack !== null && typeof that.pointCallBack !== 'undefined') {
+            that.pointCallBack('mousedown', event, that.pointContainer.getChildIndex(event.target));
+        }
+    });
+
+    return point;
+};
+
+/**
+ * Adds a point to the polygon
+ *
+ * @param position of type ROSLIB.Vector3
+ */
+ROS2D.PolygonMarker.prototype.addPoint = function (pos) {
+    var point = this.createPointShape(pos);
+    this.pointContainer.addChild(point);
+    var numPoints = this.pointContainer.getNumChildren();
+
+    // 0 points -> 1 point, 0 lines
+    // 1 point  -> 2 points, lines: add line between previous and new point, add line between new point and first point
+    // 2 points -> 3 points, 3 lines: change last line, add line between new point and first point
+    // 3 points -> 4 points, 4 lines: change last line, add line between new point and first point
+    // etc
+
+    if (numPoints < 2) {
+        // Now 1 point
+    }
+    else if (numPoints < 3) {
+        // Now 2 points: add line between previous and new point
+        var line = this.createLineShape(this.pointContainer.getChildAt(numPoints - 2), point);
+        this.lineContainer.addChild(line);
+    }
+    if (numPoints > 2) {
+        // Now 3 or more points: change last line
+        this.editLineShape(this.lineContainer.getChildAt(numPoints - 2), this.pointContainer.getChildAt(numPoints - 2), point);
+    }
+    if (numPoints > 1) {
+        // Now 2 or more points: add line between new point and first point
+        var lineEnd = this.createLineShape(point, this.pointContainer.getChildAt(0));
+        this.lineContainer.addChild(lineEnd);
+    }
+
+    this.drawFill();
+};
+
+/**
+ * Removes a point from the polygon
+ *
+ * @param obj either an index (integer) or a point shape of the polygon
+ */
+ROS2D.PolygonMarker.prototype.remPoint = function (obj) {
+    var index;
+    //	var point;
+    if (obj instanceof createjs.Shape) {
+        index = this.pointContainer.getChildIndex(obj);
+        //		point = obj;
+    }
+    else {
+        index = obj;
+        //		point = this.pointContainer.getChildAt(index);
+    }
+
+    // 0 points -> 0 points, 0 lines
+    // 1 point  -> 0 points, 0 lines
+    // 2 points -> 1 point,  0 lines: remove all lines
+    // 3 points -> 2 points, 2 lines: change line before point to remove, remove line after point to remove
+    // 4 points -> 3 points, 3 lines: change line before point to remove, remove line after point to remove
+    // etc
+
+    var numPoints = this.pointContainer.getNumChildren();
+
+    if (numPoints < 2) {
+
+    }
+    else if (numPoints < 3) {
+        // 2 points: remove all lines
+        this.lineContainer.removeAllChildren();
+    }
+    else {
+        // 3 or more points: change line before point to remove, remove line after point to remove
+        this.editLineShape(
+			this.lineContainer.getChildAt((index - 1 + numPoints) % numPoints),
+			this.pointContainer.getChildAt((index - 1 + numPoints) % numPoints),
+			this.pointContainer.getChildAt((index + 1) % numPoints)
+		);
+        this.lineContainer.removeChildAt(index);
+    }
+    this.pointContainer.removeChildAt(index);
+    //	this.points.splice(index, 1);
+
+    this.drawFill();
+};
+
+/**
+ * Moves a point of the polygon
+ *
+ * @param obj either an index (integer) or a point shape of the polygon
+ * @param position of type ROSLIB.Vector3
+ */
+ROS2D.PolygonMarker.prototype.movePoint = function (obj, newPos) {
+    var index;
+    var point;
+    if (obj instanceof createjs.Shape) {
+        index = this.pointContainer.getChildIndex(obj);
+        point = obj;
+    }
+    else {
+        index = obj;
+        point = this.pointContainer.getChildAt(index);
+    }
+    point.x = newPos.x;
+    point.y = -newPos.y;
+
+    var numPoints = this.pointContainer.getNumChildren();
+    if (numPoints > 1) {
+        // line before moved point
+        var line1 = this.lineContainer.getChildAt((index - 1 + numPoints) % numPoints);
+        this.editLineShape(line1, this.pointContainer.getChildAt((index - 1 + numPoints) % numPoints), point);
+
+        // line after moved point
+        var line2 = this.lineContainer.getChildAt(index);
+        this.editLineShape(line2, point, this.pointContainer.getChildAt((index + 1) % numPoints));
+    }
+
+    this.drawFill();
+};
+
+/**
+ * Splits a line of the polygon: inserts a point at the center of the line
+ *
+ * @param obj either an index (integer) or a line shape of the polygon
+ */
+ROS2D.PolygonMarker.prototype.splitLine = function (obj) {
+    var index;
+    var line;
+    if (obj instanceof createjs.Shape) {
+        index = this.lineContainer.getChildIndex(obj);
+        line = obj;
+    }
+    else {
+        index = obj;
+        line = this.lineContainer.getChildAt(index);
+    }
+    var numPoints = this.pointContainer.getNumChildren();
+    var xs = this.pointContainer.getChildAt(index).x;
+    var ys = this.pointContainer.getChildAt(index).y;
+    var xe = this.pointContainer.getChildAt((index + 1) % numPoints).x;
+    var ye = this.pointContainer.getChildAt((index + 1) % numPoints).y;
+    var xh = (xs + xe) / 2.0;
+    var yh = (ys + ye) / 2.0;
+    var pos = new ROSLIB.Vector3({ x: xh, y: -yh });
+
+    // Add a point in the center of the line to split
+    var point = this.createPointShape(pos);
+    this.pointContainer.addChildAt(point, index + 1);
+    ++numPoints;
+
+    // Add a line between the new point and the end of the line to split
+    var lineNew = this.createLineShape(point, this.pointContainer.getChildAt((index + 2) % numPoints));
+    this.lineContainer.addChildAt(lineNew, index + 1);
+
+    // Set the endpoint of the line to split to the new point
+    this.editLineShape(line, this.pointContainer.getChildAt(index), point);
+
+    this.drawFill();
+};
+
+/**
+ * Internal use only
+ */
+ROS2D.PolygonMarker.prototype.drawFill = function () {
+    var numPoints = this.pointContainer.getNumChildren();
+    if (numPoints > 2) {
+        var g = this.fillShape.graphics;
+        g.clear();
+        g.setStrokeStyle(0);
+        g.moveTo(this.pointContainer.getChildAt(0).x, this.pointContainer.getChildAt(0).y);
+        g.beginStroke();
+        g.beginFill(this.fillColor);
+        for (var i = 1; i < numPoints; ++i) {
+            g.lineTo(this.pointContainer.getChildAt(i).x, this.pointContainer.getChildAt(i).y);
+        }
+        g.closePath();
+        g.endFill();
+        g.endStroke();
+    }
+    else {
+        this.fillShape.graphics.clear();
+    }
+};
+
+
+ROS2D.PolygonMarker.prototype.__proto__ = createjs.Container.prototype;
+
+/**
+ * @author Bart van Vliet - bart@dobots.nl
+ */
+
+/**
+ * A trace of poses, handy to see where a robot has been
+ *
+ * @constructor
+ * @param options - object with following keys:
+ *   * pose (optional) - the first pose of the trace
+ *   * strokeSize (optional) - the size of the outline
+ *   * strokeColor (optional) - the createjs color for the stroke
+ *   * maxPoses (optional) - the maximum number of poses to keep, 0 for infinite
+ *   * minDist (optional) - the minimal distance between poses to use the pose for drawing (default 0.05)
+ */
+ROS2D.TraceShape = function (options) {
+    //	var that = this;
+    options = options || {};
+    var pose = options.pose;
+    this.strokeSize = options.strokeSize || 3;
+    this.strokeColor = options.strokeColor || createjs.Graphics.getRGB(0, 0, 0);
+    this.maxPoses = options.maxPoses || 100;
+    this.minDist = options.minDist || 0.05;
+
+    // Store minDist as the square of it
+    this.minDist = this.minDist * this.minDist;
+
+    // Array of the poses
+    // TODO: do we need this?
+    this.poses = [];
+
+    // Create the graphics
+    this.graphics = new createjs.Graphics();
+    this.graphics.setStrokeStyle(this.strokeSize);
+    this.graphics.beginStroke(this.strokeColor);
+
+    // Add first pose if given
+    if (pose !== null && typeof pose !== 'undefined') {
+        this.poses.push(pose);
+    }
+
+    // Create the shape
+    createjs.Shape.call(this, this.graphics);
+};
+
+/**
+ * Adds a pose to the trace and updates the graphics
+ *
+ * @param pose of type ROSLIB.Pose
+ */
+ROS2D.TraceShape.prototype.addPose = function (pose) {
+    var last = this.poses.length - 1;
+    if (last < 0) {
+        this.poses.push(pose);
+        this.graphics.moveTo(pose.position.x / this.scaleX, pose.position.y / -this.scaleY);
+    }
+    else {
+        var prevX = this.poses[last].position.x;
+        var prevY = this.poses[last].position.y;
+        var dx = (pose.position.x - prevX);
+        var dy = (pose.position.y - prevY);
+        if (dx * dx + dy * dy > this.minDist) {
+            this.graphics.lineTo(pose.position.x / this.scaleX, pose.position.y / -this.scaleY);
+            this.poses.push(pose);
+        }
+    }
+    if (this.maxPoses > 0 && this.maxPoses < this.poses.length) {
+        this.popFront();
+    }
+};
+
+/**
+ * Removes front pose and updates the graphics
+ */
+ROS2D.TraceShape.prototype.popFront = function () {
+    if (this.poses.length > 0) {
+        this.poses.shift();
+        // TODO: shift drawing instructions rather than doing it all over
+        this.graphics.clear();
+        this.graphics.setStrokeStyle(this.strokeSize);
+        this.graphics.beginStroke(this.strokeColor);
+        this.graphics.lineTo(this.poses[0].position.x / this.scaleX, this.poses[0].position.y / -this.scaleY);
+        for (var i = 1; i < this.poses.length; ++i) {
+            this.graphics.lineTo(this.poses[i].position.x / this.scaleX, this.poses[i].position.y / -this.scaleY);
+        }
+    }
+};
+
+ROS2D.TraceShape.prototype.__proto__ = createjs.Shape.prototype;
+
+/**
+ * @author Bart van Vliet - bart@dobots.nl
+ */
+
+/**
+ * Adds panning to a view
+ *
+ * @constructor
+ * @param options - object with following keys:
+ *   * rootObject (optional) - the root object to apply panning to
+ */
+ROS2D.PanView = function (options) {
+    options = options || {};
+    this.rootObject = options.rootObject;
+
+    // get a handle to the stage
+    if (this.rootObject instanceof createjs.Stage) {
+        this.stage = this.rootObject;
+    }
+    else {
+        this.stage = this.rootObject.getStage();
+    }
+
+    this.startPos = new ROSLIB.Vector3();
+};
+
+
+ROS2D.PanView.prototype.startPan = function (startX, startY) {
+    this.startPos.x = startX;
+    this.startPos.y = startY;
+};
+
+ROS2D.PanView.prototype.pan = function (curX, curY) {
+    this.stage.x += curX - this.startPos.x;
+    this.startPos.x = curX;
+    this.stage.y += curY - this.startPos.y;
+    this.startPos.y = curY;
+};
+
+/**
+ * @author Russell Toris - rctoris@wpi.edu
+ */
+
+/**
+ * A Viewer can be used to render an interactive 2D scene to a HTML5 canvas.
+ *
+ * @constructor
+ * @param options - object with following keys:
+ *   * divID - the ID of the div to place the viewer in
+ *   * width - the initial width, in pixels, of the canvas
+ *   * height - the initial height, in pixels, of the canvas
+ *   * background (optional) - the color to render the background, like '#efefef'
+ */
+
+var CanvasID = "";
+ROS2D.Viewer = function (options) {
+    var that = this;
+    options = options || {};
+    var divID = options.divID;
+    CanvasID = divID;
+    this.width = options.width;
+    this.height = options.height;
+    var background = options.background || '#111111';
+
+    // create the canvas to render to
+    var canvas = document.createElement('canvas');
+    canvas.width = this.width;
+    canvas.height = this.height;
+    canvas.style.background = background;
+    canvas.style.display = "none";
+    $("#" + divID).append(canvas);
+
+
+    $("#" + divID + " canvas").slideUp("slow", function () {
+        $(this).show(500,function () {
+            $("#nav-load").show();
+        });
+    });
+
+    // document.getElementById(divID).appendChild(canvas);
+    // create the easel to use
+    this.scene = new createjs.Stage(canvas);
+    myScene = this.scene;
+
+
+
+    // change Y axis center
+    this.scene.y = this.height;
+
+    // add the renderer to the page
+    document.getElementById(divID).appendChild(canvas);
+
+    // update at 30fps
+    createjs.Ticker.setFPS(30);
+    createjs.Ticker.addEventListener('tick', this.scene);
+};
+
+/**
+ * Add the given createjs object to the global scene in the viewer.
+ *
+ * @param object - the object to add
+ */
+ROS2D.Viewer.prototype.addObject = function (object) {
+    this.scene.addChild(object);
+};
+
+/**
+ * Scale the scene to fit the given width and height into the current canvas.
+ *
+ * @param width - the width to scale to in meters
+ * @param height - the height to scale to in meters
+ */
+ROS2D.Viewer.prototype.scaleToDimensions = function (width, height) {
+    // restore to values before shifting, if ocurred
+    this.scene.x = typeof this.scene.x_prev_shift !== 'undefined' ? this.scene.x_prev_shift : this.scene.x;
+    this.scene.y = typeof this.scene.y_prev_shift !== 'undefined' ? this.scene.y_prev_shift : this.scene.y;
+
+    // save scene scaling
+    this.scene.scaleX = this.width / width;
+    this.scene.scaleY = this.height / height;
+};
+
+/**
+ * Shift the main view of the canvas by the given amount. This is based on the
+ * ROS coordinate system. That is, Y is opposite that of a traditional canvas.
+ *
+ * @param x - the amount to shift by in the x direction in meters
+ * @param y - the amount to shift by in the y direction in meters
+ */
+ROS2D.Viewer.prototype.shift = function (x, y) {
+    // save current offset
+    this.scene.x_prev_shift = this.scene.x;
+    this.scene.y_prev_shift = this.scene.y;
+
+    // shift scene by scaling the desired offset
+    this.scene.x -= (x * this.scene.scaleX);
+    this.scene.y += (y * this.scene.scaleY);
+};
+
+/**
+ * @author Bart van Vliet - bart@dobots.nl
+ */
+
+/**
+ * Adds zooming to a view
+ *
+ * @constructor
+ * @param options - object with following keys:
+ *   * rootObject (optional) - the root object to apply zoom to
+ *   * minScale (optional) - minimum scale to set to preserve precision
+ */
+ROS2D.ZoomView = function (options) {
+    options = options || {};
+    this.rootObject = options.rootObject;
+    this.minScale = options.minScale || 0.001;
+
+    // get a handle to the stage
+    if (this.rootObject instanceof createjs.Stage) {
+        this.stage = this.rootObject;
+    }
+    else {
+        this.stage = this.rootObject.getStage();
+    }
+
+    this.center = new ROSLIB.Vector3();
+    this.startShift = new ROSLIB.Vector3();
+    this.startScale = new ROSLIB.Vector3();
+};
+
+
+ROS2D.ZoomView.prototype.startZoom = function (centerX, centerY) {
+    this.center.x = centerX;
+    this.center.y = centerY;
+    this.startShift.x = this.stage.x;
+    this.startShift.y = this.stage.y;
+    this.startScale.x = this.stage.scaleX;
+    this.startScale.y = this.stage.scaleY;
+};
+
+ROS2D.ZoomView.prototype.zoom = function (zoom) {
+    // Make sure scale doesn't become too small
+    if (this.startScale.x * zoom < this.minScale) {
+        zoom = this.minScale / this.startScale.x;
+    }
+    if (this.startScale.y * zoom < this.minScale) {
+        zoom = this.minScale / this.startScale.y;
+    }
+
+    this.stage.scaleX = this.startScale.x * zoom;
+    this.stage.scaleY = this.startScale.y * zoom;
+
+    this.stage.x = this.startShift.x - (this.center.x - this.startShift.x) * (this.stage.scaleX / this.startScale.x - 1);
+    this.stage.y = this.startShift.y - (this.center.y - this.startShift.y) * (this.stage.scaleY / this.startScale.y - 1);
+};

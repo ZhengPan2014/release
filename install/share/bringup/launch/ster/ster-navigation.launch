@@ -1,15 +1,7 @@
 <?xml version="1.0"?>
 <launch>
-    <include file="$(find bringup)/launch/map_server.launch"/>
+    <include file="$(find bringup)/launch/bringup-dbparam.launch"/>
 
-    <include file="$(find bringup)/launch/map_edit_server.launch"/>
-<!--
-    <node name="map_server" pkg="map_server" type="map_server" args="map.yaml"/>
-
-    <node name="map_edit_server" pkg="map_server" type="map_server" args="map_edit.yaml" >
-        <remap from="map" to="map_edit"/>
-    </node>
--->
     <node name="amcl" pkg="amcl" type="amcl" output="screen">
         <remap from="scan" to="scan_rectified" />
         <rosparam>
@@ -18,21 +10,6 @@
             tf_broadcast: true
         </rosparam>
     </node>
-
-    <include file="$(find bringup)/launch/rosbridge_stm32wangke.launch"/>
-<!--
-    <node name="stm32_driver" pkg="stm32_driver" type="stm32_driver" output="screen">
-        <remap from="imu" to="imu_data" />
-        <rosparam>
-            is_pub_tf: false
-            has_encoder: true
-            wheel_separation: 0.37
-            tty_name: /dev/ttyS2
-        </rosparam>
-    </node>
--->
-    <node name="robot_pose_publisher" pkg="robot_pose_publisher" type="robot_pose_publisher" output="screen"/>
-
 
     <node name="move_base" pkg="move_base" type="move_base" respawn="false" output="screen">
         <remap from="odom" to="/odom_0"/>

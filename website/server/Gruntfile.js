@@ -14,15 +14,15 @@ module.exports = function (grunt) {
 					{
 						expand: true,
 						//相对路径
-						cwd: 'js/',
+						cwd: '../html/js/',
 						src: '*.js',
-						dest: 'dest/js/',
+						dest: '../html/js/',
 						rename: function (dest, src) {  
 								  var folder = src.substring(0, src.lastIndexOf('/'));  
 								  var filename = src.substring(src.lastIndexOf('/'), src.length);  
 								  //  var filename=src;  
 								  filename = filename.substring(0, filename.lastIndexOf('.'));  
-								  var fileresult=dest + folder + filename + '.min.js';  
+								  var fileresult=dest + folder + filename + '.js';  
 								  grunt.log.writeln("现处理文件："+src+"  处理后文件："+fileresult);  
 								  return fileresult;  
 								  //return  filename + '.min.js';  
@@ -47,15 +47,15 @@ module.exports = function (grunt) {
 					{
 						expand: true,
 						//相对路径
-						cwd: 'css/',
+						cwd: '../html/css/',
 						src: '*.css',
-						dest: 'dest/css/',
+						dest: '../html/css/',
 						rename: function (dest, src) {  
 								var folder = src.substring(0, src.lastIndexOf('/'));  
 								var filename = src.substring(src.lastIndexOf('/'), src.length);  
 								//  var filename=src;  
 								filename = filename.substring(0, filename.lastIndexOf('.'));  
-								var fileresult=dest + folder + filename + '.min.css';  
+								var fileresult=dest + folder + filename + '.css';  
 								grunt.log.writeln("现处理文件："+src+"  处理后文件："+fileresult);  
 								return fileresult;  
 							  //return  filename + '.min.js';
