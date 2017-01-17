@@ -1,0 +1,39 @@
+{
+    "name": "tailinserver",
+    "version": "1.0.0",
+    "description": "nodejs server for Tailin",
+    "main": "server.js",
+    "scripts": {
+        "start": "node server.js"
+    },
+    "keywords": [
+        "tailin"
+    ],
+    "author": "Chenxc,GrayLoo",
+    "license": "Apache-2.0",
+    "repository": {
+        "type": "",
+        "url": ""
+    },
+    "devDependencies": {
+        "grunt": "~0.4.1",
+        "grunt-contrib-jshint": "~0.6.3",
+        "grunt-contrib-concat": "~0.3.0",
+        "grunt-contrib-uglify": "~0.2.1",
+        "grunt-contrib-cssmin": "",
+        "grunt-contrib-requirejs": "~0.4.1",
+        "grunt-contrib-copy": "~0.4.1",
+        "grunt-contrib-clean": "~0.5.0",
+        "grunt-strip": "~0.2.1"
+    },
+    "dependencies": {
+        "express": "",
+        "mysql": "",
+        "crypto": "",
+        "body-parser": "",
+        "sequelize": "",
+        "log4js": "",
+        "pdfkit": "",
+        "grunt-cli": ""
+    }
+}

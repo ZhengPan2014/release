@@ -1,8 +1,8 @@
-#sleep 7s;
-
 source ~/catkin_ws/base.sh;
 
 roscd bringup;
-gnome-terminal -x bash -c 'shell/nodejs.sh';
+shell/roslog-update.sh;
+
+gnome-terminal -x bash -c 'export NODE_HOME=/usr/lib/node; export PATH=${NODE_HOME}/bin:$PATH; shell/nodejs.sh;';
 
 roslaunch bringup bringup-boot.launch;
