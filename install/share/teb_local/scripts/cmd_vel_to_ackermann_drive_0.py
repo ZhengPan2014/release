@@ -10,7 +10,7 @@ from ackermann_msgs.msg import AckermannDriveStamped
 def convert_trans_rot_vel_to_steering_angle(v, omega, wheelbase):
   if omega == 0 or v == 0:
     return 0
-
+  
   radius = v / omega 
   rospy.loginfo("radius: %f", radius)
   return math.atan(wheelbase / radius)
@@ -28,7 +28,21 @@ def cmd_callback(data):
 
   
   v = data.linear.x
-  steering_angle = convert_trans_rot_vel_to_steering_angle(v, data.angular.z, wheelbase)
+
+  #steering_angle = convert_trans_rot_vel_to_steering_angle(v, data.angular.z, wheelbase)
+  if abs(previous_steering_angle) ==  max_angle:
+  	v = 0.2
+
+
+  if data.angular.z != 0 and data.linear.x == 0:
+    if data.angular.z > 0:
+    	steering_angle =    max_angle
+    else:
+    	steering_angle =  - max_angle
+    
+  else:
+    steering_angle = convert_trans_rot_vel_to_steering_angle(data.linear.x, data.angular.z, wheelbase)
+    v = data.linear.x
 
   msg = AckermannDriveStamped()
   msg.header.stamp = rospy.Time.now()
@@ -39,11 +53,12 @@ def cmd_callback(data):
 
   previous_steering_angle=steering_angle
 
-  cutportion=0.9
+  # cutportion=0.3
+ 
 
-  if(abs(steering_angle)<(cutportion*max_angle)):
-    steering_angle=steering_angle*((steering_angle/(cutportion*max_angle))**2)
-    msg.drive.steering_angle = steering_angle
+  # if(abs(steering_angle)<(cutportion*max_angle)):
+  #   steering_angle=steering_angle*((steering_angle/(cutportion*max_angle))**2)
+  #   msg.drive.steering_angle = steering_angle
 
   if msg.drive.steering_angle > max_angle:
     msg.drive.steering_angle = max_angle
@@ -51,8 +66,8 @@ def cmd_callback(data):
   if msg.drive.steering_angle < -max_angle:
     msg.drive.steering_angle = -max_angle
 
-  if msg.drive.steering_angle != msg.drive.steering_angle:
-    msg.drive.steering_angle = 0.0
+  # if msg.drive.steering_angle != msg.drive.steering_angle:
+  #   msg.drive.steering_angle = 0.0
 
 
   pub.publish(msg)
@@ -67,7 +82,7 @@ if __name__ == '__main__':
     ackermann_cmd_topic = rospy.get_param('~ackermann_cmd_topic', '/ackermann_msg')
     wheelbase = rospy.get_param('~wheelbase', 1.48)
     frame_id = rospy.get_param('~frame_id', 'odom')
-    max_angle = rospy.get_param("~max_angle", 1.5351)
+    max_angle = rospy.get_param("~max_angle", 1.5359)
     large_change_angle_threshold = rospy.get_param("~large_change_angle_threshold", 0.4)
     small_change_angle_threshold = rospy.get_param("~small_change_angle_threshold", 0.3)
 

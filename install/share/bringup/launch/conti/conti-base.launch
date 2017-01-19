@@ -50,31 +50,22 @@
     <node name="robot_pose_publisher" pkg="robot_pose_publisher" type="robot_pose_publisher" output="screen"/>
 
     <include file="$(find bringup)/launch/$(optenv ROS_USER_MODEL)/$(optenv ROS_USER_MODEL rosbridge)-driver.launch"/>       
-<!--
+
     <include file="$(find bringup)/launch/rosbridge_imu9250.launch">       
     </include>
--->
-    <node name="teleop_keyboard" pkg="teleop_keyboard" type="teleop_keyboard" output="screen"/>
 
-    <node name="sick_tim551_2050001" pkg="sick_tim" type="sick_tim551_2050001" respawn="false" output="screen">
-    <!-- default values: -->
-      <param name="min_ang" type="double" value="-2.1" />
-      <param name="max_ang" type="double" value="2.1" />
-      <param name="intensity" type="bool" value="True" />
-      <param name="skip" type="int" value="0" />
-      <param name="frame_id" type="str" value="base_laser" />
-      <param name="time_offset" type="double" value="-0.001" />
-      <param name="publish_datagram" type="bool" value="False" />
-      <param name="subscribe_datagram" type="bool" value="false" />
-      <param name="device_number" type="int" value="0" />
-      <param name="time_increment" type="double" value="0.000061722" />
-      <param name="range_min" type="double" value="0.05" />
-      <param name="range_max" type="double" value="25.0" />
-    <!-- Uncomment this to enable TCP instead of USB connection; 'hostname' is the host name or IP address of the laser scanner
-    In cases where a race condition exists and the computer boots up before the TIM is ready, increase 'timelimit.'-->
-         <param name="hostname" type="string" value="192.168.1.188" />
-         <param name="port" type="string" value="2112" />
-         <param name="timelimit" type="int" value="5" />
+    <node name="teleop_keyboard" pkg="teleop_keyboard" type="teleop_keyboard" output="screen"/>
+    <node name="teleop_joystick" pkg="teleop_joystick" type="teleop_joystick" output="screen"/>
+
+    <node name="sick_tim571" pkg="sick_tim" type="sick_tim551_2050001" respawn="false" output="screen">
+        <rosparam>
+            min_ang: -2.1
+            max_ang: 2.1
+            intensity: False
+            frame_id: base_laser
+            range_max: 25.0
+            hostname: 192.168.1.188
+        </rosparam>
     </node>
 
     <node name="scan_filter" pkg="laser_filters" type="scan_to_scan_filter_chain" output="screen">

@@ -2,7 +2,7 @@
 #---standard pioneer footprint---
 #---(in meters)---
 #footprint: [ [-0.1,-0.125], [0.5,-0.125], [0.5,0.125], [-0.1,0.125] ]
-footprint: [ [-0.19,-0.40], [2.3,-0.40], [2.3,0.40], [-0.19,0.40] ]
+footprint: [ [-0.20,-0.40], [1.70,-0.40], [1.70,0.40], [-0.20,0.40] ]
 
 
 transform_tolerance: 0.2
@@ -16,9 +16,18 @@ obstacle_layer:
  track_unknown_space: false
  combination_method: 1
 
- observation_sources: scan_rectified
+ observation_sources: scan_rectified scan_another
  scan_rectified: 
       topic: scan_rectified
+      data_type: LaserScan      
+      marking: true
+      clearing: true
+      min_obstacle_height: -1.0
+      max_obstacle_height: 1.0 
+      inf_is_valid:   true
+
+ scan_another:
+      topic: scan_another
       data_type: LaserScan      
       marking: true
       clearing: true

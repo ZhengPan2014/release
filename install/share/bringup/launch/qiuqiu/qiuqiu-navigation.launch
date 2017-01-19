@@ -1,8 +1,55 @@
 <?xml version="1.0"?>
 <launch>
-    <include file="$(find bringup)/launch/map_server.launch"/>
+    <node name="tf_base_footprint" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+        <rosparam>
+            frame_id: base_footprint
+            z: 0.035
+        </rosparam>
+    </node>
 
-    <include file="$(find bringup)/launch/map_edit_server.launch"/>
+    <node name="scan_filter" pkg="laser_filters" type="scan_to_scan_filter_chain" output="screen">
+        <remap from="scan" to="scan"/>
+        <remap from="scan_filtered" to="scan_filtered"/>
+        <rosparam>
+            scan_filter_chain:
+            - type: laser_filters/LaserArrayFilter
+              name: laser_median_filter
+              params: 
+                range_filter_chain:
+                  - name: median_5
+                    type: filters/MultiChannelMedianFilterFloat 
+                    params:
+                      number_of_observations: 5
+                      unused: 10
+                intensity_filter_chain:
+                  - name: median_5
+                    type: filters/MultiChannelMedianFilterFloat 
+                    params:
+                      number_of_observations: 5
+                      unused: 10
+            - name: shadows
+              type: laser_filters/ScanShadowsFilter  
+              params:
+                min_angle: 10
+                max_angle: 170 #260
+                neighbors: 20 #10
+                window: 1
+        </rosparam>
+    </node>
+
+    <node name="scan_rectifier" pkg="scan_rectifier" type="scan_rectifier" output="screen">
+        <remap from="scan_input" to="scan_filtered"/>
+        <remap from="scan_output" to="scan_rectified"/>
+        <rosparam>
+            max_range: 10.0
+        </rosparam>
+    </node>
+
+    <node name="map_server" pkg="map_server" type="map_server" args="$(find bringup)/param/map.yaml"/>
+
+    <node name="map_edit_server" pkg="map_server" type="map_server" args="$(find bringup)/param/map_edit.yaml" >
+        <remap from="map" to="map_edit"/>
+    </node>
 
     <node name="amcl" pkg="amcl" type="amcl" output="screen">
         <remap from="scan" to="scan_rectified" />
@@ -47,7 +94,7 @@
                 update_frequency: 2.0 #5.0
                 publish_frequency: 0.5 #0.0
                 static_map: true
-                robot_radius: 0.35 <!-- groovy -->
+                robot_radius: 0.42 <!-- groovy -->
                 resolution: 0.075
                 plugins:
                   - name: static_layer
@@ -70,7 +117,7 @@
                     track_unknown_space: false #true
                     z_voxels: 8
                 inflation_layer:
-                    inflation_radius: 0.6
+                    inflation_radius: 0.75
                     cost_scaling_factor: 1
             local_costmap:
                 global_frame: odom
@@ -78,7 +125,7 @@
                 transform_tolerance: 0.2 #0.5
                 update_frequency: 5.0
                 publish_frequency: 2.0 #0.5
-                robot_radius: 0.35 <!-- groovy -->
+                robot_radius: 0.42 <!-- groovy -->
                 static_map: false
                 rolling_window: true
                 width: 6.0
@@ -101,19 +148,19 @@
                     track_unknown_space: false #true
                     z_voxels: 8
                 inflation_layer:
-                    inflation_radius: 0.6
+                    inflation_radius: 0.75
                     cost_scaling_factor: 1
             GlobalPlanner:
                 allow_unknown: false
             TrajectoryPlannerROS:
-                max_vel_x: 0.8
+                max_vel_x: 0.5
                 min_vel_x: 0.1
                 max_vel_theta: 1.0
                 min_vel_theta: -1.0
                 min_in_place_vel_theta: 0.4
-                acc_lim_x: 3.0 #2.5
+                acc_lim_x: 1.0 #2.5
                 acc_lim_y: 0.0 #1.0
-                acc_lim_theta: 4.0 #3.2
+                acc_lim_theta: 2.0 #3.2
                 holonomic_robot: false
                 yaw_goal_tolerance: 0.05 #0.15
                 xy_goal_tolerance: 0.075 #0.15
@@ -126,19 +173,19 @@
                 #global_frame_id: odom
                 oscillation_reset_dist: 0.075
             DWAPlannerROS:
-                acc_lim_x: 3.0 #slow 1.0, fast 2.0
+                acc_lim_x: 2.0 #slow 1.0, fast 2.0
                 acc_lim_y: 0.0
-                acc_lim_th: 4.0 #slow 2.0, fast 3.2
-                max_trans_vel: 0.8
+                acc_lim_th: 2.0 #slow 2.0, fast 3.2
+                max_trans_vel: 0.55
                 min_trans_vel: 0.1
-                max_vel_x: 0.8
+                max_vel_x: 0.55
                 min_vel_x: 0.0
                 max_vel_y: 0.0
                 min_vel_y: 0.0
                 max_rot_vel: 1.0
                 min_rot_vel: 0.4
-                yaw_goal_tolerance: 0.1
-                xy_goal_tolerance: 0.1
+                yaw_goal_tolerance: 0.2
+                xy_goal_tolerance: 0.15
                 latch_xy_goal_tolerance: true 
                 sim_time: 1.7
                 sim_granularity: 0.025
