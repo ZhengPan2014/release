@@ -1,13 +1,12 @@
-#export ROS_USER_SSID=hitrobot_extern
-#export ROS_USER_PASSWD=hitrobot
-#export ROS_USER_IP=192.168.0.7
-export ROS_USER_GATEWAY=`echo $ROS_USER_IP | awk -F '.' '{print $1"."$2"."$3".1"}'`
-export ROS_USER_UUID=`cat /proc/sys/kernel/random/uuid`
-export ROS_USER_IFCONFIG=`ifconfig -a | grep wlan`
-export ROS_USER_MAC=`echo $ROS_USER_IFCONFIG | awk '{print $5}'`
+#export ROS_USER_SSID=hitrobot_extern;
+#export ROS_USER_PASSWD=hitrobot;
+#export ROS_USER_IP=192.168.0.7;
+export ROS_USER_GATEWAY=`echo $ROS_USER_IP | awk -F '.' '{print $1"."$2"."$3".1"}'`;
+export ROS_USER_UUID=`cat /proc/sys/kernel/random/uuid`;
+export ROS_USER_MAC=`ifconfig -a | grep wlan | awk '{print $5}'`;
 
 cd /etc/NetworkManager/system-connections;
-sudo rm `sudo grep -lR "type=802-11-wireless"`
+sudo rm `sudo grep -lR "type=802-11-wireless"`;
 
 echo "[connection]"                                 | sudo tee -a $ROS_USER_SSID
 echo "id="$ROS_USER_SSID                            | sudo tee -a $ROS_USER_SSID
@@ -33,5 +32,5 @@ echo                                                | sudo tee -a $ROS_USER_SSID
 echo "[ipv6]"                                       | sudo tee -a $ROS_USER_SSID
 echo "method=auto"                                  | sudo tee -a $ROS_USER_SSID
 
-sudo chmod 600 $ROS_USER_SSID
-sudo service network-manager restart
+sudo chmod 600 $ROS_USER_SSID;
+sudo service network-manager restart;

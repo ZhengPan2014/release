@@ -7,7 +7,7 @@
     <node name="amcl" pkg="amcl" type="amcl" output="screen">
         <remap from="scan" to="scan_rectified" />
         <rosparam>
-            use_map_topic: false
+            use_map_topic: true
             odom_model_type: diff
             tf_broadcast: true
         </rosparam>

@@ -1,11 +1,17 @@
-export ROS_USER_SSID=`hostname`
-export ROS_USER_PASSWD=hitrobot
-export ROS_USER_UUID=`cat /proc/sys/kernel/random/uuid`
-export ROS_USER_IFCONFIG=`ifconfig -a | grep wlan`
-export ROS_USER_MAC=`echo $ROS_USER_IFCONFIG | awk '{print $5}'`
+if [ -f /etc/resolv.conf ]; then
+    export ROS_USER_RESOLV=true;
+else
+    export ROS_USER_RESOLV=false;
+    sudo ln -s /run/resolvconf/resolv.conf /etc/resolv.conf;
+fi;
+
+export ROS_USER_SSID=`hostname`;
+export ROS_USER_PASSWD=hitrobot;
+export ROS_USER_UUID=`cat /proc/sys/kernel/random/uuid`;
+export ROS_USER_MAC=`ifconfig -a | grep wlan | awk '{print $5}'`;
 
 cd /etc/NetworkManager/system-connections;
-sudo rm `sudo grep -lR "type=802-11-wireless"`
+sudo rm *;
 
 echo "[connection]"                                 | sudo tee -a $ROS_USER_SSID
 echo "id="$ROS_USER_SSID                            | sudo tee -a $ROS_USER_SSID
@@ -29,5 +35,9 @@ echo                                                | sudo tee -a $ROS_USER_SSID
 echo "[ipv6]"                                       | sudo tee -a $ROS_USER_SSID
 echo "method=auto"                                  | sudo tee -a $ROS_USER_SSID
 
-sudo chmod 600 $ROS_USER_SSID
-sudo service network-manager restart
+sudo chmod 600 $ROS_USER_SSID;
+sudo service network-manager restart;
+
+source ~/catkin_ws/base.sh;
+roscd bringup;
+shell/comm-eth9.sh;

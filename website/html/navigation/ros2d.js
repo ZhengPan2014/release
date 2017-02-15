@@ -147,6 +147,7 @@ ROS2D.ImageMapClient.prototype.__proto__ = EventEmitter2.prototype;
  *   * message - the occupancy grid message
  */
 ROS2D.OccupancyGrid = function (options) {
+
     options = options || {};
     var message = options.message;
 
@@ -168,7 +169,7 @@ ROS2D.OccupancyGrid = function (options) {
     var a = new Date().getTime();
 
     var imageData = context.createImageData(this.width, this.height);
- 
+
     for (var row = 0; row < this.height; row++) {
         for (var col = 0; col < this.width; col++) {
             // determine the index into the map data
@@ -265,8 +266,9 @@ ROS2D.OccupancyGridClient = function (options) {
     });
     var b = new Date().getTime();
     rosTopic.subscribe(function (message) {
-     //alert("get map message:"+(new Date().getTime()-b)+"ms");
-       //console.log(message);
+
+        //alert("get map message:"+(new Date().getTime()-b)+"ms");
+        //console.log(message);
         // check for an old map
         var index = null;
         if (that.currentGrid) {
@@ -476,6 +478,8 @@ ROS2D.Grid.prototype.__proto__ = createjs.Shape.prototype;
  *   * fillColor (optional) - the createjs color for the fill
  *   * pulse (optional) - if the marker should "pulse" over time
  */
+
+
 ROS2D.NavigationArrow = function (options) {
     var that = this;
     options = options || {};
@@ -602,20 +606,28 @@ ROS2D.NavigationImage.prototype.__proto__ = createjs.Bitmap.prototype;
  *   * strokeColor (optional) - the createjs color for the stroke
  */
 ROS2D.PathShape = function (options) {
+    console.log(options);
     options = options || {};
     var path = options.path;
     this.strokeSize = options.strokeSize || 3;
     this.strokeColor = options.strokeColor || createjs.Graphics.getRGB(0, 0, 0);
-
     // draw the line
     this.graphics = new createjs.Graphics();
 
     if (path !== null && typeof path !== 'undefined') {
         this.graphics.setStrokeStyle(this.strokeSize);
         this.graphics.beginStroke(this.strokeColor);
-        this.graphics.moveTo(path.poses[0].pose.position.x / this.scaleX, path.poses[0].pose.position.y / -this.scaleY);
+        console.log(this.strokeSize, this.strokeColor);
+
+        var x = path.poses[0].pose.position.x / this.scaleX;
+        var y = path.poses[0].pose.position.y / -this.scaleY;
+        console.log("x:%s,y:%s",x,y);
+        this.graphics.moveTo(x, y);
         for (var i = 1; i < path.poses.length; ++i) {
-            this.graphics.lineTo(path.poses[i].pose.position.x / this.scaleX, path.poses[i].pose.position.y / -this.scaleY);
+            var lineToX = path.poses[i].pose.position.x / this.scaleX;
+            var lineToY = path.poses[i].pose.position.y / -this.scaleY;
+            console.log("lineToX:%s,lineToY:%s", lineToX, lineToY);
+            this.graphics.lineTo(lineToX, lineToY);
         }
         this.graphics.endStroke();
     }
@@ -634,12 +646,14 @@ ROS2D.PathShape.prototype.setPath = function (path) {
     if (path !== null && typeof path !== 'undefined') {
         this.graphics.setStrokeStyle(this.strokeSize);
         this.graphics.beginStroke(this.strokeColor);
+        
         this.graphics.moveTo(path.poses[0].pose.position.x / this.scaleX, path.poses[0].pose.position.y / -this.scaleY);
         for (var i = 1; i < path.poses.length; ++i) {
             this.graphics.lineTo(path.poses[i].pose.position.x / this.scaleX, path.poses[i].pose.position.y / -this.scaleY);
         }
         this.graphics.endStroke();
     }
+
 };
 
 ROS2D.PathShape.prototype.__proto__ = createjs.Shape.prototype;
@@ -1093,7 +1107,7 @@ ROS2D.Viewer = function (options) {
 
 
     $("#" + divID + " canvas").slideUp("slow", function () {
-        $(this).show(500,function () {
+        $(this).show(500, function () {
             $("#nav-load").show();
         });
     });

@@ -1,12 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-    <include file="$(find bringup)/launch/map_server.launch"/>
-
-    <include file="$(find bringup)/launch/map_edit_server.launch"/>
-
-    <include file="$(find yocs_waypoint_provider)/launch/provider.launch"/>
-
-    <include file="$(find yocs_waypoints_navi)/launch/waypoints_navi.launch"/>
+    <include file="$(find bringup)/launch/bringup-dbparam.launch"/>
 
     <node name="amcl" pkg="amcl" type="amcl" output="screen">
         <remap from="scan" to="scan_rectified" />
@@ -14,7 +8,7 @@
             initial_pose_x: 0.0
             initial_pose_y: 0.0
             initial_pose_a: 0.0
-            use_map_topic: false
+            use_map_topic: true
             odom_model_type: diff
             tf_broadcast: true
         </rosparam>
@@ -40,12 +34,12 @@
                 layer_names: [obstacle_layer]
             controller_frequency: 5.0
             planner_patience: 5.0 #0.1
-            controller_patience: 15.0 #0.3
+            controller_patience: 1.0 #15.0
             conservative_reset_dist: 3.0 #0.25
             recovery_behavior_enabled: true
             clearing_rotation_allowed: false
             oscillation_timeout: 10.0
-            planner_frequency: 1.0 #0.0
+            planner_frequency: 0.0
             global_costmap:
                 global_frame: map
                 robot_base_frame: base_footprint
@@ -55,7 +49,7 @@
                 static_map: true
                 footprint: [[0.40, -0.33], [0.40, 0.33], [-0.40, 0.33], [-0.40, -0.33]]
 #                robot_radius: 0.33 #0.42 <!-- groovy -->
-                resolution: 0.075
+                resolution: 0.05
                 plugins:
                   - name: static_layer
                     type: "costmap_2d::StaticLayer"
@@ -66,7 +60,7 @@
                 static_layer:
                     map_topic: /map_edit
                 obstacle_layer:
-                    observation_sources: scan_rectified
+                    observation_sources: scan_rectified scan_left scan_right
                     scan_rectified:
                         expected_update_rate: 5.0
                         data_type: LaserScan
@@ -74,7 +68,22 @@
                         max_obstacle_height: 1.0
                         min_obstacle_height: -1.0
                         inf_is_valid: true
+                    scan_left:
+                        expected_update_rate: 5.0
+                        data_type: LaserScan
+                        clearing: true
+                        max_obstacle_height: 2.0
+                        min_obstacle_height: 0.05
+                        inf_is_valid: true
+                    scan_right:
+                        expected_update_rate: 5.0
+                        data_type: LaserScan
+                        clearing: true
+                        max_obstacle_height: 2.0
+                        min_obstacle_height: 0.05
+                        inf_is_valid: true
                     track_unknown_space: false #true
+                    footprint_clearing_enabled: false
                     z_voxels: 8
                 inflation_layer:
                     inflation_radius: 0.75
@@ -91,14 +100,14 @@
                 rolling_window: true
                 width: 6.0
                 height: 6.0
-                resolution: 0.075
+                resolution: 0.05
                 plugins:
                   - name: obstacle_layer
                     type: "costmap_2d::ObstacleLayer"
                   - name: inflation_layer
                     type: "costmap_2d::InflationLayer"
                 obstacle_layer:
-                    observation_sources: scan_rectified
+                    observation_sources: scan_rectified scan_left scan_right
                     scan_rectified:
                         expected_update_rate: 5.0
                         data_type: LaserScan
@@ -106,7 +115,22 @@
                         max_obstacle_height: 1.0
                         min_obstacle_height: -1.0
                         inf_is_valid: true
+                    scan_left:
+                        expected_update_rate: 5.0
+                        data_type: LaserScan
+                        clearing: true
+                        max_obstacle_height: 2.0
+                        min_obstacle_height: 0.05
+                        inf_is_valid: true
+                    scan_right:
+                        expected_update_rate: 5.0
+                        data_type: LaserScan
+                        clearing: true
+                        max_obstacle_height: 2.0
+                        min_obstacle_height: 0.05
+                        inf_is_valid: true
                     track_unknown_space: false #true
+                    footprint_clearing_enabled: false
                     z_voxels: 8
                 inflation_layer:
                     inflation_radius: 0.75
@@ -145,8 +169,8 @@
                 min_vel_y: 0.0
                 max_rot_vel: 1.0
                 min_rot_vel: 0.4
-                yaw_goal_tolerance: 0.2
-                xy_goal_tolerance: 0.15
+                yaw_goal_tolerance: 0.05 #0.2
+                xy_goal_tolerance: 0.075 #0.15
                 latch_xy_goal_tolerance: true 
                 sim_time: 1.7
                 sim_granularity: 0.025

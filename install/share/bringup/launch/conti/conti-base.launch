@@ -30,9 +30,9 @@
             child_frame_id: base_laser_left
             x: 0.135
             y: 0.321
-            z: 0.200
-            yaw: 2.356
-            pitch: 1.57
+            z: 0.170
+            roll: -1.57
+            pitch: 2.32
         </rosparam>
     </node>
 
@@ -41,9 +41,9 @@
             child_frame_id: base_laser_right
             x: 0.135
             y: -0.321
-            z: 0.200
-            yaw: -2.356
-            pitch: -1.57
+            z: 0.170
+            roll: 1.57
+            pitch: 2.38
         </rosparam>
     </node>
 
@@ -61,7 +61,7 @@
         <rosparam>
             min_ang: -2.1
             max_ang: 2.1
-            intensity: False
+            # intensity: False
             frame_id: base_laser
             range_max: 25.0
             hostname: 192.168.1.188
@@ -88,12 +88,18 @@
                     params:
                       number_of_observations: 5
                       unused: 10
-            scan_filter_chain:
             - name: laser_cutoff
               type: laser_filters/LaserScanAngularBoundsFilter
               params:
                 lower_angle: -1.60876090527
                 upper_angle: 1.60876090527
+            - name: shadows
+              type: ScanShadowsFilter
+              params:
+                min_angle: 10
+                max_angle: 170
+                neighbors: 20
+                window: 1
         </rosparam>
     </node>
 
@@ -105,6 +111,28 @@
         </rosparam>
     </node>
 
+    <node name="rplidar_left" pkg="rplidar_ros" type="rplidarNode" output="screen">
+        <remap from="scan" to="scan_left"/>
+        <rosparam>
+            serial_port: /dev/usb_top
+            serial_baudrate: 115200
+            frame_id: base_laser_left
+            inverted: false
+            angle_compensate: true
+        </rosparam>
+    </node>
+
+    <node name="rplidar_right" pkg="rplidar_ros" type="rplidarNode" output="screen">
+        <remap from="scan" to="scan_right"/>
+        <rosparam>
+            serial_port: /dev/usb_bottom
+            serial_baudrate: 115200
+            frame_id: base_laser_right
+            inverted: false
+            angle_compensate: true
+        </rosparam>
+    </node>
+
     <node name="robot_pose_ekf" pkg="robot_pose_ekf" type="robot_pose_ekf">
         <rosparam>
             output_frame: odom
@@ -112,7 +140,7 @@
             freq: 30.0
             sensor_timeout: 1.0
             odom_used: true
-            imu_used: false
+            imu_used: true
             vo_used: false
         </rosparam>
     </node>
