@@ -5,7 +5,7 @@ export ROS_USER_UUID=`cat /proc/sys/kernel/random/uuid`;
 export ROS_USER_MAC=`ifconfig -a | grep eth | awk '{print $5}'`;
 
 cd /etc/NetworkManager/system-connections;
-sudo rm "`sudo grep -lR "type=802-3-ethernet"`";
+sudo rm *;
 
 echo "[connection]"                                 | sudo tee -a $ROS_USER_SSID
 echo "id="$ROS_USER_SSID                            | sudo tee -a $ROS_USER_SSID

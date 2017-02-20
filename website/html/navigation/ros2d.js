@@ -5,7 +5,7 @@
 var ROS2D = ROS2D || {
     REVISION: '0.8.0-SNAPSHOT'
 };
-var myScene;
+
 // convert the given global Stage coordinates to ROS coordinates
 createjs.Stage.prototype.globalToRos = function (x, y) {
     var rosX = (x - this.x) / this.scaleX;
@@ -606,7 +606,7 @@ ROS2D.NavigationImage.prototype.__proto__ = createjs.Bitmap.prototype;
  *   * strokeColor (optional) - the createjs color for the stroke
  */
 ROS2D.PathShape = function (options) {
-    console.log(options);
+  
     options = options || {};
     var path = options.path;
     this.strokeSize = options.strokeSize || 3;
@@ -621,8 +621,11 @@ ROS2D.PathShape = function (options) {
 
         var x = path.poses[0].pose.position.x / this.scaleX;
         var y = path.poses[0].pose.position.y / -this.scaleY;
-        console.log("x:%s,y:%s",x,y);
+
+  
+
         this.graphics.moveTo(x, y);
+
         for (var i = 1; i < path.poses.length; ++i) {
             var lineToX = path.poses[i].pose.position.x / this.scaleX;
             var lineToY = path.poses[i].pose.position.y / -this.scaleY;
@@ -634,6 +637,7 @@ ROS2D.PathShape = function (options) {
 
     // create the shape
     createjs.Shape.call(this, this.graphics);
+    console.log(this);
 };
 
 /**
@@ -724,6 +728,8 @@ ROS2D.PolygonMarker.prototype.createLineShape = function (startPoint, endPoint) 
     });
 
     return line;
+
+
 };
 
 /**
@@ -735,6 +741,7 @@ ROS2D.PolygonMarker.prototype.editLineShape = function (line, startPoint, endPoi
     line.graphics.beginStroke(this.lineColor);
     line.graphics.moveTo(startPoint.x, startPoint.y);
     line.graphics.lineTo(endPoint.x, endPoint.y);
+
 };
 
 /**
@@ -763,6 +770,8 @@ ROS2D.PolygonMarker.prototype.createPointShape = function (pos) {
  * @param position of type ROSLIB.Vector3
  */
 ROS2D.PolygonMarker.prototype.addPoint = function (pos) {
+   
+    console.log(pos);
     var point = this.createPointShape(pos);
     this.pointContainer.addChild(point);
     var numPoints = this.pointContainer.getNumChildren();
@@ -1107,15 +1116,13 @@ ROS2D.Viewer = function (options) {
 
 
     $("#" + divID + " canvas").slideUp("slow", function () {
-        $(this).show(500, function () {
-            $("#nav-load").show();
-        });
+        $(this).show(500);
     });
 
     // document.getElementById(divID).appendChild(canvas);
     // create the easel to use
     this.scene = new createjs.Stage(canvas);
-    myScene = this.scene;
+
 
 
 

@@ -31,6 +31,8 @@
     <script type="text/javascript" src="js/brush.js"></script>
     <script type="text/javascript" src="js/tailin.js"></script>
     <script type="text/javascript" src="js/sweet.js"></script>
+
+        <script type="text/javascript" src="js/network.js"></script>
 </head>
 <body>
     <!--    HRG PAGES-->
@@ -126,11 +128,11 @@
             <a href="#hrg-navigation-main-page" data-transition="slide" class="ui-btn ui-icon-delete ui-btn-icon-notext ui-corner-all ui-btn-right "></a>
         </div>
         <div data-role="content" id="hrg-menu-page-content">
-            <a href="#hrg-map-wizard-frist" data-transition="slide" data-role="button" data-icon="carat-r" data-iconpos="right" style="background: #b6ff00;">地图向导</a>
-            <a href="#hrg-navigation-setting-page" data-transition="slide" data-role="button" data-icon="carat-r" data-iconpos="right" style="background: #0ff;">站点巡航</a>
-            <a href="#hrg-system-diagnosis-page" data-transition="slide" data-role="button" data-icon="carat-r" data-iconpos="right" aria-disabled="true" class="ui-disabled" style="background: #b6ff00;">系统诊断</a>
-            <a href="#hrg-system-normal-page" data-transition="slide" data-role="button" data-icon="carat-r" data-iconpos="right" style="background: #0ff;">通 用</a>
-            <a href="#hrg-system-log-page" data-transition="slide" data-role="button" data-icon="carat-r" data-iconpos="right" style="background: #b6ff00;">系统日志</a>
+            <a href="#hrg-map-wizard-frist" data-transition="slide" data-role="button" data-icon="carat-r" data-iconpos="right" >地图向导</a>
+            <a href="#hrg-navigation-setting-page" data-transition="slide" data-role="button" data-icon="carat-r" data-iconpos="right" >站点巡航</a>
+            <a href="#hrg-system-diagnosis-page" data-transition="slide" data-role="button" data-icon="carat-r" data-iconpos="right" aria-disabled="true" class="ui-disabled">系统诊断</a>
+            <a href="#hrg-system-normal-page" data-transition="slide" data-role="button" data-icon="carat-r" data-iconpos="right" >通 用</a>
+            <a href="#hrg-system-log-page" data-transition="slide" data-role="button" data-icon="carat-r" data-iconpos="right" >系统日志</a>
         </div>
         <div data-role="footer" data-theme="b" data-position="fixed" data-id="hrg-footer">
             <h1>中导机器人</h1>
@@ -509,11 +511,11 @@
         <div data-role="content">
             <div data-rel="fieldcontainer">
                 <label for="network-ssid">WIFI名称:</label>
-                <input type="text" id="network-ssid" required placeholder="请输入WIFI SSID">
+                <input type="text" id="network-ssid" required placeholder="请输入WIFI SSID" value="hitrobot_extern">
                 <label for="network-password">WIF密码:</label>
-                <input type="text" id="network-password" required placeholder="Password">
+                <input type="text" id="network-password" required placeholder="Password"  value="hitrobot">
                 <label for="network-ip">指定IP:</label>
-                <input type="text" id="network-ip" required placeholder="127.0.0.1">
+                <input type="text" id="network-ip" required placeholder="127.0.0.1" value="192.168.0.178">
                 <a data-role="button" data-icon="hrg-submit" data-theme="b" id="btn-network-setting">提 交</a>
                 <a data-role="button" data-icon="hrg-network-reset" data-theme="b" id="btn-network-reset">复 位</a>
             </div>

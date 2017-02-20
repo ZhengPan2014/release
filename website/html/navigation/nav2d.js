@@ -190,9 +190,11 @@ NAV2D.Navigator = function (options) {
         if (!initScaleSet) {
             robotMarker.scaleX = 1.0 / stage.scaleX;
             robotMarker.scaleY = 1.0 / stage.scaleY;
+     
             initScaleSet = true;
         }
-
+        console.log(robotMarker.scaleX);
+        console.log(robotMarker.scaleY);
         // change the angle
         robotMarker.rotation = stage.rosQuaternionToGlobalTheta(pose.orientation);
 
