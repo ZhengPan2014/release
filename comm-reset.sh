@@ -1,0 +1,1 @@
+install/share/bringup/shell/comm-reset.sh
