@@ -29,6 +29,8 @@
 | 1.1.1.0_beta    | 2016-05-23      | 韩立芹          | 改进了windows调试，串口权限，开机timeout，ip恢复默认，取消速度滤除
 | 1.1.0.1_alpha   | 2016-05-05      | 张邺            | 改进了clear_costmaps/map/version/
 
+***
+
 # protocol
 
 hitrobot Websocket/Tcp Protocol Specification
