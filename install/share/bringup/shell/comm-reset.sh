@@ -234,5 +234,3 @@ echo $ROS_USER_PRE"6.4.3"$ROS_USER_SUF"usb_intern43"| sudo tee -a $ROS_USER_TTYS
 echo $ROS_USER_PRE"6.4.4"$ROS_USER_SUF"usb_intern44"| sudo tee -a $ROS_USER_TTYS
 
 sudo chmod 644 $ROS_USER_TTYS;
-
-sudo reboot;
