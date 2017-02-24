@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<launch>
+    <node name="rosbridge_sonar" pkg="rosbridge_driver" type="rosbridge_driver" output="screen">
+        <rosparam>
+            port_chain:
+              - name: sonar1
+                type: serial
+                serial_port: /dev/usb_intern11
+                serial_baud: 9600
+                serial_stop: 1
+              - name: sonar2
+                type: serial
+                serial_port: /dev/usb_intern12
+                serial_baud: 9600
+                serial_stop: 1
+              - name: sonar3
+                type: serial
+                serial_port: /dev/usb_intern13
+                serial_baud: 9600
+                serial_stop: 1
+              - name: sonar4
+                type: serial
+                serial_port: /dev/usb_intern14
+                serial_baud: 9600
+                serial_stop: 1
+              - name: sonar5
+                type: serial
+                serial_port: /dev/usb_intern21
+                serial_baud: 9600
+                serial_stop: 1
+              - name: sonar6
+                type: serial
+                serial_port: /dev/usb_intern22
+                serial_baud: 9600
+                serial_stop: 1
+            topic_chain:
+              - name: sonar
+                type: publish
+                freq: 10.0
+                field_of_view: 0.5
+                max_range: 2.0
+                echo: [sonar_data1, sonar_data2, sonar_data3, sonar_data4, sonar_data5, sonar_data6]
+                frame_id: [base_sonar1, base_sonar2, base_sonar3, base_sonar4, base_sonar5, base_sonar6]
+                action_chain:
+                  - name: sonar1
+                    type: write
+                    byte: [0x55]
+                  - name: sonar2
+                    type: write
+                    byte: [0x55]
+                  - name: sonar3
+                    type: write
+                    byte: [0x55]
+                  - name: sonar4
+                    type: write
+                    byte: [0x55]
+                  - name: sonar5
+                    type: write
+                    byte: [0x55]
+                  - name: sonar6
+                    type: write
+                    byte: [0x55]
+                  - name: sonar1
+                    type: read
+                    byte: [sonar_data1, big]
+                    time_out: 0.2
+                  - name: sonar2
+                    type: read
+                    byte: [sonar_data2, big]
+                    time_out: 0.2
+                  - name: sonar3
+                    type: read
+                    byte: [sonar_data3, big]
+                    time_out: 0.2
+                  - name: sonar4
+                    type: read
+                    byte: [sonar_data4, big]
+                    time_out: 0.2
+                  - name: sonar5
+                    type: read
+                    byte: [sonar_data5, big]
+                    time_out: 0.2
+                  - name: sonar6
+                    type: read
+                    byte: [sonar_data6, big]
+                    time_out: 0.2
+              - name: diagnostics
+                type: publish
+        </rosparam>
+    </node>
+</launch>
