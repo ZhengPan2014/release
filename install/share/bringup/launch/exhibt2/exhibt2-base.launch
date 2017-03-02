@@ -128,7 +128,7 @@
             port_chain:
               - name: mpu6050
                 type: serial
-                serial_port: /dev/usb_right
+                serial_port: /dev/usb_top
                 action_chain:
                   - name: mpu6050
                     type: write

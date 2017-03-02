@@ -10,7 +10,7 @@
             xmax: 20.0
             ymax: 20.0
             delta: 0.05
-            transform_publish_period: 0.025
+            transform_publish_period: 0.05
             maxRange: 20.0
         </rosparam>
     </node>

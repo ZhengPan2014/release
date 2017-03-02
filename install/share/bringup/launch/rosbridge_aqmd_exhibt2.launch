@@ -5,7 +5,7 @@
             port_chain:
               - name: wheel_both
                 type: serial
-                serial_port: /dev/usb_inner
+                serial_port: /dev/usb_extern
             topic_chain:
               - name: cmd_vel
                 type: subscribe
