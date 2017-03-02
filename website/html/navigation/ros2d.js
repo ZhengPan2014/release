@@ -206,9 +206,9 @@ ROS2D.OccupancyGrid = function (options) {
 
     //$("#nav-load").hide();
 
-    var test = document.getElementById(CanvasID);
-    test.scrollLeft = test.scrollWidth / 2 - 100;
-    test.scrollTop = test.scrollHeight / 2 - 100;
+    //var test = document.getElementById(CanvasID);
+    //test.scrollLeft = test.scrollWidth / 2 - 100;
+    //test.scrollTop = test.scrollHeight / 2 - 100;
 
     this.y = -this.height * message.info.resolution;
 
@@ -242,6 +242,7 @@ ROS2D.OccupancyGrid.prototype.__proto__ = createjs.Bitmap.prototype;
  *   * rootObject (optional) - the root object to add this marker to
  *   * continuous (optional) - if the map should be continuously loaded (e.g., for SLAM)
  */
+var TestTopic = null;
 ROS2D.OccupancyGridClient = function (options) {
     var that = this;
     options = options || {};
@@ -258,18 +259,21 @@ ROS2D.OccupancyGridClient = function (options) {
     this.rootObject.addChild(new ROS2D.Grid({ size: 1 }));
 
     // subscribe to the topic
-    var rosTopic = new ROSLIB.Topic({
-        ros: ros,
-        name: topic,
-        messageType: 'nav_msgs/OccupancyGrid',
-        compression: 'png'
-    });
-    var b = new Date().getTime();
-    rosTopic.subscribe(function (message) {
+    if (TestTopic!=null) {
+        TestTopic.unsubscribe();
+    }
+    else{
+        TestTopic = new ROSLIB.Topic({
+            ros: ros,
+            name: topic,
+            messageType: 'nav_msgs/OccupancyGrid',
+            compression: 'png'
+        });
+    }
 
-        //alert("get map message:"+(new Date().getTime()-b)+"ms");
-        //console.log(message);
-        // check for an old map
+
+    TestTopic.subscribe(function (message) {
+
         var index = null;
         if (that.currentGrid) {
             index = that.rootObject.getChildIndex(that.currentGrid);
@@ -290,7 +294,7 @@ ROS2D.OccupancyGridClient = function (options) {
 
         // check if we should unsubscribe
         if (!that.continuous) {
-            rosTopic.unsubscribe();
+            TestTopic.unsubscribe();
         }
     });
 };
@@ -481,6 +485,7 @@ ROS2D.Grid.prototype.__proto__ = createjs.Shape.prototype;
 
 
 ROS2D.NavigationArrow = function (options) {
+
     var that = this;
     options = options || {};
     var size = options.size || 10;
@@ -596,6 +601,8 @@ ROS2D.NavigationImage.prototype.__proto__ = createjs.Bitmap.prototype;
  * @author Bart van Vliet - bart@dobots.nl
  */
 
+
+
 /**
  * A shape to draw a nav_msgs/Path msg
  *
@@ -614,30 +621,24 @@ ROS2D.PathShape = function (options) {
     // draw the line
     this.graphics = new createjs.Graphics();
 
+
     if (path !== null && typeof path !== 'undefined') {
         this.graphics.setStrokeStyle(this.strokeSize);
         this.graphics.beginStroke(this.strokeColor);
-        console.log(this.strokeSize, this.strokeColor);
-
         var x = path.poses[0].pose.position.x / this.scaleX;
-        var y = path.poses[0].pose.position.y / -this.scaleY;
-
-  
-
+        var y = path.poses[0].pose.position.y / -this.scaleY;    
         this.graphics.moveTo(x, y);
-
         for (var i = 1; i < path.poses.length; ++i) {
             var lineToX = path.poses[i].pose.position.x / this.scaleX;
             var lineToY = path.poses[i].pose.position.y / -this.scaleY;
-            console.log("lineToX:%s,lineToY:%s", lineToX, lineToY);
             this.graphics.lineTo(lineToX, lineToY);
+            this.graphics.moveTo(lineToX, lineToY);
         }
         this.graphics.endStroke();
     }
-
     // create the shape
     createjs.Shape.call(this, this.graphics);
-    console.log(this);
+   
 };
 
 /**
@@ -1096,12 +1097,12 @@ ROS2D.PanView.prototype.pan = function (curX, curY) {
  *   * background (optional) - the color to render the background, like '#efefef'
  */
 
-var CanvasID = "";
+
 ROS2D.Viewer = function (options) {
     var that = this;
     options = options || {};
     var divID = options.divID;
-    CanvasID = divID;
+    //CanvasID = divID;
     this.width = options.width;
     this.height = options.height;
     var background = options.background || '#111111';

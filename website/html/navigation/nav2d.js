@@ -166,14 +166,22 @@ NAV2D.Navigator = function (options) {
 
     // marker for the robot
     var robotMarker = new ROS2D.NavigationArrow({
-        size: 25,
+        size: 15,
         strokeSize: 1,
         fillColor: createjs.Graphics.getRGB(255, 128, 0, 0.66),
         pulse: true
     });
+    
+   
     // wait for a pose to come in first
+
+
+
     robotMarker.visible = false;
     this.rootObject.addChild(robotMarker);
+
+ 
+
     var initScaleSet = false;
 
     // setup a listener for the robot pose
@@ -193,8 +201,7 @@ NAV2D.Navigator = function (options) {
      
             initScaleSet = true;
         }
-        console.log(robotMarker.scaleX);
-        console.log(robotMarker.scaleY);
+      //  console.log(robotMarker.scaleX,robotMarker.scaleY);
         // change the angle
         robotMarker.rotation = stage.rosQuaternionToGlobalTheta(pose.orientation);
 
@@ -328,7 +335,7 @@ NAV2D.Navigator = function (options) {
         });
 
         this.rootObject.addEventListener('stagemouseup', function (event) {
-         //   mouseEventHandler(event, 'up');
+           // mouseEventHandler(event, 'up');
         });
     }
 };
@@ -373,53 +380,50 @@ NAV2D.OccupancyGridClientNav = function (options) {
         continuous: continuous,
         topic: topic
     });
-    client.on('change', function () {
 
+    client.on('change', function () {
+ 
         that.navigator = new NAV2D.Navigator({
             ros: that.ros,
             serverName: that.serverName,
             actionName: that.actionName,
             rootObject: that.rootObject,
             withOrientation: that.withOrientation
-        });
+        }); 
 
         // scale the viewer to fit the map
         that.viewer.scaleToDimensions(client.currentGrid.width, client.currentGrid.height);
         that.viewer.shift(client.currentGrid.pose.position.x, client.currentGrid.pose.position.y);
     });
+    var scanTopic = new ROSLIB.Topic({
+        ros: this.ros,
+        name: '/scan',
+        messageType: 'sensor_msgs/PointCloud',
+    });
+    scanTopic.subscribe(function (data) {
+        console.log(data);
+    });
 
-    //var pathTopic = new ROSLIB.Topic({
-    //    ros: this.ros,
-    //    name: '/move_base/NavfnROS/plan',
-    //    messageType: 'nav_msgs/Path',
-    //});
+    var pathTopic = new ROSLIB.Topic({
+        ros: this.ros,
+        name: '/move_base/NavfnROS/plan',
+        messageType: 'nav_msgs/Path',
+    });
 
+ 
+    var path = null;
+    pathTopic.subscribe(function (data) {
+        if (path!=null) {
+            that.rootObject.removeChild(path);
+        }
+        if (data.poses.length>0) {
+            path = new ROS2D.PathShape({
+                path: data,
+                strokeSize: 0.1,
+                strokeColor: "green",
+            });
+            that.rootObject.addChild(path);
+        }  
+    });
 
-  
-
-
-    //var pathMarker = new ROS2D.NavigationPath({
-    //    strokeColor: 'green',
-    //    strokeSize:1,
-    //});
-    //this.rootObject.addChild(pathMarker);
-    //this.pathMarker = null;
-    //pathTopic.subscribe(function (data) {
-    //    console.log(data);
-    //    if (data.poses.length > 0) {
-    //        pathTopic.unsubscribe();
-    //        if (that.pathMarker!=null) {
-    //            that.rootObject.removeChild(that.pathMarker);
-    //        }
-    //        that.pathMarker = new ROS2D.PathShape({
-    //            path: data,
-    //            strokeSize: 3,
-    //            strokeColor: 'green',
-    //            stage: that.rootObject
-    //        });
-    //        that.rootObject.addChild(that.pathMarker);
-        
-
-    //    }
-    //});
 };

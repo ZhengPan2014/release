@@ -5,4 +5,6 @@
             init_cmd: navigation
         </rosparam>
     </node>
+
+    <include file="$(find bringup)/launch/bringup-dbparam.launch" unless="$(optenv ROS_USER_VALID true)"/>
 </launch>

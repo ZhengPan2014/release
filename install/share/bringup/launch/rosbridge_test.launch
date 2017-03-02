@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<launch>
+    <node name="rosbridge_test" pkg="rosbridge_driver" type="rosbridge_driver" output="screen">
+        <rosparam>
+            port_chain:
+              - name: test1
+                type: serial
+                serial_port: /dev/usb_first
+              - name: test2
+                type: serial
+                serial_port: /dev/usb_second
+            topic_chain:
+              - name: waypoint_user_pub
+                type: subscribe
+              - name: pubsub_wtest
+                type: event
+                action_chain:
+                  - name: test1
+                    type: write
+                    byte: [0x01, 0x01]
+                    lock: false
+                  - name: test2
+                    type: read
+                    byte: [testdata, big]
+                    lock: false
+                    time_out: 5.0
+                echo: testdata
+              - name: diagnostics
+                type: publish
+        </rosparam>
+    </node>
+</launch>
