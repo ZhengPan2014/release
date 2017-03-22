@@ -147,7 +147,6 @@ ROS2D.ImageMapClient.prototype.__proto__ = EventEmitter2.prototype;
  *   * message - the occupancy grid message
  */
 ROS2D.OccupancyGrid = function (options) {
-
     options = options || {};
     var message = options.message;
 
@@ -167,9 +166,7 @@ ROS2D.OccupancyGrid = function (options) {
     canvas.width = this.width;
     canvas.height = this.height;
     var a = new Date().getTime();
-
     var imageData = context.createImageData(this.width, this.height);
-
     for (var row = 0; row < this.height; row++) {
         for (var col = 0; col < this.width; col++) {
             // determine the index into the map data
@@ -184,7 +181,6 @@ ROS2D.OccupancyGrid = function (options) {
             } else {
                 val = 127;
             }
-
             // determine the index into the image data array
             var i = (col + (row * this.width)) * 4;
             // r
@@ -258,19 +254,26 @@ ROS2D.OccupancyGridClient = function (options) {
     // work-around for a bug in easeljs -- needs a second object to render correctly
     this.rootObject.addChild(new ROS2D.Grid({ size: 1 }));
 
+    // TODO: unsubscribe /map when gmapping done
     // subscribe to the topic
-    if (TestTopic!=null) {
-        TestTopic.unsubscribe();
-    }
-    else{
-        TestTopic = new ROSLIB.Topic({
+    // if (TestTopic!=null) {
+    //     TestTopic.unsubscribe();
+    // }
+    // else{
+    //     TestTopic = new ROSLIB.Topic({
+    //         ros: ros,
+    //         name: topic,
+    //         messageType: 'nav_msgs/OccupancyGrid',
+    //         compression: 'png'
+    //     });
+    // }
+
+    TestTopic = new ROSLIB.Topic({
             ros: ros,
             name: topic,
             messageType: 'nav_msgs/OccupancyGrid',
             compression: 'png'
         });
-    }
-
 
     TestTopic.subscribe(function (message) {
 
@@ -771,7 +774,6 @@ ROS2D.PolygonMarker.prototype.createPointShape = function (pos) {
  * @param position of type ROSLIB.Vector3
  */
 ROS2D.PolygonMarker.prototype.addPoint = function (pos) {
-   
     console.log(pos);
     var point = this.createPointShape(pos);
     this.pointContainer.addChild(point);
@@ -1124,12 +1126,9 @@ ROS2D.Viewer = function (options) {
     // create the easel to use
     this.scene = new createjs.Stage(canvas);
 
-
-
-
     // change Y axis center
     this.scene.y = this.height;
-
+ 
     // add the renderer to the page
     document.getElementById(divID).appendChild(canvas);
 

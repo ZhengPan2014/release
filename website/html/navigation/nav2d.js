@@ -38,7 +38,6 @@ NAV2D.ImageMapClientNav = function (options) {
     this.rootObject = options.rootObject || new createjs.Container();
     this.viewer = options.viewer;
     this.withOrientation = options.withOrientation || false;
-
     this.navigator = null;
 
     // setup a client to get the map
@@ -395,14 +394,16 @@ NAV2D.OccupancyGridClientNav = function (options) {
         that.viewer.scaleToDimensions(client.currentGrid.width, client.currentGrid.height);
         that.viewer.shift(client.currentGrid.pose.position.x, client.currentGrid.pose.position.y);
     });
+
     var scanTopic = new ROSLIB.Topic({
         ros: this.ros,
         name: '/scan',
-        messageType: 'sensor_msgs/PointCloud',
+        messageType: 'sensor_msgs/LaserScan',
     });
-    scanTopic.subscribe(function (data) {
-        console.log(data);
-    });
+
+    // scanTopic.subscribe(function (data) {
+    //     console.log(data);
+    // });
 
     var pathTopic = new ROSLIB.Topic({
         ros: this.ros,
@@ -410,7 +411,6 @@ NAV2D.OccupancyGridClientNav = function (options) {
         messageType: 'nav_msgs/Path',
     });
 
- 
     var path = null;
     pathTopic.subscribe(function (data) {
         if (path!=null) {

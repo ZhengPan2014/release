@@ -15,17 +15,6 @@
         </rosparam>
     </node>
 
-    <node name="aqmd_driver" pkg="aqmd_driver" type="aqmd_driver" output="screen">
-        <rosparam>
-            is_pub_tf: false
-            has_encoder: false
-            wheel_speed: 23333
-            wheel_track: 0.49
-            tty_name_l: /dev/left_wheel
-            tty_name_r: /dev/right_wheel
-        </rosparam>
-    </node>
-
     <node name="robot_pose_ekf" pkg="robot_pose_ekf" type="robot_pose_ekf">
         <rosparam>
             output_frame: odom

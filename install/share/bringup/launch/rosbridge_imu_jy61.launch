@@ -1,21 +1,47 @@
 <?xml version="1.0"?>
 <launch>
+    <arg name="imu_port" default="/dev/ttyUSB0"/>
     <node name="rosbridge_imu" pkg="rosbridge_driver" type="rosbridge_driver" output="screen">
         <remap from="imu" to="imu_data"/>
+        <param name="imu_port" value="$(arg imu_port)"/>
+        <param name="imu_config_port" value="$(arg imu_port)"/>
         <rosparam>
-            imu_port: /dev/usb_right
             port_chain:
+              - name: imu_config_port
+                type: serial
+                serial_baud: 9600
+                action_chain:
+                  - name: imu_config_port
+                    type: write
+                    byte: [0xff, 0xaa, 0x04, 0x06, 0x00] #baud
+                    lock: false
+                  - name: imu_config_port
+                    type: write
+                    byte: [0xff, 0xaa, 0x00, 0x00, 0x00] #save
+                    lock: false
               - name: imu_port
                 type: serial
                 action_chain:
                   - name: imu_port
                     type: write
-                    byte: [0xff, 0xaa, 0x52]
+                    byte: [0xff, 0xaa, 0x24, 0x01, 0x00] #axis
+                    lock: false
+                  - name: imu_port
+                    type: write
+                    byte: [0xff, 0xaa, 0x00, 0x00, 0x00] #save
+                    lock: false
+                  - name: imu_port
+                    type: write
+                    byte: [0xff, 0xaa, 0x03, 0x09, 0x00] #freq
+                    lock: false
+                  - name: imu_port
+                    type: write
+                    byte: [0xff, 0xaa, 0x00, 0x00, 0x00] #save
                     lock: false
             topic_chain:
               - name: odom
                 type: publish
-                freq: 100.0
+                freq: 120.0
                 pub_odom: false
                 pub_imu: true
                 imu_angle_ratio: 0.00009587

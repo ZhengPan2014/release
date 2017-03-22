@@ -49,9 +49,15 @@
 
     <node name="robot_pose_publisher" pkg="robot_pose_publisher" type="robot_pose_publisher" output="screen"/>
 
-    <include file="$(find bringup)/launch/$(optenv ROS_USER_MODEL)/$(optenv ROS_USER_MODEL rosbridge)-driver.launch"/>       
+    <include file="$(find bringup)/launch/rosbridge_drive_aqmd2s.launch">
+        <arg name="drive_port_left" value="/dev/usb_left1"/>
+        <arg name="drive_port_right" value="/dev/usb_left2"/>
+        <arg name="wheel_seperation" value="0.530"/>
+        <arg name="wheel_ratio" value="23333.3"/>
+    </include>
 
-    <include file="$(find bringup)/launch/rosbridge_imu9250.launch">       
+    <include file="$(find bringup)/launch/rosbridge_imu_jy901.launch">
+        <arg name="imu_port" value="/dev/usb_left3"/>
     </include>
 
     <node name="teleop_keyboard" pkg="teleop_keyboard" type="teleop_keyboard" output="screen"/>

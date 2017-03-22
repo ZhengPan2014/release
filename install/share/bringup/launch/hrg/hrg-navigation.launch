@@ -8,12 +8,12 @@
        <arg name="initial_pose_y" value="0.0"/>
        <arg name="initial_pose_a" value="0.0"/>
     </include>
-
+    
     <node name="robot_pose_publisher" pkg="robot_pose_publisher" type="robot_pose_publisher" output="screen"/>
 
     <node name="move_base" pkg="move_base" type="move_base" respawn="false" output="screen">
-        <remap from="odom" to="/odom_0"/>
-        <!--<remap from="cmd_vel" to="/input/navigation"/>-->
+        <remap from="cmd_vel" to="/cmd_vel_mux"/>
+        
         <rosparam>
             base_global_planner: "navfn/NavfnROS"
             base_local_planner: "dwa_local_planner/DWAPlannerROS"
@@ -28,8 +28,8 @@
             aggressive_reset:
                 reset_distance: 0.0
                 layer_names: [obstacle_layer]
-            controller_frequency: 5.0
-            planner_patience: 5.0 
+            controller_frequency: 10.0 #5.0
+            planner_patience: 10.0 
             controller_patience: 15.0
             conservative_reset_dist: 3.0 #0.25
             recovery_behavior_enabled: true
@@ -44,7 +44,7 @@
                 publish_frequency: 0.5 #0.0
                 static_map: true
                 footprint: [[0.32, -0.25], [0.32, 0.25], [-0.32, 0.25], [-0.32, -0.25]]
-                resolution: 0.025
+                resolution: 0.05
                 plugins:
                   - name: static_layer
                     type: "costmap_2d::StaticLayer"
@@ -54,8 +54,9 @@
                     type: "costmap_2d::InflationLayer"
                 static_layer:
                     map_topic: /map_edit
+                    unknown_cost_value: -1
                 obstacle_layer:
-                    observation_sources: scan_rectified sensor_pointcloud
+                    observation_sources: scan_rectified sensor_pointcloud 
                     scan_rectified:
                         topic: /scan_rectified                       
                         data_type: LaserScan
@@ -69,11 +70,12 @@
                         data_type: PointCloud2
                         clearing: true 
                         marking: true
-                        max_obstacle_height: 1.5
-                        min_obstacle_height: 0.05         
-                    track_unknown_space: false #true
-                    z_voxels: 8
-       
+                        max_obstacle_height: 1.3
+                        min_obstacle_height: 0.10
+                        obstacle_range: 2.5
+                        raytrace_range: 3.0        
+                    track_unknown_space: true
+                    z_voxels: 6
                 inflation_layer:
                     inflation_radius: 0.75
                     cost_scaling_factor: 5.0
@@ -86,12 +88,12 @@
                 footprint: [[0.32, -0.25], [0.32, 0.25], [-0.32, 0.25], [-0.32, -0.25]]
                 static_map: false
                 rolling_window: true
-                width: 6.0
-                height: 6.0
-                resolution: 0.025
+                width: 4.0
+                height: 4.0
+                resolution: 0.05
                 plugins:
                   - name: obstacle_layer
-                    type: "costmap_2d::ObstacleLayer"             
+                    type: "costmap_2d::VoxelLayer"             
                   - name: inflation_layer
                     type: "costmap_2d::InflationLayer"
                 obstacle_layer:
@@ -109,48 +111,51 @@
                         data_type: PointCloud2
                         clearing: true
                         marking: true
-                        max_obstacle_height: 1.5
-                        min_obstacle_height: 0.05
-                    track_unknown_space: false #true
-                    z_voxels: 8
-  
+                        max_obstacle_height: 1.3
+                        min_obstacle_height: 0.10
+                        obstacle_range: 2.5
+                        raytrace_range: 6.0 
+                    mark_threshold: 0.0                 
+                    track_unknown_space: true
+                    z_voxels: 6
+                    
                 inflation_layer:
                     inflation_radius: 0.75
-                    cost_scaling_factor: 5.0 #1
-            GlobalPlanner:
+                    cost_scaling_factor: 5.0 
+            NavfnROS:
                 allow_unknown: false
             TrajectoryPlannerROS:
-                max_vel_x: 0.5 #0.6
+                max_vel_x: 0.6
                 min_vel_x: 0.1
                 max_vel_theta: 1.0
                 min_vel_theta: -1.0
-                min_in_place_vel_theta: 0.4
-                acc_lim_x: 2.5 #3.0 #2.5
-                acc_lim_y: 0.0 #1.0
-                acc_lim_theta: 2.0 #3.2
+                min_in_place_vel_theta: 0.3 #0.4
+                acc_lim_x: 0.5 #3.0 #2.5
+                acc_lim_y: 0.0 
+                acc_lim_theta: 3.2
                 holonomic_robot: false
-                yaw_goal_tolerance: 0.05 #0.15
-                xy_goal_tolerance: 0.09 #0.15
+                yaw_goal_tolerance: 0.05 
+                xy_goal_tolerance: 0.09 
                 latch_xy_goal_tolerance: false #true
                 meter_scoring: true
-                occdist_scale: 0.5 #0.01
+                occdist_scale: 0.5 
                 heading_scoring: true
                 heading_scoring_timestep: 1.0 #0.8
                 dwa: true
                 #global_frame_id: odom
                 oscillation_reset_dist: 0.075
             DWAPlannerROS:
-                acc_lim_x: 2.5 #3.0 #slow 1.0, fast 2.0
+                acc_lim_x: 0.5 #3.0 #slow 1.0, fast 2.0
                 acc_lim_y: 0.0
                 acc_lim_th: 3.2 #slow 2.0, fast 3.2
-                max_trans_vel: 0.5 #0.6
+                max_trans_vel: 0.6 
                 min_trans_vel: 0.1
                 max_vel_x: 0.6
                 min_vel_x: 0.0
                 max_vel_y: 0.0
                 min_vel_y: 0.0
-                max_rot_vel: 2.0
-                min_rot_vel: 0.4
+                max_rot_vel: 1.0
+                min_rot_vel: 0.3 
                 yaw_goal_tolerance: 0.05
                 xy_goal_tolerance: 0.09
                 latch_xy_goal_tolerance: true 
@@ -159,13 +164,11 @@
                 vx_samples: 6
                 vy_samples: 1
                 vtheta_samples: 20
-                penalize_negative_x: false #true
-                path_distance_bias: 64.0 #32.0
+                penalize_negative_x: false 
+                path_distance_bias: 32.0 
                 goal_distance_bias: 24.0
                 occdist_scale: 0.5
                 oscillation_reset_dist: 0.075
         </rosparam>
     </node>
-      
-
 </launch>

@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<launch>
+    <node name="pointcloud_floor_filter" pkg="pointcloud_floor_filter" type="pointcloud_floor_filter_node" respawn="true"> 
+        <param name="depth_image" value="/camera/depth_registered/image_raw"/>
+        <param name="base_footprint_frame" value="base_footprint"/>
+        <param name="ransac_threshold" value="0.10"/>
+        <param name="filter_threshold" value="0.10"/>
+    </node>
+</launch>

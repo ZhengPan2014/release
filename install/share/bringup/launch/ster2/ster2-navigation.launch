@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<launch>
+    <include file="$(find bringup)/launch/bringup-navi.launch" >
+        <arg name="footprint" value="[[0.32, 0.14], [0.23, 0.26], [-0.23, 0.26], [-0.32, 0.14], [-0.32, -0.14], [-0.23, -0.26], [0.23, -0.26], [0.32, -0.14]]"/>
+    </include>
+</launch>

@@ -2,17 +2,22 @@
 <launch>
     <include file="$(find bringup)/launch/bringup-dbparam.launch"/>
 
-    <include file="$(find bringup)/launch/amcl.launch">
-       <arg name="scan_topic" value="/scan_rectified" />
-       <arg name="initial_pose_x" value="0.0"/>
-       <arg name="initial_pose_y" value="0.0"/>
-       <arg name="initial_pose_a" value="0.0"/>
-    </include>
+    <node name="amcl" pkg="amcl" type="amcl" output="screen">
+        <remap from="scan" to="scan_rectified" />
+        <rosparam>
+            initial_pose_x: 0.0
+            initial_pose_y: 0.0
+            initial_pose_a: 0.0
+            use_map_topic: true
+            odom_model_type: diff
+            tf_broadcast: true
+        </rosparam>
+    </node>
 
     <node name="robot_pose_publisher" pkg="robot_pose_publisher" type="robot_pose_publisher" output="screen"/>
 
     <node name="move_base" pkg="move_base" type="move_base" respawn="false" output="screen">
-        <remap from="odom" to="/odom_0"/>
+        <!-- <remap from="odom" to="/odom_0"/> -->
         <!--<remap from="cmd_vel" to="/input/navigation"/>-->
         <rosparam>
             base_global_planner: "navfn/NavfnROS"
@@ -28,7 +33,7 @@
             aggressive_reset:
                 reset_distance: 0.0
                 layer_names: [obstacle_layer]
-            controller_frequency: 5.0
+            controller_frequency: 10.0
             planner_patience: 5.0 
             controller_patience: 15.0
             conservative_reset_dist: 3.0 #0.25
@@ -71,9 +76,8 @@
                         marking: true
                         max_obstacle_height: 2.0
                         min_obstacle_height: 0.0         
-                    track_unknown_space: false #true
+                    track_unknown_space: true
                     z_voxels: 8
-       
                 inflation_layer:
                     inflation_radius: 0.75
                     cost_scaling_factor: 5.0
@@ -111,13 +115,12 @@
                         marking: true
                         max_obstacle_height: 2.0
                         min_obstacle_height: 0.0
-                    track_unknown_space: false #true
+                    track_unknown_space: true
                     z_voxels: 8
-  
                 inflation_layer:
                     inflation_radius: 0.75
                     cost_scaling_factor: 5.0 #1
-            GlobalPlanner:
+            NavfnROS:
                 allow_unknown: false
             TrajectoryPlannerROS:
                 max_vel_x: 0.5 #0.6
@@ -140,27 +143,27 @@
                 #global_frame_id: odom
                 oscillation_reset_dist: 0.075
             DWAPlannerROS:
-                acc_lim_x: 2.5 #3.0 #slow 1.0, fast 2.0
+                acc_lim_x: 2.5
                 acc_lim_y: 0.0
-                acc_lim_th: 3.2 #slow 2.0, fast 3.2
-                max_trans_vel: 0.5 #0.6
+                acc_lim_th: 3.2
+                max_trans_vel: 0.5
                 min_trans_vel: 0.1
                 max_vel_x: 0.6
                 min_vel_x: 0.0
                 max_vel_y: 0.0
                 min_vel_y: 0.0
                 max_rot_vel: 2.0
-                min_rot_vel: 0.4
+                min_rot_vel: 0.25 #0.4
                 yaw_goal_tolerance: 0.05
                 xy_goal_tolerance: 0.09
-                latch_xy_goal_tolerance: true 
+                latch_xy_goal_tolerance: true
                 sim_time: 1.7
                 sim_granularity: 0.025
                 vx_samples: 6
                 vy_samples: 1
                 vtheta_samples: 20
                 penalize_negative_x: false #true
-                path_distance_bias: 64.0 #32.0
+                path_distance_bias: 32.0
                 goal_distance_bias: 24.0
                 occdist_scale: 0.5
                 oscillation_reset_dist: 0.075

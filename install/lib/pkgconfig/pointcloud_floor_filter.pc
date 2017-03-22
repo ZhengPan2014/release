@@ -1,0 +1,8 @@
+prefix=/home/ouiyeah/catkin_ws/install
+
+Name: pointcloud_floor_filter
+Description: Description of pointcloud_floor_filter
+Version: 0.0.1
+Cflags: -I/home/ouiyeah/catkin_ws/install/include
+Libs: -L/home/ouiyeah/catkin_ws/install/lib -lpointcloud_floor_filter_lib
+Requires: dynamic_reconfigure geometry_msgs roscpp tf tf2_ros tf_conversions sensor_msgs image_transport pcl_ros

@@ -15,8 +15,6 @@
         </rosparam>
     </node>
 
-    <include file="$(find bringup)/launch/rosbridge_aqmd.launch"/>
-
     <node name="robot_pose_ekf" pkg="robot_pose_ekf" type="robot_pose_ekf">
         <rosparam>
             output_frame: odom

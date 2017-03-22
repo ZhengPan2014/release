@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<launch>
+    <node name="$(anon sonar_to_laserscan1)" pkg="sonar_to_laserscan" type="sonar_to_laserscan_node" output="screen"> 
+        <remap from="sonar" to="sonar_data1"/>
+        <remap from="scan" to="u_scan1"/>
+    </node>
+    <node name="$(anon sonar_to_laserscan2)" pkg="sonar_to_laserscan" type="sonar_to_laserscan_node" output="screen"> 
+        <remap from="sonar" to="sonar_data2"/>
+        <remap from="scan" to="u_scan2"/>
+    </node>
+    <node name="$(anon sonar_to_laserscan3)" pkg="sonar_to_laserscan" type="sonar_to_laserscan_node" output="screen"> 
+        <remap from="sonar" to="sonar_data3"/>
+        <remap from="scan" to="u_scan3"/>
+    </node>
+    <node name="$(anon sonar_to_laserscan4)" pkg="sonar_to_laserscan" type="sonar_to_laserscan_node" output="screen"> 
+        <remap from="sonar" to="sonar_data4"/>
+        <remap from="scan" to="u_scan4"/>
+    </node>
+    <node name="$(anon sonar_to_laserscan5)" pkg="sonar_to_laserscan" type="sonar_to_laserscan_node" output="screen"> 
+        <remap from="sonar" to="sonar_data5"/>
+        <remap from="scan" to="u_scan5"/>
+    </node>
+    <node name="$(anon sonar_to_laserscan6)" pkg="sonar_to_laserscan" type="sonar_to_laserscan_node" output="screen"> 
+        <remap from="sonar" to="sonar_data6"/>
+        <remap from="scan" to="u_scan6"/>
+    </node>
+</launch>

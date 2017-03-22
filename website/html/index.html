@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="jquery/jquery.mobile-1.4.5.min.css">
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/sweet.css">
+    <link rel="stylesheet" type="text/css" href="css/welcome.css">
 
     <link rel="stylesheet" href="css/an.css">
     <script src="jquery/jquery-1.8.3.min.js"></script>
@@ -32,23 +33,24 @@
     <script type="text/javascript" src="js/tailin.js"></script>
     <script type="text/javascript" src="js/sweet.js"></script>
 
-        <script type="text/javascript" src="js/network.js"></script>
+    <script type="text/javascript" src="js/network.js"></script>
 </head>
 <body>
     <!--    HRG PAGES-->
-    <div data-role="page" id="hrg-main-page" style="background: #000; background-repeat: no-repeat;">
+    <div data-role="page" id="hrg-main-page" style="background: #468DF3; background-repeat: no-repeat;">
         <div data-role="content">
-            <a href="#hrg-login-page" data-transition="slide" data-role="button" data-icon="carat-r" data-iconpos="right" style="background: #b6ff00;">泰 林</a>
-            <a href="#hrg-navigation-main-page" data-transition="slide" data-role="button" data-icon="carat-r" data-iconpos="right" style="background: #b6ff00;">HitRobot</a>
-            <div style="text-align: center; border: 0px solid red" >
-                <img src="images/logo2.png" class="a-flipoutY" style="width: 100%" />
-
+            <div id="hrg_logo">
+                <img id="logo_img" src="images/hrg_logo.png">
             </div>
-
+            <div id="loader" class="spinner">
+              <div class="rect1"></div>
+              <div class="rect2"></div>
+              <div class="rect3"></div>
+              <div class="rect4"></div>
+              <div class="rect5"></div>
+            </div>
         </div>
-
     </div>
-
 
     <!--    Login page-->
     <div data-role="page" id="hrg-login-page">
@@ -63,8 +65,8 @@
             <label for="login-password" style="font-weight: 600">密 码</label>
             <input type="password" id="login-password" name="login-password" required placeholder="请输入密码">
             <a href="#" data-transition="slide" data-role="button" data-icon="hrg-login" data-iconpos="right" id="login" data-theme="b">登  录</a>
-            <a href="#" data-transition="slide" data-role="button" data-icon="search" data-iconpos="right" id="get" data-theme="b">查 询</a>
-            <a href="#hrg-register-page" data-transition="slide" data-role="button" data-icon="hrg-register" data-iconpos="right" data-theme="b">注  册</a>
+            <!--a href="#" data-transition="slide" data-role="button" data-icon="search" data-iconpos="right" id="get" data-theme="b">查 询</a-->
+            <a href="#hrg-register-page" data-transition="slide" data-role="button" data-icon="hrg-register" data-iconpos="right" data-theme="b">注  册</a> 
 
         </div>
         <div data-role="footer" data-theme="b" data-position="fixed" data-id="hrg-footer">
@@ -128,11 +130,11 @@
             <a href="#hrg-navigation-main-page" data-transition="slide" class="ui-btn ui-icon-delete ui-btn-icon-notext ui-corner-all ui-btn-right "></a>
         </div>
         <div data-role="content" id="hrg-menu-page-content">
-            <a href="#hrg-map-wizard-frist" data-transition="slide" data-role="button" data-icon="carat-r" data-iconpos="right" >地图向导</a>
-            <a href="#hrg-navigation-setting-page" data-transition="slide" data-role="button" data-icon="carat-r" data-iconpos="right" >站点巡航</a>
-            <a href="#hrg-system-diagnosis-page" data-transition="slide" data-role="button" data-icon="carat-r" data-iconpos="right" aria-disabled="true" class="ui-disabled">系统诊断</a>
-            <a href="#hrg-system-normal-page" data-transition="slide" data-role="button" data-icon="carat-r" data-iconpos="right" >通 用</a>
-            <a href="#hrg-system-log-page" data-transition="slide" data-role="button" data-icon="carat-r" data-iconpos="right" >系统日志</a>
+            <a href="#hrg-map-wizard-frist" data-transition="slide" data-role="button" data-icon="carat-r" data-iconpos="right">地图向导</a>
+            <a href="#hrg-navigation-setting-page" data-transition="slide" data-role="button" data-icon="carat-r" data-iconpos="right">站点巡航</a>
+            <a href="#hrg-system-diagnosis-page" id="system-diagnostics" data-transition="slide" data-role="button" data-icon="carat-r" data-iconpos="right" aria-disabled="true" class="ui-disabled">系统诊断</a>
+            <a href="#hrg-system-normal-page" id="general" data-transition="slide" data-role="button" data-icon="carat-r" data-iconpos="right">通 用</a>
+            <a href="#hrg-system-log-page" id="system-log" data-transition="slide" data-role="button" data-icon="carat-r" data-iconpos="right">系统日志</a>
         </div>
         <div data-role="footer" data-theme="b" data-position="fixed" data-id="hrg-footer">
             <h1>中导机器人</h1>
@@ -156,12 +158,12 @@
     <!--hrg super page-->
     <div data-role="page" id="hty-super-page">
         <div data-role="header" data-theme="b">
-            <h1>HTY-SUPER SD6</h1>
-            <a href="#hrg-menu-page" data-transition="slide" class="ui-btn ui-icon-delete ui-btn-icon-notext ui-corner-all ui-btn-right"></a>
+            <h1>汽化过氧化氢灭菌器</h1>
+            <a href="#hrg-menu-page" id="tailin-exit" data-transition="slide" class="ui-btn ui-icon-delete ui-btn-icon-notext ui-corner-all ui-btn-right"></a>
         </div>
         <div data-role="content">
-            <a href="#" data-role="button" data-icon="hrg-stop" data-iconpos="right" id="btn-plc">开启PLC</a>
-            <a href="#" data-role="button" data-icon="hrg-stop" data-iconpos="right" id="btn-plc-stop">关闭PLC</a>
+            <a href="#" data-role="button" data-icon="hrg-stop" data-iconpos="right" id="btn-plc">启动灭菌</a>
+            <a href="#" data-role="button" data-icon="hrg-stop" data-iconpos="right" id="btn-plc-stop">停止灭菌</a>
         </div>
         <div data-role="footer" data-theme="b" data-position="fixed" data-id="hrg-footer">
             <h1>中导机器人</h1>
@@ -175,7 +177,7 @@
             <a href="#hrg-menu-page" data-transition="slide" class="ui-btn ui-icon-delete ui-btn-icon-notext ui-corner-all ui-btn-right"></a>
         </div>
         <div data-role="content">
-            <a href="#hty-history-search-page" data-transition="slide" data-role="button" data-icon="search" data-iconpos="right" style="background: #00ff90;">操作查询</a>
+            <a href="#hty-history-search-page" data-transition="slide" data-role="button" data-icon="search" data-iconpos="right" style="background: #00ff90;" class="ui-disabled">操作查询</a>
             <a href="#hrg-change-password-popup" data-rel="popup" data-transition="flip" data-role="button" data-icon="edit" data-iconpos="right" style="background: #00ff90;" id="change-password">修改密码</a>
             <a href="#" data-rel="popup" data-transition="flip" data-role="button" data-icon="lock" data-iconpos="right" style="background: #00ff90;" id="btn-lock-software">锁 屏</a>
             <a href="#" data-transition="slide" data-role="button" data-icon="hrg-logout" data-iconpos="right" style="background: #00ff90;" id="logout">注 销</a>
@@ -346,12 +348,18 @@
                     <option value="publisher">Publisher</option>
                     <option value="subscriber">Subscriber</option>
                     <option value="looper">Looper</option>
+                    <option value="pubsuber">Pubsuber</option>
                 </select>
+                
                 <label for="waypoints-mode">Mode:</label>
                 <select name="waypoints-mode" id="waypoints-mode" data-iconpos='right'>
                     <option value="NONE">NONE</option>
                     <option value="LOOP">LOOP</option>
                 </select>
+                <label for="pubsuber-input">Expect:</label>
+                <!-- <input type="text" id="pubsuber-input" value="topic"  aria-disabled="true" class="ui-disabled" /> -->
+                <input type="text" id="pubsuber-input" value="Expect">
+
                 <label for="pos_x">Postion.X:</label>
                 <input type="text" id="pos_x" required placeholder="0.0000">
                 <label for="pos_y">Postion.Y:</label>
@@ -513,7 +521,7 @@
                 <label for="network-ssid">WIFI名称:</label>
                 <input type="text" id="network-ssid" required placeholder="请输入WIFI SSID" value="hitrobot_extern">
                 <label for="network-password">WIF密码:</label>
-                <input type="text" id="network-password" required placeholder="Password"  value="hitrobot">
+                <input type="text" id="network-password" required placeholder="Password" value="hitrobot">
                 <label for="network-ip">指定IP:</label>
                 <input type="text" id="network-ip" required placeholder="127.0.0.1" value="192.168.0.178">
                 <a data-role="button" data-icon="hrg-submit" data-theme="b" id="btn-network-setting">提 交</a>

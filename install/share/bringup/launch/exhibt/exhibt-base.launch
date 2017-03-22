@@ -25,25 +25,12 @@
         </rosparam>
     </node>
 
-<!--
     <node name="tf_base_camera" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
         <rosparam>
             child_frame_id: camera_link
             x: 0.33
             y: 0.05
             z: 0.39            
-        </rosparam>
-    </node>
--->
-
-    <node name="tf_base_laser_right" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
-        <rosparam>
-            child_frame_id: base_laser_right
-            x: 0.00
-            y: -0.31
-            z: 0.24
-            yaw: 1.57
-            pitch: -1.57
         </rosparam>
     </node>
 
@@ -87,21 +74,13 @@
         </rosparam>
     </node>
 
- <!--   <node name="tf_base_sonar21" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+    <node name="tf_base_sonar21" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
         <rosparam>
             child_frame_id: base_sonar21
             x: 0.34
             y: -0.19
             z: 0.30
             yaw: -0.45
-        </rosparam>
-    </node>-->
-    <node name="tf_base_sonar21" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
-        <rosparam>
-            child_frame_id: base_sonar21
-            x: 0.34
-            y: 0.0
-            z: 0.05
         </rosparam>
     </node>
 
@@ -137,14 +116,22 @@
 
     <node name="robot_pose_publisher" pkg="robot_pose_publisher" type="robot_pose_publisher" output="screen"/>
 
-    <include file="$(find bringup)/launch/rosbridge_aqmd.launch">       
+    <include file="$(find bringup)/launch/rosbridge_drive_aqmd2s.launch">
+        <arg name="drive_port_left" value="/dev/usb_left41"/>
+        <arg name="drive_port_right" value="/dev/usb_left42"/>
+        <arg name="wheel_seperation" value="0.452"/>
+        <arg name="wheel_ratio" value="16303.32"/>
     </include>
-    <include file="$(find bringup)/launch/rosbridge_imu9250.launch">       
+
+    <include file="$(find bringup)/launch/rosbridge_imu_jy901.launch">
+        <arg name="imu_port" value="/dev/usb_left11"/>
     </include>
+
 <!--
     <include file="$(find bringup)/launch/rosbridge_sonar.launch">       
     </include> 
 -->
+
     <node name="urg_node" pkg="urg_node" type="urg_node" output="screen">
         <rosparam>
             ip_address: 192.168.0.10
@@ -199,9 +186,10 @@
         </rosparam>
     </node>
     
-    <param name="camera/driver/data_skip" value="5"/>
-    <!-- include file="$(find bringup)/launch/3dsensor.launch"/-->
-    <include file="$(find yocs_cmd_vel_mux)/launch/standalone.launch"/>
+    <!--<include file="$(find bringup)/launch/robot_ekf_localization.launch"/>-->
+    <!-- param name="camera/driver/data_skip" value="2"/> -->
+    <!--include file="$(find bringup)/launch/3dsensor.launch"/-->
+   <!--  <include file="$(find yocs_cmd_vel_mux)/launch/standalone.launch"/> -->
 
     <node name="diagnostic_aggregator" pkg="diagnostic_aggregator" type="aggregator_node" args="CPP" output="screen">
         <rosparam>

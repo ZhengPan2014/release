@@ -56,22 +56,9 @@ analyzers:
         </rosparam>
     </node>
     
-    <node name="robot_pose_publisher" pkg="robot_pose_publisher" type="robot_pose_publisher" output="screen"/>
-
     <include file="$(find bringup)/launch/rosbridge_stm32wangke.launch"/>
 
     <include file="$(find bringup)/launch/rosbridge_wangjin.launch"/>
-
-    <!--node name="urg_node" pkg="urg_node" type="urg_node" output="screen">
-        <rosparam>
-            ip_address: 192.168.0.10
-            frame_id: base_laser
-            publish_multiecho: false
-            angle_min: -2.27
-            angle_max: 2.27
-            skip: 0
-        </rosparam>
-    </node-->
 
     <include file="$(find sick_tim)/launch/sick_tim551_2050001.launch"/>
   

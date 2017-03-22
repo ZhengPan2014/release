@@ -1,0 +1,8 @@
+prefix=/home/ouiyeah/catkin_ws/install
+
+Name: sonar_to_laserscan
+Description: Description of sonar_to_laserscan
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/ouiyeah/catkin_ws/install/lib 
+Requires: roscpp

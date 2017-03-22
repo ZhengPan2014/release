@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<launch>
+    <include file="$(find bringup)/launch/rosbridge_imu_jy901.launch">
+        <arg name="imu_port" value="/dev/usb_left11"/>
+    </include>
+</launch>
