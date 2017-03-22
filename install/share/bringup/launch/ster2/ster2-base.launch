@@ -27,8 +27,8 @@
     </node>
 
     <include file="$(find bringup)/launch/rosbridge_drive_aqmd2s.launch">
-        <arg name="drive_port_left" value="/dev/usb_left4"/>
-        <arg name="drive_port_right" value="/dev/usb_left1"/>
+        <arg name="drive_port_left" value="/dev/usb_left3"/>
+        <arg name="drive_port_right" value="/dev/usb_left4"/>
         <arg name="wheel_seperation" value="0.433"/>
         <arg name="wheel_ratio" value="23333.3"/>
     </include>
@@ -38,7 +38,7 @@
     </include>
 
     <include file="$(find bringup)/launch/rosbridge_plc_wangjin.launch">
-        <arg name="plc_port" value="/dev/usb_left3"/>
+        <arg name="plc_port" value="/dev/usb_left1"/>
     </include>
 
     <node name="sick_tim" pkg="sick_tim" type="sick_tim551_2050001" output="screen">
