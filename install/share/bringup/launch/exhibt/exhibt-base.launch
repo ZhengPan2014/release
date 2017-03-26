@@ -34,9 +34,9 @@
         </rosparam>
     </node>
 
-    <node name="tf_base_sonar11" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+    <node name="tf_base_sonar_11oc" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
         <rosparam>
-            child_frame_id: base_sonar11
+            child_frame_id: base_sonar_11oc
             x: 0.34
             y: 0.19
             z: 0.30
@@ -44,9 +44,9 @@
         </rosparam>
     </node>
 
-    <node name="tf_base_sonar12" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+    <node name="tf_base_sonar_10oc" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
         <rosparam>
-            child_frame_id: base_sonar12
+            child_frame_id: base_sonar_10oc
             x: 0.26
             y: 0.23
             z: 0.30
@@ -54,9 +54,9 @@
         </rosparam>
     </node>
 
-    <node name="tf_base_sonar13" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+    <node name="tf_base_sonar_8oc" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
         <rosparam>
-            child_frame_id: base_sonar13
+            child_frame_id: base_sonar_8oc
             x: -0.26
             y: 0.23
             z: 0.30
@@ -64,9 +64,9 @@
         </rosparam>
     </node>
 
-    <node name="tf_base_sonar14" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+    <node name="tf_base_sonar_7oc" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
         <rosparam>
-            child_frame_id: base_sonar14
+            child_frame_id: base_sonar_7oc
             x: -0.34
             y: 0.19
             z: 0.30
@@ -74,29 +74,19 @@
         </rosparam>
     </node>
 
-    <node name="tf_base_sonar21" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+    <node name="tf_base_sonar_5oc" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
         <rosparam>
-            child_frame_id: base_sonar21
-            x: 0.34
+            child_frame_id: base_sonar_5oc
+            x: -0.34
             y: -0.19
             z: 0.30
-            yaw: -0.45
+            yaw: -2.69
         </rosparam>
     </node>
 
-    <node name="tf_base_sonar22" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+    <node name="tf_base_sonar_4oc" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
         <rosparam>
-            child_frame_id: base_sonar22
-            x: 0.26
-            y: -0.23
-            z: 0.30
-            yaw: -1.34
-        </rosparam>
-    </node> 
-            
-    <node name="tf_base_sonar23" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
-        <rosparam>
-            child_frame_id: base_sonar23
+            child_frame_id: base_sonar_4oc
             x: -0.26
             y: -0.23
             z: 0.30
@@ -104,13 +94,23 @@
         </rosparam>
     </node>
 
-    <node name="tf_base_sonar24" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+    <node name="tf_base_sonar_2oc" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
         <rosparam>
-            child_frame_id: base_sonar24
-            x: -0.34
+            child_frame_id: base_sonar_2oc
+            x: 0.26
+            y: -0.23
+            z: 0.30
+            yaw: -1.34
+        </rosparam>
+    </node> 
+            
+    <node name="tf_base_sonar_1oc" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+        <rosparam>
+            child_frame_id: base_sonar_1oc
+            x: 0.34
             y: -0.19
             z: 0.30
-            yaw: -2.69
+            yaw: -0.45
         </rosparam>
     </node>
 
@@ -127,10 +127,16 @@
         <arg name="imu_port" value="/dev/usb_left11"/>
     </include>
 
-<!--
-    <include file="$(find bringup)/launch/rosbridge_sonar.launch">       
+    <include file="$(find bringup)/launch/rosbridge_sonar_us100x8.launch">
+        <arg name="sonar_port_11oc" value="/dev/usb_right11"/>
+        <arg name="sonar_port_10oc" value="/dev/usb_right12"/>
+        <arg name="sonar_port_8oc" value="/dev/usb_right13"/>
+        <arg name="sonar_port_7oc" value="/dev/usb_right14"/>
+        <arg name="sonar_port_5oc" value="/dev/usb_right24"/>
+        <arg name="sonar_port_4oc" value="/dev/usb_right23"/>
+        <arg name="sonar_port_2oc" value="/dev/usb_right22"/>
+        <arg name="sonar_port_1oc" value="/dev/usb_right21"/>
     </include> 
--->
 
     <node name="urg_node" pkg="urg_node" type="urg_node" output="screen">
         <rosparam>

@@ -8,7 +8,6 @@
               - name: plc_port
                 type: serial
                 serial_stop: 1
-                timeout: 0.2
             topic_chain:
               - name: waypoint_user_pub
                 type: subscribe

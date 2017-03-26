@@ -6,7 +6,7 @@ var Sequelie = require('sequelize');
 // database: tailin
 // user: root
 // pwd: lll
-var sequelize = new Sequelie('tailin', 'root', 'lll', 
+var sequelize = new Sequelie('tailin', 'root', '123456', 
     {
         host: 'localhost',
         dialect: 'mysql',
