@@ -86,7 +86,7 @@ app.all('*', function (req, res, next) {
 });
 
 app.listen('8808', function () {
-    console.log("nodejs listen on port 8808");
+    console.log("NodeJs listen on port 8808");
 });
 
 app.get('/user_select', function(req, res, next){

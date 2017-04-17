@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<launch>
+    <node name="scan_marker" pkg="scan_marker" type="scan_marker" output="screen">
+        <remap from="scan" to="scan_filtered"/>
+        <remap from="pose" to="/move_base_simple/goal"/>
+        <rosparam>
+            marker_threshold: 4000.0
+        </rosparam>
+    </node>
+</launch>

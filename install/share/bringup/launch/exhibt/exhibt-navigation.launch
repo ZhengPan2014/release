@@ -1,6 +1,10 @@
 <?xml version="1.0"?>
 <launch>
+    <include file="$(find bringup)/launch/bringup-dbparam.launch"/>
+
     <include file="$(find bringup)/launch/bringup-navi.launch" >
         <arg name="footprint" value="[[0.37, -0.275], [0.37, 0.275], [-0.37, 0.275], [-0.37, -0.275]]"/>
+        <arg name="range_enabled" value="true"/>
+        <arg name="range_topics" value="['/sonar_11oc', '/sonar_10oc', '/sonar_8oc', '/sonar_7oc', '/sonar_5oc', '/sonar_4oc', '/sonar_2oc', '/sonar_1oc']"/>
     </include>
 </launch>

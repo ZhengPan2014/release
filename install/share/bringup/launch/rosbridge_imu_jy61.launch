@@ -28,20 +28,16 @@
                     lock: false
                   - name: imu_port
                     type: write
-                    byte: [0xff, 0xaa, 0x00, 0x00, 0x00] #save
+                    byte: [0xff, 0xaa, 0x02, 0x0e, 0x00] #echo
                     lock: false
                   - name: imu_port
                     type: write
-                    byte: [0xff, 0xaa, 0x03, 0x09, 0x00] #freq
-                    lock: false
-                  - name: imu_port
-                    type: write
-                    byte: [0xff, 0xaa, 0x00, 0x00, 0x00] #save
+                    byte: [0xff, 0xaa, 0x03, 0x08, 0x00] #freq
                     lock: false
             topic_chain:
               - name: odom
                 type: publish
-                freq: 120.0
+                freq: 60.0
                 pub_odom: false
                 pub_imu: true
                 imu_angle_ratio: 0.00009587

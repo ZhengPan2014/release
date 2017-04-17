@@ -1,6 +1,27 @@
 <?xml version="1.0"?>
 <launch>
-    <include file="$(find bringup)/launch/rosbridge_imu_jy901.launch">
-        <arg name="imu_port" value="/dev/usb_left11"/>
+    <include file="$(find bringup)/launch/rosbridge_plc_forklift.launch">
+        <arg name="plc_port" value="/dev/ttyUSB0"/>
     </include>
+    
+    <include file="$(find bringup)/launch/teleop_keyboard.launch"/>
 </launch>
+
+<!-- 
+                  - name: imu_port
+                    type: write
+                    byte: [0xff, 0xaa, 0x01, 0x01, 0x00] #calibrate gravity
+                    lock: false
+                  - name: imu_port
+                    type: write
+                    byte: [0xff, 0xaa, 0x01, 0x02, 0x00] #calibrate magnetic
+                    lock: false
+                  - name: imu_port
+                    type: write
+                    byte: [0xff, 0xaa, 0x01, 0x00, 0x00] #calibrate exit
+                    lock: false
+                  - name: imu_port
+                    type: write
+                    byte: [0xff, 0xaa, 0x00, 0x00, 0x00] #save
+                    lock: false
+ -->

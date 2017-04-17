@@ -8,8 +8,6 @@ sudo rm $ROS_USER_TTYS;
 echo 'KERNEL=="ttyS[0-9]*", MODE="0666"'                 | sudo tee -a $ROS_USER_TTYS
 echo 'KERNEL=="ttyUSB[0-9]*", MODE="0666"'               | sudo tee -a $ROS_USER_TTYS
 echo                                                     | sudo tee -a $ROS_USER_TTYS
-#echo $ROS_USER_PRE"2.2"$ROS_USER_SUF"\"usb_first\""      | sudo tee -a $ROS_USER_TTYS
-#echo $ROS_USER_PRE"2.3"$ROS_USER_SUF"\"usb_second\""     | sudo tee -a $ROS_USER_TTYS
 echo $ROS_USER_PRE"1"$ROS_USER_SUF"\"usb_right\""        | sudo tee -a $ROS_USER_TTYS
 echo $ROS_USER_PRE"2"$ROS_USER_SUF"\"usb_left\""         | sudo tee -a $ROS_USER_TTYS
 echo $ROS_USER_PRE"3"$ROS_USER_SUF"\"usb_bottom\""       | sudo tee -a $ROS_USER_TTYS

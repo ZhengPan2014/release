@@ -1,67 +1,308 @@
 <?xml version="1.0"?>
 <launch>
-    <!--node name="map_server" pkg="map_server" type="map_server" args="$(find bringup)/param/map.yaml"/>-->
+    <include file="$(find bringup)/launch/map_edit_server.launch"/>
 
-    <!-- <node name="map_edit_server" pkg="map_server" type="map_server" args="$(find bringup)/param/map_edit.yaml" >
-        <remap from="map" to="map_edit"/>
-    </node> -->
+    <include file="$(find yocs_waypoint_provider)/launch/provider.launch"/>
+
+    <include file="$(find yocs_waypoints_navi)/launch/waypoints_navi.launch"/>
+
+<!-- 
+    <include file="$(find bringup)/launch/bringup-navi.launch" >
+        <arg name="footprint" value="[[0.37, -0.275], [0.37, 0.275], [-0.37, 0.275], [-0.37, -0.275]]"/>
+    </include>
+ -->
+
+    <include file="$(find bringup)/launch/hector_initmap.launch"/>
 
     <include file="$(find bringup)/launch/amcl.launch"/>
     
-    <include file="$(find teb_local)/launch/robot_carlike_in_stage.launch"/>
-    
     <node name="robot_pose_publisher" pkg="robot_pose_publisher" type="robot_pose_publisher" output="screen"/>
 
-     <!-- <node pkg="teb_local" type="cmd_vel_to_ackermann_drive_0.py" name="cmdvel2ackermann">
-     <param name="max_angle" value="1.5351"/>
-    </node> -->
+    <include file="$(find bringup)/launch/forklift-gmapping.launch">
+        <arg name="scan_topic" default="/scan_rectified"/>
+    </include>
 
-  <arg name="tf_map_scanmatch_transform_frame_name" default="scanmatcher_frame"/>
-  <arg name="base_frame" default="base_footprint"/>
-  <arg name="odom_frame" default="base_footprint"/>
-  <arg name="pub_map_odom_transform" default="true"/>
-  <arg name="scan_subscriber_queue_size" default="50"/>
-  <arg name="scan_topic" default="scan"/>
-  <arg name="map_size" default="1024"/>
+
+    <node pkg="robot_localization" type="ekf_localization_node" name="ekf_se" clear_params="true">
+       <rosparam command="load" file="$(find bringup)/param/ekf_hector_mapping.yaml" />
+    </node>
+
+    <node name="move_base" pkg="move_base" type="move_base" respawn="false" output="screen">
+        <rosparam>
+            base_global_planner: "navfn/NavfnROS" #"global_planner/GlobalPlanner"
+            base_local_planner: "teb_local_planner/TebLocalPlannerROS" #"dwa_local_planner/DWAPlannerROS"
+            recovery_behaviors:
+              - name: 'conservative_reset'
+                type: 'clear_costmap_recovery/ClearCostmapRecovery'
+              - name: 'aggressive_reset'
+                type: 'clear_costmap_recovery/ClearCostmapRecovery'
+            conservative_reset:
+                reset_distance: 3.0
+                layer_names: [obstacle_layer]
+            aggressive_reset:
+                reset_distance: 0.0
+                layer_names: [obstacle_layer]
+            controller_frequency: 5.0
+            planner_patience: 5.0 #0.1
+            controller_patience: 1.0 #15.0
+            conservative_reset_dist: 3.0 #0.25
+            recovery_behavior_enabled: true
+            clearing_rotation_allowed: false
+            oscillation_timeout: 10.0
+            planner_frequency: 0.0
+            global_costmap:
+                global_frame: map
+                robot_base_frame: base_footprint
+                transform_tolerance: 0.2 #0.5
+                update_frequency: 2.0 #5.0
+                publish_frequency: 0.5 #0.0
+                static_map: true
+                footprint: [ [-0.20,-0.70], [1.75,-0.70], [1.75,0.70], [-0.20,0.70] ]
+#                robot_radius: 0.33 #0.42 <!-- groovy -->
+                resolution: 0.05
+                plugins:
+                  - name: static_layer
+                    type: "costmap_2d::StaticLayer"
+                  - name: obstacle_layer
+                    type: "costmap_2d::ObstacleLayer"
+                  - name: inflation_layer
+                    type: "costmap_2d::InflationLayer"
+                static_layer:
+                    map_topic: /map_edit
+                obstacle_layer:
+                    observation_sources: scan_rectified scan_down scan_left scan_right
+                    scan_rectified:
+                        expected_update_rate: 5.0
+                        data_type: LaserScan
+                        clearing: true
+                        max_obstacle_height: 1.0
+                        min_obstacle_height: -1.0
+                        inf_is_valid: true
+                    scan_down:
+                        expected_update_rate: 5.0
+                        data_type: LaserScan
+                        clearing: true
+                        max_obstacle_height: 1.0
+                        min_obstacle_height: -1.0
+                        inf_is_valid: true
+                    scan_left:
+                        expected_update_rate: 5.0
+                        data_type: LaserScan
+                        clearing: true
+                        max_obstacle_height: 2.0
+                        min_obstacle_height: 0.075
+                        inf_is_valid: true
+                    scan_right:
+                        expected_update_rate: 5.0
+                        data_type: LaserScan
+                        clearing: true
+                        max_obstacle_height: 2.0
+                        min_obstacle_height: 0.075
+                        inf_is_valid: true
+                    track_unknown_space: false #true
+                    footprint_clearing_enabled: false
+                    obstacle_range: 3.0
+                    raytrace_range: 3.5
+                    z_voxels: 8
+                inflation_layer:
+                    inflation_radius: 0.75
+                    cost_scaling_factor: 1
+            local_costmap:
+                global_frame: odom
+                robot_base_frame: base_footprint
+                transform_tolerance: 0.2 #0.5
+                update_frequency: 5.0
+                publish_frequency: 2.0 #0.5
+                footprint: [ [-0.20,-0.70], [1.75,-0.70], [1.75,0.70], [-0.20,0.70] ]
+#                robot_radius: 0.42 <!-- groovy -->
+                static_map: false
+                rolling_window: true
+                width: 6.0
+                height: 6.0
+                resolution: 0.05
+                plugins:
+                  - name: obstacle_layer
+                    type: "costmap_2d::ObstacleLayer"
+                  - name: inflation_layer
+                    type: "costmap_2d::InflationLayer"
+                obstacle_layer:
+                    observation_sources: scan_rectified scan_down scan_left scan_right 
+                    scan_rectified:
+                        expected_update_rate: 5.0
+                        data_type: LaserScan
+                        clearing: true
+                        max_obstacle_height: 1.0
+                        min_obstacle_height: -1.0
+                        inf_is_valid: true
+                    scan_down:
+                        expected_update_rate: 5.0
+                        data_type: LaserScan
+                        clearing: true
+                        max_obstacle_height: 1.0
+                        min_obstacle_height: -1.0
+                        inf_is_valid: true
+                    scan_left:
+                        expected_update_rate: 5.0
+                        data_type: LaserScan
+                        clearing: true
+                        max_obstacle_height: 2.0
+                        min_obstacle_height: 0.075
+                        inf_is_valid: true
+                    scan_right:
+                        expected_update_rate: 5.0
+                        data_type: LaserScan
+                        clearing: true
+                        max_obstacle_height: 2.0
+                        min_obstacle_height: 0.075
+                        inf_is_valid: true
+                    track_unknown_space: false #true
+                    footprint_clearing_enabled: false
+                    obstacle_range: 3.0
+                    raytrace_range: 3.5
+                    z_voxels: 8
+                inflation_layer:
+                    inflation_radius: 0.75
+                    cost_scaling_factor: 1
+            GlobalPlanner:
+                allow_unknown: false
+            <!-- TrajectoryPlannerROS:
+                max_vel_x: 0.5
+                min_vel_x: 0.1
+                max_vel_theta: 1.0
+                min_vel_theta: -1.0
+                min_in_place_vel_theta: 0.4
+                acc_lim_x: 1.0 #2.5
+                acc_lim_y: 0.0 #1.0
+                acc_lim_theta: 2.0 #3.2
+                holonomic_robot: false
+                yaw_goal_tolerance: 0.05 #0.15
+                xy_goal_tolerance: 0.075 #0.15
+                latch_xy_goal_tolerance: false #true
+                meter_scoring: true
+                occdist_scale: 0.5 #0.01
+                heading_scoring: true
+                heading_scoring_timestep: 1.0 #0.8
+                dwa: true
+                #global_frame_id: odom
+                oscillation_reset_dist: 0.075 -->
+            <!-- DWAPlannerROS:
+                acc_lim_x: 2.0 #slow 1.0, fast 2.0
+                acc_lim_y: 0.0
+                acc_lim_th: 2.0 #slow 2.0, fast 3.2
+                max_trans_vel: 0.55
+                min_trans_vel: 0.1
+                max_vel_x: 0.55
+                min_vel_x: 0.0
+                max_vel_y: 0.0
+                min_vel_y: 0.0
+                max_rot_vel: 1.0
+                min_rot_vel: 0.4
+                yaw_goal_tolerance: 0.05 #0.2
+                xy_goal_tolerance: 0.075 #0.15
+                latch_xy_goal_tolerance: true 
+                sim_time: 1.7
+                sim_granularity: 0.025
+                vx_samples: 6
+                vy_samples: 1
+                vtheta_samples: 20
+                penalize_negative_x: false #true
+                path_distance_bias: 64.0 #32.0
+                goal_distance_bias: 24.0
+                occdist_scale: 0.5
+                oscillation_reset_dist: 0.075 -->
+        </rosparam>
+        <rosparam file="$(find teb_local)/cfg/carlike/teb_local_planner_params.yaml" command="load" />
+<!-- 
+TebLocalPlannerROS:
+
+ odom_topic: /odometry/filtered
+ map_frame: /map
+ # Trajectory
   
-  <node pkg="hector_mapping" type="hector_mapping" name="hector_mapping" output="screen">
+ teb_autosize: True
+ dt_ref: 0.5 #0.3
+ dt_hysteresis: 0.1
+ global_plan_overwrite_orientation: True
+ max_global_plan_lookahead_dist: 3.0
+ feasibility_check_no_poses: 2
     
-    <!-- Frame names -->
-    <param name="map_frame" value="map" />
-    <param name="base_frame" value="$(arg base_frame)" />
-    <param name="odom_frame" value="$(arg odom_frame)" />
-    
-    <!-- Tf use -->
-    <param name="use_tf_scan_transformation" value="true"/>
-    <param name="use_tf_pose_start_estimate" value="false"/>
-    <param name="pub_map_odom_transform" value="$(arg pub_map_odom_transform)"/>
-    
-    <!-- Map size / start point -->
-    <param name="map_resolution" value="0.075"/>
-    <param name="map_size" value="$(arg map_size)"/>
-    <param name="map_start_x" value="0.5"/>
-    <param name="map_start_y" value="0.5" />
-    <param name="map_multi_res_levels" value="2" />
-    <param name="map_pub_period" value="2.0" />
-    
-    <!-- Map update parameters -->
-    <param name="update_factor_free" value="0.4"/>
-    <param name="update_factor_occupied" value="0.9" />    
-    <param name="map_update_distance_thresh" value="0.4"/>
-    <param name="map_update_angle_thresh" value="0.06" />
-    <param name="laser_min_dist" value = "0.5" />
-    <param name="laser_max_dist" value = "20.0" />
-    <param name="laser_z_min_value" value = "-1.0" />
-    <param name="laser_z_max_value" value = "1.0" />
-    <!--param name="output_timing" value = "true" /-->
-    
-    <!-- Advertising config --> 
-    <param name="advertise_map_service" value="true"/>
-    
-    <param name="scan_subscriber_queue_size" value="$(arg scan_subscriber_queue_size)"/>
-    <param name="scan_topic" value="$(arg scan_topic)"/>
-    <!-- param name="pub_map_scanmatch_transform" value="false" /-->
-    <param name="tf_map_scanmatch_transform_frame_name" value="$(arg tf_map_scanmatch_transform_frame_name)" />
+ # Robot
+         
+ max_vel_x: 0.5 #0.4
+ max_vel_x_backwards: 0.3 #0.15
+ max_vel_y: 0.0
+ max_vel_theta: 1.5351 # the angular velocity is also bounded by min_turning_radius in case of a carlike robot (r = v / omega)
+ acc_lim_x: 0.5
+ acc_lim_theta: 0.5
 
-  </node>
+ # ********************** Carlike robot parameters ********************
+ min_turning_radius: 1.41    # Min turning radius of the carlike robot (compute value using a model or adjust with rqt_reconfigure manually)
+ wheelbase: 1.41                # Wheelbase of our robot
+ cmd_angle_instead_rotvel: False #True # stage simulator takes the angle instead of the rotvel as input (twist message)
+ # ********************************************************************
+
+ footprint_model: # types: "point", "circular", "two_circles", "line", "polygon"
+   
+   # type: "line"
+
+   # line_start: [-0.18, 0.0] # for type "line"
+   # line_end: [0.78, 0.0] # for type "line"
+   type: "polygon"
+   # vertices: [[0.78,-0.34],[-0.18,-0.34],[-0.18,0.34],[0.78,0.34]]
+   vertices: [ [-0.20,-0.50], [1.70,-0.50], [1.70,0.50], [-0.20,0.50] ]
+ 
+ # GoalTolerance
+    
+ xy_goal_tolerance: 0.029    #0.029
+ yaw_goal_tolerance: 0.001  #0.6
+
+ free_goal_vel: False 
+    
+ # Obstacles
+    
+ min_obstacle_dist: 0.25# This value must also include our robot's expansion, since footprint_model is set to "line".
+ inflation_dist: 0.6
+ include_costmap_obstacles: True
+ costmap_obstacles_behind_robot_dist: 1.0
+ obstacle_poses_affected: 20 #30
+ costmap_converter_plugin: ""
+ costmap_converter_spin_thread: True
+ costmap_converter_rate: 5
+
+ # Optimization
+    
+ no_inner_iterations: 4 #5
+ no_outer_iterations: 2 #4
+ optimization_activate: True
+ optimization_verbose: False
+ penalty_epsilon: 0.1
+ weight_max_vel_x: 2
+ weight_max_vel_theta: 1
+ weight_acc_lim_x: 1
+ weight_acc_lim_theta: 1
+ weight_kinematics_nh: 2500
+ weight_kinematics_forward_drive: 1
+ weight_kinematics_turning_radius: 1
+ weight_optimaltime: 1
+ weight_obstacle: 50
+ weight_dynamic_obstacle: 10 # not in use yet
+
+ # Homotopy Class Planner
+
+ enable_homotopy_class_planning: True
+ enable_multithreading: True
+ simple_exploration: False
+ max_number_classes: 4
+ selection_cost_hysteresis: 1.0
+ selection_obst_cost_scale: 1.0
+ selection_alternative_time_cost: False
+ roadmap_graph_no_samples: 25 #15
+ roadmap_graph_area_width: 5
+ h_signature_prescaler: 0.5
+ h_signature_threshold: 0.1
+ obstacle_keypoint_offset: 0.1
+ obstacle_heading_threshold: 0.45
+ visualize_hc_graph: False
+ -->
+    </node>
 </launch>

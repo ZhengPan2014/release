@@ -43,8 +43,8 @@
 
     <node name="sick_tim" pkg="sick_tim" type="sick_tim551_2050001" output="screen">
         <rosparam>
-#            min_ang: -2.1
-#            max_ang: 2.1
+            min_ang: -2.2
+            max_ang: 2.2
             intensity: False
             frame_id: base_laser
             range_max: 10.0

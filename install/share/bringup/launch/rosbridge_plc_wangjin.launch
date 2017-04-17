@@ -25,7 +25,7 @@
                 echo: [voltage]
               - name: read_status
                 type: event
-                freq: 1.0
+                freq: 0.5
                 action_chain:
                   - name: plc_port
                     type: write

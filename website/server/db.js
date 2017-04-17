@@ -1,23 +1,93 @@
-'use strict'
+'use strict';
 
-var Sequelie = require('sequelize');
+var Sequelize = require('sequelize');
+var fs = require('fs');
+var os = require('os');
 
-// connect to mysql
-// database: tailin
-// user: root
-// pwd: lll
-var sequelize = new Sequelie('tailin', 'root', '123456', 
-    {
-        host: 'localhost',
-        dialect: 'mysql',
-        pool: 
-            {
-                max: 50,
-                min: 0,
-                idle: 10000
-            },
-        timezone: '+08:00',
-    });
+var hostname = os.hostname();
+var model = hostname.split('-')[1];
+
+var sequelize = null;
+var User = null;
+var AuthCode = null;
+var OpRecord = null;
+
+fs.exists('../../src', function(result){
+	if (result)
+	{
+		var configPath = '../../src/bringup/auth/' + model + '/hitrobot.cfg';
+	}
+	else
+	{
+		var configPath = '../../install/share/bringup/auth/' + model + '/hitrobot.cfg';
+	}
+	fs.readFile(configPath, function(err, data){
+		if (err)
+		{
+			// TODO
+			console.log("'hitrobot.cfg' not found.\nNodeJs started without connection to MySQL.");
+		}
+		else
+		{
+			var config = JSON.parse(data);
+			connect(config.mysql);
+			// test the connection
+			sequelize.authenticate()
+  				.then(function(err) {
+    				console.log('Connection has been established.');
+    				defineUser();
+					defineAuthCode();
+					defineOpRecord();
+  				})
+  				.catch(function (err) {
+  					//console.log("\x1b[31m", "MySQL connecction error.", "\x1b[0m");
+  					try{
+  						createDatabase(config.mysql);
+  						defineUser();
+						defineAuthCode();
+						defineOpRecord();	
+  					}
+  					catch(e){
+  						var errMsg = "Cannot find module 'child_process'";
+  						errMsg += "\nTry 'npm install child_process' or create database manually.";
+  						console.log("\x1b[31m", errMsg, "\x1b[0m");
+  					}
+  				});
+		}// else
+	}); // fs.readFile
+});
+
+function createDatabase(config)
+{
+	var exec = require('child_process').exec;
+	var user = config.user;
+	var password = config.password;
+	var database = config.database;
+	var cmd = "mysql -u " + user + " -p" + password + " -e 'create database " + database + "';";
+	exec(cmd, function(error, stdout, stderr){
+		if (error)
+		{
+			console.log('\x1b[31m', `createDatabase error: ${error}`, '\x1b[0m');
+			return;
+		}
+	});
+}
+
+function connect(config)
+{
+	sequelize = new Sequelize(config.database, config.user, config.password, 
+	    {
+	        host: 'localhost',
+	        dialect: 'mysql',
+	        pool: 
+	            {
+	                max: 50,
+	                min: 0,
+	                idle: 10000
+	            },
+	        timezone: '+08:00',
+	    });
+}
 
 
 // table: user
@@ -26,31 +96,37 @@ var sequelize = new Sequelie('tailin', 'root', '123456',
 // +----+-------+-----------+---------------------+--------+---------+
 // |  1 | string| string    | super/admin/tech/op | double | string  |
 // +----+-------+-----------+---------------------+--------+---------+
-var User = sequelize.define('user',{
-    name: {
-        type: Sequelie.STRING,
-        allowNull: false
-    },
-    pwd:{
-        type: Sequelie.STRING,
-        allowNull: false
-    },
-    auth: {
-        type: Sequelie.STRING,
-        allowNull: false
-    },
-    time: {
-        type: Sequelie.DOUBLE,
-        allowNull: false
-    },
-    mark: {
-        type: Sequelie.STRING,
-        allowNull: true
-    },
-},
-{
-    freezeTableName: true
-});
+function defineUser(){
+	User = sequelize.define('user',{
+	    name: {
+	        type: Sequelize.STRING,
+	        allowNull: false
+	    },
+	    pwd:{
+	        type: Sequelize.STRING,
+	        allowNull: false
+	    },
+	    auth: {
+	        type: Sequelize.STRING,
+	        allowNull: false
+	    },
+	    time: {
+	        type: Sequelize.DOUBLE,
+	        allowNull: false
+	    },
+	    mark: {
+	        type: Sequelize.STRING,
+	        allowNull: true
+	    },
+	},
+	{
+	    freezeTableName: true
+	});
+	User.sync({force: false})
+		.then(function(result){})
+		.catch(function(err){
+		});
+}
 
 
 // table: auth_code
@@ -59,27 +135,33 @@ var User = sequelize.define('user',{
 // +----+-------+-----------+------------+-------------------------+
 // |  1 | string| string    | double     | super/ admin/ tech/ op  |
 // +----+-------+-----------+------------+-------------------------+
-var AuthCode = sequelize.define('auth_code',{
-    code: {
-        type: Sequelie.STRING,
-        allowNull: false
-    },
-    name: {
-        type: Sequelie.STRING,
-        allowNull: false
-    },
-    time: {
-        type: Sequelie.DOUBLE,
-        allowNull: false
-    },
-    auth: {
-        type: Sequelie.STRING,
-        allowNull: false
-    }
-},
-{
-    freezeTableName: true
-});
+function defineAuthCode(){
+	AuthCode = sequelize.define('auth_code',{
+	    code: {
+	        type: Sequelize.STRING,
+	        allowNull: false
+	    },
+	    name: {
+	        type: Sequelize.STRING,
+	        allowNull: false
+	    },
+	    time: {
+	        type: Sequelize.DOUBLE,
+	        allowNull: false
+	    },
+	    auth: {
+	        type: Sequelize.STRING,
+	        allowNull: false
+	    }
+	},
+	{
+	    freezeTableName: true
+	});
+	AuthCode.sync({force: false})
+		.then(function(result){})
+		.catch(function(err){
+		});
+}
 
 // table: op_record
 // operation records
@@ -88,28 +170,29 @@ var AuthCode = sequelize.define('auth_code',{
 // +----+-------+-----------+------------+
 // |  1 | Date  | string    | string     |
 // +----+-------+-----------+------------+
-var OpRecord = sequelize.define('op_record', {
-    time: {
-        type: Sequelie.DATE,
-        allowNull: false
-    },
-    name: {
-        type: Sequelie.STRING,
-        allowNull: false
-    },
-    operation: {
-        type: Sequelie.STRING,
-        allowNull: false
-    }
-},
-{
-    freezeTableName: true
-});
-
-// check if exists tables
-AuthCode.sync({force: false}).then(function(result){});
-User.sync({force: false}).then(function(result){});
-OpRecord.sync({force: false}).then(function(result){});
+function defineOpRecord(){
+	OpRecord = sequelize.define('op_record', {
+	    time: {
+	        type: Sequelize.DATE,
+	        allowNull: false
+	    },
+	    name: {
+	        type: Sequelize.STRING,
+	        allowNull: false
+	    },
+	    operation: {
+	        type: Sequelize.STRING,
+	        allowNull: false
+	    }
+	},
+	{
+	    freezeTableName: true
+	});
+	OpRecord.sync({force: false})
+		.then(function(result){})
+		.catch(function(err){
+		});
+}
 
 function delAuthCode(days)
 {
@@ -122,19 +205,12 @@ function delAuthCode(days)
             }
         }
     }).then(function(result){
-        console.log('invalid auth code deleted');
+        console.log('Invalid auth code deleted');
     });
 }
-
-// delAuthCode(7);
 
 module.exports = {
     User: User,
     AuthCode: AuthCode,
     OpRecord: OpRecord
 };
-
-
-
-
-
