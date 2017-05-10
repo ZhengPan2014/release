@@ -654,6 +654,20 @@ callback <nav_msgs/OccupancyGrid>
 }
 ```
 
+#### 0.0.0 Get Diagnostics
+
+```json
+{ "op": "subscribe",
+  "topic": "/diagnostics_agg",
+  "type": "diagnostic_msgs/DiagnosticArray",
+}
+```
+
+```json
+callback <diagnostic_msgs/DiagnosticArray>
+definition as listed
+```
+
 ### 4.4 JavaScript examples
 
 #### 4.4.1 JavaScript citations
