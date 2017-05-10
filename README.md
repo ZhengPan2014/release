@@ -600,28 +600,6 @@ msg <move_base_msgs/MoveBaseActionGoal>
 
 #### 4.3.4 Get Robot Map
 
-
-```json
-{ "op": "advertise",
-  "topic": "/map",
-  "type": "nav_msgs/OccupancyGrid",
-}
-```
-
-```json
-{ "op": "publish",
-  "topic": "/move_base/goal",
-  "msg": <nav_msgs/OccupancyGrid>,
-}
-```
-
-```json
-msg <nav_msgs/OccupancyGrid>
-{ "target_pose": { "header": { "frame_id": "/map" }, "pose": <geometry_msgs/Pose> },
-  "base_position": { "header": { "frame_id": "/map" }, "pose": <geometry_msgs/Pose> }
-}
-```
-
 ```json
 { "op": "subscribe",
   "topic": "/map",
@@ -639,7 +617,19 @@ callback <nav_msgs/OccupancyGrid>
 
 #### 4.3.4 Set Robot Map
 
+```json
+{ "op": "advertise",
+  "topic": "/map",
+  "type": "nav_msgs/OccupancyGrid",
+}
+```
 
+```json
+{ "op": "publish",
+  "topic": "/move_base/goal",
+  "msg": <nav_msgs/OccupancyGrid>,
+}
+```
 
 ### 4.4 JavaScript examples
 
