@@ -615,7 +615,7 @@ callback <nav_msgs/OccupancyGrid>
 }
 ```
 
-#### 4.3.4 Set Robot Map
+#### 4.3.5 Set Robot Map
 
 ```json
 { "op": "advertise",
@@ -631,7 +631,7 @@ callback <nav_msgs/OccupancyGrid>
 }
 ```
 
-#### 4.3.5 Set Robot Velocity
+#### 4.3.6 Set Robot Velocity
 
 ```json
 { "op": "advertise",
@@ -654,7 +654,7 @@ callback <nav_msgs/OccupancyGrid>
 }
 ```
 
-#### 0.0.0 Get Diagnostics
+#### 4.3.7 Get Diagnostics
 
 ```json
 { "op": "subscribe",
