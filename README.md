@@ -631,6 +631,29 @@ callback <nav_msgs/OccupancyGrid>
 }
 ```
 
+#### 4.3.5 Set Robot Velocity
+
+```json
+{ "op": "advertise",
+  "topic": "/cmd_vel",
+  "type": "geometry_msgs/Twist",
+}
+```
+
+```json
+{ "op": "publish",
+  "topic": "geometry_msgs/Twist",
+  "msg": <geometry_msgs/Twist>,
+}
+```
+
+```json
+<geometry_msgs/Twist>
+{ "linear": { "x": <float64>, "y": <float64>, "z": <float64> },
+  "angular": { "x": <float64>, "y": <float64>, "z": <float64> },
+}
+```
+
 ### 4.4 JavaScript examples
 
 #### 4.4.1 JavaScript citations
