@@ -546,8 +546,8 @@ busy          : in the mode switching status                  //系统模式切�
 
 ```json
 callback <geometry_msgs/Pose>
-{ "positon": { "x: <float64>, y: <float64>, z: <float64>" },
-  "orientation": { "x: <float64>, y: <float64>, z: <float64>, w: <float64>" }
+{ "positon": { "x": <float64>, "y": <float64>, "z": <float64> },
+  "orientation": { "x": <float64>, "y": <float64>, "z": <float64>, "w": <float64> }
 }
 ```
 
