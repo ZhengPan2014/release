@@ -499,7 +499,7 @@ Custom functions for the hitrobot protocol are listed below.
 
 ```json
 { "op": "publish",
-  "topic": "/system_shell/cmd_string",
+  "topic": "/cmd_string",
   "msg": <string>
 }
 ```
@@ -508,28 +508,22 @@ Custom functions for the hitrobot protocol are listed below.
 msg <string>
 shutdown      : shutdown the remote system                    //关机
 reboot        : reboot the remote system                      //重启
-cancel        : cancel and stop any moving operation          //取消运动命令
+cancel        : cancel and stop any moving operation          //取消运动
 gmapping      : switch to the mode of mapping                 //建图模式
-hector_mapping: //hector建图...
 navigation    : switch to the mode of navigation              //导航模式
-all           : switch to the mode of mapping with navigation //边建图边导航模式
-clear_costmaps: //清障
-gmapping_pose : record current pose in cache                  //缓存当前位置
-save_map      : save map for localization                     //保存当前定位地图
-save_as_map   : //保存当前定位地图
-save_map_edit : save map for navigation                       //保存修改导航地图
-save_as_map_edit :  //保存修改导航地图
-debug         : //以debug模式编译（慎用）
-release       : //以release模式编译（慎用）
-version       : //获取软件版本信息
-null          : //指令为空
+save_map      : save map for localization                     //保存定位地图
+save_as_map   : import map for localization                   //导入定位地图
+save_map_edit : save map for navigation                       //保存导航地图
+save_as_map_edit : import map for navigation                  //导入导航地图
+version       : get version                                   //获取软件版本信息
+null          : empty command                                 //指令为空
 ```
 
 ### 4.2 Custom subscribe string
 
 ```json
 { "op": "subscribe",
-  "topic": "/system_shell/system_mode",
+  "topic": "/ros_mode",
 }
 ```
 
@@ -537,7 +531,6 @@ null          : //指令为空
 callback <string>
 gmapping      : in the mode of mapping                        //建图模式
 navigation    : in the mode of navigation                     //导航模式
-all           : in the mode of mapping with navigation        //边建图边导航模式
 busy          : in the mode switching status                  //系统模式切换中
 ```
 
@@ -549,14 +542,13 @@ busy          : in the mode switching status                  //系统模式切�
 { "op": "subscribe",
   "topic": "/robot_pose",
   "type": "geometry_msgs/Pose",
-  "throttle_rate": 100
 }
 ```
 
 ```json
 callback <geometry_msgs/Pose>
-{ "positon": { "x: <float64>, y: <float64>, z: <float64>" },
-  "orientation": { "x: <float64>, y: <float64>, z: <float64>, w: <float64>" }
+{ "positon": { "x": <float64>, "y": <float64>, "z": <float64> },
+  "orientation": { "x": <float64>, "y": <float64>, "z": <float64>, "w": <float64> }
 }
 ```
 
@@ -604,6 +596,77 @@ msg <move_base_msgs/MoveBaseActionGoal>
 { "target_pose": { "header": { "frame_id": "/map" }, "pose": <geometry_msgs/Pose> },
   "base_position": { "header": { "frame_id": "/map" }, "pose": <geometry_msgs/Pose> }
 }
+```
+
+
+#### 4.3.4 Get Robot Map
+
+```json
+{ "op": "subscribe",
+  "topic": "/map",
+  "type": "nav_msgs/OccupancyGrid",
+}
+```
+
+```json
+callback <nav_msgs/OccupancyGrid>
+{ "header": { "seq": <uint32>, "stamp": { "sec": <int>, "nsec": <int> }, "frame_id": <string> },
+  "info": { "map_load_time": { "sec": <int>, "nsec": <int> }, "resolution": <float32>, "width": <uint32>, "height": <uint32>, "origin": <geometry_msgs/Pose> },
+  "data": [ <uint8> ]
+}
+```
+
+#### 4.3.5 Set Robot Map
+
+```json
+{ "op": "advertise",
+  "topic": "/map",
+  "type": "nav_msgs/OccupancyGrid",
+}
+```
+
+```json
+{ "op": "publish",
+  "topic": "/move_base/goal",
+  "msg": <nav_msgs/OccupancyGrid>,
+}
+```
+
+#### 4.3.6 Set Robot Velocity
+
+```json
+{ "op": "advertise",
+  "topic": "/cmd_vel",
+  "type": "geometry_msgs/Twist",
+}
+```
+
+```json
+{ "op": "publish",
+  "topic": "geometry_msgs/Twist",
+  "msg": <geometry_msgs/Twist>,
+}
+```
+
+```json
+<geometry_msgs/Twist>
+{ "linear": { "x": <float64>, "y": <float64>, "z": <float64> },
+  "angular": { "x": <float64>, "y": <float64>, "z": <float64> },
+}
+```
+
+#### 4.3.7 Get Diagnostics
+
+```json
+{ "op": "subscribe",
+  "topic": "/diagnostics_agg",
+  "type": "diagnostic_msgs/DiagnosticArray",
+}
+```
+
+```json
+callback <diagnostic_msgs/DiagnosticArray>
+definition as listed
 ```
 
 ### 4.4 JavaScript examples
