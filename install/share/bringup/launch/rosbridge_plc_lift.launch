@@ -9,6 +9,8 @@
                 type: serial
                 timeout: 0.5
             topic_chain:
+              - name: waypoint_user_pub
+                type: subscribe
               - name: pubsuber_limit_switch_top
                 type: event
                 action_chain:
