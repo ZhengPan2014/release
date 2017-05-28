@@ -118,6 +118,16 @@
         </rosparam>
     </node>
 
+    <node name="scan_marker" pkg="scan_marker" type="scan_marker" output="screen">
+        <remap from="scan" to="scan_filtered"/>
+        <remap from="pose" to="/move_base_simple/goal"/>
+        <rosparam>
+            marker_obs: 2
+            marker_interval: 0.86
+            marker_threshold: 240.0
+        </rosparam>
+    </node>
+
    <!--  <node name="rplidar_left" pkg="rplidar_ros" type="rplidarNode" output="screen">
         <remap from="scan" to="scan_left"/>
         <rosparam>
