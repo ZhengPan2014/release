@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
     <arg name="plc_port" default="/dev/ttyUSB0"/>
-    <node name="rosbridge_drive" pkg="rosbridge_driver" type="rosbridge_driver" output="screen">
+    <node name="rosbridge_plc" pkg="rosbridge_driver" type="rosbridge_driver" output="screen">
         <param name="plc_port" value="$(arg plc_port)"/>
         <rosparam>
             port_chain:
