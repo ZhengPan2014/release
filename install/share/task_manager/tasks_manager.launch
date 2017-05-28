@@ -1,0 +1,5 @@
+<launch>
+  <node pkg="task_manager" name="tasks_manager" type="tasks_manager.py" output="screen">
+    <param name="feedback" value="true"/>
+  </node>
+</launch>

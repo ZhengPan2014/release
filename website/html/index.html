@@ -34,6 +34,7 @@
     <script type="text/javascript" src="js/sweet.js"></script>
 
     <script type="text/javascript" src="js/network.js"></script>
+    <script type="text/javascript" src="js/task.js"></script>
 </head>
 <body>
     <!--    HRG PAGES-->
@@ -133,6 +134,7 @@
             <a href="#hrg-map-wizard-frist" data-transition="slide" data-role="button" data-icon="carat-r" data-iconpos="right">地图向导</a>
             <a href="#hrg-navigation-setting-page" data-transition="slide" data-role="button" data-icon="carat-r" data-iconpos="right">站点巡航</a>
             <!-- <a href="#hrg-system-diagnosis-page" id="system-diagnostics" data-transition="slide" data-role="button" data-icon="carat-r" data-iconpos="right" aria-disabled="true" class="ui-disabled">系统诊断</a> -->
+            <a href="#hrg-task-manager-page" id="task-manager" data-transition="slide" data-role="button" data-icon="carat-r" data-iconpos="right">任务管理</a>
             <a href="#hrg-system-diagnosis-page" id="system-diagnostics" data-transition="slide" data-role="button" data-icon="carat-r" data-iconpos="right" aria-disabled="true">系统诊断</a>
             <a href="#hrg-system-normal-page" id="general" data-transition="slide" data-role="button" data-icon="carat-r" data-iconpos="right">通 用</a>
             <a href="#hrg-system-log-page" id="system-log" data-transition="slide" data-role="button" data-icon="carat-r" data-iconpos="right">系统日志</a>
@@ -181,6 +183,7 @@
             <a href="#hty-history-search-page" data-transition="slide" data-role="button" data-icon="search" data-iconpos="right" style="background: #00ff90;" class="ui-disabled">操作查询</a>
             <a href="#hrg-change-password-popup" data-rel="popup" data-transition="flip" data-role="button" data-icon="edit" data-iconpos="right" style="background: #00ff90;" id="change-password">修改密码</a>
             <a href="#" data-rel="popup" data-transition="flip" data-role="button" data-icon="lock" data-iconpos="right" style="background: #00ff90;" id="btn-lock-software">锁 屏</a>
+            <!--
             <a href="#" data-transition="slide" data-role="button" data-icon="hrg-logout" data-iconpos="right" style="background: #00ff90;" id="logout">注 销</a>
             <label style="font-weight: 600" for="auth-code-select">权限分配:</label>
             <select name="auth-code-select" id="auth-code-select" data-iconpos='right'>
@@ -192,6 +195,7 @@
             <label style="font-weight: 600" for="old-password">注册码:</label>
             <input type="text" id="new-auth-code" required placeholder="生成的新的注册码">
             <a href="#" data-transition="slide" data-role="button" data-icon="star" data-iconpos="right" data-theme="b" id="btn-get-auth-code">生成注册码</a>
+            -->
 
             <div data-role="popup" id="hrg-lock-software-popup" data-transition="flip" data-overlay-theme="a" data-corners="true" data-position-to="window" style="width: 300px; height: 200px" data-dismissible="false">
                 <div data-role="content">
@@ -438,6 +442,132 @@
             <h1 class="version"></h1>
         </div>
     </div>
+
+    <!-- task manager page -->
+    <div data-role="page" id="hrg-task-manager-page">
+        <div data-role="header" data-theme="b">
+            <h1>任务管理</h1>
+            <a href="#hrg-menu-page" data-transition="slide" class="ui-btn ui-icon-delete ui-btn-icon-notext ui-corner-all ui-btn-right"></a>
+            <a href="#" class="ui-btn ui-icon-hrg-networktry ui-btn-icon-notext ui-corner-all ui-btn-left networkstatus"></a>
+        </div>
+        <div data-role="content">
+            <a href="#hrg-add-task-page" data-transition="slide" data-role="button" data-icon="plus" data-theme="b" data-iconpos="right">添加任务</a>
+            <div id="task-list">
+            </div>
+            <hr>
+            <a href="#" data-transition="slide" data-role="button" data-theme="b">任务队列</a>
+            <div id="tasks-queue-list">
+            </div>
+
+            <hr>
+            <div class='ui-grid-a'>
+                <div class='ui-block-a'>
+                    <a href="#" data-role="button" data-icon="forbidden" data-theme="b" id="pause_task">暂停</a>
+                </div>
+                <div class='ui-block-b'>
+                    <a href="#" data-role="button" data-icon="forbidden" data-theme="b" id="resume_task">恢复</a>
+                </div>
+            </div>
+            <div class='ui-grid-a'>
+                <div class='ui-block-a'>
+                    <a href="#" data-role="button" data-icon="forbidden" data-theme="b" id="cancel_pause">取消任务并暂停</a>
+                </div>
+                <div class='ui-block-b'>
+                    <a href="#" data-role="button" data-icon="forbidden" data-theme="b" id="clear_queue">完成任务后清空</a>
+                </div>
+            </div>
+
+        </div>
+        <div data-role="footer" data-theme="b" data-position="fixed" data-id="hrg-navigation-wizard-footer">
+            <h1 class="version"></h1>
+        </div>
+    </div>
+
+<!-- add task page -->
+    <div data-role="page" id="hrg-add-task-page">
+        <div data-role="header" data-theme="b">
+            <h1>任务添加</h1>
+            <a href="#" class="ui-btn ui-icon-hrg-networktry ui-btn-icon-notext ui-corner-all ui-btn-left networkstatus"></a>
+            <a href="#hrg-task-manager-page" data-transition="slide" class="ui-btn ui-icon-delete ui-btn-icon-notext ui-corner-all ui-btn-right"></a>
+        </div>
+        <div data-role="content" id="hrg-add-task-page-content">
+            <div data-rel="fieldcontainer">
+                <label for="task_name">任务名称:</label>
+                <input type="text" id="task_name" required placeholder="请输入名称">
+                <label for="task_address">地址:</label>
+                <input type="text" id="task_address" required placeholder="请输入地址">
+
+                <label for="task_trajectory">Trajectory:</label>
+                <select name="trajectory" id="task_trajectory" data-iconpos='right'>
+                </select>
+                
+                <label for="task_enable_operator">任务执行运算符:</label>
+                <select name="operator" id="task_enable_operator" data-iconpos='right'>
+                    <option value="true"> True </option>
+                    <option value="false"> False </option>
+                    <option value="<"> < </option>
+                    <option value="<="> <= </option>
+                    <option value="=="> == </option>
+                    <option value="!="> != </option>
+                    <option value=">"> > </option>
+                    <option value=">="> >= </option>
+                </select>
+
+                <label for="task_enable_condition">任务执行条件:</label>
+                <input type="text" id="task_enable_condition" required placeholder="请输入条件">
+
+                <label for="task_disable_operator">任务取消运算符:</label>
+                <select name="operator" id="task_disable_operator" data-iconpos='right'>
+                    <option value="true"> True </option>
+                    <option value="false"> False </option>
+                    <option value="<"> < </option>
+                    <option value="<="> <= </option>
+                    <option value="=="> == </option>
+                    <option value="!="> != </option>
+                    <option value=">"> > </option>
+                    <option value=">="> >= </option>
+                </select>
+
+                <label for="task_disable_condition">任务取消条件:</label>
+                <input type="text" id="task_disable_condition" required placeholder="请输入条件">
+
+
+                <label for="task_priority">任务优先级:</label>
+                <select name="priority" id="task_priority" data-iconpos='right'>
+                    <option value="0">添加至任务队列尾</option>
+                    <option value="1">添加至当前任务后,当前任务结束后执行</option>
+                    <option value="2">添加至任务队列头，取消当前任务立即执行</option>
+                    <option value="-1">添加至任务队列尾,无其他任务时执行</option>
+                </select>
+
+                <a data-role="button" data-icon="hrg-submit" data-theme="b" id="btn-add-task">提 交</a>
+            </div>
+
+        </div>
+        <div data-role="footer" data-theme="b" data-position="fixed" data-id="hrg-navigation-wizard-footer">
+            <h1 class="version"></h1>
+        </div>
+    </div>
+
+    <!-- task detail page -->
+    <div data-role="page" id="hrg-task-detail-page">
+        <div data-role="header" data-theme="b">
+            <h1>任务详情</h1>
+            <a href="#" class="ui-btn ui-icon-hrg-networktry ui-btn-icon-notext ui-corner-all ui-btn-left networkstatus"></a>
+            <a href="#hrg-task-manager-page" data-transition="slide" class="ui-btn ui-icon-delete ui-btn-icon-notext ui-corner-all ui-btn-right"></a>
+        </div>
+        <div data-role="content" id="hrg-task-detail-page-content">
+            <div data-rel="fieldcontainer">
+                <ul id="tasks-detail-list" style="font-size: 20px">
+                </ul>
+            </div>
+
+        </div>
+        <div data-role="footer" data-theme="b" data-position="fixed" data-id="hrg-navigation-wizard-footer">
+            <h1 class="version"></h1>
+        </div>
+    </div>
+
     <!-- 系统诊断-->
     <div data-role="page" id="hrg-system-diagnosis-page" data-position="fixed" data-fullscreen="true" style="overflow: hidden;">
         <div data-role="header" data-theme="b">

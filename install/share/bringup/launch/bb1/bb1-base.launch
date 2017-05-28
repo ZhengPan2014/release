@@ -24,7 +24,7 @@
             y: 0.075
         </rosparam>
     </node>
- 
+
     <node name="tf_base_laser_left" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
         <rosparam>
             child_frame_id: base_laser_left
@@ -52,12 +52,16 @@
     <include file="$(find bringup)/launch/rosbridge_drive_aqmd2s.launch">
         <arg name="drive_port_left" value="/dev/usb_left1"/>
         <arg name="drive_port_right" value="/dev/usb_left2"/>
-        <arg name="wheel_seperation" value="0.530"/>
-        <arg name="wheel_ratio" value="23333.3"/>
+        <arg name="wheel_seperation" value="0.49"/>
+        <arg name="wheel_ratio" value="19250.0"/>
     </include>
 
     <include file="$(find bringup)/launch/rosbridge_imu_jy901.launch">
         <arg name="imu_port" value="/dev/usb_left3"/>
+    </include>
+
+    <include file="$(find bringup)/launch/rosbridge_plc_lift.launch">
+        <arg name="plc_port" value="/dev/usb_left4"/>
     </include>
 
     <node name="teleop_keyboard" pkg="teleop_keyboard" type="teleop_keyboard" output="screen"/>
@@ -65,9 +69,8 @@
 
     <node name="sick_tim571" pkg="sick_tim" type="sick_tim551_2050001" respawn="false" output="screen">
         <rosparam>
-            min_ang: -1.6
-            max_ang: 1.6
-            intensity: False
+            min_ang: -1.75 #-1.42 #-1.75
+            max_ang: 1.75 #1.42 #1.75
             frame_id: base_laser
             range_max: 25.0
             hostname: 192.168.0.10
@@ -94,6 +97,16 @@
                     params:
                       number_of_observations: 5
                       unused: 10
+            - type: laser_filters/LaserScanBoxFilter
+              name: box_filter
+              params:
+                box_frame: base_link
+                max_x: 0.41
+                max_y: 0.45
+                max_z: 1.00
+                min_x: 0.20
+                min_y: -0.45
+                min_z: -5.0
         </rosparam>
     </node>
 
@@ -101,11 +114,11 @@
         <remap from="scan_input" to="scan_filtered"/>
         <remap from="scan_output" to="scan_rectified"/>
         <rosparam>
-            max_range: 20.0
+            max_range: 25.0
         </rosparam>
     </node>
 
-    <node name="rplidar_left" pkg="rplidar_ros" type="rplidarNode" output="screen">
+   <!--  <node name="rplidar_left" pkg="rplidar_ros" type="rplidarNode" output="screen">
         <remap from="scan" to="scan_left"/>
         <rosparam>
             serial_port: /dev/usb_top
@@ -125,7 +138,7 @@
             inverted: false
             angle_compensate: true
         </rosparam>
-    </node>
+    </node> -->
 
     <node name="robot_pose_ekf" pkg="robot_pose_ekf" type="robot_pose_ekf">
         <rosparam>

@@ -54,6 +54,7 @@
      *存储操作记录
      */
     StoreRecord: function (username, operation) {
+        return;
         var url = "http://" + window.location.hostname + ":8808/store_record";
         $.ajax({
             type: 'post',
@@ -152,7 +153,15 @@ $(function () {
     $("#login").click(function () {
         var username = $(DbEvent.ID.login_name)[0].value;
         var password = $(DbEvent.ID.login_password)[0].value;
-        var url = "http://" + window.location.hostname + ":8808/login";
+        if (!window.location.hostname)
+        {
+            var url = 'http://localhost:8808/api/login';
+        }
+        else
+        {
+            var url = "http://" + window.location.hostname + ":8808/api/login";
+        }
+        console.log(`POST ${url}`)
         $.ajax({
             type: 'post',
             url: url,
@@ -160,7 +169,7 @@ $(function () {
             async: true,
             success: function (data) {
                 console.log(data);
-                if (data.status == DbEvent.State.LoginSuccess) {
+                if (data.code == 'auth:login_success') {
                     TL.LoginName = username;
                     TL.LoginPassword = password;
                     TL.Auth = data.auth;
@@ -168,13 +177,13 @@ $(function () {
                     $.mobile.changePage("#hrg-navigation-main-page", { transition: "slide" });
                     DbEvent.StoreRecord(username, JSON.stringify({ action: "login" }));
                 }
-                else if (data.status == DbEvent.State.LoginFail_NotExist) {
+                else if (data.code == 'auth:user_not_found') {
                     sweetAlert("用户名不存在", "", "error");
                 }
-                else if (data.status == DbEvent.State.LoginFail_LoginedIn) {
+                else if (data.code == '') {
                     sweetAlert("该用户已在其他设备登录", "", "warning");
                 }
-                else if (data.status == DbEvent.State.LoginFail_WrongPwd) {
+                else if (data.code == 'auth:wrong_password') {
                     sweetAlert("密码错误", "", "error");
                 }
             },
@@ -185,11 +194,20 @@ $(function () {
      *登出 注销
      */
     $("#logout").click(function () {
+        return;
         var username = TL.LoginName;
         var url = "http://" + window.location.hostname + ":8808/logout";
+        if (!window.location.hostname)
+        {
+            var url = 'http://localhost:8808/api/logout';
+        }
+        else
+        {
+            var url = "http://" + window.location.hostname + ":8808/api/logout";
+        }
         $.ajax({
             type: 'post',
-            url: url,
+            url: url || 'http://localhost:8808/api/login',
             data: { username: username },
             async: true,
             success: function (data) {
@@ -243,12 +261,6 @@ $(function () {
             sweetAlert("授权码不能为空", "", "warning");
             return;
         }
-        else if (authcode != "hitrobot") {
-            if (authcode.length != 32) {
-                sweetAlert("授权码不合法", "", "warning");
-                return;
-            }
-        }
 
         if (!DbEvent.isPasswd(userpassword)) {
             sweetAlert("密码不合法", "", "warning");
@@ -258,20 +270,27 @@ $(function () {
             sweetAlert("密码不一致", "", "error");
             return;
         }
-        var url = "http://" + window.location.hostname + ":8808/register";
+        if (!window.location.hostname)
+        {
+            var url = 'http://localhost:8808/api/register';
+        }
+        else
+        {
+            var url = "http://" + window.location.hostname + ":8808/api/register";
+        }
         $.ajax({
             type: 'post',
             url: url,
-            data: { username: username, password: userpassword, authCode: authcode },
+            data: { username: username, password: userpassword, authcode: authcode },
             async: true,
             success: function (data) {
-                if (data.status == DbEvent.State.RegisterSuccess) {
+                if (data.code.startsWith('auth:register_success')) {
                     $.mobile.changePage("#hrg-login-page", { transition: "slide" });
                 }
-                else if (data.status == DbEvent.State.RegisterFail) {
+                else if (data.code == 'auth:bad_auth_code') {
                     sweetAlert("注册失败", "", "error");
                 }
-                else if (data.status == DbEvent.State.RegisterFail_Exist) {
+                else if (data.code == 'auth:username_exists') {
                     sweetAlert("注册失败 用户名已存在", "", "error");
                 }
             },
@@ -296,7 +315,14 @@ $(function () {
         }
         var username = TL.LoginName;
         var userpassword = $(DbEvent.ID.new_password)[0].value;
-        var url = "http://" + window.location.hostname + ":8808/update";
+        if (!window.location.hostname)
+        {
+            var url = 'http://localhost:8808/api/update_password';
+        }
+        else
+        {
+            var url = "http://" + window.location.hostname + ":8808/api/update_password";
+        }
         $.ajax({
             type: 'post',
             url: url,
@@ -304,12 +330,12 @@ $(function () {
             async: true,
             success: function (data) {
                 console.log(data);
-                if (data.status == DbEvent.State.UpdataSuccess) {
+                if (data.code == 'auth:update_password_success') {
                     TL.LoginPassword = userpassword;
                     sweetAlert("修改成功", "", "success");
                     $("#hrg-change-password-popup").popup("close");
                 }
-                else if (data.status == DbEvent.State.UpdataFail) {
+                else if (data.code == 'auth:update_password_failure') {
                     sweetAlert("修改失败", "", "error");
                 }
             },
@@ -320,6 +346,7 @@ $(function () {
      *生成授权码
      */
     $("#btn-get-auth-code").click(function () {
+        return;
         $(this).buttonMarkup({ icon: "hrg-load" });
         var username = TL.LoginName;
         var auth = $("#auth-code-select").val();
@@ -348,6 +375,7 @@ $(function () {
      *获取用户列表
      */
     $('#hty-history-search-page').live('pageshow', function (event, ui) {
+        return;
         if (ui.prevPage[0].id == "hty-user-manger-page") {
             var url = "http://" + window.location.hostname + ":8808/get_users";
             var htmlcontents = "<option value='-1'>ALL</option>";
@@ -370,6 +398,7 @@ $(function () {
     });
 
     $('#hty-history-search-page').live('pagehide', function (event, ui) {
+        return;
         if (ui.toPage[0].id == "hrg-user-manger-page") {
             $("#hty-users-list")[0].innerHTML = "";
         }
@@ -378,6 +407,7 @@ $(function () {
      *历史记录查询
      */
     $("#btn-history-search").click(function () {
+        return;
         var start = $("#dtl")[0].value;
         var end = $("#dt2")[0].value;
         var username = $("#hty-users-list").find("option:selected").text();

@@ -3,15 +3,15 @@
     <node name="slam_gmapping" pkg="gmapping" type="slam_gmapping" output="screen">
         <remap from="scan" to="scan_rectified"/>
         <rosparam>
-            maxUrange: 19.9
+            maxUrange: 24.9
             minimumScore: 300
-            xmin: -20.0
-            ymin: -20.0
-            xmax: 20.0
-            ymax: 20.0
+            xmin: -25.0
+            ymin: -25.0
+            xmax: 25.0
+            ymax: 25.0
             delta: 0.05
             transform_publish_period: 0.05
-            maxRange: 20.0
+            maxRange: 25.0
         </rosparam>
     </node>
 

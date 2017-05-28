@@ -1235,7 +1235,8 @@ ROS2D.ZoomView.prototype.zoom = function (zoom) {
     this.stage.y = this.startShift.y - (this.center.y - this.startShift.y) * (this.stage.scaleY / this.startScale.y - 1);
     this.stage.update();
     
-    console.log('scaleX: ' + this.stage.scaleX + '; scaleY: ' + this.stage.scaleY);
-    console.log('before X: ' + this.startShift.x + '; Y: ' + this.startShift.y);
-    console.log('after X: ' + this.startShift.x + '; Y: ' + this.startShift.y);
+    // console.log('scaleX: ' + this.stage.scaleX + '; scaleY: ' + this.stage.scaleY);
+    // console.log('before X: ' + this.startShift.x + '; Y: ' + this.startShift.y);
+    // console.log('after X: ' + this.stage.x + '; Y: ' + this.stage.y);
+    // console.log(this.center.x, this.center.y);
 };

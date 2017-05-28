@@ -1,0 +1,202 @@
+<?xml version="1.0"?>
+<launch>
+    <include file="$(find bringup)/launch/bringup-base.launch"/>
+
+    <node name="tf_base_footprint" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+        <rosparam>
+            frame_id: base_footprint
+            z: 0.05
+        </rosparam>
+    </node>
+
+    <node name="tf_base_laser" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+        <rosparam>
+            child_frame_id: base_laser
+            x: 0.25
+            z: 0.225
+        </rosparam>
+    </node>
+
+    <node name="tf_base_imu" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+        <rosparam>
+            child_frame_id: base_imu
+            x: -0.12
+            y: 0.08
+        </rosparam>
+    </node>
+
+
+   <!-- <node name="tf_base_camera" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+        <rosparam>
+            child_frame_id: camera_link
+            x: 0.27
+            z: 0.10            
+        </rosparam>
+    </node>
+
+    <node name="tf_base_sonar1" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+        <rosparam>
+            child_frame_id: base_sonar1
+            x: 0.261
+            y: -0.189
+            z: 0.30
+            yaw: -0.637
+        </rosparam>
+    </node>
+
+    <node name="tf_base_sonar2" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+        <rosparam>
+            child_frame_id: base_sonar2
+            x: 0.28
+            y: 0.0
+            z: 0.30
+            yaw: 0.0
+        </rosparam>
+    </node>
+
+    <node name="tf_base_sonar3" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+        <rosparam>
+            child_frame_id: base_sonar3
+            x: 0.261
+            y: 0.189
+            z: 0.30
+            yaw: 0.637
+        </rosparam>
+    </node>
+
+    <node name="tf_base_sonar4" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+        <rosparam>
+            child_frame_id: base_sonar4
+            x: -0.2225
+            y: 0.2218
+            z: 0.30
+            yaw: 2.08
+        </rosparam>
+    </node>
+
+    <node name="tf_base_sonar5" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+        <rosparam>
+            child_frame_id: base_sonar5
+            x: -0.28
+            y: 0
+            z: 0.30
+            yaw: -3.14
+        </rosparam>
+    </node>
+
+    <node name="tf_base_sonar6" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+        <rosparam>
+            child_frame_id: base_sonar6
+            x: -0.2225
+            y: -0.2218
+            z: 0.30
+            yaw: -2.08
+        </rosparam>
+    </node>-->
+
+    <node name="robot_pose_publisher" pkg="robot_pose_publisher" type="robot_pose_publisher" output="screen"/>
+
+    <include file="$(find bringup)/launch/rosbridge_drive_aqmd2s.launch">
+        <arg name="drive_port_left" value="/dev/usb_left41"/>
+        <arg name="drive_port_right" value="/dev/usb_left42"/>
+        <arg name="wheel_seperation" value="0.426"/>
+        <arg name="wheel_ratio" value="14220.5559"/>
+    </include>
+
+    <include file="$(find bringup)/launch/rosbridge_imu_jy901.launch">
+        <arg name="imu_port" value="/dev/usb_left23"/>
+    </include>
+    
+    <!--<include file="$(find bringup)/launch/rosbridge_sonar_hrg.launch"/>-->       
+    <!-- <include file="$(find bringup)/launch/sonar_to_scan.launch"/>-->
+
+    <node name="sick_tim" pkg="sick_tim" type="sick_tim551_2050001" output="screen">
+        <rosparam>
+#            min_ang: -2.1
+#            max_ang: 2.1
+            intensity: False
+            frame_id: base_laser
+            range_max: 10.0
+            hostname: 192.168.0.10
+        </rosparam>
+    </node>
+
+  
+    <node name="scan_filter" pkg="laser_filters" type="scan_to_scan_filter_chain" output="screen">
+        <remap from="scan" to="scan"/>
+        <remap from="scan_filtered" to="scan_filtered"/>
+        <rosparam>
+            scan_filter_chain:
+            - type: laser_filters/LaserArrayFilter
+              name: laser_median_filter
+              params: 
+                range_filter_chain:
+                  - name: median_5
+                    type: filters/MultiChannelMedianFilterFloat 
+                    params:
+                      number_of_observations: 5
+                      unused: 10
+                intensity_filter_chain:
+                  - name: median_5
+                    type: filters/MultiChannelMedianFilterFloat 
+                    params:
+                      number_of_observations: 5
+                      unused: 10
+        </rosparam>
+    </node>
+
+    <node name="scan_rectifier" pkg="scan_rectifier" type="scan_rectifier" output="screen">
+        <remap from="scan_input" to="scan_filtered"/>
+        <remap from="scan_output" to="scan_rectified"/>
+        <rosparam>
+            max_range: 20.0
+        </rosparam>
+    </node>
+
+    <node name="robot_pose_ekf" pkg="robot_pose_ekf" type="robot_pose_ekf">
+        <rosparam>
+            output_frame: odom
+            base_footprint_frame: base_footprint
+            freq: 30.0
+            sensor_timeout: 1.0
+            odom_used: true
+            imu_used: false
+            vo_used: false
+        </rosparam>
+    </node>
+
+    <param name="camera/driver/data_skip" value="5"/>
+    <!--<include file="$(find openni2_launch)/launch/openni2.launch"/>
+    <include file="$(find bringup)/launch/pointcloud_floor_filter.launch"/>
+    <include file="$(find ultrasonic_speed_filter)/launch/ultrasonic_speed_filter.launch"/>-->
+    <!--  <include file="$(find yocs_cmd_vel_mux)/launch/standalone.launch"/> -->
+    
+
+    <node name="diagnostic_aggregator" pkg="diagnostic_aggregator" type="aggregator_node" args="CPP" output="screen">
+        <rosparam>
+analyzers:
+  device:
+    type: diagnostic_aggregator/AnalyzerGroup
+    path: device
+    analyzers:
+      odom_left:
+        type: diagnostic_aggregator/GenericAnalyzer
+        path: odom_l
+        timeout: 5.0
+        find_and_remove_prefix: left
+        num_items: 2
+      odom_right:
+        type: diagnostic_aggregator/GenericAnalyzer
+        path: odom_r
+        timeout: 5.0
+        find_and_remove_prefix: right
+        num_items: 2
+      joystick:
+        type: diagnostic_aggregator/GenericAnalyzer
+        path: 'joystick'
+        timeout: 5.0
+        startswith: ['Battery', 'Charging State', 'Connection', 'ps3_joy']
+        remove_prefix: 'ps3_joy'
+        </rosparam>
+    </node>
+</launch>

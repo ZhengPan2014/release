@@ -190,6 +190,14 @@ namespace base_local_planner{
 
       unsigned int size_x_, size_y_; ///< @brief The dimensions of the grid
 
+/* ouiyeah @ 2017-04-21
+Add bool param to reuse updatePathCell with or without map_grid_costs.
+//*/
+#ifdef IGNORE_OUIYEAH
+#else
+      bool cost_mask_;
+#endif
+
     private:
 
       std::vector<MapCell> map_; ///< @brief Storage for the MapCells

@@ -12,9 +12,9 @@
     <node name="tf_base_laser" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
         <rosparam>
             child_frame_id: base_laser
-            x: 1.36
+            x: 1.33 #1.36
             z: 1.485
-            yaw: 3.14
+            yaw: 3.14159
         </rosparam>
     </node>
 
@@ -61,11 +61,11 @@
     <node name="robot_pose_publisher" pkg="robot_pose_publisher" type="robot_pose_publisher" output="screen"/>
 
     <include file="$(find bringup)/launch/rosbridge_plc_forklift.launch">
-        <arg name="plc_port" value="/dev/usb_left11"/>
+        <arg name="plc_port" value="/dev/usb_right"/>
     </include>
 
     <include file="$(find bringup)/launch/rosbridge_imu_jy901.launch">
-        <arg name="imu_port" value="/dev/usb_left12"/>
+        <arg name="imu_port" value="/dev/usb_left"/>
     </include>
 
     <node name="lms1xx" pkg="lms1xx" type="LMS1xx_node">
@@ -151,6 +151,16 @@
                     params:
                       number_of_observations: 5
                       unused: 10
+            - type: laser_filters/LaserScanBoxFilter
+              name: box_filter
+              params:
+                box_frame: base_link
+                max_x: 1.26
+                max_y: 0.75
+                max_z: 1.40
+                min_x: -2.00
+                min_y: -0.75
+                min_z: -0.05
         </rosparam>
     </node>
 
@@ -174,6 +184,16 @@
                     params:
                       number_of_observations: 5
                       unused: 10
+            - type: laser_filters/LaserScanBoxFilter
+              name: box_filter
+              params:
+                box_frame: base_link
+                max_x: 1.26
+                max_y: 0.75
+                max_z: 1.40
+                min_x: -2.00
+                min_y: -0.75
+                min_z: -0.05
         </rosparam>
     </node>
 

@@ -1,7 +1,9 @@
 <?xml version="1.0"?>
 <launch>
     <node name="hector_mapping" pkg="hector_mapping" type="hector_mapping" output="screen">
+        <!-- remap from="initialpose" to="initialpose2"/ -->
         <rosparam>
+            <!-- use_initial_map: false -->
             base_frame: base_footprint
             map_frame: map
             odom_frame: base_footprint #odom

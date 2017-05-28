@@ -1,0 +1,5 @@
+<launch>
+  <node pkg="task_manager" name="task_provider" type="task_provider.py" output="screen">
+    <param name="filename" value="$(find bringup)/param/tasks.yaml"/>
+  </node>
+</launch>

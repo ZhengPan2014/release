@@ -24,7 +24,7 @@
             y: 0.075
         </rosparam>
     </node>
- 
+
     <node name="tf_base_laser_left" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
         <rosparam>
             child_frame_id: base_laser_left
@@ -116,6 +116,37 @@
         </rosparam>
     </node>
 
+    <node name="scan_filter_left" pkg="laser_filters" type="scan_to_scan_filter_chain" output="screen">
+        <remap from="scan" to="scan_left"/>
+        <remap from="scan_filtered" to="scan_filtered_left"/>
+        <rosparam>
+            scan_filter_chain:
+            - type: laser_filters/LaserArrayFilter
+              name: laser_median_filter
+              params: 
+                range_filter_chain:
+                  - name: median_5
+                    type: filters/MultiChannelMedianFilterFloat 
+                    params:
+                      number_of_observations: 5
+                      unused: 10
+                intensity_filter_chain:
+                  - name: median_5
+                    type: filters/MultiChannelMedianFilterFloat 
+                    params:
+                      number_of_observations: 5
+                      unused: 10
+        </rosparam>
+    </node>
+
+    <node name="scan_rectifier_left" pkg="scan_rectifier" type="scan_rectifier" output="screen">
+        <remap from="scan_input" to="scan_filtered_left"/>
+        <remap from="scan_output" to="scan_rectified_left"/>
+        <rosparam>
+            max_range: 6.0
+        </rosparam>
+    </node>
+
     <node name="rplidar_right" pkg="rplidar_ros" type="rplidarNode" output="screen">
         <remap from="scan" to="scan_right"/>
         <rosparam>
@@ -124,6 +155,37 @@
             frame_id: base_laser_right
             inverted: false
             angle_compensate: true
+        </rosparam>
+    </node>
+
+    <node name="scan_filter_right" pkg="laser_filters" type="scan_to_scan_filter_chain" output="screen">
+        <remap from="scan" to="scan_right"/>
+        <remap from="scan_filtered" to="scan_filtered_right"/>
+        <rosparam>
+            scan_filter_chain:
+            - type: laser_filters/LaserArrayFilter
+              name: laser_median_filter
+              params: 
+                range_filter_chain:
+                  - name: median_5
+                    type: filters/MultiChannelMedianFilterFloat 
+                    params:
+                      number_of_observations: 5
+                      unused: 10
+                intensity_filter_chain:
+                  - name: median_5
+                    type: filters/MultiChannelMedianFilterFloat 
+                    params:
+                      number_of_observations: 5
+                      unused: 10
+        </rosparam>
+    </node>
+
+    <node name="scan_rectifier_right" pkg="scan_rectifier" type="scan_rectifier" output="screen">
+        <remap from="scan_input" to="scan_filtered_right"/>
+        <remap from="scan_output" to="scan_rectified_right"/>
+        <rosparam>
+            max_range: 6.0
         </rosparam>
     </node>
 

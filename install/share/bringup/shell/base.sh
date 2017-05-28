@@ -32,3 +32,5 @@ else
     unset ROS_USER_MODEL;
 fi;
 cd ~;
+
+export ROS_USER_GROUP=`hostname`;

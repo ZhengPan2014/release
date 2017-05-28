@@ -75,6 +75,14 @@
         global_plannerTopic: { name: '/move_base/NavfnROS/plan', messageType: 'nav_msgs/Path' },
         waypointUserPub: { name: '/waypoint_user_pub', messageType: 'std_msgs/String'},
         waypoint_user_subTopic: { name: '/waypoint_user_sub', messageType: 'std_msgs/String'},
+
+        taskAdd: {name: '/task_add', messageType: 'task_manager/Task'},
+        taskRemove: {name: '/task_remove', messageType: 'task_manager/Task'},
+        taskRemoveAll: {name: '/task_remove_all', messageType: 'std_msgs/String'},
+        tasksQueue: {name: '/tasks_queue', messageType: 'task_manager/TaskList'},
+        dumpedTasks: {name: '/dumped_tasks', messageType: 'task_manager/TaskList'},
+        taskCtrl: {name: '/task_ctrl', messageType: 'task_manager/TaskControl'},
+        taskCtrlStatus: {name: '/task_ctrl_status', messageType: 'task_manager/TaskControlStatus'}
     },
 
     /*
@@ -237,6 +245,7 @@
      */
     Init: function (option) {
         var url = option.url || "ws://" + window.location.hostname + ":9090";
+        console.log(url)
         this.Ros = new ROSLIB.Ros();
         this.Ros.connect(url);
         this.Ros.on('connection', option.onopen || function () {

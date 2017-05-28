@@ -4,58 +4,59 @@ var Sequelize = require('sequelize');
 var fs = require('fs');
 var os = require('os');
 
-var hostname = os.hostname();
-var model = hostname.split('-')[1];
-
 var sequelize = null;
 var User = null;
 var AuthCode = null;
 var OpRecord = null;
 
-fs.exists('../../src', function(result){
-	if (result)
-	{
-		var configPath = '../../src/bringup/auth/' + model + '/hitrobot.cfg';
-	}
-	else
-	{
-		var configPath = '../../install/share/bringup/auth/' + model + '/hitrobot.cfg';
-	}
-	fs.readFile(configPath, function(err, data){
-		if (err)
+function init(){
+	var hostname = os.hostname();
+	var model = hostname.split('-')[1];
+	fs.exists('../../src', function(result){
+		if (result)
 		{
-			// TODO
-			console.log("'hitrobot.cfg' not found.\nNodeJs started without connection to MySQL.");
+			var configPath = '../../src/bringup/auth/' + model + '/hitrobot.cfg';
 		}
 		else
 		{
-			var config = JSON.parse(data);
-			connect(config.mysql);
-			// test the connection
-			sequelize.authenticate()
-  				.then(function(err) {
-    				console.log('Connection has been established.');
-    				defineUser();
-					defineAuthCode();
-					defineOpRecord();
-  				})
-  				.catch(function (err) {
-  					//console.log("\x1b[31m", "MySQL connecction error.", "\x1b[0m");
-  					try{
-  						createDatabase(config.mysql);
-  						defineUser();
+			var configPath = '../../install/share/bringup/auth/' + model + '/hitrobot.cfg';
+		}
+		fs.readFile(configPath, function(err, data){
+			if (err)
+			{
+				// TODO
+				console.log("'hitrobot.cfg' not found.\nNodeJs started without connection to MySQL.");
+			}
+			else
+			{
+				var config = JSON.parse(data);
+				connect(config.mysql);
+				// test the connection
+				sequelize.authenticate()
+	  				.then(function(err) {
+	    				console.log('Connection has been established.');
+	    				defineUser();
 						defineAuthCode();
-						defineOpRecord();	
-  					}
-  					catch(e){
-  						var errMsg = "Cannot find module 'child_process'";
-  						errMsg += "\nTry 'npm install child_process' or create database manually.";
-  						console.log("\x1b[31m", errMsg, "\x1b[0m");
-  					}
-  				});
-		}// else
-	}); // fs.readFile
-});
+						defineOpRecord();
+	  				})
+	  				.catch(function (err) {
+	  					//console.log("\x1b[31m", "MySQL connecction error.", "\x1b[0m");
+	  					try{
+	  						createDatabase(config.mysql);
+	  						defineUser();
+							defineAuthCode();
+							defineOpRecord();	
+	  					}
+	  					catch(e){
+	  						var errMsg = "Cannot find module 'child_process'";
+	  						errMsg += "\nTry 'npm install child_process' or create database manually.";
+	  						console.log("\x1b[31m", errMsg, "\x1b[0m");
+	  					}
+	  				});
+			}// else
+		}); // fs.readFile
+	});
+}
 
 function createDatabase(config)
 {
@@ -212,5 +213,6 @@ function delAuthCode(days)
 module.exports = {
     User: User,
     AuthCode: AuthCode,
-    OpRecord: OpRecord
+    OpRecord: OpRecord,
+    init: init
 };

@@ -29,6 +29,8 @@ var crypto = require('crypto');
 // logger.setLevel('INFO');
 // app.use(log4js.connectLogger(logger, {level:'auto'}));
 
+db.init();
+
 var status = {
     LoginSuccess: 0,
     LoginFail_NotExist: -1,

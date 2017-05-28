@@ -1,0 +1,8 @@
+prefix=/home/ouiyeah/catkin_ws/install
+
+Name: straf_recovery
+Description: Description of straf_recovery
+Version: 0.0.0
+Cflags: -I/home/ouiyeah/catkin_ws/install/include
+Libs: -L/home/ouiyeah/catkin_ws/install/lib -lstraf_recovery
+Requires: angles base_local_planner dynamic_reconfigure geometry_msgs nav_core std_msgs roscpp

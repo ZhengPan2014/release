@@ -27,6 +27,13 @@
         BaseEvent.mapEditTopic = NavEvent.Topic(NavEvent.TopicEnum.map_editTopic);
         // var voltageTopic =  NavEvent.Topic(NavEvent.TopicEnum.waypointUserPub);
         // voltageTopic.publish(NavEvent.Msg("read_voltage"));
+
+        // dumped tasks
+        NavEvent.Subscribe(NavEvent.TopicEnum.dumpedTasks, Task.dumpedTasksCb);
+        // tasks queue
+        NavEvent.Subscribe(NavEvent.TopicEnum.tasksQueue, Task.tasksQueueCb);
+        // task ctrl status
+        NavEvent.Subscribe(NavEvent.TopicEnum.taskCtrlStatus, Task.taskCtrlStatusCb);
     },
 
     waypoint_user_subTopicCB: function(data){
@@ -144,6 +151,7 @@
                             $("#system-diagnostics").hide();
                             $("#general").hide();
                             $("#system-log").hide();
+                            $("#task-manager").hide();
                         }
                         else {
                             $.mobile.changePage("#hrg-navigation-main-page", { transition: "slide" });
@@ -334,7 +342,7 @@
 
 $(function () {
     NavEvent.Init({
-        // url: "ws://192.168.0.205:9090",
+        // url: "ws://localhost:9090",
         onopen: function () {
             BaseEvent.Init();
             $(".networkstatus").buttonMarkup({ icon: "hrg-networksuccess" });
@@ -623,7 +631,7 @@ $(function () {
                         console.log(event.currentTarget.name);
                     });
                     BaseEvent.WaypointMark.push(point);
-                    stage.addChild(point);
+                    //stage.addChild(point);
                 }
             }
 
@@ -655,6 +663,7 @@ $(function () {
             $('.btn').button();
             $('#trajectory-list').collapsibleset().trigger("create");
             $('#trajectory-list').collapsibleset("refresh");
+            Task.addTrajsToTaskSelect(data.trajectories);
         });
 
         /*

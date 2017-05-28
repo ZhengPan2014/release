@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
 <launch>
+    <arg name="max_vel_x" default="0.55"/>
+    <arg name="max_vel_theta" default="1.0"/>
     <arg name="footprint" default="[[0.40, -0.33], [0.40, 0.33], [-0.40, 0.33], [-0.40, -0.33]]"/>
     <arg name="range_enabled" default="false"/>
     <arg name="range_topics" default="['/sonar_12oc', '/sonar_11oc', '/sonar_10oc', '/sonar_9oc', '/sonar_8oc', '/sonar_7oc', '/sonar_6oc', '/sonar_5oc', '/sonar_4oc', '/sonar_3oc', '/sonar_2oc', '/sonar_1oc']"/>
@@ -27,17 +29,22 @@
                 type: 'clear_costmap_recovery/ClearCostmapRecovery'
               - name: 'aggressive_reset'
                 type: 'clear_costmap_recovery/ClearCostmapRecovery'
+#              - name: 'straf_reset'
+#                type: 'straf_recovery/StrafRecovery'
             conservative_reset:
                 reset_distance: 3.0
                 layer_names: [obstacle_layer]
             aggressive_reset:
                 reset_distance: 0.0
                 layer_names: [obstacle_layer]
+            straf_reset:
+                timeout: 10
             controller_frequency: 10.0
             planner_patience: 5.0
             controller_patience: 15.0
             oscillation_timeout: 5.0
             planner_frequency: 0.0
+            max_planning_retries: 0
             global_costmap:
                 global_frame: map
                 robot_base_frame: base_footprint
@@ -48,8 +55,8 @@
                 plugins:
                   - name: static_layer
                     type: "costmap_2d::StaticLayer"
-                  - name: obstacle_layer
-                    type: "costmap_2d::ObstacleLayer"
+#                  - name: obstacle_layer
+#                    type: "costmap_2d::ObstacleLayer"
                   - name: inflation_layer
                     type: "costmap_2d::InflationLayer"
                 static_layer:
@@ -138,11 +145,8 @@
                 acc_lim_x: 0.5
                 acc_lim_y: 0.0
                 acc_lim_theta: 3.2
-                max_vel_x: 0.5
                 min_vel_x: 0.1
-                max_vel_theta: 1.0
-                min_vel_theta: -1.0
-                min_in_place_vel_theta: 0.1
+                min_in_place_vel_theta: 0.2
                 escape_vel: -0.1
                 holonomic_robot: false
                 yaw_goal_tolerance: 0.025
@@ -157,24 +161,19 @@
                 acc_lim_x: 0.5
                 acc_lim_y: 0.0
                 acc_lim_th: 3.2
-                max_trans_vel: 0.55
                 min_trans_vel: 0.1
-                max_vel_x: 0.55
                 min_vel_x: 0.0
                 max_vel_y: 0.0
                 min_vel_y: 0.0
-                max_rot_vel: 1.0
-                min_rot_vel: 0.1
-                yaw_goal_tolerance: 0.025
+                min_rot_vel: 0.2
+                yaw_goal_tolerance: 0.05 #0.025
                 xy_goal_tolerance: 0.05
                 latch_xy_goal_tolerance: true
-                occdist_scale: 0.5 #0.5
+                occdist_scale: 0.0 #0.5
             TebLocalPlannerROS:
                 acc_lim_x: 0.5
                 acc_lim_theta: 3.2
-                max_vel_x: 0.5 #0.4
                 max_vel_x_backwards: 0.3 #0.2
-                max_vel_theta: 0.3 #0.3
                 min_turning_radius: 0.001
                 wheelbase: 1.555
                 footprint_model:
@@ -186,6 +185,15 @@
                 odom_topic: /odometry/filtered
                 map_frame: /map
         </rosparam>
+        
+        <param name="TrajectoryPlannerROS/max_vel_x" value="$(arg max_vel_x)"/>
+        <param name="DWAPlannerROS/max_trans_vel" value="$(arg max_vel_x)"/>
+        <param name="DWAPlannerROS/max_vel_x" value="$(arg max_vel_x)"/>
+        <param name="TebLocalPlannerROS/max_vel_x" value="$(arg max_vel_x)"/>
+        <param name="TrajectoryPlannerROS/max_vel_theta" value="$(arg max_vel_theta)"/>
+        <param name="TrajectoryPlannerROS/min_vel_theta" value="-$(arg max_vel_theta)"/>
+        <param name="DWAPlannerROS/max_rot_vel" value="$(arg max_vel_theta)"/>
+        <param name="TebLocalPlannerROS/max_vel_theta" value="$(arg max_vel_theta)"/>
         <param name="global_costmap/footprint" value="$(arg footprint)"/>
         <param name="local_costmap/footprint" value="$(arg footprint)"/>
         <param name="TebLocalPlannerROS/footprint_model/vertices" value="$(arg footprint)"/>
@@ -197,8 +205,8 @@
                 plugins:
                   - name: static_layer
                     type: "costmap_2d::StaticLayer"
-                  - name: obstacle_layer
-                    type: "costmap_2d::ObstacleLayer"
+#                  - name: obstacle_layer
+#                    type: "costmap_2d::ObstacleLayer"
                   - name: range_sensor_layer
                     type: "range_sensor_layer::RangeSensorLayer"
                   - name: inflation_layer
