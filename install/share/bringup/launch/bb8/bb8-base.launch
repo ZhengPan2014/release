@@ -53,7 +53,7 @@
     <include file="$(find bringup)/launch/rosbridge_drive_aqmd2s.launch">
         <arg name="drive_port_left" value="/dev/usb_left1"/>
         <arg name="drive_port_right" value="/dev/usb_left2"/>
-        <arg name="wheel_seperation" value="0.41"/>
+        <arg name="wheel_seperation" value="0.40"/>
         <arg name="wheel_ratio" value="22266.0"/>
     </include>
 
