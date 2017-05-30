@@ -51,11 +51,11 @@
     </node>
 
     <node name="scan_marker" pkg="scan_marker" type="scan_marker" output="screen">
-        <remap from="scan" to="scan_filtered"/>
+        <remap from="scan" to="scan_rectified"/>
         <remap from="pose" to="/move_base_simple/goal"/>
         <rosparam>
             marker_obs: 2
-            marker_interval: 0.86 #0.36
+            marker_interval: 0.84 #0.36
             marker_threshold: 240.0
 <!--             marker_obj: pallet
             marker_est_range: 0.5
