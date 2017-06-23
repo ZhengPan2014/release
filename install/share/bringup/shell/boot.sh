@@ -16,21 +16,19 @@ done
 if [[ $SCREEN_SAVER ]]; then
     echo -e "\033[33m[WARN] [SCREEN_SAVER] $SCREEN_SAVER \033[0m";
 else
-	# sleep 7s;
-	# gnome-screensaver-command -a;
-	# TIMESTAMP_BOOT=`date +%s`;
+    TIMESTAMP_BOOT=`date +%s`;
 	while [[ ! $SCREEN_SAVER ]]; do
-	    gnome-screensaver-command -a;
+        SCREEN_SAVER=`gnome-screensaver-command -q | awk -F ' ' '{print $4}'`;
+        if [ "$SCREEN_SAVER" == "active" ]; then
+            TIMESTAMP_NOW=`date +%s`;
+            if [ $(($TIMESTAMP_NOW-$TIMESTAMP_BOOT)) -lt 7 ]; then
+                SCREEN_SAVER="";
+            fi
+        else
+            SCREEN_SAVER="";
+            gnome-screensaver-command -a;
+        fi
         sleep 1;
-		# TIMESTAMP_NOW=`date +%s`;
-		# if [ $(($TIMESTAMP_NOW-$TIMESTAMP_BOOT)) -gt 7 ]; then
-		    SCREEN_SAVER=`gnome-screensaver-command -q | awk -F ' ' '{print $4}'`;
-		    if [ $SCREEN_SAVER == "active" ]; then
-		    	SCREEN_SAVER="locked";
-		    else
-		    	SCREEN_SAVER="";
-		    fi
-		# fi
 	done
 	SCREEN_SAVER="";
 fi
