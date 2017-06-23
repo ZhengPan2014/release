@@ -1,7 +1,7 @@
 {
     "name": "RosWebServer",
     "version": "1.0.0",
-    "nodeVersion": "node-v7.9.0",
+    "nodeVersion": "node-v7.10.0",
     "description": "nodejs server",
     "main": "app.js",
     "scripts": {
@@ -27,6 +27,7 @@
         "ws": "1.1.1",
         "sequelize": "",
         "mysql": "",
+        "mysql2": "",
 	    "child_process": "",
         
         "argparse": "1.0.7",

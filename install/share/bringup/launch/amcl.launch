@@ -4,6 +4,7 @@
     <arg name="initial_pose_x" default="0.0"/>
     <arg name="initial_pose_y" default="0.0"/>
     <arg name="initial_pose_a" default="0.0"/>
+    <arg name="laser_max_range" default="20.0"/>
     <node pkg="amcl" type="amcl" name="amcl">
         <param name="tf_broadcast" value="true" />
         <param name="base_frame_id" value="/base_link" />
@@ -14,7 +15,6 @@
         <param name="transform_tolerance" value="0.2" />
         <param name="gui_publish_rate" value="-1.0"/>
         <param name="laser_max_beams" value="30"/>
-        <param name="laser_max_range" value="20"/>
         <param name="min_particles" value="100"/>
         <param name="max_particles" value="5000"/>
         <param name="update_min_d" value="0.2"/>
@@ -38,6 +38,7 @@
         <param name="transform_tolerance" value="0.1"/>
         <param name="recovery_alpha_slow" value="0.0"/>
         <param name="recovery_alpha_fast" value="0.0"/>
+        <param name="laser_max_range" value="$(arg laser_max_range)"/>
         <param name="initial_pose_x" value="$(arg initial_pose_x)"/>
         <param name="initial_pose_y" value="$(arg initial_pose_y)"/>
         <param name="initial_pose_a" value="$(arg initial_pose_a)"/>

@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<launch>
+    <node name="base_footprint" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+        <rosparam>
+            frame_id: base_footprint
+            z: 0.07
+        </rosparam>
+    </node>
+
+    <include file="$(find bringup)/launch/map_server.launch"/>
+</launch>

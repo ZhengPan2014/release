@@ -55,8 +55,8 @@
                 plugins:
                   - name: static_layer
                     type: "costmap_2d::StaticLayer"
-#                  - name: obstacle_layer
-#                    type: "costmap_2d::ObstacleLayer"
+                  - name: obstacle_layer
+                    type: "costmap_2d::ObstacleLayer"
                   - name: inflation_layer
                     type: "costmap_2d::InflationLayer"
                 static_layer:
@@ -89,7 +89,6 @@
                     z_voxels: 8
                 inflation_layer:
                     inflation_radius: 0.75
-                    cost_scaling_factor: 1
                 footprint_topic: footprint_setup
             local_costmap:
                 global_frame: odom
@@ -101,7 +100,7 @@
                 rolling_window: true
                 width: 6.0
                 height: 6.0
-                resolution: 0.05
+                resolution: 0.025
                 plugins:
                   - name: obstacle_layer
                     type: "costmap_2d::ObstacleLayer"
@@ -135,7 +134,6 @@
                     z_voxels: 8
                 inflation_layer:
                     inflation_radius: 0.75
-                    cost_scaling_factor: 1
                 footprint_topic: footprint_setup
             GlobalPlanner:
                 allow_unknown: false
@@ -169,7 +167,7 @@
                 yaw_goal_tolerance: 0.05 #0.025
                 xy_goal_tolerance: 0.05
                 latch_xy_goal_tolerance: true
-                occdist_scale: 0.0 #0.5
+                occdist_scale: 0.5 #0.0
             TebLocalPlannerROS:
                 acc_lim_x: 0.5
                 acc_lim_theta: 3.2
@@ -205,8 +203,8 @@
                 plugins:
                   - name: static_layer
                     type: "costmap_2d::StaticLayer"
-#                  - name: obstacle_layer
-#                    type: "costmap_2d::ObstacleLayer"
+                  - name: obstacle_layer
+                    type: "costmap_2d::ObstacleLayer"
                   - name: range_sensor_layer
                     type: "range_sensor_layer::RangeSensorLayer"
                   - name: inflation_layer

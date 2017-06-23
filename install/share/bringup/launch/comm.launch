@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<launch>
+    <node name="rosbridge_websocket" pkg="rosbridge_server" type="rosbridge_websocket" output="screen"/>
+
+    <node name="rosbridge_tcp" pkg="rosbridge_server" type="rosbridge_tcp" output="screen">
+        <rosparam>
+            port: 7070
+        </rosparam>
+    </node>
+
+    <node name="rosapi" pkg="rosapi" type="rosapi_node" output="screen"/>
+</launch>

@@ -116,7 +116,7 @@
         <arg name="imu_port" value="/dev/usb_left11"/>
     </include>
 
-    <include file="$(find bringup)/launch/rosbridge_sonar_us100x8.launch">
+<!--     <include file="$(find bringup)/launch/rosbridge_sonar_us100x8.launch">
         <arg name="sonar_port_11oc" value="/dev/usb_right11"/>
         <arg name="sonar_port_10oc" value="/dev/usb_right12"/>
         <arg name="sonar_port_8oc" value="/dev/usb_right13"/>
@@ -126,7 +126,7 @@
         <arg name="sonar_port_2oc" value="/dev/usb_right22"/>
         <arg name="sonar_port_1oc" value="/dev/usb_right21"/>
     </include> 
-
+ -->
     <node name="urg_node" pkg="urg_node" type="urg_node" output="screen">
         <rosparam>
             ip_address: 192.168.0.10
