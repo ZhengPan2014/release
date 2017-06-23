@@ -52,6 +52,10 @@ shell.exec("ping -c 1 " + ip + ".local", {silent:true}, function(code, stdout, s
     rosnode();
 });
 
+shell.exec('cd ~/catkin_ws/www/ros_webapp; node app.js;', function(code, stdout, stderr) {
+    console.log(`${code}: ${stdout} ${stderr}`);
+}); // TODO: use other strategy to replace this
+
 // comm();
 // console.log('network done');
 

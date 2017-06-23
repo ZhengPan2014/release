@@ -64,15 +64,9 @@ if [[ $NODEJS_ORG_ERROR ]]; then
     fi
     echo -e "[ERROR] [NODEJS_ORG] $NODEJS_ORG_ERROR">>$FILE_LOG;
 else
+    source roslog-update.sh; # TODO: use other strategy to replace this
     node `dirname $0`/www/node/boot.js;
 fi
 
-
-
-
-roscd bringup;
-shell/roslog-update.sh;
-
-gnome-terminal -x bash -c 'shell/nodejs.sh;';
 
 # roslaunch bringup bringup-boot.launch;
