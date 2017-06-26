@@ -42,6 +42,12 @@
         <param name="range_max" value="$(arg range_max)"/>
     </node>
 
+    <node name="scan_laser$(arg name)" pkg="lms1xx" type="LMS1xx_node" output="screen" if="$(arg sick_lms)">
+        <remap from="scan" to="scan$(arg name)"/>
+        <param name="frame_id" value="base_laser$(arg name)"/>
+        <param name="host" value="$(arg ip_address)"/>
+    </node>
+
     <node name="scan_filter$(arg name)" pkg="laser_filters" type="scan_to_scan_filter_chain" output="screen">
         <remap from="scan" to="scan$(arg name)"/>
         <remap from="scan_filtered" to="scan_filtered$(arg name)"/>
