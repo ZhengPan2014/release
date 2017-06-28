@@ -342,7 +342,7 @@
 
 $(function () {
     NavEvent.Init({
-        // url: "ws://localhost:9090",
+        //url: "ws://localhost:9090",
         onopen: function () {
             BaseEvent.Init();
             $(".networkstatus").buttonMarkup({ icon: "hrg-networksuccess" });
@@ -1125,16 +1125,31 @@ function showWaypointMessage(dom) {
 }
 
 function WaypointDelete(dom) {
-    var idname = $(dom).parent().parent().parent()[0].id;
-    var name = idname.substring(3, idname.length)
-    $($(dom).parent().parent().parent()).fadeTo("slow", 0.01, function () {
-        $(this).slideUp("slow", function () {
-            var index = getIndexFromArray(name, NavEvent.WaypointList.waypoints);
-            var topic = NavEvent.Topic(NavEvent.TopicEnum.waypoint_removeTopic);
-            NavEvent.TPublish(topic, NavEvent.WaypointList.waypoints[index]);
-            $(this).remove();
-        });
-    });
+	swal({
+	  title: "确定删除吗？",
+	  text: "您将无法恢复这个文件！",
+	  type: "warning",
+	  showCancelButton: true,
+	  confirmButtonColor: "#373737",
+ 	  cancelButtonText: "否",
+	  confirmButtonText: "是",
+	  
+	  closeOnConfirm: false
+	},
+	function(){
+	  swal("Deleted!", "已删除", "success");
+	 	var idname = $(dom).parent().parent().parent()[0].id;
+	    var name = idname.substring(3, idname.length)
+	    $($(dom).parent().parent().parent()).fadeTo("slow", 0.01, function () {
+	        $(this).slideUp("slow", function () {
+	            var index = getIndexFromArray(name, NavEvent.WaypointList.waypoints);
+	            var topic = NavEvent.Topic(NavEvent.TopicEnum.waypoint_removeTopic);
+	            NavEvent.TPublish(topic, NavEvent.WaypointList.waypoints[index]);
+	            $(this).remove();
+	        });
+	    });
+	});
+    
 }
 function TrajectoryDelete(dom) {
     var idname = $(dom).parent().parent().parent()[0].id;

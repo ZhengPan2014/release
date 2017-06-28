@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang='en'>
+	<meta charset="utf-8"/>
+<html>
+<head>
+	<title>Ros Web App Demo</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+	<link rel="stylesheet" href="./lib/jquery.mobile-1.3.2.min.css">
+	<link rel="stylesheet" href="./style/index.css">
+	
+	
+	<link rel="stylesheet" href="./style/sweet.css">
+	
+	
+	<script src="./lib/jquery-1.8.3.min.js"></script>
+	
+	
+	
+	<script src="./js/sweet.js"></script>
+	
+	
+	<!--<script src="./lib/jquery.mobile-1.3.2.min.js"></script>--> 
+	<script type="text/javascript" src="./lib/easeljs.min.js"></script>
+	<script type="text/javascript" src="./lib/eventemitter2.min.js"></script>
+	<script type="text/javascript" src="./lib/roslib.js"></script>
+	<!-- <script type="text/javascript" src="./navigation.js"></script> -->
+	<script type="text/javascript" src="./js/ui.js"></script>
+	<script type="text/javascript" src="./js/navigation.js"></script>
+	<style type="text/css">
+		select{
+			width: auto;
+			padding: 0 1%;
+  			color: #3B6DDE;
+ 			appearance:none;
+  			-moz-appearance:none;
+  			-webkit-appearance:none;
+  			background: url("image/down.png") no-repeat right top transparent;
+  			background-size: 30px;
+			}	
+			/*清除ie的默认选择框样式清除，隐藏下拉箭头*/
+			select::-ms-expand { display: none; }
+		option{
+			text-align: center;
+			}
+	</style>
+</head>
+<body onselectstart='return false' style="">
+	<!--导航-->
+	<div class="map_menu">
+    	<img src="./image/pattern.png" width="100%" alt="菜单图标">
+	</div>
+	<div class="map_nav">
+	    <p id="mapName">地图</p>
+	</div>
+	<div class="map_switch">
+		<img src="./image/switch.png" width="100%" alt="切换图标">
+	</div>
+	<!--地图-->
+	<div id="mapNavDiv" style="background: url(./image/bgimg.png)">
+	</div>
+	<!--弹框-->
+	<div id="bomb_boxs">
+		<div id="bomb_boxs_1">
+	   		<img src="./image/detail.png" width="100%"/>
+	   	</div>
+	   	<div id="bomb_boxs_2">
+	   		<img src="./image/execute.png" width="100%"/>
+	   	</div>
+	   	<div id="bomb_boxs_3">
+	   		<img src="./image/close.png" width="100%"/>
+	   	</div>
+	   	<div id="bomb_boxs_4">
+	   		<img src="./image/delete.png" width="100%"/>
+	   	</div>
+	   	<div id="bomb_boxs_5">
+	   		<img src="./image/modify.png" width="100%"/>
+	   	</div>
+	   	<div id="bomb_boxs_6">
+	   		<img src="./image/add.png" width="100%"/>
+	   	</div>
+	   	<div id="bomb_boxs_7">
+	   		<img src="./image/time.png" width="100%"/>
+	   	</div>
+	   	<div id="bomb_boxs_8">
+	   		<img src="./image/exe.png" width="100%"/>
+	   	</div>
+	</div>
+	<!--菜单页-->
+	<div id="menu">
+		<div class="menu_nav">
+		    <div class="nav_back">
+		        <img src="./image/back.png" width="100%" alt="返回按钮图标">
+		    </div>
+		    <p>菜单</p>
+		</div>
+		<ul class="menu_main">
+		    <li style="box-shadow: none;">
+		        <span class="menu_main_span_left"><img src="./image/map_map.png" width="100%" alt="地图向导"></span>地图向导
+		        <span class="menu_main_span_right"><img src="./image/more.png" width="100%" alt="向右箭头图标"></span>
+		    </li>
+		    <li>
+		        <span class="menu_main_span_left"><img src="./image/map.png" width="100%" alt="站点巡航"></span>站点巡航
+		        <span class="menu_main_span_right"><img src="./image/more.png" width="100%" alt="向右箭头图标"></span>
+		    </li>
+		    <li>
+		        <span class="menu_main_span_left"><img src="./image/set.png" width="100%" alt="通用"></span>通用
+		        <span class="menu_main_span_right"><img src="./image/more.png" width="100%" alt="向右箭头图标"></span>
+		    </li>
+		    <li>
+		        <span class="menu_main_span_left"><img src="./image/diagnosis.png" width="100%" alt="系统诊断"></span>系统诊断
+		        <span class="menu_main_span_right"><img src="./image/more.png" width="100%" alt="向右箭头图标"></span>
+		    </li>
+		    <li>
+		        <span class="menu_main_span_left"><img src="./image/form.png" width="100%" alt="系统日志"></span>系统日志
+		        <span class="menu_main_span_right"><img src="./image/more.png" width="100%" alt="向右箭头图标"></span>
+		    </li>
+		    <li id="update_click">
+		        <span class="menu_main_span_left"><img src="./image/state.png" width="100%" alt="系统日志"></span>更新
+		        <span class="menu_main_span_right"><img src="./image/more.png" width="100%" alt="向右箭头图标"></span>
+		    </li>
+		</ul>
+	</div>
+	<!--添加站点页-->
+	<div id="share">
+		<div id="">
+			<div class="menu_nav">
+			    <div class="share_back">
+			        <img src="./image/back.png" width="100%" alt="返回按钮图标">
+			    </div>
+			    <p>添加站点</p>
+			</div>
+			<ul class="menu_main">
+			    <li style="box-shadow: none;" id="share_addsite">
+			    	添加站点
+			        <span class="menu_main_span_right"><img src="./image/add_one.png" width="100%" alt="向右箭头图标"></span>
+			    </li>
+			    <li>
+			    	添加运动轨迹
+			        <span class="menu_main_span_right"><img src="./image/add_one.png" width="100%" alt="向右箭头图标"></span>
+			    </li>
+			    <li>
+			    	停止
+			        <span class="menu_main_span_right"><img src="./image/stop.png" width="100%" alt="向右箭头图标"></span>
+			    </li>
+			</ul>
+		</div>
+	</div>
+	<!--登录页-->
+	<div id="login">
+      <div class="box">
+        <div class="box_logo">
+          <img src="./image/jiqiren.png" width="100%" alt="登录头像">
+        </div>
+        <ul class="box_login">
+          <li>
+            <span class="box_login_logo"><img src="./image/account.png" height="100%" alt="账号图标"></span>账号:
+            <input type="text" name="" class="inp" autofocus="autofocus">
+          </li>
+          <li style="margin-top: 30px;">
+            <span class="box_login_logo"><img src="./image/lock.png" height="100%" alt="密码锁图标"></span>密码:
+            <input type="password" name="" class="inp">
+          </li>
+        </ul>
+        <div class="remember_checkbox">
+          <input type="checkbox" class="checkbox" value="">
+          <span id="checkbox_span">
+          	记住密码
+          </span>
+          <!--<div class="remember_checkbox_right">
+          		注册
+          </div>-->
+        </div>
+        <div class="entry">
+        	<input type="button" value="登录" id="entry_button">
+        </div>
+      </div>
+	</div>	
+	<!--添加站点-->
+	<div id="site">
+		<div class="site_nav">
+		    <div class="site_right">
+		        <img src="./image/close_one.png" width="100%" alt="">
+		    </div>
+		    <p>添加站点</p>
+		</div>
+		<ul class="site_main">
+		    <li style="box-shadow: none;">
+		    	<p>Mark:</p>
+		    	<input type="text" name="" class="inp" autofocus="autofocus">
+		    </li>
+		    <li>
+		    	<p>Area(米):</p>
+		    	<input type="text" name="" class="inp">
+		    </li>
+		    <li>
+		    	<p>Timeout(秒):</p>
+		    	<input type="text" name="" class="inp">
+		    </li>
+		    <li>
+		    	<p>Action:</p>
+		    	<select class="box_border">
+		    		<option value="">1111111</option>
+		    		<option value="">2222222</option>
+	                <option value="">3333333</option>
+	                <option value="">4444444</option>
+	                <option value="">5555555</option>
+		    	</select>
+		    </li>
+		    <li>
+		    	<p>Mode:</p>
+		    	<select class="box_border">
+		    		<option value="">1111111</option>
+		    		<option value="">2222222</option>
+	                <option value="">3333333</option>
+	                <option value="">4444444</option>
+	                <option value="">5555555</option>
+		    	</select>
+		    </li>
+		    <li>
+		    	<p>backups:</p>
+		    	<select class="box_border">
+		    		<option value="">1111111</option>
+		    		<option value="">2222222</option>
+	                <option value="">3333333</option>
+	                <option value="">4444444</option>
+	                <option value="">5555555</option>
+		    	</select>
+		    </li>
+		</ul>
+	</div>	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+<div id="update">
+	<div class="update_nav">
+	    <p>软件更新</p>
+	    <div class="update_right">
+	        <img src="image/close_one.png" width="100%" alt="">
+	    </div>
+	</div>
+	<span id="update_span">
+		选择更新方式:
+	</span>
+	<ul class="update_main">
+		<label for="radio1">
+			<li><input type="radio" name="update_main_radio" id="radio1" value="在线自动更新" onchange="radio_change(this.id)" />
+			在线自动更新
+			</li>
+		</label>
+		<label for="radio2">
+			<li><input type="radio" name="update_main_radio" id="radio2" value="离线本地更新" onchange="radio_change(this.id)" />
+			离线本地更新
+			</li>
+		</label>
+		<label for="radio3">
+			<li><input type="radio" name="update_main_radio" id="radio3" value="U盘威尔2升级包" onchange="radio_change(this.id)" />
+			U盘威尔2升级包
+			</li>
+		</label>
+		<label for="radio4">
+			<li style="border: none;"><input type="radio" name="update_main_radio" id="radio4" value="U盘安装文件传输包" onchange="radio_change(this.id)" />
+			U盘安装文件传输包
+			</li>
+		</label>
+	</ul>
+	<div class="update_button">
+		更新
+		<div class="update_button_right">
+			<img src="image/download.png" width="100%" alt="开启"/>
+		</div>
+	</div>	
+	<span id="update_span1">
+		更新信息...
+	</span>
+</div>
+
+</body>
+</html>

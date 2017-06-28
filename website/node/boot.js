@@ -26,9 +26,12 @@ if (!shell.which('apache2')) {
 //   shell.exit(1);
 // }
 
-const ip="ouiyeah-null";
-shell.exec("ping -c 1 " + ip + ".local", {silent:true}, function(code, stdout, stderr) {
+const ROS_HOSTNAME="ouiyeah-null"; // TODO: hostname for external roscore
+shell.exec("ping -c 1 " + ROS_HOSTNAME + ".local", {silent:true}, function(code, stdout, stderr) {
     if (code) {
+        process.env['ROS_MASTER_URI'] = 'http://' + os.hostname() + ':11311';
+        process.env['ROS_HOSTNAME'] = os.hostname();
+
         const roscore = child.spawn('roscore');
         // const roscore = shell.exec('roscore', function(code, stdout, stderr) {
         //     console.log('Exit code:', code);
@@ -46,7 +49,8 @@ shell.exec("ping -c 1 " + ip + ".local", {silent:true}, function(code, stdout, s
             `child process exit due to receipt of signal ${signal}`);
         });
     } else {
-        process.env['ROS_MASTER_URI'] = 'http://' + ip + '.local:11311';
+        process.env['ROS_MASTER_URI'] = 'http://' + ROS_HOSTNAME + '.local:11311';
+        process.env['ROS_HOSTNAME'] = ROS_HOSTNAME;
         console.log(process.env['ROS_MASTER_URI']);
     }
     rosnode();

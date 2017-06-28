@@ -67,7 +67,7 @@ set(bringup_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(bringup_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/bringup)
+  set(bringup_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/hitrobot/bringup)
   set(bringup_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(bringup_INSTALL_PREFIX "")
   set(bringup_PREFIX ${bringup_DEVEL_PREFIX})
