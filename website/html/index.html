@@ -322,15 +322,13 @@
             <a href="#" class="ui-btn ui-icon-hrg-networktry ui-btn-icon-notext ui-corner-all ui-btn-left networkstatus"></a>
         </div>
         <div data-role="content">
-            <a href="#hrg-add-waypoints-page" data-transition="slide" data-role="button" data-icon="plus" data-theme="b" data-iconpos="right">添加站点</a>
-
-            <div id="waypoint-list">
-            </div>
+            <a href="#" data-role="button" data-icon="forbidden" data-theme="b" data-iconpos="right" id="cancel">停止</a>
             <a href="#hrg-add-trajectory-page" data-transition="slide" data-role="button" data-icon="plus" data-theme="b" data-iconpos="right">添加运动轨迹</a>
             <div data-role="collapsible-set" data-inset="true" id="trajectory-list">
             </div>
-            <a href="#" data-role="button" data-icon="forbidden" data-theme="b" data-iconpos="right" id="cancel">停止</a>
-
+            <a href="#hrg-add-waypoints-page" data-transition="slide" data-role="button" data-icon="plus" data-theme="b" data-iconpos="right">添加站点</a>
+            <div id="waypoint-list">
+            </div>
         </div>
         <div data-role="footer" data-theme="b" data-position="fixed" data-id="hrg-navigation-wizard-footer">
             <h1 class="version"></h1>
@@ -363,8 +361,8 @@
                 
                 <label for="waypoints-mode">Mode:</label>
                 <select name="waypoints-mode" id="waypoints-mode" data-iconpos='right'>
-                    <option value="NONE">NONE</option>
                     <option value="LOOP">LOOP</option>
+                    <option value="NONE">NONE</option>
                 </select>
                 <label for="pubsuber-input">Expect:</label>
                 <!-- <input type="text" id="pubsuber-input" value="topic"  aria-disabled="true" class="ui-disabled" /> -->

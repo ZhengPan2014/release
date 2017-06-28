@@ -168,7 +168,7 @@
     <param name="camera/driver/data_skip" value="5"/>
     <include file="$(find openni2_launch)/launch/openni2.launch"/>
     <include file="$(find bringup)/launch/pointcloud_floor_filter.launch"/>
-    <include file="$(find ultrasonic_speed_filter)/launch/ultrasonic_speed_filter.launch"/>
+    <!--<include file="$(find ultrasonic_speed_filter)/launch/ultrasonic_speed_filter.launch"/>-->
     <!--  <include file="$(find yocs_cmd_vel_mux)/launch/standalone.launch"/> -->
     
 
