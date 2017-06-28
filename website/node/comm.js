@@ -7,7 +7,7 @@ const callfile = require('child_process');
 
 // console.log(ifaces);
 
-function check_wifi() {
+function check_ifaces() {
     const wlan = 'wlan';
     const eth = 'eth';
     let has_ap_mode = false;
@@ -53,4 +53,4 @@ function set_ap_mode(dev) {
     });
 }
 
-module.exports = check_wifi;
+module.exports = check_ifaces;
