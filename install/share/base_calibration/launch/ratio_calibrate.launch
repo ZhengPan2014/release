@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<launch>
+
+  <node pkg="base_calibration" type="scan_to_angle.py" name="scan_to_angle" output="screen">
+       <param name="min_angle" value="-0.3" />
+       <param name="max_angle" value="0.3" />
+  </node>
+
+  <node pkg="base_calibration" type="ratio_calibrate.py" name="ratio_calibrate" output="screen" required="true">
+  </node>
+</launch>

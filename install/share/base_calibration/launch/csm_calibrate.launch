@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<launch>
+
+  <include file="$(find base_calibration)/launch/laser_scan_matcher_demo.launch"/>
+
+  <node pkg="base_calibration" type="csm_calibration.py" name="csm_calibration" output="screen" required="true">
+       <param name="prev_wheel_ratio" value="23333.0" />
+  </node>
+</launch>
