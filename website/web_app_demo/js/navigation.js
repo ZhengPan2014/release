@@ -24,6 +24,8 @@ var NAV = NAV || {
 			NAV._dispWaypoints();
 			// 订阅robot pose 话题
 			NAV._dispRobotPose();
+			
+			NAV._globalplannerTopic();
 		});
 	},
 
@@ -50,6 +52,21 @@ var NAV = NAV || {
 			UI.dispRobotPose(message);
 		});
 	},
+	
+
+	// 订阅trajectory addTopic话题
+	_globalplannerTopic: () => {
+		var plannerTopic = new ROSLIB.Topic({
+			ros: NAV.ros,
+			name: '/move_base/NavfnROS/plan',
+			messageType: 'nav_msgs/Path'
+		});
+		plannerTopic.subscribe((message) => {
+			UI.globalplannerTopic(message);
+		});
+	},
+	
+	
 
 	dispLaserScan: () => {
 

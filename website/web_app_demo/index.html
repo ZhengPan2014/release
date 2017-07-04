@@ -5,28 +5,33 @@
 <head>
 	<title>Ros Web App Demo</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
-	<link rel="stylesheet" href="./lib/jquery.mobile-1.3.2.min.css">
+	<!--my css-->
 	<link rel="stylesheet" href="./style/index.css">
-	
-	
-	<link rel="stylesheet" href="./style/sweet.css">
-	
-	
 	<script src="./lib/jquery-1.8.3.min.js"></script>
-	
-	
-	
+	<!--sweet css and js-->
+	<link rel="stylesheet" href="./style/sweet.css">
 	<script src="./js/sweet.js"></script>
 	
-	
+	<!--解决 Firefox 兼容性-->
+	<script>
+        $(document).bind('mobileinit', function () {
+            $.mobile.changePage.defaults.changeHash = false;
+            $.mobile.hashListeningEnabled = false;
+            $.mobile.pushStateEnabled = false;
+        });
+    </script>
+    
+    <!--jquery mobile 插件-->
+	<!--<link rel="stylesheet" href="./lib/jquery.mobile-1.3.2.min.css">-->
 	<!--<script src="./lib/jquery.mobile-1.3.2.min.js"></script>--> 
+	
 	<script type="text/javascript" src="./lib/easeljs.min.js"></script>
 	<script type="text/javascript" src="./lib/eventemitter2.min.js"></script>
 	<script type="text/javascript" src="./lib/roslib.js"></script>
-	<!-- <script type="text/javascript" src="./navigation.js"></script> -->
 	<script type="text/javascript" src="./js/ui.js"></script>
 	<script type="text/javascript" src="./js/navigation.js"></script>
 	<style type="text/css">
+		/*下拉列表图标更换*/
 		select{
 			width: auto;
 			padding: 0 1%;
@@ -41,110 +46,19 @@
 			select::-ms-expand { display: none; }
 		option{
 			text-align: center;
+  			color: #3B6DDE;
 			}
 	</style>
 </head>
-<body onselectstart='return false' style="">
-	<!--导航-->
-	<div class="map_menu">
-    	<img src="./image/pattern.png" width="100%" alt="菜单图标">
-	</div>
-	<div class="map_nav">
-	    <p id="mapName">地图</p>
-	</div>
-	<div class="map_switch">
-		<img src="./image/switch.png" width="100%" alt="切换图标">
-	</div>
+<body onselectstart='return false'>
+	<!--导航左侧菜单选项-->
+	<div class="map_menu"><img src="./image/pattern.png" width="100%" alt="菜单图标"></div>
+	<!--导航中间地图名称-->
+	<div class="map_nav"><p id="mapName">地图</p></div>
+	<!--导航右侧**选项-->
+	<div class="map_switch"><img src="./image/switch.png" width="100%" alt="切换图标"></div>
 	<!--地图-->
-	<div id="mapNavDiv" style="background: url(./image/bgimg.png)">
-	</div>
-	<!--弹框-->
-	<div id="bomb_boxs">
-		<div id="bomb_boxs_1">
-	   		<img src="./image/detail.png" width="100%"/>
-	   	</div>
-	   	<div id="bomb_boxs_2">
-	   		<img src="./image/execute.png" width="100%"/>
-	   	</div>
-	   	<div id="bomb_boxs_3">
-	   		<img src="./image/close.png" width="100%"/>
-	   	</div>
-	   	<div id="bomb_boxs_4">
-	   		<img src="./image/delete.png" width="100%"/>
-	   	</div>
-	   	<div id="bomb_boxs_5">
-	   		<img src="./image/modify.png" width="100%"/>
-	   	</div>
-	   	<div id="bomb_boxs_6">
-	   		<img src="./image/add.png" width="100%"/>
-	   	</div>
-	   	<div id="bomb_boxs_7">
-	   		<img src="./image/time.png" width="100%"/>
-	   	</div>
-	   	<div id="bomb_boxs_8">
-	   		<img src="./image/exe.png" width="100%"/>
-	   	</div>
-	</div>
-	<!--菜单页-->
-	<div id="menu">
-		<div class="menu_nav">
-		    <div class="nav_back">
-		        <img src="./image/back.png" width="100%" alt="返回按钮图标">
-		    </div>
-		    <p>菜单</p>
-		</div>
-		<ul class="menu_main">
-		    <li style="box-shadow: none;">
-		        <span class="menu_main_span_left"><img src="./image/map_map.png" width="100%" alt="地图向导"></span>地图向导
-		        <span class="menu_main_span_right"><img src="./image/more.png" width="100%" alt="向右箭头图标"></span>
-		    </li>
-		    <li>
-		        <span class="menu_main_span_left"><img src="./image/map.png" width="100%" alt="站点巡航"></span>站点巡航
-		        <span class="menu_main_span_right"><img src="./image/more.png" width="100%" alt="向右箭头图标"></span>
-		    </li>
-		    <li>
-		        <span class="menu_main_span_left"><img src="./image/set.png" width="100%" alt="通用"></span>通用
-		        <span class="menu_main_span_right"><img src="./image/more.png" width="100%" alt="向右箭头图标"></span>
-		    </li>
-		    <li>
-		        <span class="menu_main_span_left"><img src="./image/diagnosis.png" width="100%" alt="系统诊断"></span>系统诊断
-		        <span class="menu_main_span_right"><img src="./image/more.png" width="100%" alt="向右箭头图标"></span>
-		    </li>
-		    <li>
-		        <span class="menu_main_span_left"><img src="./image/form.png" width="100%" alt="系统日志"></span>系统日志
-		        <span class="menu_main_span_right"><img src="./image/more.png" width="100%" alt="向右箭头图标"></span>
-		    </li>
-		    <li id="update_click">
-		        <span class="menu_main_span_left"><img src="./image/state.png" width="100%" alt="系统日志"></span>更新
-		        <span class="menu_main_span_right"><img src="./image/more.png" width="100%" alt="向右箭头图标"></span>
-		    </li>
-		</ul>
-	</div>
-	<!--添加站点页-->
-	<div id="share">
-		<div id="">
-			<div class="menu_nav">
-			    <div class="share_back">
-			        <img src="./image/back.png" width="100%" alt="返回按钮图标">
-			    </div>
-			    <p>添加站点</p>
-			</div>
-			<ul class="menu_main">
-			    <li style="box-shadow: none;" id="share_addsite">
-			    	添加站点
-			        <span class="menu_main_span_right"><img src="./image/add_one.png" width="100%" alt="向右箭头图标"></span>
-			    </li>
-			    <li>
-			    	添加运动轨迹
-			        <span class="menu_main_span_right"><img src="./image/add_one.png" width="100%" alt="向右箭头图标"></span>
-			    </li>
-			    <li>
-			    	停止
-			        <span class="menu_main_span_right"><img src="./image/stop.png" width="100%" alt="向右箭头图标"></span>
-			    </li>
-			</ul>
-		</div>
-	</div>
+	<div id="mapNavDiv" style="background: url(./image/bgimg.png)"></div>
 	<!--登录页-->
 	<div id="login">
       <div class="box">
@@ -175,6 +89,59 @@
         </div>
       </div>
 	</div>	
+	
+	<!--站点弹框-->
+	<div id="bomb_boxs">
+		<div id="bomb_boxs_1">
+	   		<img src="./image/detail.png" width="100%"/>
+	   	</div>
+	   	<div id="bomb_boxs_2">
+	   		<img src="./image/execute.png" width="100%"/>
+	   	</div>
+	   	<div id="bomb_boxs_3">
+	   		<img src="./image/close.png" width="100%"/>
+	   	</div>
+	   	<div id="bomb_boxs_4">
+	   		<img src="./image/delete.png" width="100%"/>
+	   	</div>
+	   	<div id="bomb_boxs_5">
+	   		<img src="./image/modify.png" width="100%"/>
+	   	</div>
+	   	<div id="bomb_boxs_6">
+	   		<img src="./image/add.png" width="100%"/>
+	   	</div>
+	   	<div id="bomb_boxs_7">
+	   		<img src="./image/time.png" width="100%"/>
+	   	</div>
+	   	<div id="bomb_boxs_8">
+	   		<img src="./image/exe.png" width="100%"/>
+	   	</div>
+	</div>
+	<!--添加站点页面-->
+	<div id="share">
+		<div id="">
+			<div class="menu_nav">
+			    <div class="share_back">
+			        <img src="./image/back.png" width="100%" alt="返回按钮图标">
+			    </div>
+			    <p>添加站点</p>
+			</div>
+			<ul class="menu_main">
+			    <li style="box-shadow: none;" id="share_addsite">
+			    	添加站点
+			        <span class="menu_main_span_right"><img src="./image/add_one.png" width="100%" alt="向右箭头图标"></span>
+			    </li>
+			    <li id="share_addtrajectory">
+			    	添加运动轨迹
+			        <span class="menu_main_span_right"><img src="./image/add_one.png" width="100%" alt="向右箭头图标"></span>
+			    </li>
+			    <li>
+			    	停止
+			        <span class="menu_main_span_right"><img src="./image/stop.png" width="100%" alt="向右箭头图标"></span>
+			    </li>
+			</ul>
+		</div>
+	</div>
 	<!--添加站点-->
 	<div id="site">
 		<div class="site_nav">
@@ -186,39 +153,68 @@
 		<ul class="site_main">
 		    <li style="box-shadow: none;">
 		    	<p>Mark:</p>
-		    	<input type="text" name="" class="inp" autofocus="autofocus">
+		    	<input type="text" name="" class="inp" autofocus="autofocus" placeholder="请输入标记名称">
 		    </li>
 		    <li>
 		    	<p>Area(米):</p>
-		    	<input type="text" name="" class="inp">
+		    	<input type="text" name="" class="inp" value="0.0">
 		    </li>
 		    <li>
 		    	<p>Timeout(秒):</p>
-		    	<input type="text" name="" class="inp">
+		    	<input type="text" name="" class="inp" value="0.0">
 		    </li>
 		    <li>
 		    	<p>Action:</p>
-		    	<select class="box_border">
-		    		<option value="">1111111</option>
-		    		<option value="">2222222</option>
-	                <option value="">3333333</option>
-	                <option value="">4444444</option>
-	                <option value="">5555555</option>
+		    	<select class="site_select">
+		    		<option value="map">Map</option>
+		    		<option value="timer">Timer</option>
+	                <option value="publisher">Publisher</option>
+	                <option value="subscriber">Subscriber</option>
+	                <option value="looper">Looper</option>
+	                <option value="pubsuber">Pubsuber</option>
 		    	</select>
 		    </li>
 		    <li>
 		    	<p>Mode:</p>
-		    	<select class="box_border">
+		    	<select class="site_select">
+		    		<option value="loop">Loop</option>
+		    		<option value="none">None</option>
+		    	</select>
+		    </li>
+		    <li>
+		    	<p>Expect:</p>
+		    	<input type="text" name="" class="inp" value="Expect">
+		    </li>
+		</ul>
+	</div>	
+	<!--添加轨迹-->
+	<div id="trajectory">
+		<div class="route_nav">
+		    <p>添加轨迹</p>
+		    <div class="route_right">
+		        <img src="image/close_one.png" width="100%" alt="">
+		    </div>
+		</div>
+		<ul class="route_main">
+		    <li style="box-shadow: none;">
+		    	<p>Mark:</p>
+		    	<input type="text" name="" class="inp" autofocus="autofocus">
+		    		
+		    	<select class="route_select">
 		    		<option value="">1111111</option>
 		    		<option value="">2222222</option>
 	                <option value="">3333333</option>
 	                <option value="">4444444</option>
 	                <option value="">5555555</option>
 		    	</select>
-		    </li>
-		    <li>
-		    	<p>backups:</p>
-		    	<select class="box_border">
+		    	<select class="route_select">
+		    		<option value="">1111111</option>
+		    		<option value="">2222222</option>
+	                <option value="">3333333</option>
+	                <option value="">4444444</option>
+	                <option value="">5555555</option>
+		    	</select>
+		    	<select class="route_select" style="margin-bottom: 50px;">
 		    		<option value="">1111111</option>
 		    		<option value="">2222222</option>
 	                <option value="">3333333</option>
@@ -227,59 +223,175 @@
 		    	</select>
 		    </li>
 		</ul>
-	</div>	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-<div id="update">
-	<div class="update_nav">
-	    <p>软件更新</p>
-	    <div class="update_right">
-	        <img src="image/close_one.png" width="100%" alt="">
-	    </div>
 	</div>
-	<span id="update_span">
-		选择更新方式:
-	</span>
-	<ul class="update_main">
-		<label for="radio1">
-			<li><input type="radio" name="update_main_radio" id="radio1" value="在线自动更新" onchange="radio_change(this.id)" />
-			在线自动更新
-			</li>
-		</label>
-		<label for="radio2">
-			<li><input type="radio" name="update_main_radio" id="radio2" value="离线本地更新" onchange="radio_change(this.id)" />
-			离线本地更新
-			</li>
-		</label>
-		<label for="radio3">
-			<li><input type="radio" name="update_main_radio" id="radio3" value="U盘威尔2升级包" onchange="radio_change(this.id)" />
-			U盘威尔2升级包
-			</li>
-		</label>
-		<label for="radio4">
-			<li style="border: none;"><input type="radio" name="update_main_radio" id="radio4" value="U盘安装文件传输包" onchange="radio_change(this.id)" />
-			U盘安装文件传输包
-			</li>
-		</label>
-	</ul>
-	<div class="update_button">
-		更新
-		<div class="update_button_right">
-			<img src="image/download.png" width="100%" alt="开启"/>
+			
+	<!--菜单页面-->
+	<div id="menu">
+		<div class="menu_nav">
+		    <div class="menu_nav_back">
+		        <img src="./image/back.png" width="100%" alt="返回按钮图标">
+		    </div>
+		    <p>菜单</p>
+		</div>
+		<ul class="menu_main">
+		    <li style="box-shadow: none;" id="map_wizard_click">
+		        <span class="menu_main_span_left"><img src="./image/map_map.png" width="100%" alt="地图向导"></span>地图向导
+		        <span class="menu_main_span_right"><img src="./image/more.png" width="100%" alt="向右箭头图标"></span>
+		    </li>
+		    <li id="site_cruise_click">
+		        <span class="menu_main_span_left"><img src="./image/map.png" width="100%" alt="站点巡航"></span>站点巡航
+		        <span class="menu_main_span_right"><img src="./image/more.png" width="100%" alt="向右箭头图标"></span>
+		    </li>
+		    <li id="currency_click">
+		        <span class="menu_main_span_left"><img src="./image/set.png" width="100%" alt="通用"></span>通用
+		        <span class="menu_main_span_right"><img src="./image/more.png" width="100%" alt="向右箭头图标"></span>
+		    </li>
+		    <li id="system_diagnosis_click">
+		        <span class="menu_main_span_left"><img src="./image/diagnosis.png" width="100%" alt="系统诊断"></span>系统诊断
+		        <span class="menu_main_span_right"><img src="./image/more.png" width="100%" alt="向右箭头图标"></span>
+		    </li>
+		    <li id="system_log_click">
+		        <span class="menu_main_span_left"><img src="./image/form.png" width="100%" alt="系统日志"></span>系统日志
+		        <span class="menu_main_span_right"><img src="./image/more.png" width="100%" alt="向右箭头图标"></span>
+		    </li>
+		    <li id="update_click">
+		        <span class="menu_main_span_left"><img src="./image/state.png" width="100%" alt="系统日志"></span>更新
+		        <span class="menu_main_span_right"><img src="./image/more.png" width="100%" alt="向右箭头图标"></span>
+		    </li>
+		</ul>
+	</div>
+	<!--菜单页面-地图向导-->
+	<div id="map_wizard">
+		<div class="map_wizard_nav">
+		    <p>建图第一步</p>
+		    <div class="map_wizard_right">
+		        <img src="image/close_one.png" width="100%" alt="">
+		    </div>
+		</div>
+		<!--建图第一步-->
+		<div class="mapping_text">
+				<span style="font-weight: 900;">第一步：</span>请点击下方<span style="color: red; font-weight: 900;">“开启建图”</span>按钮↓
+			</div>
+			<div class="mapping_button">
+				<input type="button" name="" id="mapping_button" value="开启建图" />
+				<div class="mapping_button_right">
+					<img src="image/open.png" width="100%" alt="开启"/>
+				</div>
+			</div>
+			<div class="mapping_text_1">
+				<span style="font-weight: 900;">提示：</span>模式切换时需花费一些时间，请耐心等待！
+				当切换成功后自动化进入建图第二步
+			</div>
+			<div class="mapping_text_1" style="margin-top: 20px;">
+				<span style="font-weight: 900;">参考图示1：</span>模式切换状态↓
+			</div>
+			<div class="mapping_button_1">
+				模式切换中...
+				<div class="mapping_button_right_1">
+					<img src="image/state.png" width="100%" alt="开启"/>
+				</div>
+			</div>
+			<div class="mapping_text_1">
+				<span style="font-weight: 900;">参考图示2：</span>成功开启建图状态↓
+			</div>
+			<div class="mapping_button_1">
+				关闭建图
+				<div class="mapping_button_right_1">
+					<img src="image/success.png" width="100%" alt="开启"/>
+				</div>
+			</div>
+			<div class="mapping_text_1">
+				<span style="font-weight: 900;">参考图示3：</span>退出建图状态↓
+			</div>
+			<div class="mapping_button_1">
+				开启建图
+				<div class="mapping_button_right_1">
+					<img src="image/open.png" width="90%" alt="开启"/>
+				</div>
+			</div>
+			<!--<div class="mapping_text_1">
+				<span style="font-weight: 900;">提示：</span>成功开启建图模式后将跳转到地图页面，请耐心等待！
+			</div>-->
+	</div>
+	<!--菜单页面-站点巡航-->
+	<div id="site_cruise">
+		<div class="site_cruise_nav">
+		    <p>站点巡航</p>
+		    <div class="site_cruise_right">
+		        <img src="image/close_one.png" width="100%" alt="">
+		    </div>
+		</div>
+	</div>
+	<!--菜单页面-通用-->
+	<div id="currency">
+		<div class="currency_nav">
+		    <p>通用</p>
+		    <div class="currency_right">
+		        <img src="image/close_one.png" width="100%" alt="">
+		    </div>
 		</div>
 	</div>	
-	<span id="update_span1">
-		更新信息...
-	</span>
-</div>
+	<!--菜单页面-系统诊断-->
+	<div id="system_diagnosis">
+		<div class="system_diagnosis_nav">
+		    <p>系统诊断</p>
+		    <div class="system_diagnosis_right">
+		        <img src="image/close_one.png" width="100%" alt="">
+		    </div>
+		</div>
+	</div>
+	<!--菜单页面-系统日志-->
+	<div id="system_log">
+		<div class="system_log_nav">
+		    <p>系统日志</p>
+		    <div class="system_log_right">
+		        <img src="image/close_one.png" width="100%" alt="">
+		    </div>
+		</div>
+	</div>
+	<!--菜单页面-更新-->
+	<div id="update">
+		<div class="update_nav">
+		    <p>软件更新</p>
+		    <div class="update_right">
+		        <img src="image/close_one.png" width="100%" alt="">
+		    </div>
+		</div>
+		<span id="update_span">
+			选择更新方式:
+		</span>
+		<ul class="update_main">
+			<label for="radio1">
+				<li><input type="radio" name="update_main_radio" id="radio1" value="在线自动更新" onchange="radio_change(this.id)" />
+				在线自动更新
+				</li>
+			</label>
+			<label for="radio2">
+				<li><input type="radio" name="update_main_radio" id="radio2" value="离线本地更新" onchange="radio_change(this.id)" />
+				离线本地更新
+				</li>
+			</label>
+			<label for="radio3">
+				<li><input type="radio" name="update_main_radio" id="radio3" value="U盘威尔2升级包" onchange="radio_change(this.id)" />
+				U盘威尔2升级包
+				</li>
+			</label>
+			<label for="radio4">
+				<li style="border: none;"><input type="radio" name="update_main_radio" id="radio4" value="U盘安装文件传输包" onchange="radio_change(this.id)" />
+				U盘安装文件传输包
+				</li>
+			</label>
+		</ul>
+		<div class="update_button">
+			更新
+			<div class="update_button_right">
+				<img src="image/download.png" width="100%" alt="开启"/>
+			</div>
+		</div>	
+		<span id="update_span1">
+			更新信息...
+		</span>
+	</div>
 
 </body>
 </html>
