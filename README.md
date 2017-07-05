@@ -2,8 +2,8 @@
 
 | 版本            | 日期            | 发布人          | 更新内容
 | --------------- | --------------- | --------------- | --------------- 
-| 1.1.4.2_beta    | 2017-07-04      | 韩立芹          | 增加base_calibration节点
-| 1.1.4.2_alpha   | 2017-07-03      | 潘力澜          | 增加laser_sensor_pose_calibration和static_laser_relocalization节点；
+| 1.1.4.2_beta    | 2017-07-05      | 韩立芹          | 增加base_calibration节点
+| 1.1.4.2_alpha   | 2017-07-04      | 潘力澜          | 增加laser_sensor_pose_calibration和static_laser_relocalization节点；
 | 1.1.4.1_beta    | 2017-06-28      | 秦伟明          | 改进hostname相关环境变量；新增odom的timestamp重置机制
 | 1.1.4.1_alpha   | 2017-06-27      | 孙昆明          | 改进路点界面；新增上位机测试版本
 | 1.1.4.0_beta    | 2017-06-26      | 韩立芹          | 改进ster2参数测试通过

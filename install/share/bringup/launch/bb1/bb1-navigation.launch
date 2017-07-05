@@ -2,7 +2,7 @@
 <launch>
     <include file="$(find bringup)/launch/bringup-dbparam.launch" />
 
-    <include file="$(find bringup)/launch/bringup-navi.launch" >
+    <include file="$(find bringup)/launch/bb1/bringup-navi2.launch" >
         <arg name="max_vel_x" default="0.55"/>
         <arg name="max_vel_theta" default="0.6"/>
         <arg name="footprint" value="[[0.40, 0.18], [0.32, 0.30], [-0.32, 0.30], [-0.40, 0.18], [-0.40, -0.18], [-0.32, -0.30], [0.32, -0.30], [0.40, -0.18]]"/>
