@@ -5,7 +5,9 @@ dt, table, th, tr, td, form, input, select, option, textarea, button {
   border: none;
   background: none;
   outline: none;
-  vertical-align: top; }
+  vertical-align: top;
+  text-shadow: none!important;
+  font-weight: normal; }
 ul, ol {
   list-style: none; }
 a {
@@ -19,13 +21,10 @@ a {
   clear: both; }
 .clear {
   *zoom: 1; }
-html, body{
-	width: 100%;
-	height: 100%;
-	overflow: hidden;
-}
 /*Collective declaration*/
-
+#mapNavDiv{
+	overflow-y:hidden;
+}
 /*导航左侧菜单选项 css*/
 .map_menu{ 
 	width:35px; 
@@ -68,25 +67,18 @@ html, body{
 	border-radius: 50%; 
 	background: rgba(255,255,255,0.5); 
 	box-shadow:-1px 1px 2.5px #999999; 
-	z-index: 6; overflow: hidden; 
-	position: fixed; right: 20px; 
+	z-index: 6; 
+	overflow: hidden; 
+	position: fixed; 
+	right: 20px; 
 	top: 20px; }
 /*地图 css*/
 #mapNav{ width: 100%; height: 100%; }
 /*登录页 css*/
 #login{ 
  	width: 100%; 
- 	height: 100%; 
- 	position: absolute;
- 	left: 0;
- 	top: 0;
- 	z-index: 22;
- 	background: #FFFFFF;
-  transition: all 0.5s; 
-  -moz-transition: all 0.5s; 
-  -webkit-transition: all 0.5s; 
-  -ms-transition: all 0.5s;
-  padding: 1px;   }
+ 	height: 100%;
+ 	z-index: 999;   }
 .box{ 
   width: 85%; 
   background: #FFFFFF; 
@@ -192,15 +184,6 @@ html, body{
 	width: 100%;
 	height: 100%;
 	background: #FFFFFF;
-	position: absolute;
-	right: -100%;
-	top: 0;
-	opacity: 0;
-	z-index: 18;
-  transition: all 0.3s; 
-  -moz-transition: all 0.3s; 
-  -webkit-transition: all 0.3s; 
-  -ms-transition: all 0.3s; 
 }
 .share_back{ 
 	width:25px; 
@@ -216,16 +199,8 @@ html, body{
 /*添加站点 css*/
 #site{ 
 	width: 100%; 
-	height: 800px!important; 
-	position: absolute; 
-	top: 0;
-	right: -100%;
-	opacity: 0;
-	z-index: 19;
-  transition: all 0.3s; 
-  -moz-transition: all 0.3s; 
-  -webkit-transition: all 0.3s; 
-  -ms-transition: all 0.3s; 
+	height: 100%;
+	z-index: 99;  
 	background: #FFFFFF;}
 .site_nav{ 
 	width: 100%; 
@@ -254,19 +229,19 @@ html, body{
 	border-bottom: 1px solid #edebf6; }
 .site_main li p{ padding-left: 20px; padding-top: 5px;}
 .site_main li .inp{ 
-	width: 87.5%; 
+	width: 93%; 
 	height: 35px; 
 	border-radius: 5px; 
 	border: 1px solid #cccccc; 
 	color: #3b6dde ; 
-	margin-left: 15px; 
+	margin-left: 2.5%; 
 	margin-top: 5px; 
 	font-size: 14p!important;
-	padding-left: 2.5%;  }
+	padding-left: 1%;  }
 .site_main li .site_select{ 
-	width: 90%; 
+	width: 95%; 
 	height: 35px; 
-	margin-left: 15px; 
+	margin-left: 2.5%;
 	margin-top: 5px; 
 	border-radius: 5px; 
 	border: 1px solid #3b6dde; 
@@ -274,25 +249,21 @@ html, body{
 	line-height: 35px; 
 	position: relative;}
 .site_main li .submit{
-	width: 100%;
-	height: 100%;
+	width: 95%;
+	height: 50%;
+	background: #3B6DDE;
+	color: #FFFFFF;
+	margin-left: 2.5%;
+	border-radius: 5px;
+	margin-top: 20px;
+	font-size: 18px;
 }
 /*添加站点css结束*/
 
 /*添加轨迹 css*/
 #trajectory{ 
 	width: 100%; 
-	height: 100%; 
-	position: absolute; 
-	top: 0;
-	right: -100%;
-	opacity: 0;
-	z-index: 19;
-  transition: all 0.3s; 
-  -moz-transition: all 0.3s; 
-  -webkit-transition: all 0.3s; 
-  -ms-transition: all 0.3s; 
-	background: #FFFFFF;}
+	height: 100%; }
 .route_nav{ 
 	width: 100%; 
 	height: 60px; 
@@ -347,15 +318,6 @@ html, body{
 	width: 100%;
 	height: 100%;
 	background: #FFFFFF;
-	position: absolute;
-	left: -100%;
-	top: 0;
-	opacity: 0;
-	z-index: 18;
-  transition: all 0.3s; 
-  -moz-transition: all 0.3s; 
-  -webkit-transition: all 0.3s; 
-  -ms-transition: all 0.3s;  
 }
 .menu_nav{ 
 	width: 100%; 
@@ -403,16 +365,7 @@ html, body{
 #map_wizard{
 	width: 100%;
 	height: 100%;
-	background: #FFFFFF;
-	position: absolute;
-	left: -100%;
-	top: 0;
-	opacity: 0;
- 	z-index: 26;
-  transition: all 0.5s; 
-  -moz-transition: all 0.5s; 
-  -webkit-transition: all 0.5s; 
-  -ms-transition: all 0.5s; 
+	background: #FFFFFF; 
 }
 .map_wizard_nav{ 
 	width: 100%; 
@@ -499,15 +452,6 @@ html, body{
 	width: 100%;
 	height: 100%;
 	background: rgba(0,0,0,0.5);
-	position: absolute;
-	left: -100%;
-	top: 0;
-	opacity: 0;
- 	z-index: 26;
-  transition: all 0.5s; 
-  -moz-transition: all 0.5s; 
-  -webkit-transition: all 0.5s; 
-  -ms-transition: all 0.5s; 
 }
 .site_cruise_nav{ 
 	width: 100%; 
@@ -529,16 +473,7 @@ html, body{
 #currency{
 	width: 100%;
 	height: 100%;
-	background: rgba(0,0,0,0.5);
-	position: absolute;
-	left: -100%;
-	top: 0;
-	opacity: 0;
- 	z-index: 26;
-  transition: all 0.5s; 
-  -moz-transition: all 0.5s; 
-  -webkit-transition: all 0.5s; 
-  -ms-transition: all 0.5s; 
+	background: #FFFFFF;
 }
 .currency_nav{ 
 	width: 100%; 
@@ -554,6 +489,64 @@ html, body{
 	position: absolute; 
 	right: 15px; 
 	top: 20px;  }
+.currency_main{ width: 100%; }
+.currency_main li{ 
+	width: 100%; 
+	height: 75px; 
+	position: relative; 
+	background: #FFFFFF; 
+	line-height: 75px; 
+	font-size: 18px; 
+	box-sizing: border-box; 
+	text-align: center;
+	color: #4063c1; 
+	border-bottom: 1px solid #edebf6; 
+	box-shadow:0 -1px 2px #cccccc; }
+	
+/*通用-代码调试 css*/
+#debugging{
+	width: 100%;
+	height: 100%;
+	background: #FFFFFF;
+}
+.debugging_nav{ 
+	width: 100%; 
+	height: 60px; 
+	text-align: center; 
+	line-height: 60px; 
+	color: #ffffff; 
+	position: relative; 
+	background: #3b6dde;}
+.debugging_right{ 
+	width:25px; 
+	height: 25px; 
+	position: absolute; 
+	right: 15px; 
+	top: 20px;  }
+#debugging_text{
+	width: 94.5%;
+	height: 200px;
+	border: 1px solid #3B6DDE;
+	margin-left: 2%;
+	margin-top: 15px;
+	border-radius: 2.5px;
+	padding-top: 5px;
+	padding-left: 0.5%;
+	font-size: 18px;
+	color: #3B6DDE;
+}
+#debugging_button{
+	width: 95.5%;
+	height: 35px;
+	background: #3B6DDE;
+	color: #FFFFFF;
+	margin: 0 auto;
+	font-size: 16px;
+	border-radius: 2.5px;
+	margin-left: 2%;
+	margin-top: 15px;
+}
+/*通用-代码调试 css end*/
 /*通用css end*/
 
 /*系统诊断*/
@@ -561,15 +554,6 @@ html, body{
 	width: 100%;
 	height: 100%;
 	background: rgba(0,0,0,0.5);
-	position: absolute;
-	left: -100%;
-	top: 0;
-	opacity: 0;
- 	z-index: 26;
-  transition: all 0.5s; 
-  -moz-transition: all 0.5s; 
-  -webkit-transition: all 0.5s; 
-  -ms-transition: all 0.5s; 
 }
 .system_diagnosis_nav{ 
 	width: 100%; 
@@ -592,15 +576,6 @@ html, body{
 	width: 100%;
 	height: 100%;
 	background: rgba(0,0,0,0.5);
-	position: absolute;
-	left: -100%;
-	top: 0;
-	opacity: 0;
- 	z-index: 26;
-  transition: all 0.5s; 
-  -moz-transition: all 0.5s; 
-  -webkit-transition: all 0.5s; 
-  -ms-transition: all 0.5s; 
 }
 .system_log_nav{ 
 	width: 100%; 
@@ -623,15 +598,6 @@ html, body{
 	width: 100%;
 	height: 100%;
 	background: #FFFFFF;
-	position: absolute;
-	left: -100%;
-	top: 0;
-	opacity: 0;
- 	z-index: 25;
-  transition: all 0.5s; 
-  -moz-transition: all 0.5s; 
-  -webkit-transition: all 0.5s; 
-  -ms-transition: all 0.5s; 
 }
 .update_nav{ 
 	width: 100%; 

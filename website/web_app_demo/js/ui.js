@@ -252,9 +252,11 @@ var UI = UI || {
 
 	_mapClickHandle: (event) => {
 		console.log('map click');
-		var shareObj = $('#share');
-		shareObj.css('opacity', 1);
-		shareObj.css('right', 0);
+//		var shareObj = $('#share');
+//		shareObj.css('opacity', 1);
+//		shareObj.css('right', 0);
+		$.mobile.changePage("#share", "slideup"); 
+
 	}
 	
 	
@@ -262,15 +264,13 @@ var UI = UI || {
 
 $(() => {
 	// initialize
-	//var url = "ws://" + window.location.hostname + ":9090";
-	var url = 'ws://192.168.0.203:9090';
+//	var url = "ws://" + window.location.hostname + ":9090";
+	var url = 'ws://192.168.0.205:9090';
 	NAV.init(url);
 	UI.initStage();
 	NAV.dispMapAndWps('/map');
 	NAV.subShellFeedback();
 		
-	//登录页面链接
-	$('#entry_button').on('click', undispWpEntryButton);
 	
 	
 	//点击关闭弹出框
@@ -279,58 +279,9 @@ $(() => {
 	$('#bomb_boxs_4').on('click', undispWpBombbox4);
 	
 	
-	//菜单页面和退出
-	$('.map_menu').on('click', undispWpMapMenu);
-	$('.menu_nav_back').on('click', undispWpMenuNavBack);
-	//点击返回地图页面（添加站点页面返回按钮）
-	$('.share_back').on('click', undispWpShareBack);
-	//添加站点页面链接和退出
-	$('#share_addsite').on('click', undispWpShareAddSide);
-	$('.site_right').on('click', undispWpSiteRight);
-	//添加轨迹页面链接和退出
-	$('#share_addtrajectory').on('click', undispWpShareAddTrajectory);
-	$('.route_right').on('click', undispWpRouteRight);
-	//
-	//菜单页面 click 事件
-	//
-	//地图向导页面链接和退出
-	$('#map_wizard_click').on('click', undispWpMapWizardClick);
-	$('.map_wizard_right').on('click', undispWpMapWizardRight);
-	//地图向导页面链接和退出
-	$('#site_cruise_click').on('click', undispWpSiteCruiseClick);
-	$('.site_cruise_right').on('click', undispWpSiteCruiseRight);
-	//站点巡航页面链接和退出
-	$('#site_cruise_click').on('click', undispWpSiteCruiseClick);
-	$('.site_cruise_right').on('click', undispWpSiteCruiseRight);
-	//通用页面链接和退出
-	$('#currency_click').on('click', undispWpCurrencyClick);
-	$('.currency_right').on('click', undispWpCurrencyRight);
-	//系统诊断页面链接和退出
-	$('#system_diagnosis_click').on('click', undispWpSystemDiagnosisClick);
-	$('.system_diagnosis_right').on('click', undispWpSystemDiagnosisRight);
-	//系统日志页面链接和退出
-	$('#system_log_click').on('click', undispWpSystemLogClick);
-	$('.system_log_right').on('click', undispWpSystemLogRight);
-	//更新页面链接和退出
-	$('#update_click').on('click', undispWpUndateClick);
-	$('.update_right').on('click', undispWpUndateRight);
 	
-	
-	
-	
-	
-			
 });
 
-//登录页面链接()
-function undispWpEntryButton()
-{
-	var loginObj = $('#login');
-	var loginHeight = loginObj.height();
-	loginObj.css('opacity', 0);
-	loginObj.css('top', -loginHeight);
-//	UI.wpMenuDisp = false;
-}
 function undispWpMenu()
 {
 	var bomb_boxsObj = $('#bomb_boxs');
@@ -361,141 +312,6 @@ function undispWpBombbox4()
 	function(){
 	    swal("Deleted!", "已删除", "success");
 	  });
-}
-//菜单页面链接事件(进入和退出)
-function undispWpMapMenu()
-{
-	var menuObj = $('#menu');
-	menuObj.css('opacity', 1);
-	menuObj.css('left', 0);
-//	UI.wpMenuDisp = false;
-}
-function undispWpMenuNavBack()
-{
-	var menuObj = $('#menu');
-	var menuWidth = menuObj.width();
-	menuObj.css('opacity', 0);
-	menuObj.css('left', -menuWidth);
-}
-//站点页面链接事件(退出)
-function undispWpShareBack()
-{
-	var shareObj = $('#share');
-	var shareWidth = shareObj.width();
-	shareObj.css('opacity', 0);
-	shareObj.css('right', -shareWidth);
-}
-//添加站点页面链接事件(进入和退出)
-function undispWpShareAddSide()
-{
-	var siteObj = $('#site');
-	siteObj.css('opacity', 1);
-	siteObj.css('right', 0);
-}
-function undispWpSiteRight()
-{
-	var siteObj = $('#site');
-	var siteWidth = siteObj.width();
-	siteObj.css('opacity', 0);
-	siteObj.css('right', -siteWidth);
-}
-//添加轨迹页面链接事件(进入和退出)
-function undispWpShareAddTrajectory()
-{
-	var trajectoryObj = $('#trajectory');
-	trajectoryObj.css('opacity', 1);
-	trajectoryObj.css('right', 0);
-}
-function undispWpRouteRight()
-{
-	var trajectoryObj = $('#trajectory');
-	var trajectoryWidth = trajectoryObj.width();
-	trajectoryObj.css('opacity', 0);
-	trajectoryObj.css('right', -trajectoryWidth);
-}
-//地图向导页面链接事件(进入和退出)
-function undispWpMapWizardClick()
-{
-	var mapwizardObj = $('#map_wizard');
-	mapwizardObj.css('opacity', 1);
-	mapwizardObj.css('left', 0);
-}
-function undispWpMapWizardRight()
-{
-	var mapwizardObj = $('#map_wizard');
-	var mapwizardWidth = mapwizardObj.width();
-	mapwizardObj.css('opacity', 0);
-	mapwizardObj.css('left', -mapwizardWidth);
-}
-//站点巡航页面链接事件(进入和退出)
-function undispWpSiteCruiseClick()
-{
-	var sitecruiseObj = $('#site_cruise');
-	sitecruiseObj.css('opacity', 1);
-	sitecruiseObj.css('left', 0);
-}
-function undispWpSiteCruiseRight()
-{
-	var sitecruiseObj = $('#site_cruise');
-	var sitecruiseWidth = sitecruiseObj.width();
-	sitecruiseObj.css('opacity', 0);
-	sitecruiseObj.css('left', -sitecruiseWidth);
-}
-//通用页面链接事件(进入和退出)
-function undispWpCurrencyClick()
-{
-	var currencyObj = $('#currency');
-	currencyObj.css('opacity', 1);
-	currencyObj.css('left', 0);
-}
-function undispWpCurrencyRight()
-{
-	var currencyObj = $('#currency');
-	var currencyWidth = currencyObj.width();
-	currencyObj.css('opacity', 0);
-	currencyObj.css('left', -currencyWidth);
-}
-//系统诊断页面链接事件(进入和退出)
-function undispWpSystemDiagnosisClick()
-{
-	var systemdiagnosisObj = $('#system_diagnosis');
-	systemdiagnosisObj.css('opacity', 1);
-	systemdiagnosisObj.css('left', 0);
-}
-function undispWpSystemDiagnosisRight()
-{
-	var systemdiagnosisObj = $('#system_diagnosis');
-	var systemdiagnosisWidth = systemdiagnosisObj.width();
-	systemdiagnosisObj.css('opacity', 0);
-	systemdiagnosisObj.css('left', -systemdiagnosisWidth);
-}
-//系统日志页面链接事件(进入和退出)
-function undispWpSystemLogClick()
-{
-	var systemlogObj = $('#system_log');
-	systemlogObj.css('opacity', 1);
-	systemlogObj.css('left', 0);
-}
-function undispWpSystemLogRight()
-{
-	var systemlogObj = $('#system_log');
-	var systemlogWidth = systemlogObj.width();
-	systemlogObj.css('opacity', 0);
-	systemlogObj.css('left', -systemlogWidth);
-}
-//更新链接页面链接事件(进入和退出)
-function undispWpUndateClick()
-{
-	var updateObj = $('#update');
-	updateObj.css('opacity', 1);
-	updateObj.css('left', 0);
-}
-function undispWpUndateRight()
-{
-	var updateObj = $('#update');
-	var updateWidth = updateObj.width();
-	updateObj.css('opacity', 0);
-	updateObj.css('left', -updateWidth);
 }
 
 //更新页面内容
