@@ -2,7 +2,7 @@
 <launch>
     <include file="$(find bringup)/launch/bringup-base.launch"/>
 
-    <node name="tf_base_footprint" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+     <node name="tf_base_footprint" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
         <rosparam>
             frame_id: base_footprint
             z: 0.05
@@ -12,8 +12,8 @@
     <node name="tf_base_laser" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
         <rosparam>
             child_frame_id: base_laser
-            x: 1.33 #1.36
-            z: 1.485
+            x: 1.35 #1.36
+            z: 1.795
             yaw: 3.14159
         </rosparam>
     </node>
@@ -21,40 +21,18 @@
     <node name="tf_base_laser_down" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
         <rosparam>
             child_frame_id: base_laser_down
-            x: 2.23
-            z: 0.19
-     <!--        roll: 3.14 -->
-        </rosparam>
-    </node>
-
-    <node name="tf_base_laser_left" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
-        <rosparam>
-            child_frame_id: base_laser_left
-            x: 1.50
-            y: 0.52
-            z: 0.84
-            roll: -1.57
-            pitch: 1.57
-        </rosparam>
-    </node>
-
-    <node name="tf_base_laser_right" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
-        <rosparam>
-            child_frame_id: base_laser_right
-            x: 1.50
-            y: -0.52
-            z: 0.84
-            roll: 1.57
-            pitch: 1.57
+            x: 1.79
+            z: 0.01
+            roll: 3.14
         </rosparam>
     </node>
 
     <node name="tf_base_imu" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
         <rosparam>
             child_frame_id: base_imu
-            x: 2.07
-            y: 0.19
-            z: 0.49
+            x: 1.45
+            y: 0.08
+            z: 1.33
         </rosparam>
     </node>
 
@@ -85,28 +63,6 @@
             max_ang: 1.57
         </rosparam>
     </node>
-
-    <node name="laser_left" pkg="sick_tim" type="sick_tim551_2050001" respawn="false" output="screen">
-        <remap from= "scan" to="scan_left"/>
-        <rosparam>
-            frame_id: base_laser_left
-            range_max: 10.0
-            hostname: 192.168.0.13
-            min_ang: -2.2 #0.0
-            max_ang: 2.2
-        </rosparam>
-    </node>
-    
-    <node name="laser_right" pkg="sick_tim" type="sick_tim551_2050001" respawn="false" output="screen">
-        <remap from= "scan" to="scan_right"/>
-        <rosparam>
-            frame_id: base_laser_right
-            range_max: 10.0
-            hostname: 192.168.0.12
-            min_ang: -2.2
-            max_ang: 2.2 #0.0
-        </rosparam>
-    </node>
   
     <node name="scan_filter" pkg="laser_filters" type="scan_to_scan_filter_chain" output="screen">
         <remap from="scan" to="scan"/>
@@ -128,72 +84,6 @@
                     params:
                       number_of_observations: 5
                       unused: 10
-        </rosparam>
-    </node>
-
-    <node name="scan_filter_left" pkg="laser_filters" type="scan_to_scan_filter_chain" output="screen">
-        <remap from="scan" to="scan_left"/>
-        <remap from="scan_filtered" to="scan_filtered_left"/>
-        <rosparam>
-            scan_filter_chain:
-            - type: laser_filters/LaserArrayFilter
-              name: laser_median_filter
-              params: 
-                range_filter_chain:
-                  - name: median_5
-                    type: filters/MultiChannelMedianFilterFloat 
-                    params:
-                      number_of_observations: 5
-                      unused: 10
-                intensity_filter_chain:
-                  - name: median_5
-                    type: filters/MultiChannelMedianFilterFloat 
-                    params:
-                      number_of_observations: 5
-                      unused: 10
-            - type: laser_filters/LaserScanBoxFilter
-              name: box_filter
-              params:
-                box_frame: base_link
-                max_x: 1.26
-                max_y: 0.75
-                max_z: 1.40
-                min_x: -2.00
-                min_y: -0.75
-                min_z: -0.05
-        </rosparam>
-    </node>
-
-    <node name="scan_filter_right" pkg="laser_filters" type="scan_to_scan_filter_chain" output="screen">
-        <remap from="scan" to="scan_right"/>
-        <remap from="scan_filtered" to="scan_filtered_right"/>
-        <rosparam>
-            scan_filter_chain:
-            - type: laser_filters/LaserArrayFilter
-              name: laser_median_filter
-              params: 
-                range_filter_chain:
-                  - name: median_5
-                    type: filters/MultiChannelMedianFilterFloat 
-                    params:
-                      number_of_observations: 5
-                      unused: 10
-                intensity_filter_chain:
-                  - name: median_5
-                    type: filters/MultiChannelMedianFilterFloat 
-                    params:
-                      number_of_observations: 5
-                      unused: 10
-            - type: laser_filters/LaserScanBoxFilter
-              name: box_filter
-              params:
-                box_frame: base_link
-                max_x: 1.26
-                max_y: 0.75
-                max_z: 1.40
-                min_x: -2.00
-                min_y: -0.75
-                min_z: -0.05
         </rosparam>
     </node>
 
@@ -225,22 +115,6 @@
         <remap from="scan_output" to="scan_rectified"/>
         <rosparam>
             max_range: 20.0
-        </rosparam>
-    </node>
-
-    <node name="scan_rectifier_left" pkg="scan_rectifier" type="scan_rectifier" output="screen">
-        <remap from="scan_input" to="scan_filtered_left"/>
-        <remap from="scan_output" to="scan_rectified_left"/>
-        <rosparam>
-            max_range: 10.0
-        </rosparam>
-    </node>
-
-    <node name="scan_rectifier_right" pkg="scan_rectifier" type="scan_rectifier" output="screen">
-        <remap from="scan_input" to="scan_filtered_right"/>
-        <remap from="scan_output" to="scan_rectified_right"/>
-        <rosparam>
-            max_range: 10.0
         </rosparam>
     </node>
 

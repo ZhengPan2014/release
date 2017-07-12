@@ -23,9 +23,9 @@
                 linear_ratio: 1.54 #1.0332 #2.87(v)/2.78(m/s) #3.5 #4.0 #2.296(v)/0.555(m/s)
                 analog_min: 0.574 # 8.2*7%
                 analog_max: 2.87 # 8.2*35%
-                analog_mid: 4.06 #4.10 # 8.2*50%
-                steer_ratio: 3.3 #3.3 #2.87
-                steer_mid: 4.31
+                analog_mid: 4.10 #4.06 # 8.2*50%
+                steer_ratio: 3.5 #2.87 #3.3
+                steer_mid: 3.9 #4.10 #4.31
                 plc_ratio: 3200.0 # 0~32000/0-10(v)
                 wheel_base: 1.55
                 vel_linear_max: 0.3

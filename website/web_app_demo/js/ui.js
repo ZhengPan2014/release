@@ -34,6 +34,7 @@ var UI = UI || {
 			  // determine the value
 			  var data = message.data[mapI];
 			  var i = (col + (row * message.info.width)) * 4;
+			  
 			  if (data === 100) {
 				  // r
 				  imageData.data[i] = 40;
@@ -69,6 +70,7 @@ var UI = UI || {
 		var bitmap = new createjs.Bitmap(innerCanvas);
 		bitmap.scaleX = UI.width / message.info.width;
 		bitmap.scaleY = UI.height / message.info.height;
+		
 		UI.scale = {
 			x: bitmap.scaleX,
 			y: bitmap.scaleY
@@ -76,6 +78,8 @@ var UI = UI || {
 		UI.stage.addChild(bitmap);
 		bitmap.on('click', UI._mapClickHandle);
 		UI.stage.update();
+		
+
 	},
 
 	dispWaypoints: (message) => {
@@ -252,10 +256,7 @@ var UI = UI || {
 
 	_mapClickHandle: (event) => {
 		console.log('map click');
-//		var shareObj = $('#share');
-//		shareObj.css('opacity', 1);
-//		shareObj.css('right', 0);
-		$.mobile.changePage("#share", "slideup"); 
+		$.mobile.changePage("#share", "pop"); 
 
 	}
 	
@@ -264,8 +265,8 @@ var UI = UI || {
 
 $(() => {
 	// initialize
-//	var url = "ws://" + window.location.hostname + ":9090";
-	var url = 'ws://192.168.0.205:9090';
+	//var url = "ws://" + window.location.hostname + ":9090";
+	var url = 'ws://192.168.0.207:9090';
 	NAV.init(url);
 	UI.initStage();
 	NAV.dispMapAndWps('/map');

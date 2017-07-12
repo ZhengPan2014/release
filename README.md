@@ -2,6 +2,7 @@
 
 | 版本            | 日期            | 发布人          | 更新内容
 | --------------- | --------------- | --------------- | --------------- 
+| 1.1.4.3_alpha   | 2017-07-12      | 仇隽挺          | 并入forklift的launch文件
 | 1.1.4.2_beta    | 2017-07-10      | 韩立芹          | 增加base_calibration节点；hrg的voxel改为obstacle
 | 1.1.4.2_alpha   | 2017-07-04      | 潘力澜          | 增加laser_sensor_pose_calibration和static_laser_relocalization节点；
 | 1.1.4.1_beta    | 2017-06-28      | 秦伟明          | 改进hostname相关环境变量；新增odom的timestamp重置机制
