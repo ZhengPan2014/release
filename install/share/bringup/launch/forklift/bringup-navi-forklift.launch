@@ -101,7 +101,7 @@
                   - name: inflation_layer
                     type: "costmap_2d::InflationLayer"
                 obstacle_layer:
-                    observation_sources: scan_rectified #scan_rectified_down #scan_left scan_right
+                    observation_sources: scan_rectified scan_rectified_down #scan_left scan_right
                     scan_rectified:
                         expected_update_rate: 5.0
                         data_type: LaserScan
@@ -152,7 +152,7 @@
                 min_vel_y: 0.0
                 min_rot_vel: 0.2
                 yaw_goal_tolerance: 0.01 #0.025
-                xy_goal_tolerance: 0.05
+                xy_goal_tolerance: 0.25 #0.05
                 latch_xy_goal_tolerance: true
                 occdist_scale: 0.0
             TebLocalPlannerROS:
