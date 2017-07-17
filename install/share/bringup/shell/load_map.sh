@@ -1,1 +1,0 @@
-roslaunch bringup map_server.launch;
