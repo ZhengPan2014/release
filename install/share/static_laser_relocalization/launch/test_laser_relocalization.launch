@@ -5,6 +5,9 @@
    		<param name="search_point_interval_x" value="20"/>
    		<param name="search_point_interval_y" value="20"/>
    		<param name="search_point_Ndirection" value="12"/>
+   		<param name="icp_hit_cost_weight" value="0.2"/>
+   		<param name="icp_transition_cost_weight" value="0.2"/>
+   		<param name="icp_rotation_cost_weight" value="0.2"/>
    		<param name="icp_fast_mode" value="0"/>
 	</node>
 </launch>
