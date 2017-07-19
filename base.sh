@@ -1,1 +1,1 @@
-install/share/bringup/shell/base.sh
+www/shell/base.sh

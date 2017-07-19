@@ -20,22 +20,10 @@
             $.mobile.hashListeningEnabled = false;
             $.mobile.pushStateEnabled = false;
         });
-        //清除jquery mobile 代码对样式的影响
-		$(document).bind( "pagecreate", function( e ) {  
-		    //$( "input, textarea, select", e.target ).attr( "data-" + $.mobile.ns + "ajax", "false" ); 
-		    $( "input, textarea, select", e.target ).attr( "data-" + $.mobile.ns + "role", "none" );
-		});
-		//解决jQuery Mobile默认情况下页面跳转会出现闪屏现象
-		$(document).bind("mobileinit", function() {
-			if (navigator.userAgent.indexOf("Android") != -1) {
-				$.mobile.defaultPageTransition = 'none';
-				$.mobile.defaultDialogTransition = 'none';
-			}
-		});
    </script>
     <!--jquery mobile 插件-->
-	<link rel="stylesheet" href="./lib/jquery.mobile-1.3.2.min.css">
-	<script src="./lib/jquery.mobile-1.3.2.min.js"></script> 
+	<link rel="stylesheet" href="lib/jquery.mobile-1.4.5.min.css">
+	<script src="lib/jquery.mobile-1.4.5.min.js"></script> 
 	
 	<script type="text/javascript" src="./lib/easeljs.min.js"></script>
 	<script type="text/javascript" src="./lib/eventemitter2.min.js"></script>
@@ -60,7 +48,7 @@
 			text-align: center;
   			color: #3B6DDE;
 			}
-	</style>
+</style>
 </head>
 <body onselectstart='return false'>
 	<!--登录页-->
@@ -72,15 +60,15 @@
         <ul class="box_login">
           <li>
             <span class="box_login_logo"><img src="./image/account.png" height="100%" alt="账号图标"></span>账号:
-            <input type="text" name="" class="inp" autofocus="autofocus">
+            <input data-role="none" data-role="none" type="text" name="" class="inp" autofocus="autofocus">
           </li>
           <li style="margin-top: 30px;">
             <span class="box_login_logo"><img src="./image/lock.png" height="100%" alt="密码锁图标"></span>密码:
-            <input type="password" name="" class="inp">
+            <input data-role="none" type="password" name="" class="inp">
           </li>
         </ul>
         <div class="remember_checkbox">
-          <input type="checkbox" class="checkbox" value="">
+          <input data-role="none" type="checkbox" class="checkbox" value="">
           <span id="checkbox_span">
           	记住密码
           </span>
@@ -89,7 +77,7 @@
           </div>-->
         </div>
         <a href="#mapNavDiv" data-transition="slidedown"><div class="entry">
-        	<input type="button" value="登录" id="entry_button">
+        	<input data-role="none" type="button" value="登录" id="entry_button">
         </div></a>
       </div>
 	</div>	
@@ -97,6 +85,114 @@
 	<div data-role="page" id="mapNavDiv" style="background: url(./image/bgimg.png)">
 		<!--地图导航左侧菜单选项-->
 		<div class="map_menu"><a href="#menu" data-transition="pop"><img src="./image/pattern.png" width="100%" alt="菜单图标"></a></div>
+			<!--侧边栏和侧边栏按钮-->
+			<div data-role="panel" data-display="overlay" id="sidebar"> 
+		    <h2 style="padding-bottom: 10px; color: #3B6DDE; font-weight: 600;">面板头部</h2>
+				<div class="sidebar_map">
+					地图
+      				<select id="slider1" data-role="slider" style="top: 10px!important;">
+						<option value="false">开</option>
+						<option value="true">关</option>
+					</select> 
+				</div>
+				<div class="sidebar_Robot">
+					机器人
+					<select id="slider2" data-role="slider" style="top: 50px!important;">
+						<option value="false">开</option>
+						<option value="true">关</option>
+					</select> 
+      				</div>
+				<div class="sidebar_site" onclick="openSiteOption()">
+					<span id="sidebar_site_span">
+					</span>
+					站点
+					<script type="text/javascript">
+						function openSiteOption(){
+							var sidebarSite = document.getElementsByClassName("sidebar_site")[0];
+							var sidebarSiteSpan = document.getElementById("sidebar_site_span");
+							if(sidebarSite.style.height == '300px'){
+								sidebarSite.style.height = '60px';
+							} else{
+								sidebarSite.style.height = '300px';
+							};
+						};
+					</script>
+					<select id="slider3" data-role="slider">
+						<option value="false">开</option>
+						<option value="true">关</option>
+					</select> 
+					<div class="sidebar_site_type" style="border-top: 1px solid #edebf6;">
+						站点类型一 
+						<select id="slider4" data-role="slider">
+							<option value="false">开</option>
+							<option value="true">关</option>
+						</select> 
+					</div>
+					<div class="sidebar_site_type">
+						站点类型二
+						<select id="slider5" data-role="slider">
+							<option value="false">开</option>
+							<option value="true">关</option>
+						</select>
+					</div>
+					<div class="sidebar_site_type">
+						站点类型三
+						<select id="slider6" data-role="slider">
+							<option value="false">开</option>
+							<option value="true">关</option>
+						</select>
+					</div>
+					<div class="sidebar_site_type">
+						站点类型四
+						<select id="slider7" data-role="slider">
+							<option value="false">开</option>
+							<option value="true">关</option>
+						</select>
+					</div>
+				</div>
+				<div class="sidebar_route" onclick="sidebarRouteOption()">
+					<span id="sidebar_route_span">
+					</span>
+					路径
+					<script type="text/javascript">
+						function sidebarRouteOption(){
+							var sidebarRoute = document.getElementsByClassName("sidebar_route")[0];
+							var sidebarRouteSpan = document.getElementById("sidebar_route_span");
+							if(sidebarRoute.style.height == '240px'){
+								sidebarRoute.style.height = '60px'
+							} else{
+								sidebarRoute.style.height = '240px';
+							}
+						};
+					</script>
+					<select id="slider9" data-role="slider">
+						<option value="false">开</option>
+						<option value="true">关</option>
+					</select>
+					<div class="sidebar_route_type" style="border-top: 1px solid #edebf6;">
+						小车路径一
+						<select id="slider10" data-role="slider">
+							<option value="false">开</option>
+							<option value="true">关</option>
+						</select>
+					</div>
+					<div class="sidebar_route_type">
+						小车路径二
+						<select id="slider11" data-role="slider">
+							<option value="false">开</option>
+							<option value="true">关</option>
+						</select>
+					</div>
+					<div class="sidebar_route_type" style="border: none;">
+						小车路径三
+						<select id="slider12" data-role="slider">
+							<option value="false">开</option>
+							<option value="true">关</option>
+						</select>
+					</div>
+				</div>
+		    </div> 
+			<div class="open_sidebar"><a href="#sidebar"><img src="./image/sidebar.png" width="100%" alt="切换图标"></div>
 		<!--地图导航中间地图名称-->
 		<div class="map_nav"><p id="mapName">地图</p></div>
 		<!--地图导航右侧**选项-->
@@ -164,19 +260,19 @@
 			<ul class="site_main">
 			    <li style="box-shadow: none;">
 			    	<p>Mark:</p>
-			    	<input type="text" name="" class="inp" autofocus="autofocus" placeholder="请输入标记名称">
+			    	<input data-role="none" type="text" name="" class="inp" autofocus="autofocus" placeholder="请输入标记名称">
 			    </li>
 			    <li>
 			    	<p>Area(米):</p>
-			    	<input type="text" name="" class="inp" value="0.0">
+			    	<input data-role="none" type="text" name="" class="inp" value="0.0">
 			    </li>
 			    <li>
 			    	<p>Timeout(秒):</p>
-			    	<input type="text" name="" class="inp" value="0.0">
+			    	<input data-role="none" type="text" name="" class="inp" value="0.0">
 			    </li>
 			    <li>
 			    	<p>Action:</p>
-			    	<select class="site_select">
+			    	<select data-role="none" class="site_select">
 			    		<option value="map">Map</option>
 			    		<option value="timer">Timer</option>
 		                <option value="publisher">Publisher</option>
@@ -187,32 +283,32 @@
 			    </li>
 			    <li>
 			    	<p>Mode:</p>
-			    	<select class="site_select">
+			    	<select data-role="none" class="site_select">
 			    		<option value="loop">Loop</option>
 			    		<option value="none">None</option>
 			    	</select>
 			    </li>
 			    <li>
 			    	<p>Expect:</p>
-			    	<input type="text" name="" class="inp" value="调取数据">
+			    	<input data-role="none" type="text" name="" class="inp" value="调取数据">
 			    </li><li>
 			    	<p>Position-X:</p>
-			    	<input type="text" name="" class="inp" value="调取数据">
+			    	<input data-role="none" type="text" name="" class="inp" value="调取数据">
 			    </li>
 			    <li>
 			    	<p>Position-Y:</p>
-			    	<input type="text" name="" class="inp" value="调取数据">
+			    	<input data-role="none" type="text" name="" class="inp" value="调取数据">
 			    </li>
 			    <li>
 			    	<p>Orientation-Z:</p>
-			    	<input type="text" name="" class="inp" value="调取数据">
+			    	<input data-role="none" type="text" name="" class="inp" value="调取数据">
 			    </li>
 			    <li>
 			    	<p>Orientation-W:</p>
-			    	<input type="text" name="" class="inp" value="调取数据">
+			    	<input data-role="none" type="text" name="" class="inp" value="调取数据">
 			    </li>
 			    <li>
-			    	<input type="button" name="" class="submit" value="提交">
+			    	<input data-role="none" type="button" name="" class="submit" value="提交">
 			    </li>
 			</ul>
 		</div>	
@@ -227,23 +323,23 @@
 			<ul class="route_main">
 			    <li style="box-shadow: none;">
 			    	<p>Mark:</p>
-			    	<input type="text" name="" class="inp" autofocus="autofocus">
+			    	<input data-role="none" type="text" name="" class="inp" autofocus="autofocus">
 			    		
-			    	<select class="route_select">
+			    	<select data-role="none" class="route_select">
 			    		<option value="1111111">1111111</option>
 			    		<option value="2222222">2222222</option>
 		                <option value="3333333">3333333</option>
 		                <option value="4444444">4444444</option>
 		                <option value="5555555">5555555</option>
 			    	</select>
-			    	<select class="route_select">
+			    	<select data-role="none" class="route_select">
 			    		<option value="1111111">1111111</option>
 			    		<option value="2222222">2222222</option>
 		                <option value="3333333">3333333</option>
 		                <option value="4444444">4444444</option>
 		                <option value="5555555">5555555</option>
 			    	</select>
-			    	<select class="route_select" style="margin-bottom: 50px;">
+			    	<select data-role="none" class="route_select" style="margin-bottom: 50px;">
 			    		<option value="1111111">1111111</option>
 			    		<option value="2222222">2222222</option>
 		                <option value="3333333">3333333</option>
@@ -302,7 +398,7 @@
 					<span style="font-weight: 900;">第一步：</span>请点击下方<span style="color: red; font-weight: 900;">“开启建图”</span>按钮↓
 				</div>
 				<div class="mapping_button">
-					<input type="button" name="" id="mapping_button" value="开启建图" />
+					<input data-role="none" type="button" name="" id="mapping_button" value="开启建图" />
 					<div class="mapping_button_right">
 						<img src="image/open.png" width="100%" alt="开启"/>
 					</div>
@@ -380,32 +476,37 @@
 			        	<a href="#menu" data-transition="slidedown"><img src="image/close_one.png" width="100%" alt=""></a>
 				    </div>
 				</div>
-				<textarea name="textarea" id="debugging_text" onfocus="if(value=='请输入需要调试的代码'){value=''}">请输入需要调试的代码</textarea>
+				<textarea data-role="none" name="textarea" id="debugging_text" onfocus="if(value=='请输入需要调试的代码'){value=''}">请输入需要调试的代码</textarea>
 								
-			    <select id="debugging_select">
+			    <select data-role="none" id="debugging_select">
 			    	<option value="">默认</option>
-			    	<option value="向前向前向前向前">向前</option>
-			    	<option value="向后向后向后向后">向后</option>
-		            <option value="向左向左向左向左">向左</option>
-		            <option value="向右向右向右向右">向右</option>
+			    	<option value="">向前</option>
+			    	<option value="">向后</option>
+		            <option value="">向左</option>
+		            <option value="">向右</option>
 			    </select>
 				
-				<input type="button" id="debugging_button" onclick="send()" value="提交"/>
+				<input data-role="none" type="button" id="debugging_button" onclick="send()" value="提交"/>
 				
 				<script>
 					//代码调试
 					//var socket = new WebSocket("ws://" + window.location.hostname + ":9090");
-					var socket = new WebSocket('ws://192.168.0.207:9090');
+					var socket = new WebSocket('ws://192.168.0.205:9090');
 					var DebuggingText = document.getElementById("debugging_text");
 	
 					function send(){
 						var DebuggingSelectText = $("#debugging_select").val();
 						var DebuggingSelectOptionText = $("#debugging_select option:checked").text();
-							
+						var DebuggingSelectOption = $("#debugging_select option");
+						DebuggingSelectOption[0].value = "默认为空"
+						DebuggingSelectOption[1].value = "向前向前向前向前"
+						DebuggingSelectOption[2].value = "向后向后向后向后"
+						DebuggingSelectOption[3].value = "向左向左向左向左"
+						DebuggingSelectOption[4].value = "向右向右向右向右"
 						DebuggingText.innerText = DebuggingSelectText;
 						//console.log("被选项目的值："+ DebuggingSelectText +"，被选项目的显示值："+ DebuggingSelectOptionText +"。");
 						socket.send(DebuggingText.value);
-						console.log(DebuggingText.value)
+						//console.log(DebuggingText.value)
 					}
 					socket.onopen = function(event){
 						console.log("已连接")
@@ -445,22 +546,22 @@
 			</span>
 			<ul class="update_main">
 				<label for="radio1">
-					<li><input type="radio" name="update_main_radio" id="radio1" value="在线自动更新" onchange="radio_change(this.id)" />
+					<li><input data-role="none" type="radio" name="update_main_radio" id="radio1" value="在线自动更新" onchange="radio_change(this.id)" />
 					在线自动更新
 					</li>
 				</label>
 				<label for="radio2">
-					<li><input type="radio" name="update_main_radio" id="radio2" value="离线本地更新" onchange="radio_change(this.id)" />
+					<li><input data-role="none" type="radio" name="update_main_radio" id="radio2" value="离线本地更新" onchange="radio_change(this.id)" />
 					离线本地更新
 					</li>
 				</label>
 				<label for="radio3">
-					<li><input type="radio" name="update_main_radio" id="radio3" value="U盘威尔2升级包" onchange="radio_change(this.id)" />
+					<li><input data-role="none" type="radio" name="update_main_radio" id="radio3" value="U盘威尔2升级包" onchange="radio_change(this.id)" />
 					U盘威尔2升级包
 					</li>
 				</label>
 				<label for="radio4">
-					<li style="border: none;"><input type="radio" name="update_main_radio" id="radio4" value="U盘安装文件传输包" onchange="radio_change(this.id)" />
+					<li style="border: none;"><input data-role="none" type="radio" name="update_main_radio" id="radio4" value="U盘安装文件传输包" onchange="radio_change(this.id)" />
 					U盘安装文件传输包
 					</li>
 				</label>
@@ -475,6 +576,11 @@
 				更新信息...
 			</span>
 		</div>
+		
+		
+		
+		
+		  
 
 </body>
 </html>

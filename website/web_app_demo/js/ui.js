@@ -266,7 +266,7 @@ var UI = UI || {
 $(() => {
 	// initialize
 	//var url = "ws://" + window.location.hostname + ":9090";
-	var url = 'ws://192.168.0.207:9090';
+	var url = 'ws://192.168.0.205:9090';
 	NAV.init(url);
 	UI.initStage();
 	NAV.dispMapAndWps('/map');
@@ -282,6 +282,9 @@ $(() => {
 	
 	
 });
+
+
+
 
 function undispWpMenu()
 {

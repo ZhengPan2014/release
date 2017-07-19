@@ -1,1 +1,1 @@
-install/share/bringup/shell/boot.sh
+www/shell/boot.sh
