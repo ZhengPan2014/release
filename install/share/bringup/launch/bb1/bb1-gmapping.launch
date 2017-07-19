@@ -4,7 +4,7 @@
         <remap from="scan" to="scan_rectified"/>
         <rosparam>
             maxUrange: 24.9
-            minimumScore: 300
+            minimumScore: 550
             xmin: -25.0
             ymin: -25.0
             xmax: 25.0
