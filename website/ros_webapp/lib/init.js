@@ -9,6 +9,7 @@ const paths = {
 const fs = require('mz/fs');
 const os = require('os');
 var ParamServer = require('../models/param_server');
+var boot = require('./boot');
 
 var paramServer = new ParamServer({});
 var model = null;
@@ -94,6 +95,8 @@ function getConfig(path)
 
 function init()
 {
+	// boot.init();
+
 	getModel();
 	setPathPrefix(paths.pathPrefix);
 	getVersion(paths.readmePath);	

@@ -8,6 +8,7 @@
         <param name="scan_cycle_time" value="0.04" />
         <param name="frame_id" value="/base_laser" />
         <param name="publish_frequency" value="30" />
-        <!--<rosparam command="load" file="$(find cob_sick_s300)/ros/test/dummy_config.yaml"/>-->
+        <param name="scan_id" value="7" />
+        <param name="inverted" value="false" />
     </node>
 </launch>

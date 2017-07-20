@@ -3,7 +3,6 @@
 const os = require('os');
 const shell = require('shelljs');
 const child = require('child_process');
-const comm = require('./comm');
 const ttys = require('./serial');
 
 if (!shell.which('apache2')) {
@@ -19,11 +18,6 @@ if (!shell.which('apache2')) {
 
 // if (os.arch() !== process.env['NODEJS_ORG_ARCH']) {
 //     shell.echo(os.arch());
-// }
-
-// if (!shell.which('git')) {
-//   shell.echo('Sorry, this script requires git');
-//   shell.exit(1);
 // }
 
 const ROS_HOSTNAME="ouiyeah-null"; // TODO: hostname for external roscore
@@ -59,9 +53,6 @@ shell.exec("ping -c 1 " + ROS_HOSTNAME + ".local", {silent:true}, function(code,
 shell.exec('cd ~/catkin_ws/www/ros_webapp; node app.js;', function(code, stdout, stderr) {
     console.log(`${code}: ${stdout} ${stderr}`);
 }); // TODO: use other strategy to replace this
-
-// comm();
-// console.log('network done');
 
 // ttys();
 // console.log('serial done');
