@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<launch>
+    <node pkg="cob_scan_unifier" type="scan_unifier_node" name="cob_scan_unifier" output="screen">
+        <rosparam>
+           input_scans: ["scan", "scan_rear"]
+           loop_rate: 20.0
+        </rosparam>
+    </node>
+   
+</launch>

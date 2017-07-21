@@ -1,0 +1,164 @@
+<?xml version="1.0"?>
+<launch>
+    <include file="$(find bringup)/launch/bringup-base.launch"/>
+
+    <node name="tf_base_footprint" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+        <rosparam>
+            frame_id: base_footprint
+            z: 0.07
+        </rosparam>
+    </node>
+
+   <node name="tf_base_laser" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+        <rosparam>
+            child_frame_id: base_laser
+            x: 0.23
+            z: 0.35
+        </rosparam>
+    </node>
+
+    <!-- sick s300 tf-->
+    <!--<node name="tf_base_laser" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+        <rosparam>
+            child_frame_id: base_laser
+            x: 0.0
+            y: -0.05
+            z: 0.60
+        </rosparam>
+    </node>-->
+
+    <node name="tf_base_laser_rear" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+        <rosparam>
+            child_frame_id: base_laser_rear
+            x: -0.205
+            z: 0.32
+            yaw: 3.14
+        </rosparam>
+    </node>
+
+    <node name="tf_base_imu_left" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+        <rosparam>
+            child_frame_id: base_imu_left
+            x: -0.05
+            y: 0.05
+            z: 0.48
+        </rosparam>
+    </node>
+
+    <node name="tf_base_imu_right" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+        <rosparam>
+            child_frame_id: base_imu_right
+            x: 0.0
+            y: -0.17
+            z: 0.37
+        </rosparam>
+    </node>
+    <node name="tf_base_camera" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+        <rosparam>
+            child_frame_id: camera_link
+            x: 0.10
+            y: 0.05
+            z: 0.505            
+        </rosparam>
+    </node>
+    <!-- <include file="$(find camera_base_tf)/launch/camera_base_tf.launch"/> -->
+    <!-- <include file="$(find depth_sensor_pose)/launch/depth_sensor_pose.launch"/> -->
+    
+    <!--<include file="$(find bringup)/launch/rosbridge_sonar_hrg.launch">       
+    </include>-->
+
+    <node name="urg_node" pkg="urg_node" type="urg_node" output="screen">
+        <rosparam>
+            ip_address: 192.168.0.10
+            frame_id: base_laser
+            publish_multiecho: false
+            angle_min: -1.57
+            angle_max: 1.57
+            skip: 0
+        </rosparam>
+    </node>
+
+    <node name="urg_node_rear" pkg="urg_node" type="urg_node" output="screen">
+        <rosparam>
+            ip_address: 192.168.0.11
+            frame_id: base_laser_rear
+            publish_multiecho: false
+            angle_min: -1.57
+            angle_max: 1.57
+            skip: 0
+        </rosparam>
+        <remap from="/scan" to="/scan_rear"/>
+    </node>
+
+   <!-- sick s300 laser range finder -->
+   <!-- <include file="$(find bringup)/launch/sick_s300.launch"/>-->
+  
+    <node name="scan_filter" pkg="laser_filters" type="scan_to_scan_filter_chain" output="screen">
+        <remap from="scan" to="scan"/>
+        <remap from="scan_filtered" to="scan_filtered"/>
+        <rosparam>
+            scan_filter_chain:
+            - type: laser_filters/LaserArrayFilter
+              name: laser_median_filter
+              params: 
+                range_filter_chain:
+                  - name: median_5
+                    type: filters/MultiChannelMedianFilterFloat 
+                    params:
+                      number_of_observations: 5
+                      unused: 10
+                intensity_filter_chain:
+                  - name: median_5
+                    type: filters/MultiChannelMedianFilterFloat 
+                    params:
+                      number_of_observations: 5
+                      unused: 10
+        </rosparam>
+    </node>
+
+    <node name="scan_rectifier" pkg="scan_rectifier" type="scan_rectifier" output="screen">
+        <remap from="scan_input" to="scan_filtered"/>
+        <remap from="scan_output" to="scan_rectified"/>
+        <rosparam>
+            max_range: 20.0
+        </rosparam>
+    </node>
+
+   <!-- <node name="robot_pose_ekf" pkg="robot_pose_ekf" type="robot_pose_ekf">
+        <rosparam>
+            output_frame: odom
+            base_footprint_frame: base_footprint
+            freq: 30.0
+            sensor_timeout: 1.0
+            odom_used: true
+            imu_used: true
+            vo_used: false
+        </rosparam>
+    </node>-->
+    
+    <param name="camera/driver/data_skip" value="2"/>
+    <!--<include file="$(find openni2_launch)/launch/openni2.launch"/>
+    <include file="$(find bringup)/launch/pointcloud_floor_filter.launch"/>-->
+    <!--  <include file="$(find yocs_cmd_vel_mux)/launch/standalone.launch"/> -->
+
+    <include file="$(find bringup)/launch/han/robot_ekf_localization.launch"/>
+
+    <include file="$(find bringup)/launch/rosbridge_drive_aqmd2s.launch">
+        <arg name="drive_port_left" value="/dev/usb_left1"/>
+        <arg name="drive_port_right" value="/dev/usb_left2"/>
+        <arg name="wheel_seperation" value="0.428"/>
+        <arg name="wheel_ratio" value="23333.3"/>
+    </include>
+
+    <include file="$(find bringup)/launch/rosbridge_imu_jy901.launch">
+        <arg name="imu_port" value="/dev/usb_left3"/>
+        <arg name="pub_name" value="/imu_left"/>
+        <arg name="imu_frame_id" value="base_imu_left"/>
+    </include>
+
+    <include file="$(find bringup)/launch/rosbridge_imu_jy901.launch">
+        <arg name="imu_port" value="/dev/usb_left4"/>
+        <arg name="pub_name" value="/imu_right"/>
+        <arg name="imu_frame_id" value="base_imu_right"/>
+    </include>
+</launch>
