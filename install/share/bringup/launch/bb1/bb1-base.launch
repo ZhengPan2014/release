@@ -48,8 +48,12 @@
     </node>
 
     <node name="robot_pose_publisher" pkg="robot_pose_publisher" type="robot_pose_publisher" output="screen"/>
+    
+   <!--  <include file="$(find bringup)/launch/bb1/rosbridge_radio.launch">
+        <arg name="plc_port" value="/dev/usb_top1"/>
+    </include> -->
 
-    <include file="$(find bringup)/launch/rosbridge_drive_aqmd2s.launch">
+    <include file="$(find bringup)/launch/bb1/rosbridge_drive_aqmd2s_2.launch">
         <arg name="drive_port_left" value="/dev/usb_left1"/>
         <arg name="drive_port_right" value="/dev/usb_left2"/>
         <arg name="wheel_seperation" value="0.49"/>
@@ -60,8 +64,12 @@
         <arg name="imu_port" value="/dev/usb_left3"/>
     </include>
 
-    <include file="$(find bringup)/launch/rosbridge_plc_lift.launch">
+    <include file="$(find bringup)/launch/bb1/rosbridge_motor_lift.launch">
         <arg name="plc_port" value="/dev/usb_left4"/>
+    </include>
+
+    <include file="$(find bringup)/launch/bb1/rosbridge_plc.launch">
+        <arg name="plc_port" value="/dev/usb_top2"/>
     </include>
 
     <node name="teleop_keyboard" pkg="teleop_keyboard" type="teleop_keyboard" output="screen"/>
