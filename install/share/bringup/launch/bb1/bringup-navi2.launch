@@ -89,6 +89,7 @@
                     z_voxels: 8
                 inflation_layer:
                     inflation_radius: 0.75
+                    cost_scaling_factor: 1.0
                 footprint_topic: footprint_setup
             local_costmap:
                 global_frame: odom
@@ -134,6 +135,7 @@
                     z_voxels: 8
                 inflation_layer:
                     inflation_radius: 0.75
+                    cost_scaling_factor: 1.0
                 footprint_topic: footprint_setup
             GlobalPlanner:
                 allow_unknown: false
