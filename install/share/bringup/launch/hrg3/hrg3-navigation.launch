@@ -47,10 +47,10 @@
                 plugins:
                   - name: static_layer
                     type: "costmap_2d::StaticLayer"
-                  - name: infrared_layer
+                <!--   - name: infrared_layer
                     type: "range_sensor_layer::RangeSensorLayer"
                   - name: side_layer
-                    type: "range_sensor_layer::RangeSensorLayer"
+                    type: "range_sensor_layer::RangeSensorLayer" -->
                   - name: obstacle_layer
                     type: "costmap_2d::ObstacleLayer"
                   - name: inflation_layer
@@ -71,7 +71,7 @@
        
                     track_unknown_space: true
                     z_voxels: 6
-                infrared_layer:
+                <!-- infrared_layer:
                     ns: ""
                     topics: ['/infrared_03', '/infrared_04', '/infrared_05', '/infrared_06', '/infrared_07']
                     clear_threshold: 0.2
@@ -81,7 +81,7 @@
                     topics: ['/infrared_01', '/infrared_02', '/infrared_08', 'infrared_09']
                     clear_threshold: 0.2
                     mark_threshold: 0.9
-                    clear_on_max_reading: true
+                    clear_on_max_reading: true -->
 
                 inflation_layer:
                     inflation_radius: 0.75

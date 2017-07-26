@@ -9,6 +9,14 @@
                 type: serial
                 serial_stop: 1
                 action_chain:
+
+                  - name: plc_port
+                    type: write
+                    byte: [0xf1, 0x10, 0x00, 0xe3, 0x00, 0x01, 0x02, 0x00, 0x01, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0xf1, 0x10, 0x00, 0xe3, 0x00, 0x01, crc16, little]
+
                   - name: plc_port
                     type: write
                     byte: [0xf1, 0x10, 0x01, 0x2d, 0x00, 0x01, 0x02, range_side, big, crc16, little]
@@ -65,13 +73,13 @@
                     byte: [0xf1, 0x10, 0x01, 0x45, 0x00, 0x01, crc16, little]
                   - name: plc_port
                     type: write
-                    byte: [0xf1, 0x10, 0x01, 0x47, 0x00, 0x01, 0x02, 0x01, 0x01, crc16, little]
+                    byte: [0xf1, 0x10, 0x01, 0x47, 0x00, 0x01, 0x02, 0x00, 0x01, crc16, little]
                   - name: plc_port
                     type: read
                     byte: [0xf1, 0x10, 0x01, 0x47, 0x00, 0x01, crc16, little]
                   - name: plc_port
                     type: write
-                    byte: [0xf1, 0x10, 0x01, 0x4a, 0x00, 0x01, 0x02, 0x01, 0x01, crc16, little]
+                    byte: [0xf1, 0x10, 0x01, 0x4a, 0x00, 0x01, 0x02, 0x00, 0x01, crc16, little]
                   - name: plc_port
                     type: read
                     byte: [0xf1, 0x10, 0x01, 0x4a, 0x00, 0x01, crc16, little]
@@ -87,9 +95,17 @@
                   - name: plc_port
                     type: read
                     byte: [0xf1, 0x10, 0x01, 0x4b, 0x00, 0x01, crc16, little]
+
+                  - name: plc_port
+                    type: write
+                    byte: [0xf1, 0x10, 0x00, 0xec, 0x00, 0x01, 0x02, check_delay, big, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0xf1, 0x10, 0x00, 0xec, 0x00, 0x01, crc16, little]
                 range_forward: 250
                 range_side: 200
                 range_cliff: 480
+                check_delay: 10
             topic_chain:
               - name: waypoint_user_pub
                 type: subscribe
@@ -253,6 +269,16 @@
                     byte: [0xf1, 0x03, 0x34, s01, big, infrared_01, big, s02, big, infrared_02, big, s03, big, infrared_03, big, s04, big, infrared_04, big, s05, big, infrared_05, big, s06, big, infrared_06, big, s07, big, infrared_07, big, s08, big, infrared_08, big, s09, big, infrared_09, big, s10, big, infrared_10, big, s11, big, infrared_11, big, s12, big, infrared_12, big, s13, big, infrared_13, big, crc16, little]
                 echo: [infrared_01, infrared_02, infrared_03, infrared_04, infrared_05, infrared_06, infrared_07, infrared_08, infrared_09, infrared_10, infrared_11, infrared_12, infrared_13]
                 frame_id: [base_infrared_01, base_infrared_02, base_infrared_03, base_infrared_04, base_infrared_05, base_infrared_06, base_infrared_07, base_infrared_08, base_infrared_09, base_infrared_10, base_infrared_11, base_infrared_12, base_infrared_13]
+              - name: pubsuber_auto_charge
+                type: event
+                action_chain:
+                  - name: plc_port
+                    type: write
+                    byte: [0xf1, 0x03, 0x00, 0xeb, 0x00, 0x01, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0xf1, 0x03, 0x02, status, big, crc16, little]
+                echo: [status]
               - name: diagnostics
                 type: publish
         </rosparam>

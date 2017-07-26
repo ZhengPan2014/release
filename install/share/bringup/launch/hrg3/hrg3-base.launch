@@ -176,6 +176,16 @@
         </rosparam>
     </node>
 
+    <node name="scan_marker" pkg="scan_marker" type="scan_marker" output="screen">
+        <remap from="scan" to="scan_rectified"/>
+        <remap from="pose" to="/scan_marker/pose"/>
+        <rosparam>
+            marker_obs: 3
+            marker_interval: 0.11
+            marker_threshold: 240.0
+        </rosparam>
+    </node>
+
     <node name="robot_pose_ekf" pkg="robot_pose_ekf" type="robot_pose_ekf">
         <rosparam>
             output_frame: odom
@@ -187,6 +197,8 @@
             vo_used: false
         </rosparam>
     </node>
+
+    <node name="sound_play" pkg="sound_play" type="soundplay_node.py"/>
 
     <node name="diagnostic_aggregator" pkg="diagnostic_aggregator" type="aggregator_node" args="CPP" output="screen">
         <rosparam>
