@@ -9,14 +9,18 @@
                 type: serial
                 serial_stop: 1
                 action_chain:
-
                   - name: plc_port
                     type: write
-                    byte: [0xf1, 0x10, 0x00, 0xe3, 0x00, 0x01, 0x02, 0x00, 0x01, crc16, little]
+                    byte: [0xf1, 0x10, 0x00, 0xe2, 0x00, 0x01, 0x02, 0x00, 0x01, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0xf1, 0x10, 0x00, 0xe2, 0x00, 0x01, crc16, little]
+                  - name: plc_port
+                    type: write
+                    byte: [0xf1, 0x10, 0x00, 0xe3, 0x00, 0x01, 0x02, 0x00, 0x00, crc16, little]
                   - name: plc_port
                     type: read
                     byte: [0xf1, 0x10, 0x00, 0xe3, 0x00, 0x01, crc16, little]
-
                   - name: plc_port
                     type: write
                     byte: [0xf1, 0x10, 0x01, 0x2d, 0x00, 0x01, 0x02, range_side, big, crc16, little]
@@ -95,7 +99,6 @@
                   - name: plc_port
                     type: read
                     byte: [0xf1, 0x10, 0x01, 0x4b, 0x00, 0x01, crc16, little]
-
                   - name: plc_port
                     type: write
                     byte: [0xf1, 0x10, 0x00, 0xec, 0x00, 0x01, 0x02, check_delay, big, crc16, little]

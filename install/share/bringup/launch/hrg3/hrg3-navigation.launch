@@ -15,7 +15,7 @@
         
         <rosparam>
             base_global_planner: "navfn/NavfnROS"
-            base_local_planner: "dwa_local_planner/DWAPlannerROS"
+            base_local_planner: "dwa_local_planner/DWAPlannerROS" # "teb_local_planner/TebLocalPlannerROS"
             recovery_behaviors:
               - name: 'conservative_reset'
                 type: 'clear_costmap_recovery/ClearCostmapRecovery'
@@ -184,6 +184,24 @@
                 goal_distance_bias: 24.0
                 occdist_scale: 0.5
                 oscillation_reset_dist: 0.05
+            TebLocalPlannerROS:
+                max_vel_x: 0.5
+                max_vel_theta: 1.0
+                xy_goal_tolerance: 0.05
+                yaw_goal_tolerance: 0.05
+                acc_lim_x: 0.5
+                acc_lim_theta: 3.2
+                max_vel_x_backwards: 0.002 #0.3 #0.2
+                min_turning_radius: 0.001
+                penalty_epsilon: 0.001
+                wheelbase: 0.415
+                footprint_model:
+                    type: "polygon"
+                    vertices: [[0.355, -0.268], [0.355, 0.268], [-0.33, 0.268], [-0.33, -0.268]]
+                free_goal_vel: false
+                viapoints_all_candidates: false #true
+                # odom_topic: /odometry/filtered
+                map_frame: /map
         </rosparam>
     </node>
 </launch>
