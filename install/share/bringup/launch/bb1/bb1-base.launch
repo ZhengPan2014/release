@@ -147,7 +147,7 @@
         <rosparam>
             marker_obs: 2
             marker_interval: 0.86
-            marker_threshold: 240.0
+            marker_threshold: 224.0 #240.0
         </rosparam>
     </node>
 

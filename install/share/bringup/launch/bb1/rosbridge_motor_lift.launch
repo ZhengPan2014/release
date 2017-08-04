@@ -7,7 +7,7 @@
             port_chain:
               - name: plc_port
                 type: serial
-                timeout: 1.5
+                timeout: 0.1
             topic_chain:
               - name: waypoint_user_pub
                 type: subscribe
@@ -50,7 +50,6 @@
                   - name: plc_port
                     type: read
                     byte: [0x05, data, 0x00, 0x42, 0x03, 0xb2, crc16, little]
-                    time_out: 1.5
                 echo: [data]
                 data: 0x00
               - name: pubsuber_lift_down
@@ -62,7 +61,6 @@
                   - name: plc_port
                     type: read
                     byte: [0x05, data, 0x00, 0x42, 0xfd, 0x4e, crc16, little]
-                    time_out: 1.5
                 echo: [data]
                 data: 0x00
               - name: pubsuber_lift_stop
@@ -74,7 +72,6 @@
                   - name: plc_port
                     type: read
                     byte: [0x05, data, 0x00, 0x42, 0x00, 0x00, 0x28, 0x5a]
-                    time_out: 1.5
                 echo: [data]
                 data: 0x00
               - name: diagnostics
