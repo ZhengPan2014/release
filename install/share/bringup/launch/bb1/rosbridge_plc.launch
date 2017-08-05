@@ -11,6 +11,7 @@
                 serial_parity: 'N'
                 serial_stop: 1
                 timeout: 0.1
+                timeoff: 0.005
                 action_chain:
                   - name: plc_port
                     type: write
