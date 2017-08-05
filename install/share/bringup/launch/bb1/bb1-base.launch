@@ -49,9 +49,9 @@
 
     <node name="robot_pose_publisher" pkg="robot_pose_publisher" type="robot_pose_publisher" output="screen"/>
     
-   <!--  <include file="$(find bringup)/launch/bb1/rosbridge_radio.launch">
+    <include file="$(find bringup)/launch/bb1/rosbridge_radio.launch">
         <arg name="plc_port" value="/dev/usb_top1"/>
-    </include> -->
+    </include> 
 
     <include file="$(find bringup)/launch/bb1/rosbridge_drive_aqmd2s_2.launch">
         <arg name="drive_port_left" value="/dev/usb_left1"/>
