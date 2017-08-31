@@ -23,7 +23,7 @@
     <node name="move_base" pkg="move_base" type="move_base" output="screen">
         <remap from="odom" to="/odometry/filtered"/>
         <rosparam>
-            base_global_planner: "navfn/NavfnROS"
+            base_global_planner: "global_planner/FixedGlobalPlanner"<!--"navfn/NavfnROS"-->
             base_local_planner: "dwa_local_planner/DWAPlannerROS"
             recovery_behaviors:
               - name: 'conservative_reset'
@@ -126,6 +126,11 @@
                 allow_unknown: false
             NavfnROS:
                 allow_unknown: false
+            FixedGlobalPlanner:
+                allow_unknown: false
+                subscribe_path_topic: specified_path
+                endpoint_tolerance: 2.0
+                retrace_path: true
             TrajectoryPlannerROS:
                 acc_lim_x: 0.5
                 acc_lim_y: 0.0
@@ -151,10 +156,12 @@
                 max_vel_y: 0.0
                 min_vel_y: 0.0
                 min_rot_vel: 0.2
-                yaw_goal_tolerance: 0.05 #0.025
-                xy_goal_tolerance: 0.50 #0.05
+                yaw_goal_tolerance: 0.1 #0.025
+                xy_goal_tolerance: 0.5 #0.05
                 latch_xy_goal_tolerance: true
                 occdist_scale: 0.0
+                path_distance_bias: 64.0 #96.0 #32.0
+                vx_samples: 7
             TebLocalPlannerROS:
                 acc_lim_x: 0.5
                 acc_lim_theta: 3.2

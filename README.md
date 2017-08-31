@@ -2,6 +2,7 @@
 
 | 版本            | 日期            | 发布人          | 更新内容
 | --------------- | --------------- | --------------- | --------------- 
+| 1.1.4.9_alpha   | 2017-08-31      | 潘力澜          | 加入path_recorder；加入fixed_global_planner；调试forklift
 | 1.1.4.8_beta    | 2017-08-10      | 张邺            | 撤销守护进程；修改waypoints/scan_marker/driver细节
 | 1.1.4.8_alpha   | 2017-08-05      | 张邺            | 新增守护进程
 | 1.1.4.7_beta    | 2017-08-04      | 张邺            | 修改scan_marker及scan_rectifier逻辑；修改forklift相关程序
