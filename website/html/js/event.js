@@ -1,0 +1,1 @@
+"use strict";var EVENT=EVENT||{mapClickHandle:function(n){},timerClickHandle:function(n){},puberClickHandle:function(n){},suberClickHandle:function(n){},pubsuberClickHandle:function(n){}};

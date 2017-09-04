@@ -1,27 +1,42 @@
 {
-    "name": "tailinserver",
-    "version": "1.0.0",
-    "description": "nodejs server for Tailin",
-    "main": "server.js",
-    "scripts": {
-        "start": "node server.js"
-    },
-    "keywords": [
-        "tailin"
-    ],
-    "author": "Chenxc,GrayLoo",
-    "license": "Apache-2.0",
-    "repository": {
-        "type": "",
-        "url": ""
-    },
-    "dependencies": {
-        "express": "",
-        "mysql": "",
-        "crypto": "",
-        "body-parser": "",
-        "sequelize": "",
-        "log4js": "",
-        "pdfkit": ""
-    }
+  "name": "tailinserver",
+  "version": "1.0.0",
+  "description": "nodejs server for Tailin",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "tailin"
+  ],
+  "author": "Chenxc,GrayLoo",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "",
+    "url": ""
+  },
+  "dependencies": {
+    "body-parser": "",
+    "crypto": "",
+    "express": "",
+    "log4js": "",
+    "mysql": "",
+    "pdfkit": "",
+    "sequelize": ""
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-es2016": "^6.24.1",
+    "grunt": "^1.0.1",
+    "grunt-babel": "^7.0.0",
+    "grunt-cli": "^1.2.0",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-csslint": "^2.0.0",
+    "grunt-contrib-cssmin": "^2.2.1",
+    "grunt-contrib-jshint": "^1.1.0",
+    "grunt-contrib-uglify": "^3.0.1",
+    "grunt-contrib-watch": "^1.0.0"
+  }
 }

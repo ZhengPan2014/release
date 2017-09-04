@@ -9,113 +9,168 @@
                 type: serial
                 serial_stop: 1
                 action_chain:
-                  - name: plc_port
+                  <!-- bumper-->
+                  - name: plc_port  
                     type: write
                     byte: [0xf1, 0x10, 0x00, 0xe2, 0x00, 0x01, 0x02, 0x00, 0x01, crc16, little]
                   - name: plc_port
                     type: read
                     byte: [0xf1, 0x10, 0x00, 0xe2, 0x00, 0x01, crc16, little]
+                  <!-- emergency stop -->
                   - name: plc_port
-                    type: write
-                    byte: [0xf1, 0x10, 0x00, 0xe3, 0x00, 0x01, 0x02, 0x00, 0x00, crc16, little]
+                    type: write 
+                    byte: [0xf1, 0x10, 0x00, 0xe3, 0x00, 0x01, 0x02, 0x00, 0x02, crc16, little]
                   - name: plc_port
                     type: read
                     byte: [0xf1, 0x10, 0x00, 0xe3, 0x00, 0x01, crc16, little]
-                  - name: plc_port
+                  <!-- #01 -->
+                  - name: plc_port  
                     type: write
                     byte: [0xf1, 0x10, 0x01, 0x2d, 0x00, 0x01, 0x02, range_side, big, crc16, little]
                   - name: plc_port
                     type: read
                     byte: [0xf1, 0x10, 0x01, 0x2d, 0x00, 0x01, crc16, little]
-                  - name: plc_port
+                  <!-- #02 -->
+                  - name: plc_port  
                     type: write
-                    byte: [0xf1, 0x10, 0x01, 0x30, 0x00, 0x01, 0x02, range_side, big, crc16, little]
+                    byte: [0xf1, 0x10, 0x01, 0x30, 0x00, 0x01, 0x02, range_forward, big, crc16, little]
                   - name: plc_port
                     type: read
                     byte: [0xf1, 0x10, 0x01, 0x30, 0x00, 0x01, crc16, little]
-                  - name: plc_port
+                  <!-- #03 -->
+                  - name: plc_port   
                     type: write
                     byte: [0xf1, 0x10, 0x01, 0x33, 0x00, 0x01, 0x02, range_forward, big, crc16, little]
                   - name: plc_port
                     type: read
                     byte: [0xf1, 0x10, 0x01, 0x33, 0x00, 0x01, crc16, little]
-                  - name: plc_port
+                   <!-- #04 -->
+                  - name: plc_port  
                     type: write
                     byte: [0xf1, 0x10, 0x01, 0x36, 0x00, 0x01, 0x02, range_forward, big, crc16, little]
                   - name: plc_port
                     type: read
                     byte: [0xf1, 0x10, 0x01, 0x36, 0x00, 0x01, crc16, little]
-                  - name: plc_port
+                  <!-- #05 -->
+                  - name: plc_port  
                     type: write
                     byte: [0xf1, 0x10, 0x01, 0x39, 0x00, 0x01, 0x02, range_forward, big, crc16, little]
                   - name: plc_port
                     type: read
                     byte: [0xf1, 0x10, 0x01, 0x39, 0x00, 0x01, crc16, little]
-                  - name: plc_port
+                  <!-- #06 -->
+                  - name: plc_port  
                     type: write
-                    byte: [0xf1, 0x10, 0x01, 0x3c, 0x00, 0x01, 0x02, range_forward, big, crc16, little]
+                    byte: [0xf1, 0x10, 0x01, 0x3c, 0x00, 0x01, 0x02, range_side, big, crc16, little]
                   - name: plc_port
                     type: read
                     byte: [0xf1, 0x10, 0x01, 0x3c, 0x00, 0x01, crc16, little]
-                  - name: plc_port
+                  <!-- #07 -->
+                  - name: plc_port  
                     type: write
-                    byte: [0xf1, 0x10, 0x01, 0x3f, 0x00, 0x01, 0x02, range_forward, big, crc16, little]
+                    byte: [0xf1, 0x10, 0x01, 0x3f, 0x00, 0x01, 0x02, range_cliff, big, crc16, little]
                   - name: plc_port
                     type: read
                     byte: [0xf1, 0x10, 0x01, 0x3f, 0x00, 0x01, crc16, little]
-                  - name: plc_port
+                  <!-- #08 -->
+                  - name: plc_port   
                     type: write
-                    byte: [0xf1, 0x10, 0x01, 0x42, 0x00, 0x01, 0x02, range_side, big, crc16, little]
+                    byte: [0xf1, 0x10, 0x01, 0x42, 0x00, 0x01, 0x02, range_cliff, big, crc16, little]
                   - name: plc_port
                     type: read
                     byte: [0xf1, 0x10, 0x01, 0x42, 0x00, 0x01, crc16, little]
-                  - name: plc_port
+                  <!-- #09 -->
+                  - name: plc_port  
                     type: write
-                    byte: [0xf1, 0x10, 0x01, 0x45, 0x00, 0x01, 0x02, range_side, big, crc16, little]
+                    byte: [0xf1, 0x10, 0x01, 0x45, 0x00, 0x01, 0x02, range_backward, big, crc16, little]
                   - name: plc_port
                     type: read
                     byte: [0xf1, 0x10, 0x01, 0x45, 0x00, 0x01, crc16, little]
-                  - name: plc_port
+<!--                   - name: plc_port
                     type: write
                     byte: [0xf1, 0x10, 0x01, 0x47, 0x00, 0x01, 0x02, 0x00, 0x01, crc16, little]
                   - name: plc_port
                     type: read
-                    byte: [0xf1, 0x10, 0x01, 0x47, 0x00, 0x01, crc16, little]
-                  - name: plc_port
+                    byte: [0xf1, 0x10, 0x01, 0x47, 0x00, 0x01, crc16, little] -->
+<!--                   - name: plc_port
                     type: write
                     byte: [0xf1, 0x10, 0x01, 0x4a, 0x00, 0x01, 0x02, 0x00, 0x01, crc16, little]
                   - name: plc_port
                     type: read
-                    byte: [0xf1, 0x10, 0x01, 0x4a, 0x00, 0x01, crc16, little]
-                  - name: plc_port
+                    byte: [0xf1, 0x10, 0x01, 0x4a, 0x00, 0x01, crc16, little] -->
+                  <!-- #10 -->
+                  - name: plc_port   
                     type: write
-                    byte: [0xf1, 0x10, 0x01, 0x48, 0x00, 0x01, 0x02, range_cliff, big, crc16, little]
+                    byte: [0xf1, 0x10, 0x01, 0x48, 0x00, 0x01, 0x02, range_backward, big, crc16, little]
                   - name: plc_port
                     type: read
                     byte: [0xf1, 0x10, 0x01, 0x48, 0x00, 0x01, crc16, little]
-                  - name: plc_port
+                  <!--  #11 -->
+<!--                   - name: plc_port   
                     type: write
                     byte: [0xf1, 0x10, 0x01, 0x4b, 0x00, 0x01, 0x02, range_cliff, big, crc16, little]
                   - name: plc_port
                     type: read
-                    byte: [0xf1, 0x10, 0x01, 0x4b, 0x00, 0x01, crc16, little]
+                    byte: [0xf1, 0x10, 0x01, 0x4b, 0x00, 0x01, crc16, little] -->
+                  <!--  #12 -->
+<!--                   - name: plc_port  
+                    type: write
+                    byte: [0xf1, 0x10, 0x01, 0x4e, 0x00, 0x01, 0x02, range_backward, big, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0xf1, 0x10, 0x01, 0x4e, 0x00, 0x01, crc16, little] -->
+                 <!-- #13 -->
+<!--                   - name: plc_port   
+                    type: write
+                    byte: [0xf1, 0x10, 0x01, 0x51, 0x00, 0x01, 0x02, range_backward, big, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0xf1, 0x10, 0x01, 0x51, 0x00, 0x01, crc16, little] -->
                   - name: plc_port
                     type: write
                     byte: [0xf1, 0x10, 0x00, 0xec, 0x00, 0x01, 0x02, check_delay, big, crc16, little]
                   - name: plc_port
                     type: read
                     byte: [0xf1, 0x10, 0x00, 0xec, 0x00, 0x01, crc16, little]
+                 <!-- disable infrared_backward -->
+                  - name: plc_port
+                    type: write
+                    byte: [0xf1, 0x10, 0x01, 0x44, 0x00, 0x01, 0x02, 0x02, 0x00, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0xf1, 0x10, 0x01, 0x44, 0x00, 0x01, crc16, little]
+                  - name: plc_port
+                    type: write
+                    byte: [0xf1, 0x10, 0x01, 0x47, 0x00, 0x01, 0x02, 0x02, 0x00, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0xf1, 0x10, 0x01, 0x47, 0x00, 0x01, crc16, little]
+                 <!-- disable infrared_cliff -->
+                 <!--  - name: plc_port
+                    type: write
+                    byte: [0xf1, 0x10, 0x01, 0x3e, 0x00, 0x01, 0x02, 0x00, 0x02, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0xf1, 0x10, 0x01, 0x3e, 0x00, 0x01, crc16, little]
+                  - name: plc_port
+                    type: write
+                    byte: [0xf1, 0x10, 0x01, 0x41, 0x00, 0x01, 0x02, 0x00, 0x02, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0xf1, 0x10, 0x01, 0x41, 0x00, 0x01, crc16, little] -->
+
                 range_forward: 250
                 range_side: 200
-                range_cliff: 480
-                check_delay: 10
+                range_cliff: 530
+                range_backward: 300
+                check_delay: 500
             topic_chain:
               - name: waypoint_user_pub
                 type: subscribe
                 freq: 1.0
               - name: read_voltage
                 type: event
-                freq: 0.1
+                freq: 0.5
                 action_chain:
                   - name: plc_port
                     type: write
@@ -145,7 +200,7 @@
                     type: read
                     byte: [0xf1, 0x03, 0x02, status, big, crc16, little]
                 echo: [status]
-              - name: light_r
+              - name: pub_light_r
                 type: event
                 action_chain:
                   - name: plc_port
@@ -154,16 +209,16 @@
                   - name: plc_port
                     type: read
                     byte: [0xf1, 0x10, 0x01, 0x19, 0x00, 0x02, crc16, little]
-              - name: light_y
+              - name: pub_light_y
                 type: event
                 action_chain:
                   - name: plc_port
                     type: write
-                    byte: [0xf1, 0x10, 0x01, 0x19, 0x00, 0x02, 0x04, 0x00, 0x3c, 0x64, 0x64, crc16, little]
+                    byte: [0xf1, 0x10, 0x01, 0x19, 0x00, 0x02, 0x04, 0x00, 0x3c, 0x64, 0x32, crc16, little]
                   - name: plc_port
                     type: read
                     byte: [0xf1, 0x10, 0x01, 0x19, 0x00, 0x02, crc16, little]
-              - name: light_g
+              - name: pub_light_g
                 type: event
                 action_chain:
                   - name: plc_port
@@ -172,16 +227,16 @@
                   - name: plc_port
                     type: read
                     byte: [0xf1, 0x10, 0x01, 0x19, 0x00, 0x02, crc16, little]
-              - name: light_b
+              - name: pub_light_b
                 type: event
                 action_chain:
                   - name: plc_port
                     type: write
-                    byte: [0xf1, 0x10, 0x01, 0x19, 0x00, 0x02, 0x04, 0x00, 0xf0, 0x64, 0x64, crc16, little]
+                    byte: [0xf1, 0x10, 0x01, 0x19, 0x00, 0x02, 0x04, 0x00, 0xb4, 0x64, 0x32, crc16, little]
                   - name: plc_port
                     type: read
                     byte: [0xf1, 0x10, 0x01, 0x19, 0x00, 0x02, crc16, little]
-              - name: bumper_off
+              - name: pub_bumper_off
                 type: event
                 action_chain:
                   - name: plc_port
@@ -190,7 +245,7 @@
                   - name: plc_port
                     type: read
                     byte: [0xf1, 0x10, 0x00, 0xe2, 0x00, 0x01, crc16, little]
-              - name: bumper_on
+              - name: pub_bumper_on
                 type: event
                 action_chain:
                   - name: plc_port
@@ -199,7 +254,7 @@
                   - name: plc_port
                     type: read
                     byte: [0xf1, 0x10, 0x00, 0xe2, 0x00, 0x01, crc16, little]
-              - name: estop_on
+              - name: pub_estop_on
                 type: event
                 action_chain:
                   - name: plc_port
@@ -208,7 +263,7 @@
                   - name: plc_port
                     type: read
                     byte: [0xf1, 0x10, 0x00, 0xe3, 0x00, 0x01, crc16, little]
-              - name: estop_off
+              - name: pub_estop_off
                 type: event
                 action_chain:
                   - name: plc_port
@@ -217,7 +272,7 @@
                   - name: plc_port
                     type: read
                     byte: [0xf1, 0x10, 0x00, 0xe3, 0x00, 0x01, crc16, little]
-              - name: estop_auto
+              - name: pub_estop_auto
                 type: event
                 action_chain:
                   - name: plc_port
@@ -226,6 +281,99 @@
                   - name: plc_port
                     type: read
                     byte: [0xf1, 0x10, 0x00, 0xe3, 0x00, 0x01, crc16, little]
+              - name: infrared_forward
+                type: event
+                roar: [mode]
+                mode: 0
+                action_chain:
+                  - name: plc_port
+                    type: write
+                    byte: [0xf1, 0x10, 0x01, 0x2c, 0x00, 0x01, 0x02, 0x02, mode, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0xf1, 0x10, 0x01, 0x2c, 0x00, 0x01, crc16, little]
+                  - name: plc_port
+                    type: write
+                    byte: [0xf1, 0x10, 0x01, 0x2f, 0x00, 0x01, 0x02, 0x02, mode, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0xf1, 0x10, 0x01, 0x2f, 0x00, 0x01, crc16, little]
+                  - name: plc_port
+                    type: write
+                    byte: [0xf1, 0x10, 0x01, 0x32, 0x00, 0x01, 0x02, 0x02, mode, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0xf1, 0x10, 0x01, 0x32, 0x00, 0x01, crc16, little]
+                  - name: plc_port
+                    type: write
+                    byte: [0xf1, 0x10, 0x01, 0x35, 0x00, 0x01, 0x02, 0x02, mode, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0xf1, 0x10, 0x01, 0x35, 0x00, 0x01, crc16, little]
+                  - name: plc_port
+                    type: write
+                    byte: [0xf1, 0x10, 0x01, 0x38, 0x00, 0x01, 0x02, 0x02, mode, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0xf1, 0x10, 0x01, 0x38, 0x00, 0x01, crc16, little]
+                  - name: plc_port
+                    type: write
+                    byte: [0xf1, 0x10, 0x01, 0x3b, 0x00, 0x01, 0x02, 0x02, mode, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0xf1, 0x10, 0x01, 0x3b, 0x00, 0x01, crc16, little]
+<!--                   - name: plc_port
+                    type: write
+                    byte: [0xf1, 0x10, 0x01, 0x3e, 0x00, 0x01, 0x02, mode, 0x01, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0xf1, 0x10, 0x01, 0x3e, 0x00, 0x01, crc16, little]
+                  - name: plc_port
+                    type: write
+                    byte: [0xf1, 0x10, 0x01, 0x41, 0x00, 0x01, 0x02, mode, 0x01, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0xf1, 0x10, 0x01, 0x41, 0x00, 0x01, crc16, little]
+                  - name: plc_port
+                    type: write
+                    byte: [0xf1, 0x10, 0x01, 0x44, 0x00, 0x01, 0x02, mode, 0x01, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0xf1, 0x10, 0x01, 0x44, 0x00, 0x01, crc16, little] -->
+              - name: infrared_cliff
+                type: event
+                roar: [mode]
+                mode: 0
+                action_chain:
+                  - name: plc_port
+                    type: write
+                    byte: [0xf1, 0x10, 0x01, 0x3e, 0x00, 0x01, 0x02, 0x01, mode, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0xf1, 0x10, 0x01, 0x3e, 0x00, 0x01, crc16, little]
+                  - name: plc_port
+                    type: write
+                    byte: [0xf1, 0x10, 0x01, 0x41, 0x00, 0x01, 0x02, 0x01, mode, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0xf1, 0x10, 0x01, 0x41, 0x00, 0x01, crc16, little]
+              - name: infrared_backward
+                type: event
+                roar: [mode]
+                mode: 0
+                action_chain:
+                  - name: plc_port
+                    type: write
+                    byte: [0xf1, 0x10, 0x01, 0x44, 0x00, 0x01, 0x02, 0x02, mode, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0xf1, 0x10, 0x01, 0x44, 0x00, 0x01, crc16, little]
+                  - name: plc_port
+                    type: write
+                    byte: [0xf1, 0x10, 0x01, 0x47, 0x00, 0x01, 0x02, 0x02, mode, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0xf1, 0x10, 0x01, 0x47, 0x00, 0x01, crc16, little]
               - name: sensor_status
                 type: event
                 action_chain:
@@ -253,11 +401,11 @@
                 action_chain:
                   - name: plc_port
                     type: write
-                    byte: [0xf1, 0x03, 0x00, 0xfa, 0x00, 0x1a, crc16, little]
+                    byte: [0xf1, 0x03, 0x00, 0xfa, 0x00, 0x14, crc16, little]
                   - name: plc_port
                     type: read
-                    byte: [0xf1, 0x03, 0x34, s01, big, r01, big, s02, big, r02, big, s03, big, r03, big, s04, big, r04, big, s05, big, r05, big, s06, big, r06, big, s07, big, r07, big, s08, big, r08, big, s09, big, r09, big, s10, big, r10, big, s11, big, r11, big, s12, big, r12, big, s13, big, r13, big, crc16, little]
-                echo: [r01, r02, r03, r04, r05, r06, r07, r08, r09, r10, r11, r12, r13, s01, s02, s03, s04, s05, s06, s07, s08, s09, s10, s11, s12, s13]
+                    byte: [0xf1, 0x03, 0x28, s01, big, r01, big, s02, big, r02, big, s03, big, r03, big, s04, big, r04, big, s05, big, r05, big, s06, big, r06, big, s07, big, r07, big, s08, big, r08, big, s09, big, r09, big, s10, big, r10, big, crc16, little]
+                echo: [r01, r02, r03, r04, r05, r06, r07, r08, r09, r10, s01, s02, s03, s04, s05, s06, s07, s08, s09, s10]
               - name: sonar
                 type: publish
                 freq: 10.0
@@ -266,12 +414,12 @@
                 action_chain:
                   - name: plc_port
                     type: write
-                    byte: [0xf1, 0x03, 0x00, 0xfa, 0x00, 0x1a, crc16, little]
+                    byte: [0xf1, 0x03, 0x00, 0xfa, 0x00, 0x14, crc16, little]
                   - name: plc_port
                     type: read
-                    byte: [0xf1, 0x03, 0x34, s01, big, infrared_01, big, s02, big, infrared_02, big, s03, big, infrared_03, big, s04, big, infrared_04, big, s05, big, infrared_05, big, s06, big, infrared_06, big, s07, big, infrared_07, big, s08, big, infrared_08, big, s09, big, infrared_09, big, s10, big, infrared_10, big, s11, big, infrared_11, big, s12, big, infrared_12, big, s13, big, infrared_13, big, crc16, little]
-                echo: [infrared_01, infrared_02, infrared_03, infrared_04, infrared_05, infrared_06, infrared_07, infrared_08, infrared_09, infrared_10, infrared_11, infrared_12, infrared_13]
-                frame_id: [base_infrared_01, base_infrared_02, base_infrared_03, base_infrared_04, base_infrared_05, base_infrared_06, base_infrared_07, base_infrared_08, base_infrared_09, base_infrared_10, base_infrared_11, base_infrared_12, base_infrared_13]
+                    byte: [0xf1, 0x03, 0x28, s01, big, infrared_01, big, s02, big, infrared_02, big, s03, big, infrared_03, big, s04, big, infrared_04, big, s05, big, infrared_05, big, s06, big, infrared_06, big, s07, big, infrared_07, big, s08, big, infrared_08, big, s09, big, infrared_09, big, s10, big, infrared_10, big, crc16, little]
+                echo: [infrared_01, infrared_02, infrared_03, infrared_04, infrared_05, infrared_06, infrared_07, infrared_08, infrared_09, infrared_10]
+                frame_id: [base_infrared_01, base_infrared_02, base_infrared_03, base_infrared_04, base_infrared_05, base_infrared_06, base_infrared_07, base_infrared_08, base_infrared_09, base_infrared_10]
               - name: pubsuber_auto_charge
                 type: event
                 action_chain:

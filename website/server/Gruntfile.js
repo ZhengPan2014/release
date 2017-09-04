@@ -1,74 +1,151 @@
-module.exports = function (grunt) {
-	// 构建任务配置
-	grunt.initConfig({
-		//读取package.json的内容，形成个json数据
-		pkg: grunt.file.readJSON('package.json'),
-		//压缩js
-		uglify: {
-			//文件头部输出信息
-			options: {
-				banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
-			},
-			my_target: {
-				files: [
-					{
-						expand: true,
-						//相对路径
-						cwd: '../html/js/',
-						src: '*.js',
-						dest: '../html/js/',
-						rename: function (dest, src) {  
-								  var folder = src.substring(0, src.lastIndexOf('/'));  
-								  var filename = src.substring(src.lastIndexOf('/'), src.length);  
-								  //  var filename=src;  
-								  filename = filename.substring(0, filename.lastIndexOf('.'));  
-								  var fileresult=dest + folder + filename + '.js';  
-								  grunt.log.writeln("现处理文件："+src+"  处理后文件："+fileresult);  
-								  return fileresult;  
-								  //return  filename + '.min.js';  
-							  } 
-					}
-				]
-			}
-		},
-		//压缩css
-		cssmin: {
-			//文件头部输出信息
-			options: {
-				banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n',
-				//美化代码
-				beautify: {
-					//中文ascii化，非常有用！防止中文乱码的神配置
-					ascii_only: true
-				}
-			},
-			my_target: {
-				files: [
-					{
-						expand: true,
-						//相对路径
-						cwd: '../html/css/',
-						src: '*.css',
-						dest: '../html/css/',
-						rename: function (dest, src) {  
-								var folder = src.substring(0, src.lastIndexOf('/'));  
-								var filename = src.substring(src.lastIndexOf('/'), src.length);  
-								//  var filename=src;  
-								filename = filename.substring(0, filename.lastIndexOf('.'));  
-								var fileresult=dest + folder + filename + '.css';  
-								grunt.log.writeln("现处理文件："+src+"  处理后文件："+fileresult);  
-								return fileresult;  
-							  //return  filename + '.min.js';
-								}
-					}
-				]
-			}
-		}
-	});
-	// 加载指定插件任务
-	grunt.loadNpmTasks('grunt-contrib-uglify');
-	grunt.loadNpmTasks('grunt-contrib-cssmin');
-	// 默认执行的任务
-	grunt.registerTask('default', ['uglify', 'cssmin']);
-	console.log('done');
+module.exports = function(grunt){
+    grunt.initConfig({
+ 
+        pkg: grunt.file.readJSON('package.json'),
+
+		concat: {
+            cssConcat:{
+                src:'../html/css/*.css',
+                dest:'../html/css/concat/<%= pkg.name %> - <%= pkg.version %>.css' //dest 是目的地输出
+            },
+            jsConcat:{
+                src:'../html/js/*.js',
+                dest:'../html/js/concat/<%=pkg.name %> - <%= pkg.version %>.js'
+            }
+        },
+
+        cssmin:{
+            html: {
+                files: [{
+                    expand: true,
+                    cwd: '../html/style',
+                    src: ['*.css'],
+                    dest: '../../website/html/style'
+                }]
+            }
+        },
+
+        uglify: {
+            html: {
+                files: [{
+                    expand: true,
+                    cwd: '../../website/html/js',
+                    src: ['*.js'],
+                    dest: '../../website/html/js'
+                }]
+            // },
+            // controllers: {
+            //     files: [{
+            //         expand: true,
+            //         cwd: '../../website/ros_webapp/controllers',
+            //         src: ['*.js'],
+            //         dest: '../../website/ros_webapp/controllers'
+            //     }] 
+            // },
+            // lib: {
+            //     files: [{
+            //         expand: true,
+            //         cwd: '../../website/ros_webapp/lib',
+            //         src: ['*.js'],
+            //         dest: '../../website/ros_webapp/lib'
+            //     }] 
+            // },
+            // models: {
+            //     files: [{
+            //         expand: true,
+            //         cwd: '../../website/ros_webapp/models',
+            //         src: ['*.js'],
+            //         dest: '../../website/ros_webapp/models'
+            //     }] 
+            // },
+            // rosnodejs: {
+            //     files: [{
+            //         expand: true,
+            //         cwd: '../../website/ros_webapp/rosnodejs',
+            //         src: ['*.js'],
+            //         dest: '../../website/ros_webapp/rosnodejs'
+            //     }] 
+            }
+        },
+
+		babel: {
+            options: {
+                sourceMap: false,
+                presets: ['babel-preset-es2015']
+            },
+            html: {
+                files: [{
+                    expand: true,
+                    cwd: '../html/js',
+                    src: ['*.js'],
+                    dest: '../../website/html/js'
+                }] 
+            // },
+            // controllers: {
+            //     files: [{
+            //         expand: true,
+            //         cwd: '../ros_webapp/controllers',
+            //         src: ['*.js'],
+            //         dest: '../../website/ros_webapp/controllers'
+            //     }] 
+            // },
+            // lib: {
+            //     files: [{
+            //         expand: true,
+            //         cwd: '../ros_webapp/lib',
+            //         src: ['*.js'],
+            //         dest: '../../website/ros_webapp/lib'
+            //     }] 
+            // },
+            // models: {
+            //     files: [{
+            //         expand: true,
+            //         cwd: '../ros_webapp/models',
+            //         src: ['*.js'],
+            //         dest: '../../website/ros_webapp/models'
+            //     }] 
+            // },
+            // rosnodejs: {
+            //     files: [{
+            //         expand: true,
+            //         cwd: '../ros_webapp/rosnodejs',
+            //         src: ['*.js'],
+            //         dest: '../../website/ros_webapp/rosnodejs'
+            //     }] 
+            }
+        },
+ 
+        jshint:{
+            options:{
+                jshintrc:'.jshint'
+            },
+            build:['Gruntfile.js','../html/js/*js']
+        },
+ 
+        csslint:{
+            options:{
+                csslintrc:'.csslint'
+            },
+            build:['../html/css/*.css']
+        },
+
+        watch:{
+            build:{
+                files:['../html/js/*.js','../html/css/*.css'],
+                tasks:['jshint','csslint','concat','cssmin','uglify'],
+                options:{spawn:false}
+            }
+        }
+ 
+    });
+
+	grunt.loadNpmTasks('grunt-babel');
+    grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-contrib-csslint');
+    grunt.loadNpmTasks('grunt-contrib-watch');
+    //告诉grunt当我们在终端输入grunt时需要做些什么
+    grunt.registerTask('default',['babel','cssmin','uglify']);//先进行语法检查，如果没有问题，再合并，再压缩
 };

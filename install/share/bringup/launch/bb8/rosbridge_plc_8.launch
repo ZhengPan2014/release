@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="plc_port" default="/dev/usb_left4"/>
+    <node name="rosbridge_drive_plc" pkg="rosbridge_driver" type="rosbridge_driver" output="screen">
+        <param name="plc_port" value="$(arg plc_port)"/>
+        <rosparam>
+            port_chain:
+              - name: plc_port
+                type: serial
+                serial_baud: 115200
+                serial_parity: 'N'
+                serial_stop: 1
+                timeout: 0.1
+                timeoff: 0.005
+                action_chain:
+                  - name: plc_port
+                    type: write
+                    byte: [0x06, 0x10, 0x00, 0x64, 0x00, 0x02, 0x04, 0x00, 0x00, 0x00, 0x00, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0x06, 0x10, 0x00, 0x64, 0x00, 0x02, crc16, little]
+            topic_chain:
+              - name: waypoint_user_pub
+                type: subscribe 
+              - name: pubsuber_limit_switch_top
+                type: event
+                action_chain:
+                  - name: plc_port
+                    type: write
+                    byte: [0x06, 0x03, 0x00, 0x63, 0x00, 0x01, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0x06, 0x03, 0x02, data, big, crc16, little]
+                    time_out: 1.5
+                echo: [data]
+                data: 0x00
+              - name: pubsuber_limit_switch_buttom
+                type: event
+                action_chain:
+                  - name: plc_port
+                    type: write
+                    byte: [0x06, 0x03, 0x00, 0x63, 0x00, 0x01, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0x06, 0x03, 0x02, data, big, crc16, little]
+                    time_out: 1.5
+                echo: [data]
+                data: 0x00
+              - name: pub_led_red
+                type: event
+                action_chain:
+                  - name: plc_port
+                    type: write
+                    byte: [0x06, 0x10, 0x00, 0x64, 0x00, 0x02, 0x04, 0x00, 0x00, 0x00, 0x04, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0x06, 0x10, 0x00, 0x64, 0x00, 0x02, crc16, little]
+                    time_out: 1.5
+              - name: pub_led_green
+                type: event
+                action_chain:
+                  - name: plc_port
+                    type: write
+                    byte: [0x06, 0x10, 0x00, 0x64, 0x00, 0x02, 0x04, 0x00, 0x00, 0x00, 0x08, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0x06, 0x10, 0x00, 0x64, 0x00, 0x02, crc16, little]
+                    time_out: 1.5
+              - name: pub_led_blue
+                type: event
+                action_chain:
+                  - name: plc_port
+                    type: write
+                    byte: [0x06, 0x10, 0x00, 0x64, 0x00, 0x02, 0x04, 0x00, 0x00, 0x00, 0x10, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0x06, 0x10, 0x00, 0x64, 0x00, 0x02, crc16, little]
+                    time_out: 1.5
+              - name: pub_led_off
+                type: event
+                action_chain:
+                  - name: plc_port
+                    type: write
+                    byte: [0x06, 0x10, 0x00, 0x64, 0x00, 0x02, 0x04, 0x00, 0x00, 0x00, 0x00, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0x06, 0x10, 0x00, 0x64, 0x00, 0x02, crc16, little]
+                    time_out: 1.5
+              - name: diagnostics
+                type: publish
+        </rosparam>
+    </node>
+</launch>
