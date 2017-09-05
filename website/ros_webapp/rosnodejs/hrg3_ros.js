@@ -64,6 +64,11 @@ class RosNodeJs
 		this.mapEditImg = null;
 		this.lightStatus = null;
 		this.config = paramServer.getParam('config');
+		if (!this.config)
+		{
+			console.error('[ERROR]No hitrobot.cfg file found');
+			return;
+		}
 		this.lastNetworkSetting = this.config.networkSetting;
 		this.dischargeCurve = this.config.powerCurve.discharge;
 		this.chargeCurve = this.config.powerCurve.charge;
@@ -351,39 +356,46 @@ class RosNodeJs
 			else 
 			{
 				var params = msg.data.split(',');
-				if (params.length === 3)
+				if (params.length === 4)
 				{
 					var ssid = params[0].split(':')[1].trim();
 					var password = params[1].split(':')[1].trim();
 					var ip = params[2].split(':')[1].trim();
+					var rememberSetting = params[3].split(':')[1].trim();
 					var networkSetting = {
 						ssid: ssid,
 						password: password,
 						ip: ip
 					};
-					
-					if (ssid !== this.lastNetworkSetting.ssid 
-						|| password !== this.lastNetworkSetting.password
-						|| ip !== this.lastNetworkSetting.ip)
+					if (rememberSetting)
 					{
-						this.lastNetworkSetting = networkSetting;
-						this.config.networkSetting = networkSetting;
-						// store setting
-						fs.writeFile(CONFIG_FILE, JSON.stringify(this.config, null, ' '), function(err){
-							if (err)
-							{
-								console.log(`[ERROR]write network setting failed.`);
-								console.log(err);
-							}
-							else
-							{
-								console.log(`[INFO]write network setting done.`)
-							}
-						});
-						// publish networking setting
-						this.pubLastNetworkSetting(this.lastNetworkSetting);
+						if (ssid !== this.lastNetworkSetting.ssid 
+							|| password !== this.lastNetworkSetting.password
+							|| ip !== this.lastNetworkSetting.ip)
+						{
+							this.lastNetworkSetting = networkSetting;
+							this.config.networkSetting = networkSetting;
+							// publish networking setting
+							this.pubLastNetworkSetting(this.lastNetworkSetting);	
+							fs.writeFile(CONFIG_FILE, JSON.stringify(this.config, null, ' '), function(err){
+								if (err)
+								{
+									console.log(`[ERROR]write network setting failed.`);
+									console.log(err);
+								}
+								else
+								{
+									console.log(`[INFO]write network setting done.`)
+								}
+							});
+						}
+						// TODO: add param to store networking setting
+						cmd += `./comm.sh -m wifi -s ${ssid} -p ${password} -i ${ip}`;
 					}
-					cmd += `./comm.sh -m wifi -s ${ssid} -p ${password} -i ${ip}`;
+					else
+					{
+						cmd += `./comm.sh -m wifi -s ${ssid} -p ${password} -i ${ip}`;
+					}
 				}
 				else
 				{
