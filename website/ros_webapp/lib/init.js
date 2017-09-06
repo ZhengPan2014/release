@@ -68,7 +68,7 @@ function getVersion(path)
 function getConfig(path)
 {
 	var path = path || pathPrefix;
-	var configFile = `${path}/bringup/auth/${model}/hitrobot.cfg`;
+	var configFile = `${path}/hitrobot/bringup/auth/${model}/hitrobot.cfg`;
 	try
 	{
 		var rawConfig = fs.readFileSync(configFile, 'utf-8');

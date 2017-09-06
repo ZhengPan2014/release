@@ -8,12 +8,20 @@ let gm = require('gm').subClass({imageMagick: true});
 let shell = require('shelljs');
 
 let path = '../../src';
-let SHELL_PATH = '~/catkin_ws/install/share/bringup/shell/';
+let PATH_SHELL = '~/catkin_ws/install/share/bringup/shell/';
 let CONFIG_FILE = `../../install/share/bringup/auth/${paramServer.getParam('model')}/hitrobot.cfg`;
 if (fs.existsSync(path))
 {
-	SHELL_PATH = '~/catkin_ws/src/bringup/shell/';
-	CONFIG_FILE = `${path}/bringup/auth/${paramServer.getParam('model')}/hitrobot.cfg`;
+	PATH_SHELL = '~/catkin_ws/src/hitrobot/bringup/shell/';
+	CONFIG_FILE = `${path}/hitrobot/bringup/auth/${paramServer.getParam('model')}/hitrobot.cfg`;
+}
+if (process.env.PATH_SHELL)
+{
+	PATH_SHELL = process.env.PATH_SHELL;
+}
+else
+{
+	console.log('[INFO]process.env.PATH_SHELL not found, using default');
 }
 
 const VOL_FACTOR = 0.008862;
@@ -66,7 +74,6 @@ class RosNodeJs
 		this.config = paramServer.getParam('config');
 		if (!this.config)
 		{
-			console.error('[ERROR]No hitrobot.cfg file found');
 			return;
 		}
 		this.lastNetworkSetting = this.config.networkSetting;
@@ -348,16 +355,17 @@ class RosNodeJs
 
 	netWorkSettingSubCb(msg){
 		return (msg) => {
-			var cmd = `cd ${SHELL_PATH};`;
+			var cmd = `cd ${PATH_SHELL};`;
 			if (msg.data === '')
 			{
-				cmd += './comm-reset.sh'
+				cmd += './comm.sh'
 			}
 			else 
 			{
 				var params = msg.data.split(',');
 				if (params.length === 4)
 				{
+					cmd += './comm.sh -m wifi';
 					var ssid = params[0].split(':')[1].trim();
 					var password = params[1].split(':')[1].trim();
 					var ip = params[2].split(':')[1].trim();
@@ -367,7 +375,19 @@ class RosNodeJs
 						password: password,
 						ip: ip
 					};
-					if (rememberSetting)
+					if (ssid !== 'null')
+					{
+						cmd += ` -s ${ssid}`;
+					}
+					if (password !== 'null')
+					{
+						cmd += ` -p ${password}`;
+					}
+					if (ip !== 'null')
+					{
+						cmd += ` -i ${ip}`;
+					}
+					if (rememberSetting === 'true')
 					{
 						if (ssid !== this.lastNetworkSetting.ssid 
 							|| password !== this.lastNetworkSetting.password
@@ -389,17 +409,8 @@ class RosNodeJs
 								}
 							});
 						}
-						// TODO: add param to store networking setting
-						cmd += `./comm.sh -m wifi -s ${ssid} -p ${password} -i ${ip}`;
+						cmd += ` -a`;
 					}
-					else
-					{
-						cmd += `./comm.sh -m wifi -s ${ssid} -p ${password} -i ${ip}`;
-					}
-				}
-				else
-				{
-					// TODO: other setting
 				}
 			}
 			shell.exec(cmd, function(code, stdout, stderr) {

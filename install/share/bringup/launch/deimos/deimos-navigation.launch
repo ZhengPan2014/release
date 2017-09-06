@@ -1,6 +1,0 @@
-<?xml version="1.0"?>
-<launch>
-    <include file="$(find bringup)/launch/map_server.launch"/>
-
-    <include file="$(find bringup)/launch/map_edit_server.launch"/>
-</launch>

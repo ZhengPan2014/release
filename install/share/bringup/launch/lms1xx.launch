@@ -1,7 +1,0 @@
-<launch>
-    <node pkg="lms1xx" name="lms1xx" type="LMS1xx_node">
-        <rosparam>
-            host: 192.168.0.1
-        </rosparam>
-    </node>
-</launch>
