@@ -732,25 +732,25 @@ $(function () {
 
         var temp_waypoints_action = "map";
         if (waypoints_action == "map") {
-            temp_waypoints_action = "map";
+            temp_waypoints_action = "map_";
         }
         else if (waypoints_action == "timer") {
-            temp_waypoints_action = "timer";
+            temp_waypoints_action = "timer_";
         }
         else if (waypoints_action == "publisher") {
-            temp_waypoints_action = "pub";
+            temp_waypoints_action = "";
         }
         else if (waypoints_action == "subscriber") {
-            temp_waypoints_action = "sub";
+            temp_waypoints_action = "";
         }
         else if (waypoints_action == "looper") {
-            temp_waypoints_action = "loop";
+            temp_waypoints_action = "loop_";
         }
         else if (waypoints_action == "pubsuber") {
-            temp_waypoints_action = "pubsuber";
+            temp_waypoints_action = "";
             waypoints_mode = $("#pubsuber-input")[0].value;
         }
-        var name = temp_waypoints_action + "_" + $('#name')[0].value;
+        var name = temp_waypoints_action + $('#name')[0].value;
         var index = getIndexFromArray(name, NavEvent.TrajectoryList.trajectories);
         if (index !== -1) {
             sweetAlert("Waypoint:" + name + " 在Trajectory列表中已占用 位于Trajectory[" + index + "]", "", "error");

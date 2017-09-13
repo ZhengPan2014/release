@@ -55,7 +55,6 @@ shell.exec('cd ~/catkin_ws/www/ros_webapp; node app.js;', function(code, stdout,
 }); // TODO: use other strategy to replace this
 
 // ttys();
-// console.log('serial done');
 
 function rosnode() {
     shell.exec('rosnode list', { silent: true }, function(code, stdout, stderr) {
