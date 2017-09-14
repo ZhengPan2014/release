@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<launch>
+<!--	<group ns="gb">-->
+		<arg name="filename" default="$(find bringup)/param/path00.txt"/>
+    	<node name="path_recorder_node" pkg="path_recorder" type="path_recorder_node" output="screen">
+    		<param name="pathfilename" value="$(arg filename)"/>
+    	</node>
+<!--	</group>-->
+</launch>
