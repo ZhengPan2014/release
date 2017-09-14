@@ -12,7 +12,7 @@
     <node name="tf_base_laser" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
         <rosparam>
             child_frame_id: base_laser
-            x: 1.35 #1.36
+            x: 1.35 #0.475 #0 #1.36
             z: 1.795
             yaw: 3.14159
         </rosparam>
@@ -21,7 +21,7 @@
     <node name="tf_base_laser_down" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
         <rosparam>
             child_frame_id: base_laser_down
-            x: 1.79
+            x: 1.79 #0.915 #0.25 
             z: 0.01
             roll: 3.14
         </rosparam>
@@ -30,7 +30,7 @@
     <node name="tf_base_imu" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
         <rosparam>
             child_frame_id: base_imu
-            x: 1.45
+            x: 1.45 #0.575 #0.1
             y: 0.08
             z: 1.33
         </rosparam>
@@ -125,6 +125,10 @@
             max_range: 10.0
         </rosparam>
     </node>
+    
+    <node name="tf2_web_republisher" pkg="tf2_web_republisher" type="tf2_web_republisher" output="screen"/>
+
+    <include file="$(find pallet_recognition)/launch/pallet_recognition.launch"/>
 
     <node name="diagnostic_aggregator" pkg="diagnostic_aggregator" type="aggregator_node" args="CPP" output="screen">
         <rosparam>
