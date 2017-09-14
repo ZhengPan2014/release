@@ -128,7 +128,16 @@
     
     <node name="tf2_web_republisher" pkg="tf2_web_republisher" type="tf2_web_republisher" output="screen"/>
 
-    <include file="$(find pallet_recognition)/launch/pallet_recognition.launch"/>
+    <node name="pallet_recognition_node" pkg="pallet_recognition" type="palletRecognition_node" output="screen">
+        <param name="scan_reverse" value="true"/>
+        <param name="inverse_result_pose" value="true"/>
+        <param name="use_variance_as_region_size" value="true"/>
+        <param name="approximate_region_h" value="0.5"/>
+        <param name="approximate_region_w" value="2.0"/>
+        <param name="apply_final_optimization" value="true"/>
+        <param name="publish_unsolved_pose" value="false"/>
+        <param name="laser_intensity_neglect" value="true"/><!--laser intensity ignore-->
+    </node>
 
     <node name="diagnostic_aggregator" pkg="diagnostic_aggregator" type="aggregator_node" args="CPP" output="screen">
         <rosparam>
