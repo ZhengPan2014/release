@@ -101,8 +101,9 @@ protected:
         std::string sub_path_topic_;
         double endpoint_tolerance_;
         bool retrace_path_;
-        bool contain_start_pose_;
-        bool contain_goal_pose_;
+        bool include_start_pose_;
+        bool include_goal_pose_;//I think for consistance, we should not activate this option
+        bool use_goal_direction_;
 
         double planner_window_x_, planner_window_y_;
 

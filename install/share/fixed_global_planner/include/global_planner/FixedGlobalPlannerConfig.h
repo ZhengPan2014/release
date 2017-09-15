@@ -230,6 +230,7 @@ class DEFAULT
         if("subscribe_path_topic"==(*_i)->name){subscribe_path_topic = boost::any_cast<std::string>(val);}
         if("endpoint_tolerance"==(*_i)->name){endpoint_tolerance = boost::any_cast<double>(val);}
         if("retrace_path"==(*_i)->name){retrace_path = boost::any_cast<bool>(val);}
+        if("use_goal_direction"==(*_i)->name){use_goal_direction = boost::any_cast<bool>(val);}
       }
     }
 
@@ -237,6 +238,7 @@ class DEFAULT
 std::string subscribe_path_topic;
 double endpoint_tolerance;
 bool retrace_path;
+bool use_goal_direction;
 
     bool state;
     std::string name;
@@ -254,6 +256,8 @@ bool retrace_path;
       double endpoint_tolerance;
 //#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       bool retrace_path;
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      bool use_goal_direction;
 //#line 218 "/opt/ros/indigo/share/dynamic_reconfigure/cmake/../templates/ConfigType.h.template"
 
     bool __fromMessage__(dynamic_reconfigure::Config &msg)
@@ -429,6 +433,16 @@ FixedGlobalPlannerConfig::GroupDescription<FixedGlobalPlannerConfig::DEFAULT, Fi
       Default.abstract_parameters.push_back(FixedGlobalPlannerConfig::AbstractParamDescriptionConstPtr(new FixedGlobalPlannerConfig::ParamDescription<bool>("retrace_path", "bool", 0, "Retrace path", "", &FixedGlobalPlannerConfig::retrace_path)));
 //#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(FixedGlobalPlannerConfig::AbstractParamDescriptionConstPtr(new FixedGlobalPlannerConfig::ParamDescription<bool>("retrace_path", "bool", 0, "Retrace path", "", &FixedGlobalPlannerConfig::retrace_path)));
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __min__.use_goal_direction = 0;
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __max__.use_goal_direction = 1;
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __default__.use_goal_direction = 0;
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(FixedGlobalPlannerConfig::AbstractParamDescriptionConstPtr(new FixedGlobalPlannerConfig::ParamDescription<bool>("use_goal_direction", "bool", 0, "Use the goal direction as the direction of path end point", "", &FixedGlobalPlannerConfig::use_goal_direction)));
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(FixedGlobalPlannerConfig::AbstractParamDescriptionConstPtr(new FixedGlobalPlannerConfig::ParamDescription<bool>("use_goal_direction", "bool", 0, "Use the goal direction as the direction of path end point", "", &FixedGlobalPlannerConfig::use_goal_direction)));
 //#line 235 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.convertParams();
 //#line 235 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
