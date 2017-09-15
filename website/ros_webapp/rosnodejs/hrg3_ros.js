@@ -358,7 +358,7 @@ class RosNodeJs
 			var cmd = `cd ${PATH_SHELL};`;
 			if (msg.data === '')
 			{
-				cmd += './comm.sh'
+				cmd += './comm.sh -a'
 			}
 			else 
 			{
