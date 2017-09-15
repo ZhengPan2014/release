@@ -5,5 +5,9 @@
    "PATH"
    "<PATHWITHID>"
    "PATHWITHID"
+   "<TASK>"
+   "TASK"
+   "<TASKLIST>"
+   "TASKLIST"
   ))
 

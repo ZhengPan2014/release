@@ -1,0 +1,8 @@
+prefix=/home/ouiyeah/catkin_ws/install
+
+Name: robot_server
+Description: Description of robot_server
+Version: 0.0.0
+Cflags: -I/home/ouiyeah/catkin_ws/install/include
+Libs: -L/home/ouiyeah/catkin_ws/install/lib 
+Requires: roscpp rospy std_msgs hrg_msgs
