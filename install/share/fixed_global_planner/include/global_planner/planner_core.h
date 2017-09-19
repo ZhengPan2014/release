@@ -104,6 +104,7 @@ protected:
         bool include_start_pose_;
         bool include_goal_pose_;//I think for consistance, we should not activate this option
         bool use_goal_direction_;
+        bool always_update_path_;
 
         double planner_window_x_, planner_window_y_;
 
