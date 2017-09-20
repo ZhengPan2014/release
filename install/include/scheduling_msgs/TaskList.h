@@ -120,12 +120,12 @@ struct MD5Sum< ::scheduling_msgs::TaskList_<ContainerAllocator> >
 {
   static const char* value()
   {
-    return "a475fe486cd6bf1adfbefcc8ff955ed4";
+    return "4a86e54f038b1f17d6ef0eedcec02228";
   }
 
   static const char* value(const ::scheduling_msgs::TaskList_<ContainerAllocator>&) { return value(); }
-  static const uint64_t static_value1 = 0xa475fe486cd6bf1aULL;
-  static const uint64_t static_value2 = 0xdfbefcc8ff955ed4ULL;
+  static const uint64_t static_value1 = 0x4a86e54f038b1f17ULL;
+  static const uint64_t static_value2 = 0xd6ef0eedcec02228ULL;
 };
 
 template<class ContainerAllocator>
@@ -172,7 +172,8 @@ int32 taskID\n\
 int32 agvID\n\
 string agvName\n\
 int32 stationID\n\
-int32 workStatus\n\
+int32 workType #0: Idle, 1: navigation without load, 2: navigation with load, 3: loading, 4: unloading\n\
+int32 workStatus #0: completed, 1: executing, 2: waiting\n\
 ";
   }
 

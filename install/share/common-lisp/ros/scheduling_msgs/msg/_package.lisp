@@ -3,6 +3,8 @@
   (:export
    "<PATH>"
    "PATH"
+   "<NEWTASK>"
+   "NEWTASK"
    "<PATHWITHID>"
    "PATHWITHID"
    "<TASK>"

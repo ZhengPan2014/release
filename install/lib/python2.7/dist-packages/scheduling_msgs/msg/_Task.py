@@ -8,7 +8,7 @@ import struct
 import std_msgs.msg
 
 class Task(genpy.Message):
-  _md5sum = "61de26a96e9876d744338757a863e525"
+  _md5sum = "3bdee9c97c7338d330686f66947e38e5"
   _type = "scheduling_msgs/Task"
   _has_header = True #flag to mark the presence of a Header object
   _full_text = """Header header
@@ -16,7 +16,8 @@ int32 taskID
 int32 agvID
 string agvName
 int32 stationID
-int32 workStatus
+int32 workType #0: Idle, 1: navigation without load, 2: navigation with load, 3: loading, 4: unloading
+int32 workStatus #0: completed, 1: executing, 2: waiting
 ================================================================================
 MSG: std_msgs/Header
 # Standard metadata for higher-level stamped data types.
@@ -35,8 +36,8 @@ time stamp
 # 1: global frame
 string frame_id
 """
-  __slots__ = ['header','taskID','agvID','agvName','stationID','workStatus']
-  _slot_types = ['std_msgs/Header','int32','int32','string','int32','int32']
+  __slots__ = ['header','taskID','agvID','agvName','stationID','workType','workStatus']
+  _slot_types = ['std_msgs/Header','int32','int32','string','int32','int32','int32']
 
   def __init__(self, *args, **kwds):
     """
@@ -46,7 +47,7 @@ string frame_id
     changes.  You cannot mix in-order arguments and keyword arguments.
 
     The available fields are:
-       header,taskID,agvID,agvName,stationID,workStatus
+       header,taskID,agvID,agvName,stationID,workType,workStatus
 
     :param args: complete set of field values, in .msg order
     :param kwds: use keyword arguments corresponding to message field names
@@ -65,6 +66,8 @@ string frame_id
         self.agvName = ''
       if self.stationID is None:
         self.stationID = 0
+      if self.workType is None:
+        self.workType = 0
       if self.workStatus is None:
         self.workStatus = 0
     else:
@@ -73,6 +76,7 @@ string frame_id
       self.agvID = 0
       self.agvName = ''
       self.stationID = 0
+      self.workType = 0
       self.workStatus = 0
 
   def _get_types(self):
@@ -110,7 +114,7 @@ string frame_id
       else:
         buff.write(struct.pack('<I%ss'%length, length, _x))
       _x = self
-      buff.write(_struct_2i.pack(_x.stationID, _x.workStatus))
+      buff.write(_struct_3i.pack(_x.stationID, _x.workType, _x.workStatus))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
@@ -151,8 +155,8 @@ string frame_id
         self.agvName = str[start:end]
       _x = self
       start = end
-      end += 8
-      (_x.stationID, _x.workStatus,) = _struct_2i.unpack(str[start:end])
+      end += 12
+      (_x.stationID, _x.workType, _x.workStatus,) = _struct_3i.unpack(str[start:end])
       return self
     except struct.error as e:
       raise genpy.DeserializationError(e) #most likely buffer underfill
@@ -188,7 +192,7 @@ string frame_id
       else:
         buff.write(struct.pack('<I%ss'%length, length, _x))
       _x = self
-      buff.write(_struct_2i.pack(_x.stationID, _x.workStatus))
+      buff.write(_struct_3i.pack(_x.stationID, _x.workType, _x.workStatus))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
@@ -230,8 +234,8 @@ string frame_id
         self.agvName = str[start:end]
       _x = self
       start = end
-      end += 8
-      (_x.stationID, _x.workStatus,) = _struct_2i.unpack(str[start:end])
+      end += 12
+      (_x.stationID, _x.workType, _x.workStatus,) = _struct_3i.unpack(str[start:end])
       return self
     except struct.error as e:
       raise genpy.DeserializationError(e) #most likely buffer underfill
@@ -239,3 +243,4 @@ string frame_id
 _struct_I = genpy.struct_I
 _struct_3I = struct.Struct("<3I")
 _struct_2i = struct.Struct("<2i")
+_struct_3i = struct.Struct("<3i")

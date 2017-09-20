@@ -30,6 +30,7 @@ struct Task_
     , agvID(0)
     , agvName()
     , stationID(0)
+    , workType(0)
     , workStatus(0)  {
     }
   Task_(const ContainerAllocator& _alloc)
@@ -38,6 +39,7 @@ struct Task_
     , agvID(0)
     , agvName(_alloc)
     , stationID(0)
+    , workType(0)
     , workStatus(0)  {
   (void)_alloc;
     }
@@ -58,6 +60,9 @@ struct Task_
 
    typedef int32_t _stationID_type;
   _stationID_type stationID;
+
+   typedef int32_t _workType_type;
+  _workType_type workType;
 
    typedef int32_t _workStatus_type;
   _workStatus_type workStatus;
@@ -139,12 +144,12 @@ struct MD5Sum< ::scheduling_msgs::Task_<ContainerAllocator> >
 {
   static const char* value()
   {
-    return "61de26a96e9876d744338757a863e525";
+    return "3bdee9c97c7338d330686f66947e38e5";
   }
 
   static const char* value(const ::scheduling_msgs::Task_<ContainerAllocator>&) { return value(); }
-  static const uint64_t static_value1 = 0x61de26a96e9876d7ULL;
-  static const uint64_t static_value2 = 0x44338757a863e525ULL;
+  static const uint64_t static_value1 = 0x3bdee9c97c7338d3ULL;
+  static const uint64_t static_value2 = 0x30686f66947e38e5ULL;
 };
 
 template<class ContainerAllocator>
@@ -168,7 +173,8 @@ int32 taskID\n\
 int32 agvID\n\
 string agvName\n\
 int32 stationID\n\
-int32 workStatus\n\
+int32 workType #0: Idle, 1: navigation without load, 2: navigation with load, 3: loading, 4: unloading\n\
+int32 workStatus #0: completed, 1: executing, 2: waiting\n\
 ================================================================================\n\
 MSG: std_msgs/Header\n\
 # Standard metadata for higher-level stamped data types.\n\
@@ -209,6 +215,7 @@ namespace serialization
       stream.next(m.agvID);
       stream.next(m.agvName);
       stream.next(m.stationID);
+      stream.next(m.workType);
       stream.next(m.workStatus);
     }
 
@@ -239,6 +246,8 @@ struct Printer< ::scheduling_msgs::Task_<ContainerAllocator> >
     Printer<std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other > >::stream(s, indent + "  ", v.agvName);
     s << indent << "stationID: ";
     Printer<int32_t>::stream(s, indent + "  ", v.stationID);
+    s << indent << "workType: ";
+    Printer<int32_t>::stream(s, indent + "  ", v.workType);
     s << indent << "workStatus: ";
     Printer<int32_t>::stream(s, indent + "  ", v.workStatus);
   }

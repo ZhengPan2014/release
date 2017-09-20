@@ -8,6 +8,8 @@
   :components ((:file "_package")
     (:file "Path" :depends-on ("_package_Path"))
     (:file "_package_Path" :depends-on ("_package"))
+    (:file "NewTask" :depends-on ("_package_NewTask"))
+    (:file "_package_NewTask" :depends-on ("_package"))
     (:file "PathWithID" :depends-on ("_package_PathWithID"))
     (:file "_package_PathWithID" :depends-on ("_package"))
     (:file "Task" :depends-on ("_package_Task"))

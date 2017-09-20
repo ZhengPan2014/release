@@ -9,6 +9,8 @@
           AGVNAME
           STATIONID-VAL
           STATIONID
+          WORKTYPE-VAL
+          WORKTYPE
           WORKSTATUS-VAL
           WORKSTATUS
 ))

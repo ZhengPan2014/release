@@ -1,3 +1,4 @@
+from ._NewTask import *
 from ._Path import *
 from ._PathWithID import *
 from ._Task import *
