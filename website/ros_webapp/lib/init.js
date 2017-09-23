@@ -37,7 +37,7 @@ function setPathPrefix(path)
 	var path = path || '../../src';
 	if (fs.existsSync(path))
 	{
-		pathPrefix = '../../src';
+		pathPrefix = '../../src/hitrobot';
 	}
 	else
 	{
@@ -57,6 +57,7 @@ function getVersion(path)
 		var versionLine = readme[4].split('|');
 		version = versionLine[1].trim();
 		paramServer.setParam({'version': version});
+		console.log(version);
 	}
 	catch(e)
 	{
@@ -68,7 +69,7 @@ function getVersion(path)
 function getConfig(path)
 {
 	var path = path || pathPrefix;
-	var configFile = `${path}/hitrobot/bringup/auth/${model}/hitrobot.cfg`;
+	var configFile = `${path}/bringup/auth/${model}/hitrobot.cfg`;
 	try
 	{
 		var rawConfig = fs.readFileSync(configFile, 'utf-8');

@@ -383,6 +383,7 @@ class TaskQueryPathResponse(genpy.Message):
 int32 pathID
 string pathTopic
 int32 bufferID
+
 """
   __slots__ = ['isValid','pathID','pathTopic','bufferID']
   _slot_types = ['bool','int32','string','int32']

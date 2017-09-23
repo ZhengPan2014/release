@@ -253,10 +253,10 @@
   "3fda7de461c4194d724c2408e8af4317")
 (cl:defmethod roslisp-msg-protocol:message-definition ((type (cl:eql '<TaskQueryPath-response>)))
   "Returns full string definition for message of type '<TaskQueryPath-response>"
-  (cl:format cl:nil "bool isValid~%int32 pathID~%string pathTopic~%int32 bufferID~%~%~%"))
+  (cl:format cl:nil "bool isValid~%int32 pathID~%string pathTopic~%int32 bufferID~%~%~%~%"))
 (cl:defmethod roslisp-msg-protocol:message-definition ((type (cl:eql 'TaskQueryPath-response)))
   "Returns full string definition for message of type 'TaskQueryPath-response"
-  (cl:format cl:nil "bool isValid~%int32 pathID~%string pathTopic~%int32 bufferID~%~%~%"))
+  (cl:format cl:nil "bool isValid~%int32 pathID~%string pathTopic~%int32 bufferID~%~%~%~%"))
 (cl:defmethod roslisp-msg-protocol:serialization-length ((msg <TaskQueryPath-response>))
   (cl:+ 0
      1

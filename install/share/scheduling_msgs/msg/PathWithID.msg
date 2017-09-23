@@ -3,4 +3,4 @@ Header header
 int32 priority
 int32 pathID
 int32 flags
-geometry_msgs/PoseStamped[] poses
+geometry_msgs/Pose[] poses

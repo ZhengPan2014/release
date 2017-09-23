@@ -147,10 +147,10 @@
   "eb9b965ae452a7d2f5b77f9dcab2f6e9")
 (cl:defmethod roslisp-msg-protocol:message-definition ((type (cl:eql '<NewTask>)))
   "Returns full string definition for message of type '<NewTask>"
-  (cl:format cl:nil "int32 taskID~%int32 source_stationID~%int32 source_action~%int32 destination_stationID~%int32 destination_action~%~%~%~%~%"))
+  (cl:format cl:nil "int32 taskID~%int32 source_stationID~%int32 source_action~%int32 destination_stationID~%int32 destination_action~%~%~%"))
 (cl:defmethod roslisp-msg-protocol:message-definition ((type (cl:eql 'NewTask)))
   "Returns full string definition for message of type 'NewTask"
-  (cl:format cl:nil "int32 taskID~%int32 source_stationID~%int32 source_action~%int32 destination_stationID~%int32 destination_action~%~%~%~%~%"))
+  (cl:format cl:nil "int32 taskID~%int32 source_stationID~%int32 source_action~%int32 destination_stationID~%int32 destination_action~%~%~%"))
 (cl:defmethod roslisp-msg-protocol:serialization-length ((msg <NewTask>))
   (cl:+ 0
      4

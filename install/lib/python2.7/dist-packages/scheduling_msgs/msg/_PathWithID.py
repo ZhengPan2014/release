@@ -9,7 +9,7 @@ import geometry_msgs.msg
 import std_msgs.msg
 
 class PathWithID(genpy.Message):
-  _md5sum = "cdd7203384a2fc9ee858c81f1710e608"
+  _md5sum = "cb443eebefd4dc9d43596153fe06023e"
   _type = "scheduling_msgs/PathWithID"
   _has_header = True #flag to mark the presence of a Header object
   _full_text = """#An array of poses that represents a Path for a robot to follow
@@ -17,7 +17,7 @@ Header header
 int32 priority
 int32 pathID
 int32 flags
-geometry_msgs/PoseStamped[] poses
+geometry_msgs/Pose[] poses
 ================================================================================
 MSG: std_msgs/Header
 # Standard metadata for higher-level stamped data types.
@@ -35,12 +35,6 @@ time stamp
 # 0: no frame
 # 1: global frame
 string frame_id
-
-================================================================================
-MSG: geometry_msgs/PoseStamped
-# A Pose with reference coordinate frame and timestamp
-Header header
-Pose pose
 
 ================================================================================
 MSG: geometry_msgs/Pose
@@ -65,7 +59,7 @@ float64 z
 float64 w
 """
   __slots__ = ['header','priority','pathID','flags','poses']
-  _slot_types = ['std_msgs/Header','int32','int32','int32','geometry_msgs/PoseStamped[]']
+  _slot_types = ['std_msgs/Header','int32','int32','int32','geometry_msgs/Pose[]']
 
   def __init__(self, *args, **kwds):
     """
@@ -129,26 +123,11 @@ float64 w
       length = len(self.poses)
       buff.write(_struct_I.pack(length))
       for val1 in self.poses:
-        _v1 = val1.header
-        buff.write(_struct_I.pack(_v1.seq))
-        _v2 = _v1.stamp
-        _x = _v2
-        buff.write(_struct_2I.pack(_x.secs, _x.nsecs))
-        _x = _v1.frame_id
-        length = len(_x)
-        if python3 or type(_x) == unicode:
-          _x = _x.encode('utf-8')
-          length = len(_x)
-        if python3:
-          buff.write(struct.pack('<I%sB'%length, length, *_x))
-        else:
-          buff.write(struct.pack('<I%ss'%length, length, _x))
-        _v3 = val1.pose
-        _v4 = _v3.position
-        _x = _v4
+        _v1 = val1.position
+        _x = _v1
         buff.write(_struct_3d.pack(_x.x, _x.y, _x.z))
-        _v5 = _v3.orientation
-        _x = _v5
+        _v2 = val1.orientation
+        _x = _v2
         buff.write(_struct_4d.pack(_x.x, _x.y, _x.z, _x.w))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
@@ -186,33 +165,14 @@ float64 w
       (length,) = _struct_I.unpack(str[start:end])
       self.poses = []
       for i in range(0, length):
-        val1 = geometry_msgs.msg.PoseStamped()
-        _v6 = val1.header
-        start = end
-        end += 4
-        (_v6.seq,) = _struct_I.unpack(str[start:end])
-        _v7 = _v6.stamp
-        _x = _v7
-        start = end
-        end += 8
-        (_x.secs, _x.nsecs,) = _struct_2I.unpack(str[start:end])
-        start = end
-        end += 4
-        (length,) = _struct_I.unpack(str[start:end])
-        start = end
-        end += length
-        if python3:
-          _v6.frame_id = str[start:end].decode('utf-8')
-        else:
-          _v6.frame_id = str[start:end]
-        _v8 = val1.pose
-        _v9 = _v8.position
-        _x = _v9
+        val1 = geometry_msgs.msg.Pose()
+        _v3 = val1.position
+        _x = _v3
         start = end
         end += 24
         (_x.x, _x.y, _x.z,) = _struct_3d.unpack(str[start:end])
-        _v10 = _v8.orientation
-        _x = _v10
+        _v4 = val1.orientation
+        _x = _v4
         start = end
         end += 32
         (_x.x, _x.y, _x.z, _x.w,) = _struct_4d.unpack(str[start:end])
@@ -245,26 +205,11 @@ float64 w
       length = len(self.poses)
       buff.write(_struct_I.pack(length))
       for val1 in self.poses:
-        _v11 = val1.header
-        buff.write(_struct_I.pack(_v11.seq))
-        _v12 = _v11.stamp
-        _x = _v12
-        buff.write(_struct_2I.pack(_x.secs, _x.nsecs))
-        _x = _v11.frame_id
-        length = len(_x)
-        if python3 or type(_x) == unicode:
-          _x = _x.encode('utf-8')
-          length = len(_x)
-        if python3:
-          buff.write(struct.pack('<I%sB'%length, length, *_x))
-        else:
-          buff.write(struct.pack('<I%ss'%length, length, _x))
-        _v13 = val1.pose
-        _v14 = _v13.position
-        _x = _v14
+        _v5 = val1.position
+        _x = _v5
         buff.write(_struct_3d.pack(_x.x, _x.y, _x.z))
-        _v15 = _v13.orientation
-        _x = _v15
+        _v6 = val1.orientation
+        _x = _v6
         buff.write(_struct_4d.pack(_x.x, _x.y, _x.z, _x.w))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
@@ -303,33 +248,14 @@ float64 w
       (length,) = _struct_I.unpack(str[start:end])
       self.poses = []
       for i in range(0, length):
-        val1 = geometry_msgs.msg.PoseStamped()
-        _v16 = val1.header
-        start = end
-        end += 4
-        (_v16.seq,) = _struct_I.unpack(str[start:end])
-        _v17 = _v16.stamp
-        _x = _v17
-        start = end
-        end += 8
-        (_x.secs, _x.nsecs,) = _struct_2I.unpack(str[start:end])
-        start = end
-        end += 4
-        (length,) = _struct_I.unpack(str[start:end])
-        start = end
-        end += length
-        if python3:
-          _v16.frame_id = str[start:end].decode('utf-8')
-        else:
-          _v16.frame_id = str[start:end]
-        _v18 = val1.pose
-        _v19 = _v18.position
-        _x = _v19
+        val1 = geometry_msgs.msg.Pose()
+        _v7 = val1.position
+        _x = _v7
         start = end
         end += 24
         (_x.x, _x.y, _x.z,) = _struct_3d.unpack(str[start:end])
-        _v20 = _v18.orientation
-        _x = _v20
+        _v8 = val1.orientation
+        _x = _v8
         start = end
         end += 32
         (_x.x, _x.y, _x.z, _x.w,) = _struct_4d.unpack(str[start:end])
@@ -339,8 +265,7 @@ float64 w
       raise genpy.DeserializationError(e) #most likely buffer underfill
 
 _struct_I = genpy.struct_I
-_struct_3i = struct.Struct("<3i")
-_struct_3I = struct.Struct("<3I")
 _struct_4d = struct.Struct("<4d")
-_struct_2I = struct.Struct("<2I")
+_struct_3I = struct.Struct("<3I")
+_struct_3i = struct.Struct("<3i")
 _struct_3d = struct.Struct("<3d")

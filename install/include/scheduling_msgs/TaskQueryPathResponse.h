@@ -156,6 +156,7 @@ struct Definition< ::scheduling_msgs::TaskQueryPathResponse_<ContainerAllocator>
 int32 pathID\n\
 string pathTopic\n\
 int32 bufferID\n\
+\n\
 ";
   }
 

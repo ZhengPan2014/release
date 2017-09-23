@@ -16,7 +16,7 @@
 #include <ros/message_operations.h>
 
 #include <std_msgs/Header.h>
-#include <geometry_msgs/PoseStamped.h>
+#include <geometry_msgs/Pose.h>
 
 namespace scheduling_msgs
 {
@@ -55,7 +55,7 @@ struct PathWithID_
    typedef int32_t _flags_type;
   _flags_type flags;
 
-   typedef std::vector< ::geometry_msgs::PoseStamped_<ContainerAllocator> , typename ContainerAllocator::template rebind< ::geometry_msgs::PoseStamped_<ContainerAllocator> >::other >  _poses_type;
+   typedef std::vector< ::geometry_msgs::Pose_<ContainerAllocator> , typename ContainerAllocator::template rebind< ::geometry_msgs::Pose_<ContainerAllocator> >::other >  _poses_type;
   _poses_type poses;
 
 
@@ -135,12 +135,12 @@ struct MD5Sum< ::scheduling_msgs::PathWithID_<ContainerAllocator> >
 {
   static const char* value()
   {
-    return "cdd7203384a2fc9ee858c81f1710e608";
+    return "cb443eebefd4dc9d43596153fe06023e";
   }
 
   static const char* value(const ::scheduling_msgs::PathWithID_<ContainerAllocator>&) { return value(); }
-  static const uint64_t static_value1 = 0xcdd7203384a2fc9eULL;
-  static const uint64_t static_value2 = 0xe858c81f1710e608ULL;
+  static const uint64_t static_value1 = 0xcb443eebefd4dc9dULL;
+  static const uint64_t static_value2 = 0x43596153fe06023eULL;
 };
 
 template<class ContainerAllocator>
@@ -164,7 +164,7 @@ Header header\n\
 int32 priority\n\
 int32 pathID\n\
 int32 flags\n\
-geometry_msgs/PoseStamped[] poses\n\
+geometry_msgs/Pose[] poses\n\
 ================================================================================\n\
 MSG: std_msgs/Header\n\
 # Standard metadata for higher-level stamped data types.\n\
@@ -182,12 +182,6 @@ time stamp\n\
 # 0: no frame\n\
 # 1: global frame\n\
 string frame_id\n\
-\n\
-================================================================================\n\
-MSG: geometry_msgs/PoseStamped\n\
-# A Pose with reference coordinate frame and timestamp\n\
-Header header\n\
-Pose pose\n\
 \n\
 ================================================================================\n\
 MSG: geometry_msgs/Pose\n\
@@ -266,7 +260,7 @@ struct Printer< ::scheduling_msgs::PathWithID_<ContainerAllocator> >
       s << indent << "  poses[" << i << "]: ";
       s << std::endl;
       s << indent;
-      Printer< ::geometry_msgs::PoseStamped_<ContainerAllocator> >::stream(s, indent + "    ", v.poses[i]);
+      Printer< ::geometry_msgs::Pose_<ContainerAllocator> >::stream(s, indent + "    ", v.poses[i]);
     }
   }
 };

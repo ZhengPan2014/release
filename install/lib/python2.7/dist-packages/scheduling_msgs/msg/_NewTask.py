@@ -15,8 +15,6 @@ int32 source_stationID
 int32 source_action
 int32 destination_stationID
 int32 destination_action
-
-
 """
   __slots__ = ['taskID','source_stationID','source_action','destination_stationID','destination_action']
   _slot_types = ['int32','int32','int32','int32','int32']

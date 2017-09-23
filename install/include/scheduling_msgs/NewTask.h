@@ -162,8 +162,6 @@ int32 source_stationID\n\
 int32 source_action\n\
 int32 destination_stationID\n\
 int32 destination_action\n\
-\n\
-\n\
 ";
   }
 
