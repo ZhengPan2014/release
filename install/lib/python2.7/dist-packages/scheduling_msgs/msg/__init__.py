@@ -5,5 +5,7 @@ from ._NewTask import *
 from ._Path import *
 from ._PathStampWithID import *
 from ._PathWithID import *
+from ._ServerStatus import *
 from ._Task import *
 from ._TaskList import *
+from ._TaskStatus import *

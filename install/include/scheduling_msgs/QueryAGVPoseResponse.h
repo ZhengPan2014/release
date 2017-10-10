@@ -25,14 +25,19 @@ struct QueryAGVPoseResponse_
   typedef QueryAGVPoseResponse_<ContainerAllocator> Type;
 
   QueryAGVPoseResponse_()
-    : pose()  {
+    : isValid(false)
+    , pose()  {
     }
   QueryAGVPoseResponse_(const ContainerAllocator& _alloc)
-    : pose(_alloc)  {
+    : isValid(false)
+    , pose(_alloc)  {
   (void)_alloc;
     }
 
 
+
+   typedef uint8_t _isValid_type;
+  _isValid_type isValid;
 
    typedef  ::geometry_msgs::PoseStamped_<ContainerAllocator>  _pose_type;
   _pose_type pose;
@@ -114,12 +119,12 @@ struct MD5Sum< ::scheduling_msgs::QueryAGVPoseResponse_<ContainerAllocator> >
 {
   static const char* value()
   {
-    return "3f8930d968a3e84d471dff917bb1cdae";
+    return "b61b60367d471fe07f8527012951092a";
   }
 
   static const char* value(const ::scheduling_msgs::QueryAGVPoseResponse_<ContainerAllocator>&) { return value(); }
-  static const uint64_t static_value1 = 0x3f8930d968a3e84dULL;
-  static const uint64_t static_value2 = 0x471dff917bb1cdaeULL;
+  static const uint64_t static_value1 = 0xb61b60367d471fe0ULL;
+  static const uint64_t static_value2 = 0x7f8527012951092aULL;
 };
 
 template<class ContainerAllocator>
@@ -138,7 +143,8 @@ struct Definition< ::scheduling_msgs::QueryAGVPoseResponse_<ContainerAllocator> 
 {
   static const char* value()
   {
-    return "geometry_msgs/PoseStamped pose\n\
+    return "bool isValid\n\
+geometry_msgs/PoseStamped pose\n\
 \n\
 \n\
 ================================================================================\n\
@@ -204,6 +210,7 @@ namespace serialization
   {
     template<typename Stream, typename T> inline static void allInOne(Stream& stream, T m)
     {
+      stream.next(m.isValid);
       stream.next(m.pose);
     }
 
@@ -223,6 +230,8 @@ struct Printer< ::scheduling_msgs::QueryAGVPoseResponse_<ContainerAllocator> >
 {
   template<typename Stream> static void stream(Stream& s, const std::string& indent, const ::scheduling_msgs::QueryAGVPoseResponse_<ContainerAllocator>& v)
   {
+    s << indent << "isValid: ";
+    Printer<uint8_t>::stream(s, indent + "  ", v.isValid);
     s << indent << "pose: ";
     s << std::endl;
     Printer< ::geometry_msgs::PoseStamped_<ContainerAllocator> >::stream(s, indent + "  ", v.pose);

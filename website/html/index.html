@@ -423,6 +423,13 @@
 
     <div class="map_battery">
          <div class="battery_display"></div>
+         <div id="hr">             
+             <div class="map_battery_hr"></div>
+             <div class="map_battery_hr"></div>
+             <div class="map_battery_hr"></div>
+             <div class="map_battery_hr"></div>
+             <div class="map_battery_hr"></div>
+         </div>
     </div>
     <!-- stop button -->
     <div class="stop"></div>
@@ -484,10 +491,11 @@
                         <option value="initial_pose">初始位置</option>
                         <option value="scan_marker">充电桩定位</option>
                         <option value="shell_string">Shell命令</option>
-                        <option value="pallet">托盘</option>
-                        <option value="mark">mark</option>
-                        <option value="bias">bias</option>
-                        <option value="goto">跳转</option>
+                        <option value="pallet">Pallet</option>
+                        <option value="mark">Mark</option>
+                        <option value="bias">Bias</option>
+                        <option value="call">Call</option>
+                        <option value="goto">Goto</option>
                     </select>
                 </li>
                 <li>
@@ -501,9 +509,14 @@
                     </select>
                 </li>
 
+                <li id="frame_id_li" style="height:0; overflow: hidden;">
+                    <p>frame_id:</p>
+                    <input data-role="none" type="text" name="" class="inp" value="" id="frame_id">
+                </li>
+
                 <li id="pubsuber_expect_li" style="height:0; overflow: hidden;">
                     <p>发布-订阅器接收值:</p>
-                    <input data-role="none" type="text" name="" class="inp" value="0.0" id="pubsuber_expect">
+                    <input data-role="none" type="text" name="" class="inp" value="" id="pubsuber_expect">
                 </li>
 
                 <li>
@@ -513,6 +526,38 @@
                 <li>
                     <p>超时时间(秒):</p>
                     <input data-role="none" type="text" name="" class="inp" value="0.0" id="timeout">
+                </li>
+
+                <li class="position" style="display: none">
+                    <p>Positon(x, y, z):</p>
+                    <span style="margin-left: 4%">
+                        <input data-role="none" type="text" name="" value="0.0" id="pos-x">
+                    </span>
+                    <span>
+                        <input data-role="none" type="text" name="" value="0.0" id="pos-y">
+                    </span>
+                    <span>
+                        <input data-role="none" type="text" name="" value="0.0" id="pos-z">
+                    </span>
+                </li>
+                <li class="orientation" style="display: none">
+                    <p>Orientation(x, y, z, w):</p>
+                    <span style="margin-left: 4%">
+                        <input data-role="none" type="text" name="" value="0.0" id="ori-x">
+                    </span>
+                    <span>
+                        <input data-role="none" type="text" name="" value="0.0" id="ori-y">
+                    </span>
+                    <span>
+                        <input data-role="none" type="text" name="" value="0.0" id="ori-z">
+                    </span>
+                    <span>
+                        <input data-role="none" type="text" name="" value="1.0" id="ori-w">
+                    </span>
+                </li>
+                <li class="orientation-yaw" style="display: none">
+                    <p>Yaw(deg):</p>
+                    <input data-role="none" type="text" name="" class="inp" value="0.0" maxlength="10" id="ori-yaw">
                 </li>
                 <li>
                     <a href="#" data-rel="back">

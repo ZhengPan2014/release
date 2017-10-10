@@ -128,7 +128,7 @@
     
     <node name="tf2_web_republisher" pkg="tf2_web_republisher" type="tf2_web_republisher" output="screen"/>
 
-    <node name="pallet_recognition_node" pkg="pallet_recognition" type="palletRecognition_node" output="screen">
+    <!-- <node name="pallet_recognition_node" pkg="pallet_recognition" type="palletRecognition_node" output="screen">
         <param name="scan_reverse" value="true"/>
         <param name="inverse_result_pose" value="true"/>
         <param name="use_variance_as_region_size" value="true"/>
@@ -136,7 +136,28 @@
         <param name="approximate_region_w" value="2.0"/>
         <param name="apply_final_optimization" value="true"/>
         <param name="publish_unsolved_pose" value="false"/>
-        <param name="laser_intensity_neglect" value="true"/><!--laser intensity ignore-->
+        <param name="laser_intensity_neglect" value="true"/>
+    </node> -->
+
+    <node name="jsnode" pkg="joy" type="joy_node" />
+
+    <node name="teleop_joystick" pkg="teleop_joystick" type="teleop_joystick" output="screen">
+        <remap from="teleop_joystick/cmd_vel" to="cmd_vel"/>
+        <remap from="teleop_joystick/joy" to="joy"/>
+        <rosparam>
+            linear_vel_base: 0.5
+            angular_vel_base: 1.0
+            micro_vel_factor: 0.1
+        </rosparam>
+    </node>
+
+    <node name="teleop_keyboard" pkg="teleop_keyboard" type="teleop_keyboard" output="screen">
+        <remap from="teleop_keyboard/cmd_vel" to="cmd_vel"/>
+        <rosparam>
+            linear_vel_base: 0.5
+            angular_vel_base: 0.25
+            micro_vel_factor: 0.1
+        </rosparam>
     </node>
 
     <node name="diagnostic_aggregator" pkg="diagnostic_aggregator" type="aggregator_node" args="CPP" output="screen">

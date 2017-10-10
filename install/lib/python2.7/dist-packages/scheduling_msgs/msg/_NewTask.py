@@ -7,17 +7,17 @@ import struct
 
 
 class NewTask(genpy.Message):
-  _md5sum = "eb9b965ae452a7d2f5b77f9dcab2f6e9"
+  _md5sum = "6227bbc971ea152cf51a61b9dec59db0"
   _type = "scheduling_msgs/NewTask"
   _has_header = False #flag to mark the presence of a Header object
   _full_text = """int32 taskID
-int32 source_stationID
+string source_station
 int32 source_action
-int32 destination_stationID
+string destination_station
 int32 destination_action
 """
-  __slots__ = ['taskID','source_stationID','source_action','destination_stationID','destination_action']
-  _slot_types = ['int32','int32','int32','int32','int32']
+  __slots__ = ['taskID','source_station','source_action','destination_station','destination_action']
+  _slot_types = ['int32','string','int32','string','int32']
 
   def __init__(self, *args, **kwds):
     """
@@ -27,7 +27,7 @@ int32 destination_action
     changes.  You cannot mix in-order arguments and keyword arguments.
 
     The available fields are:
-       taskID,source_stationID,source_action,destination_stationID,destination_action
+       taskID,source_station,source_action,destination_station,destination_action
 
     :param args: complete set of field values, in .msg order
     :param kwds: use keyword arguments corresponding to message field names
@@ -38,19 +38,19 @@ int32 destination_action
       #message fields cannot be None, assign default values for those that are
       if self.taskID is None:
         self.taskID = 0
-      if self.source_stationID is None:
-        self.source_stationID = 0
+      if self.source_station is None:
+        self.source_station = ''
       if self.source_action is None:
         self.source_action = 0
-      if self.destination_stationID is None:
-        self.destination_stationID = 0
+      if self.destination_station is None:
+        self.destination_station = ''
       if self.destination_action is None:
         self.destination_action = 0
     else:
       self.taskID = 0
-      self.source_stationID = 0
+      self.source_station = ''
       self.source_action = 0
-      self.destination_stationID = 0
+      self.destination_station = ''
       self.destination_action = 0
 
   def _get_types(self):
@@ -65,8 +65,27 @@ int32 destination_action
     :param buff: buffer, ``StringIO``
     """
     try:
-      _x = self
-      buff.write(_struct_5i.pack(_x.taskID, _x.source_stationID, _x.source_action, _x.destination_stationID, _x.destination_action))
+      buff.write(_struct_i.pack(self.taskID))
+      _x = self.source_station
+      length = len(_x)
+      if python3 or type(_x) == unicode:
+        _x = _x.encode('utf-8')
+        length = len(_x)
+      if python3:
+        buff.write(struct.pack('<I%sB'%length, length, *_x))
+      else:
+        buff.write(struct.pack('<I%ss'%length, length, _x))
+      buff.write(_struct_i.pack(self.source_action))
+      _x = self.destination_station
+      length = len(_x)
+      if python3 or type(_x) == unicode:
+        _x = _x.encode('utf-8')
+        length = len(_x)
+      if python3:
+        buff.write(struct.pack('<I%sB'%length, length, *_x))
+      else:
+        buff.write(struct.pack('<I%ss'%length, length, _x))
+      buff.write(_struct_i.pack(self.destination_action))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
@@ -77,10 +96,33 @@ int32 destination_action
     """
     try:
       end = 0
-      _x = self
       start = end
-      end += 20
-      (_x.taskID, _x.source_stationID, _x.source_action, _x.destination_stationID, _x.destination_action,) = _struct_5i.unpack(str[start:end])
+      end += 4
+      (self.taskID,) = _struct_i.unpack(str[start:end])
+      start = end
+      end += 4
+      (length,) = _struct_I.unpack(str[start:end])
+      start = end
+      end += length
+      if python3:
+        self.source_station = str[start:end].decode('utf-8')
+      else:
+        self.source_station = str[start:end]
+      start = end
+      end += 4
+      (self.source_action,) = _struct_i.unpack(str[start:end])
+      start = end
+      end += 4
+      (length,) = _struct_I.unpack(str[start:end])
+      start = end
+      end += length
+      if python3:
+        self.destination_station = str[start:end].decode('utf-8')
+      else:
+        self.destination_station = str[start:end]
+      start = end
+      end += 4
+      (self.destination_action,) = _struct_i.unpack(str[start:end])
       return self
     except struct.error as e:
       raise genpy.DeserializationError(e) #most likely buffer underfill
@@ -93,8 +135,27 @@ int32 destination_action
     :param numpy: numpy python module
     """
     try:
-      _x = self
-      buff.write(_struct_5i.pack(_x.taskID, _x.source_stationID, _x.source_action, _x.destination_stationID, _x.destination_action))
+      buff.write(_struct_i.pack(self.taskID))
+      _x = self.source_station
+      length = len(_x)
+      if python3 or type(_x) == unicode:
+        _x = _x.encode('utf-8')
+        length = len(_x)
+      if python3:
+        buff.write(struct.pack('<I%sB'%length, length, *_x))
+      else:
+        buff.write(struct.pack('<I%ss'%length, length, _x))
+      buff.write(_struct_i.pack(self.source_action))
+      _x = self.destination_station
+      length = len(_x)
+      if python3 or type(_x) == unicode:
+        _x = _x.encode('utf-8')
+        length = len(_x)
+      if python3:
+        buff.write(struct.pack('<I%sB'%length, length, *_x))
+      else:
+        buff.write(struct.pack('<I%ss'%length, length, _x))
+      buff.write(_struct_i.pack(self.destination_action))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
@@ -106,13 +167,36 @@ int32 destination_action
     """
     try:
       end = 0
-      _x = self
       start = end
-      end += 20
-      (_x.taskID, _x.source_stationID, _x.source_action, _x.destination_stationID, _x.destination_action,) = _struct_5i.unpack(str[start:end])
+      end += 4
+      (self.taskID,) = _struct_i.unpack(str[start:end])
+      start = end
+      end += 4
+      (length,) = _struct_I.unpack(str[start:end])
+      start = end
+      end += length
+      if python3:
+        self.source_station = str[start:end].decode('utf-8')
+      else:
+        self.source_station = str[start:end]
+      start = end
+      end += 4
+      (self.source_action,) = _struct_i.unpack(str[start:end])
+      start = end
+      end += 4
+      (length,) = _struct_I.unpack(str[start:end])
+      start = end
+      end += length
+      if python3:
+        self.destination_station = str[start:end].decode('utf-8')
+      else:
+        self.destination_station = str[start:end]
+      start = end
+      end += 4
+      (self.destination_action,) = _struct_i.unpack(str[start:end])
       return self
     except struct.error as e:
       raise genpy.DeserializationError(e) #most likely buffer underfill
 
 _struct_I = genpy.struct_I
-_struct_5i = struct.Struct("<5i")
+_struct_i = struct.Struct("<i")

@@ -67,7 +67,7 @@ set(teleop_keyboard_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(teleop_keyboard_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/teleop_keyboard)
+  set(teleop_keyboard_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/hitrobot/teleop_keyboard)
   set(teleop_keyboard_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(teleop_keyboard_INSTALL_PREFIX "")
   set(teleop_keyboard_PREFIX ${teleop_keyboard_DEVEL_PREFIX})

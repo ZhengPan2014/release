@@ -97,30 +97,17 @@ function getBrowserInfo()
     DATA.browserInfo = browserInfo;
 }
 
-function initStage(mapInfo, FPS)
-{
-    var FPS = FPS || 25;
-    var screenWidth = window.innerWidth || document.body.clientWidth || document.documentElement.clientWidth;
-    var screenHeight = window.innerHeight || document.body.clientHeight || document.documentElement.clientHeight;
-}
-
-function checkStr(str) 
-{
-    var myReg = /^[^@\/\'\\\"\‘\’#$%&\^\*]+$/;
-    return myReg.test(str);
-}
-
-// 
-function isEqual(actVal, target)
-{
-    var val = actVal.substr(0, actVal.length-2);
-    val = parseInt(val);
-    return (val === target);
-}
-
 function connectToRos(url)
 {
     var url = url || `ws://${window.location.hostname}:9090`;
+    if (!url.startsWith('ws://'))
+    {
+        url = 'ws://' + url;
+    }
+    if (!url.endsWith(':9090'))
+    {
+        url += ':9090';
+    }
     var ros = new ROSLIB.Ros();
     ros.connect(url);
     ros.on('connection', () => {
@@ -135,45 +122,74 @@ function connectToRos(url)
     return ros;
 }
 
+function robotAddHandle(mapInfo, serverConnection, stage)
+{
+    return (robotsInfo) => {
+        var robots = [];
+        for (var i = 0; i < robotsInfo.length; i++)
+        {
+            var robotID = robotsInfo[i].robotID || robotsInfo.agvName;
+            var robotIP = robotsInfo[i].robotIP;
+            var connection = serverConnection;
+            if (robotIP)
+            {
+                if (robotIP !== 'server')
+                {
+                    connection = connectToRos(robotIP);
+                }
+            }  
+            robots[i] = new Robot(connection, mapInfo.scale, mapInfo.reg, mapInfo.height, 
+            mapInfo.origin, mapInfo.resolution, robotID);
+            robots[i].dispRobotPose();
+            // robots[i].dispWaypoints();
+            robots[i].dispGlobalPlan();
+            stage.addRobot(robots[i]);
+        }    
+    }
+}
+
 function main()
 {
-    var screenWidth = window.innerWidth || document.body.clientWidth || document.documentElement.clientWidth;
-    var screenHeight = window.innerHeight || document.body.clientHeight || document.documentElement.clientHeight;
-
-    var serverConnection = connectToRos();
-    var stage = new Stage(screenWidth, screenHeight, 'mapNavDiv', serverConnection);
-    // display multi-robots
-    var robotsInfo = [];
-    var robots = [];
-    window.evtEmitter = new EventEmitter2();
+    // websocket connection to server
+    var url = window.location.hostname;
+    var server = new Server(url);
+    // stage
+    var screenWidth = window.innerWidth 
+        || document.body.clientWidth || document.documentElement.clientWidth;
+    var screenHeight = window.innerHeight 
+        || document.body.clientHeight || document.documentElement.clientHeight;
+    var stage = new Stage(screenWidth, screenHeight, 'mapNavDiv', server.connection);
+    // Vue bus
+    window.vueBus = new EventEmitter2();
+    // subscribe map from server
     stage.on('map', (mapInfo) => {
-        var addRobotVm = new Vue(Vm.addRobot);
-        window.evtEmitter.on('addRobot', (robotsInfo)=>{
-            for (var i = 0; i < robotsInfo.length; i++)
-            {
-                var robotId = robotsInfo[i].robotID;
-                var robotIP = robotsInfo[i].robotIP;
-                if (robotIP === 'server')
-                {
-                    var connection = serverConnection;   
-                }
-                else
-                {
-                    var connection = connectToRos(robotIP);    
-                }
-                robots[i] = new Robot(connection, mapInfo.scale, mapInfo.reg, mapInfo.height, 
-                mapInfo.origin, mapInfo.resolution, robotId);
-                robots[i].dispRobotPose();
-                // robots[i].dispWaypoints();
-                robots[i].dispGlobalPlan();
-                stage.addRobot(robots[i]);
-            }
-        })
+        // vue for robots add
+        var vmRobotsAdd = new Vue(Vm.addRobot);
+        window.vueBus.on('addRobot', robotAddHandle(mapInfo, server.connection, stage));
+        server.getClients().then(robotAddHandle(mapInfo, server.connection, stage));
+        server.on('clentsUpdate', (robotsInfo) => {
+            // TODO:
+            // update robots on stage
+        });
+        window.vueBus.emit('addRobot', [{robotID: '', robotIP: '192.168.0.159'}]);
+    });
+    // tasks handle
+    var tasksVm = new Vue(Vm.task);
+    var task = new Task(server.connection, tasksVm);
+    task.subTasks();
+
+    // debug
+    $('#currentMapName').on('click', function(){
+        stage.zoom(1.1);   
     });
 
-    var tasksVm = new Vue(Vm.task);
-    var task = new Task(serverConnection, tasksVm);
-    task.subTasks();
+    $('.map_battery').on('click', function(){
+        stage.zoom(0.9);
+    });
+
+    $('.stop').on('click', function(){
+        stage.move(10,0);
+    })
 }
 
 $(()=>{

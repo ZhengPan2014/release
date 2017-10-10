@@ -29,7 +29,7 @@ struct Task_
     , taskID(0)
     , agvID(0)
     , agvName()
-    , stationID(0)
+    , stationID()
     , workType(0)
     , workStatus(0)  {
     }
@@ -38,7 +38,7 @@ struct Task_
     , taskID(0)
     , agvID(0)
     , agvName(_alloc)
-    , stationID(0)
+    , stationID(_alloc)
     , workType(0)
     , workStatus(0)  {
   (void)_alloc;
@@ -58,7 +58,7 @@ struct Task_
    typedef std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other >  _agvName_type;
   _agvName_type agvName;
 
-   typedef int32_t _stationID_type;
+   typedef std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other >  _stationID_type;
   _stationID_type stationID;
 
    typedef int32_t _workType_type;
@@ -144,12 +144,12 @@ struct MD5Sum< ::scheduling_msgs::Task_<ContainerAllocator> >
 {
   static const char* value()
   {
-    return "3bdee9c97c7338d330686f66947e38e5";
+    return "92fc36efe8fb3c4d7962749d64c7c15e";
   }
 
   static const char* value(const ::scheduling_msgs::Task_<ContainerAllocator>&) { return value(); }
-  static const uint64_t static_value1 = 0x3bdee9c97c7338d3ULL;
-  static const uint64_t static_value2 = 0x30686f66947e38e5ULL;
+  static const uint64_t static_value1 = 0x92fc36efe8fb3c4dULL;
+  static const uint64_t static_value2 = 0x7962749d64c7c15eULL;
 };
 
 template<class ContainerAllocator>
@@ -172,9 +172,10 @@ struct Definition< ::scheduling_msgs::Task_<ContainerAllocator> >
 int32 taskID\n\
 int32 agvID\n\
 string agvName\n\
-int32 stationID\n\
+string stationID\n\
 int32 workType #0: Idle, 1: navigation without load, 2: navigation with load, 3: loading, 4: unloading\n\
 int32 workStatus #0: completed, 1: executing, 2: waiting\n\
+\n\
 ================================================================================\n\
 MSG: std_msgs/Header\n\
 # Standard metadata for higher-level stamped data types.\n\
@@ -245,7 +246,7 @@ struct Printer< ::scheduling_msgs::Task_<ContainerAllocator> >
     s << indent << "agvName: ";
     Printer<std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other > >::stream(s, indent + "  ", v.agvName);
     s << indent << "stationID: ";
-    Printer<int32_t>::stream(s, indent + "  ", v.stationID);
+    Printer<std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other > >::stream(s, indent + "  ", v.stationID);
     s << indent << "workType: ";
     Printer<int32_t>::stream(s, indent + "  ", v.workType);
     s << indent << "workStatus: ";

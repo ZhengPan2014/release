@@ -1,7 +1,11 @@
 <?xml version="1.0"?>
 <launch>
     <node name="teleop_keyboard" pkg="teleop_keyboard" type="teleop_keyboard" output="screen">
-    	<param name="walk_yaw" value="0.3"/> 
-    	<param name="walk_vel" value="0.5"/> 
+        <remap from="teleop_keyboard/cmd_vel" to="cmd_vel"/>
+        <rosparam>
+            linear_vel_base: 0.5
+            angular_vel_base: 0.25
+            micro_vel_factor: 0.1
+        </rosparam>
     </node>
 </launch>

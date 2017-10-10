@@ -7,12 +7,12 @@ import struct
 
 
 class QueryAGVPoseRequest(genpy.Message):
-  _md5sum = "c5e4a7d59c68f74eabcec876a00216aa"
+  _md5sum = "1d796b271a7ca0990ab3b6cae10c54d3"
   _type = "scheduling_msgs/QueryAGVPoseRequest"
   _has_header = False #flag to mark the presence of a Header object
-  _full_text = """int32 id
+  _full_text = """int32 agvID
 """
-  __slots__ = ['id']
+  __slots__ = ['agvID']
   _slot_types = ['int32']
 
   def __init__(self, *args, **kwds):
@@ -23,7 +23,7 @@ class QueryAGVPoseRequest(genpy.Message):
     changes.  You cannot mix in-order arguments and keyword arguments.
 
     The available fields are:
-       id
+       agvID
 
     :param args: complete set of field values, in .msg order
     :param kwds: use keyword arguments corresponding to message field names
@@ -32,10 +32,10 @@ class QueryAGVPoseRequest(genpy.Message):
     if args or kwds:
       super(QueryAGVPoseRequest, self).__init__(*args, **kwds)
       #message fields cannot be None, assign default values for those that are
-      if self.id is None:
-        self.id = 0
+      if self.agvID is None:
+        self.agvID = 0
     else:
-      self.id = 0
+      self.agvID = 0
 
   def _get_types(self):
     """
@@ -49,7 +49,7 @@ class QueryAGVPoseRequest(genpy.Message):
     :param buff: buffer, ``StringIO``
     """
     try:
-      buff.write(_struct_i.pack(self.id))
+      buff.write(_struct_i.pack(self.agvID))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
@@ -62,7 +62,7 @@ class QueryAGVPoseRequest(genpy.Message):
       end = 0
       start = end
       end += 4
-      (self.id,) = _struct_i.unpack(str[start:end])
+      (self.agvID,) = _struct_i.unpack(str[start:end])
       return self
     except struct.error as e:
       raise genpy.DeserializationError(e) #most likely buffer underfill
@@ -75,7 +75,7 @@ class QueryAGVPoseRequest(genpy.Message):
     :param numpy: numpy python module
     """
     try:
-      buff.write(_struct_i.pack(self.id))
+      buff.write(_struct_i.pack(self.agvID))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
@@ -89,7 +89,7 @@ class QueryAGVPoseRequest(genpy.Message):
       end = 0
       start = end
       end += 4
-      (self.id,) = _struct_i.unpack(str[start:end])
+      (self.agvID,) = _struct_i.unpack(str[start:end])
       return self
     except struct.error as e:
       raise genpy.DeserializationError(e) #most likely buffer underfill
@@ -107,10 +107,11 @@ import geometry_msgs.msg
 import std_msgs.msg
 
 class QueryAGVPoseResponse(genpy.Message):
-  _md5sum = "3f8930d968a3e84d471dff917bb1cdae"
+  _md5sum = "b61b60367d471fe07f8527012951092a"
   _type = "scheduling_msgs/QueryAGVPoseResponse"
   _has_header = False #flag to mark the presence of a Header object
-  _full_text = """geometry_msgs/PoseStamped pose
+  _full_text = """bool isValid
+geometry_msgs/PoseStamped pose
 
 
 ================================================================================
@@ -159,8 +160,8 @@ float64 y
 float64 z
 float64 w
 """
-  __slots__ = ['pose']
-  _slot_types = ['geometry_msgs/PoseStamped']
+  __slots__ = ['isValid','pose']
+  _slot_types = ['bool','geometry_msgs/PoseStamped']
 
   def __init__(self, *args, **kwds):
     """
@@ -170,7 +171,7 @@ float64 w
     changes.  You cannot mix in-order arguments and keyword arguments.
 
     The available fields are:
-       pose
+       isValid,pose
 
     :param args: complete set of field values, in .msg order
     :param kwds: use keyword arguments corresponding to message field names
@@ -179,9 +180,12 @@ float64 w
     if args or kwds:
       super(QueryAGVPoseResponse, self).__init__(*args, **kwds)
       #message fields cannot be None, assign default values for those that are
+      if self.isValid is None:
+        self.isValid = False
       if self.pose is None:
         self.pose = geometry_msgs.msg.PoseStamped()
     else:
+      self.isValid = False
       self.pose = geometry_msgs.msg.PoseStamped()
 
   def _get_types(self):
@@ -197,7 +201,7 @@ float64 w
     """
     try:
       _x = self
-      buff.write(_struct_3I.pack(_x.pose.header.seq, _x.pose.header.stamp.secs, _x.pose.header.stamp.nsecs))
+      buff.write(_struct_B3I.pack(_x.isValid, _x.pose.header.seq, _x.pose.header.stamp.secs, _x.pose.header.stamp.nsecs))
       _x = self.pose.header.frame_id
       length = len(_x)
       if python3 or type(_x) == unicode:
@@ -223,8 +227,9 @@ float64 w
       end = 0
       _x = self
       start = end
-      end += 12
-      (_x.pose.header.seq, _x.pose.header.stamp.secs, _x.pose.header.stamp.nsecs,) = _struct_3I.unpack(str[start:end])
+      end += 13
+      (_x.isValid, _x.pose.header.seq, _x.pose.header.stamp.secs, _x.pose.header.stamp.nsecs,) = _struct_B3I.unpack(str[start:end])
+      self.isValid = bool(self.isValid)
       start = end
       end += 4
       (length,) = _struct_I.unpack(str[start:end])
@@ -251,7 +256,7 @@ float64 w
     """
     try:
       _x = self
-      buff.write(_struct_3I.pack(_x.pose.header.seq, _x.pose.header.stamp.secs, _x.pose.header.stamp.nsecs))
+      buff.write(_struct_B3I.pack(_x.isValid, _x.pose.header.seq, _x.pose.header.stamp.secs, _x.pose.header.stamp.nsecs))
       _x = self.pose.header.frame_id
       length = len(_x)
       if python3 or type(_x) == unicode:
@@ -278,8 +283,9 @@ float64 w
       end = 0
       _x = self
       start = end
-      end += 12
-      (_x.pose.header.seq, _x.pose.header.stamp.secs, _x.pose.header.stamp.nsecs,) = _struct_3I.unpack(str[start:end])
+      end += 13
+      (_x.isValid, _x.pose.header.seq, _x.pose.header.stamp.secs, _x.pose.header.stamp.nsecs,) = _struct_B3I.unpack(str[start:end])
+      self.isValid = bool(self.isValid)
       start = end
       end += 4
       (length,) = _struct_I.unpack(str[start:end])
@@ -298,10 +304,10 @@ float64 w
       raise genpy.DeserializationError(e) #most likely buffer underfill
 
 _struct_I = genpy.struct_I
-_struct_3I = struct.Struct("<3I")
 _struct_7d = struct.Struct("<7d")
+_struct_B3I = struct.Struct("<B3I")
 class QueryAGVPose(object):
   _type          = 'scheduling_msgs/QueryAGVPose'
-  _md5sum = '25cea3ea137cda52fb0ec38d9b842df0'
+  _md5sum = '74133fddd2bb43bda6b3da7fc0c6b869'
   _request_class  = QueryAGVPoseRequest
   _response_class = QueryAGVPoseResponse

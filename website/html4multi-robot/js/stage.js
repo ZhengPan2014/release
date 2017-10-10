@@ -31,6 +31,7 @@ class Stage extends EventEmitter2
 		this.mapBitmap = null;
 		this.mapScale = null;
 		this.robotModel = null;
+		this.scale = 1;
 		
 		var canvas = document.createElement('canvas');
 		canvas.width = this.width;
@@ -115,18 +116,36 @@ class Stage extends EventEmitter2
 	// 	1. Robot robot: instance of Robot
 	addRobot(robot)
 	{
+		if (this.robots.hasOwnProperty(robot.robotId))
+		{
+			console.log(`[INFO]Robot: ${robot.robotId} already added`);
+			return;
+		}
 		this.robots[robot.robotId] = robot;
 		this.stage.addChild(robot.container);
 		console.log(`[INFO]Add robot: ${robot.robotId}`);
 	}
 
+	// params:
+	// 	1. Robot robot: 
+	removeRobot(robot)
+	{
+		this.stage.removeChild(robot.container);
+	}
+
 	zoom(scale)
 	{
+		var tempScale = this.scale * scale;
+		if (tempScale < 0.8 || tempScale > 2.0)
+		{
+			return;
+		}
+		this.scale *= scale;
 		var widthBefore = this.mapBitmap.image.width * this.mapBitmap.scaleX;
 		var heightBefore = this.mapBitmap.image.height * this.mapBitmap.scaleY;
 		var offset = {
-			x: widthBefore * scale - widthBefore,
-			y: heightBefore * scale - heightBefore
+			x: (widthBefore * scale - widthBefore)/2,
+			y: (heightBefore * scale - heightBefore)/2
 		};
 		this.mapBitmap.scaleX *= scale;
 		this.mapBitmap.scaleY *= scale;
@@ -136,6 +155,20 @@ class Stage extends EventEmitter2
 		{
 			var robot = this.robots[r];
 			robot.zoom(scale, offset);
+		}
+	}
+
+	move(x, y)
+	{
+		this.mapBitmap.regX += x;
+		this.mapBitmap.regY += y;
+		for (var r in this.robots)
+		{
+			var robot = this.robots[r];
+			robot.zoom(1.0, {
+				x: x,
+				y: y
+			});
 		}
 	}
 }

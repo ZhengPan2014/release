@@ -8,16 +8,17 @@ import struct
 import std_msgs.msg
 
 class Task(genpy.Message):
-  _md5sum = "3bdee9c97c7338d330686f66947e38e5"
+  _md5sum = "92fc36efe8fb3c4d7962749d64c7c15e"
   _type = "scheduling_msgs/Task"
   _has_header = True #flag to mark the presence of a Header object
   _full_text = """Header header
 int32 taskID
 int32 agvID
 string agvName
-int32 stationID
+string stationID
 int32 workType #0: Idle, 1: navigation without load, 2: navigation with load, 3: loading, 4: unloading
 int32 workStatus #0: completed, 1: executing, 2: waiting
+
 ================================================================================
 MSG: std_msgs/Header
 # Standard metadata for higher-level stamped data types.
@@ -37,7 +38,7 @@ time stamp
 string frame_id
 """
   __slots__ = ['header','taskID','agvID','agvName','stationID','workType','workStatus']
-  _slot_types = ['std_msgs/Header','int32','int32','string','int32','int32','int32']
+  _slot_types = ['std_msgs/Header','int32','int32','string','string','int32','int32']
 
   def __init__(self, *args, **kwds):
     """
@@ -65,7 +66,7 @@ string frame_id
       if self.agvName is None:
         self.agvName = ''
       if self.stationID is None:
-        self.stationID = 0
+        self.stationID = ''
       if self.workType is None:
         self.workType = 0
       if self.workStatus is None:
@@ -75,7 +76,7 @@ string frame_id
       self.taskID = 0
       self.agvID = 0
       self.agvName = ''
-      self.stationID = 0
+      self.stationID = ''
       self.workType = 0
       self.workStatus = 0
 
@@ -113,8 +114,17 @@ string frame_id
         buff.write(struct.pack('<I%sB'%length, length, *_x))
       else:
         buff.write(struct.pack('<I%ss'%length, length, _x))
+      _x = self.stationID
+      length = len(_x)
+      if python3 or type(_x) == unicode:
+        _x = _x.encode('utf-8')
+        length = len(_x)
+      if python3:
+        buff.write(struct.pack('<I%sB'%length, length, *_x))
+      else:
+        buff.write(struct.pack('<I%ss'%length, length, _x))
       _x = self
-      buff.write(_struct_3i.pack(_x.stationID, _x.workType, _x.workStatus))
+      buff.write(_struct_2i.pack(_x.workType, _x.workStatus))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
@@ -153,10 +163,19 @@ string frame_id
         self.agvName = str[start:end].decode('utf-8')
       else:
         self.agvName = str[start:end]
+      start = end
+      end += 4
+      (length,) = _struct_I.unpack(str[start:end])
+      start = end
+      end += length
+      if python3:
+        self.stationID = str[start:end].decode('utf-8')
+      else:
+        self.stationID = str[start:end]
       _x = self
       start = end
-      end += 12
-      (_x.stationID, _x.workType, _x.workStatus,) = _struct_3i.unpack(str[start:end])
+      end += 8
+      (_x.workType, _x.workStatus,) = _struct_2i.unpack(str[start:end])
       return self
     except struct.error as e:
       raise genpy.DeserializationError(e) #most likely buffer underfill
@@ -191,8 +210,17 @@ string frame_id
         buff.write(struct.pack('<I%sB'%length, length, *_x))
       else:
         buff.write(struct.pack('<I%ss'%length, length, _x))
+      _x = self.stationID
+      length = len(_x)
+      if python3 or type(_x) == unicode:
+        _x = _x.encode('utf-8')
+        length = len(_x)
+      if python3:
+        buff.write(struct.pack('<I%sB'%length, length, *_x))
+      else:
+        buff.write(struct.pack('<I%ss'%length, length, _x))
       _x = self
-      buff.write(_struct_3i.pack(_x.stationID, _x.workType, _x.workStatus))
+      buff.write(_struct_2i.pack(_x.workType, _x.workStatus))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
@@ -232,10 +260,19 @@ string frame_id
         self.agvName = str[start:end].decode('utf-8')
       else:
         self.agvName = str[start:end]
+      start = end
+      end += 4
+      (length,) = _struct_I.unpack(str[start:end])
+      start = end
+      end += length
+      if python3:
+        self.stationID = str[start:end].decode('utf-8')
+      else:
+        self.stationID = str[start:end]
       _x = self
       start = end
-      end += 12
-      (_x.stationID, _x.workType, _x.workStatus,) = _struct_3i.unpack(str[start:end])
+      end += 8
+      (_x.workType, _x.workStatus,) = _struct_2i.unpack(str[start:end])
       return self
     except struct.error as e:
       raise genpy.DeserializationError(e) #most likely buffer underfill
@@ -243,4 +280,3 @@ string frame_id
 _struct_I = genpy.struct_I
 _struct_3I = struct.Struct("<3I")
 _struct_2i = struct.Struct("<2i")
-_struct_3i = struct.Struct("<3i")

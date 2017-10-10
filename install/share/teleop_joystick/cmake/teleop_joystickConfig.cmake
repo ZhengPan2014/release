@@ -67,7 +67,7 @@ set(teleop_joystick_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(teleop_joystick_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/teleop_joystick)
+  set(teleop_joystick_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/hitrobot/teleop_joystick)
   set(teleop_joystick_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(teleop_joystick_INSTALL_PREFIX "")
   set(teleop_joystick_PREFIX ${teleop_joystick_DEVEL_PREFIX})

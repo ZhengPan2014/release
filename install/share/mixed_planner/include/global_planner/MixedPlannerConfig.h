@@ -226,21 +226,14 @@ class DEFAULT
         boost::any val;
         (*_i)->getValue(config, val);
 
-        if("allow_unknown"==(*_i)->name){allow_unknown = boost::any_cast<bool>(val);}
-        if("subscribe_path_topic"==(*_i)->name){subscribe_path_topic = boost::any_cast<std::string>(val);}
-        if("endpoint_tolerance"==(*_i)->name){endpoint_tolerance = boost::any_cast<double>(val);}
-        if("retrace_path"==(*_i)->name){retrace_path = boost::any_cast<bool>(val);}
-        if("use_goal_direction"==(*_i)->name){use_goal_direction = boost::any_cast<bool>(val);}
-        if("planner_is_navfn"==(*_i)->name){planner_is_navfn = boost::any_cast<int>(val);}
+        if("planner_is_navfn"==(*_i)->name){planner_is_navfn = boost::any_cast<bool>(val);}
+        if("endpoint_tolerance_navfn"==(*_i)->name){endpoint_tolerance_navfn = boost::any_cast<double>(val);}
+
       }
     }
 
-    bool allow_unknown;
-    std::string subscribe_path_topic;
-    double endpoint_tolerance;
-    bool retrace_path;
-    bool use_goal_direction;
     bool planner_is_navfn;
+    double endpoint_tolerance_navfn;
 
     bool state;
     std::string name;
@@ -249,19 +242,9 @@ class DEFAULT
 }groups;
 
 
-
-//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-        bool allow_unknown;
-//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-        std::string subscribe_path_topic;
-//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-        double endpoint_tolerance;
-//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-        bool retrace_path;
-//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-        bool use_goal_direction;
 //#line 218 "/opt/ros/indigo/share/dynamic_reconfigure/cmake/../templates/ConfigType.h.template"
         bool planner_is_navfn;
+        double endpoint_tolerance_navfn;
 
     bool __fromMessage__(dynamic_reconfigure::Config &msg)
     {
@@ -397,56 +380,6 @@ class DEFAULT
     {
 MixedPlannerConfig::GroupDescription<MixedPlannerConfig::DEFAULT, MixedPlannerConfig> Default("Default", "", 0, 0, true, &MixedPlannerConfig::groups);
 //#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-__min__.allow_unknown = 0;
-//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __max__.allow_unknown = 1;
-//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __default__.allow_unknown = 1;
-//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      Default.abstract_parameters.push_back(MixedPlannerConfig::AbstractParamDescriptionConstPtr(new MixedPlannerConfig::ParamDescription<bool>("allow_unknown", "bool", 0, "Allow path to be planned on unknown region", "", &MixedPlannerConfig::allow_unknown)));
-//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __param_descriptions__.push_back(MixedPlannerConfig::AbstractParamDescriptionConstPtr(new MixedPlannerConfig::ParamDescription<bool>("allow_unknown", "bool", 0, "Allow path to be planned on unknown region", "", &MixedPlannerConfig::allow_unknown)));
-//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __min__.subscribe_path_topic = "";
-//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __max__.subscribe_path_topic = "";
-//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __default__.subscribe_path_topic = "specified_path";
-//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      Default.abstract_parameters.push_back(MixedPlannerConfig::AbstractParamDescriptionConstPtr(new MixedPlannerConfig::ParamDescription<std::string>("subscribe_path_topic", "str", 0, "Path topic", "", &MixedPlannerConfig::subscribe_path_topic)));
-//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __param_descriptions__.push_back(MixedPlannerConfig::AbstractParamDescriptionConstPtr(new MixedPlannerConfig::ParamDescription<std::string>("subscribe_path_topic", "str", 0, "Path topic", "", &MixedPlannerConfig::subscribe_path_topic)));
-//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __min__.endpoint_tolerance = 0.5;
-//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __max__.endpoint_tolerance = 5.0;
-//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __default__.endpoint_tolerance = 0.01;
-//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      Default.abstract_parameters.push_back(MixedPlannerConfig::AbstractParamDescriptionConstPtr(new MixedPlannerConfig::ParamDescription<double>("endpoint_tolerance", "double", 0, "The maximum distance from path endpoint to goal point", "", &MixedPlannerConfig::endpoint_tolerance)));
-//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __param_descriptions__.push_back(MixedPlannerConfig::AbstractParamDescriptionConstPtr(new MixedPlannerConfig::ParamDescription<double>("endpoint_tolerance", "double", 0, "The maximum distance from path endpoint to goal point", "", &MixedPlannerConfig::endpoint_tolerance)));
-//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __min__.retrace_path = 0;
-//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __max__.retrace_path = 1;
-//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __default__.retrace_path = 1;
-//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      Default.abstract_parameters.push_back(MixedPlannerConfig::AbstractParamDescriptionConstPtr(new MixedPlannerConfig::ParamDescription<bool>("retrace_path", "bool", 0, "Retrace path", "", &MixedPlannerConfig::retrace_path)));
-//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __param_descriptions__.push_back(MixedPlannerConfig::AbstractParamDescriptionConstPtr(new MixedPlannerConfig::ParamDescription<bool>("retrace_path", "bool", 0, "Retrace path", "", &MixedPlannerConfig::retrace_path)));
-//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __min__.use_goal_direction = 0;
-//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __max__.use_goal_direction = 1;
-//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __default__.use_goal_direction = 0;
-//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      Default.abstract_parameters.push_back(MixedPlannerConfig::AbstractParamDescriptionConstPtr(new MixedPlannerConfig::ParamDescription<bool>("use_goal_direction", "bool", 0, "Use the goal direction as the direction of path end point", "", &MixedPlannerConfig::use_goal_direction)));
-//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __param_descriptions__.push_back(MixedPlannerConfig::AbstractParamDescriptionConstPtr(new MixedPlannerConfig::ParamDescription<bool>("use_goal_direction", "bool", 0, "Use the goal direction as the direction of path end point", "", &MixedPlannerConfig::use_goal_direction)));
-//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.planner_is_navfn = 0;
 //#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.planner_is_navfn = 1;
@@ -456,7 +389,17 @@ __min__.allow_unknown = 0;
       Default.abstract_parameters.push_back(MixedPlannerConfig::AbstractParamDescriptionConstPtr(new MixedPlannerConfig::ParamDescription<bool>("planner_is_navfn", "bool", 0, "navfn is the current planner", "" , &MixedPlannerConfig::planner_is_navfn)));
 //#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(MixedPlannerConfig::AbstractParamDescriptionConstPtr(new MixedPlannerConfig::ParamDescription<bool>("planner_is_navfn", "bool", 0, "navfn is the current planner", "",  &MixedPlannerConfig::planner_is_navfn)));
-//#line 235 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __min__.endpoint_tolerance_navfn = 0.5;
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __max__.endpoint_tolerance_navfn = 5.0;
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __default__.endpoint_tolerance_navfn = 0.01;
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(MixedPlannerConfig::AbstractParamDescriptionConstPtr(new MixedPlannerConfig::ParamDescription<double>("endpoint_tolerance_navfn", "double", 0, "The maximum distance from path endpoint to goal point", "", &MixedPlannerConfig::endpoint_tolerance_navfn)));
+//#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(MixedPlannerConfig::AbstractParamDescriptionConstPtr(new MixedPlannerConfig::ParamDescription<double>("endpoint_tolerance_navfn", "double", 0, "The maximum distance from path endpoint to goal point", "", &MixedPlannerConfig::endpoint_tolerance_navfn)));
+      //#line 235 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.convertParams();
 //#line 235 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __group_descriptions__.push_back(MixedPlannerConfig::AbstractGroupDescriptionConstPtr(new MixedPlannerConfig::GroupDescription<MixedPlannerConfig::DEFAULT, MixedPlannerConfig>(Default)));

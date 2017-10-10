@@ -67,7 +67,7 @@ set(yocs_msgs_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(yocs_msgs_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/yocs_msgs-devel)
+  set(yocs_msgs_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/yocs_msgs)
   set(yocs_msgs_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(yocs_msgs_INSTALL_PREFIX "")
   set(yocs_msgs_PREFIX ${yocs_msgs_DEVEL_PREFIX})

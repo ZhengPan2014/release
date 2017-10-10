@@ -44,9 +44,10 @@ class RobotMap extends EventEmitter2
 	// return: ROSLIB.Topic
 	topic(name, messageType)
 	{
+		var topicName = this.mapId.length === 0 ? name : '/' + this.mapId + name;
 		return new ROSLIB.Topic({
 			ros: this.ros,
-			name: this.mapId + name,
+			name: topicName,
 			messageType: messageType
 		});
 	}

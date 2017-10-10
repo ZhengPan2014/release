@@ -174,9 +174,28 @@ class Robot extends RobotMap
 		localPlanTopic.subscribe(this.localPlanCb(name, color));
 		super.on(`${this.robotId}-zoom`, this.localPlanCb(name, color));
 	}
+
+	// subscribe move_base status
+	// params:
+	// 	1. options:
+	// 		string name: '/move_base/status' by default;
+	// 		string messageType: 'actionlib_msgs/GoalStatusArray' by default;
+	// return:
+	// 	Promise
+	goalStatus(options)
+	{
+		var options = options || {};
+		var name = options.name || '/move_base/status';
+		var messageType = options.messageType || 'actionlib_msgs/GoalStatusArray';
+		var goalStatusTopic = this.topic(name, messageType);
+		return new Promise((resolve, reject) => {
+			goalStatusTopic.subscribe((msg) => {
+				resolve(msg);
+			});
+		});
+	}
 	
 	//private:
-
 	// params:
 	// 	1. msg: rostopic subscribed msg or emitted msg
 	// 	2. string name: msg name
@@ -184,7 +203,7 @@ class Robot extends RobotMap
 	// 	ros_msgs/Msg
 	getMsg(msg, name)
 	{
-		return (msg.hasOwnProperty('robotId')) ? msg[name] : msg;
+		return msg.hasOwnProperty('robotId') ? msg[name] : msg;
 	}
 
 	// params:
@@ -329,12 +348,28 @@ class Robot extends RobotMap
 	// return: ROSLIB.Topic
 	topic(name, messageType)
 	{
+		var topicName = this.robotId.length === 0 ? name : '/' + this.robotId + name;
 		var topic =  new ROSLIB.Topic({
 			ros: this.ros,
-			name: this.robotId + name,
+			name: topicName,
 			messageType: messageType
 		});
 		this.topics[name] = topic;
 		return topic;
+	}
+
+	// params:
+	// 	1. string name: service name;
+	// 	2. string serviceType
+	// return:
+	// 	ROSLIB.Service
+	service(name, serviceType)
+	{
+		var serviceName = this.robotId.length === 0 ? name : '/' + this.robotId + name;
+		return ROSLIB.Service({
+			ros: this.ros,
+			name: serviceName,
+			serviceType: serviceType
+		});
 	}
 }

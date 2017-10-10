@@ -24,17 +24,17 @@ struct QueryAGVPoseRequest_
   typedef QueryAGVPoseRequest_<ContainerAllocator> Type;
 
   QueryAGVPoseRequest_()
-    : id(0)  {
+    : agvID(0)  {
     }
   QueryAGVPoseRequest_(const ContainerAllocator& _alloc)
-    : id(0)  {
+    : agvID(0)  {
   (void)_alloc;
     }
 
 
 
-   typedef int32_t _id_type;
-  _id_type id;
+   typedef int32_t _agvID_type;
+  _agvID_type agvID;
 
 
 
@@ -113,12 +113,12 @@ struct MD5Sum< ::scheduling_msgs::QueryAGVPoseRequest_<ContainerAllocator> >
 {
   static const char* value()
   {
-    return "c5e4a7d59c68f74eabcec876a00216aa";
+    return "1d796b271a7ca0990ab3b6cae10c54d3";
   }
 
   static const char* value(const ::scheduling_msgs::QueryAGVPoseRequest_<ContainerAllocator>&) { return value(); }
-  static const uint64_t static_value1 = 0xc5e4a7d59c68f74eULL;
-  static const uint64_t static_value2 = 0xabcec876a00216aaULL;
+  static const uint64_t static_value1 = 0x1d796b271a7ca099ULL;
+  static const uint64_t static_value2 = 0x0ab3b6cae10c54d3ULL;
 };
 
 template<class ContainerAllocator>
@@ -137,7 +137,7 @@ struct Definition< ::scheduling_msgs::QueryAGVPoseRequest_<ContainerAllocator> >
 {
   static const char* value()
   {
-    return "int32 id\n\
+    return "int32 agvID\n\
 ";
   }
 
@@ -156,7 +156,7 @@ namespace serialization
   {
     template<typename Stream, typename T> inline static void allInOne(Stream& stream, T m)
     {
-      stream.next(m.id);
+      stream.next(m.agvID);
     }
 
     ROS_DECLARE_ALLINONE_SERIALIZER
@@ -175,8 +175,8 @@ struct Printer< ::scheduling_msgs::QueryAGVPoseRequest_<ContainerAllocator> >
 {
   template<typename Stream> static void stream(Stream& s, const std::string& indent, const ::scheduling_msgs::QueryAGVPoseRequest_<ContainerAllocator>& v)
   {
-    s << indent << "id: ";
-    Printer<int32_t>::stream(s, indent + "  ", v.id);
+    s << indent << "agvID: ";
+    Printer<int32_t>::stream(s, indent + "  ", v.agvID);
   }
 };
 

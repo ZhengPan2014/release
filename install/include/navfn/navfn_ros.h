@@ -50,6 +50,11 @@
 #include <navfn/potarr_point.h>
 #include <pcl_ros/publisher.h>
 
+//forward declaration
+namespace global_planner{
+  class MixedPlanner;
+}
+
 namespace navfn {
   /**
    * @class NavfnROS
@@ -143,7 +148,7 @@ namespace navfn {
 
       bool makePlanService(nav_msgs::GetPlan::Request& req, nav_msgs::GetPlan::Response& resp);
       
-      friend class MixedPlanner;
+      friend class global_planner::MixedPlanner;
     protected:
 
       /**

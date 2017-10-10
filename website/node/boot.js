@@ -20,8 +20,9 @@ if (!shell.which('apache2')) {
 //     shell.echo(os.arch());
 // }
 
-const ROS_HOSTNAME="ouiyeah-null"; // TODO: hostname for external roscore
-shell.exec("ping -c 1 " + ROS_HOSTNAME + ".local", {silent:true}, function(code, stdout, stderr) {
+const ROS_HOSTNAME="hitrobot-null"; // TODO: hostname for external roscore
+// shell.exec("ping -c 1 " + ROS_HOSTNAME + ".local", {silent:true}, function(code, stdout, stderr) {
+shell.exec("ping -c 1 " + "192.168.43.254", {silent:true}, function(code, stdout, stderr) {
     if (code) {
         process.env['ROS_MASTER_URI'] = 'http://' + os.hostname() + ':11311';
         process.env['ROS_HOSTNAME'] = os.hostname();

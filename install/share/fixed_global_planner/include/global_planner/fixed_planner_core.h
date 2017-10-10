@@ -103,18 +103,19 @@ protected:
         //nav_msgs::Path specified_path_;
         scheduling_msgs::PathStampWithID specified_path_;
         std::string sub_path_topic_;
+        double error_retry_time_;
         double endpoint_tolerance_;
         bool retrace_path_;
         bool include_start_pose_;
         bool include_goal_pose_;//I think for consistance, we should not activate this option
         bool use_goal_direction_;
+        bool dynamic_reconfigure_subscribed_path_topic_;
         bool always_update_path_;
 
         double planner_window_x_, planner_window_y_;
 
         std::string tf_prefix_;
         
-
         ros::ServiceServer make_plan_srv_;
 
         void outlineMap(unsigned char* costarr, int nx, int ny, unsigned char value);

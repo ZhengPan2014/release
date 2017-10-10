@@ -48,7 +48,7 @@
                     byte: [0x06, 0x10, 0x00, 0x64, 0x00, 0x05, crc16, little]
               - name: waypoint_user_pub
                 type: subscribe
-                freq: 1.0
+                freq: 5.0
               - name: pub_manual
                 type: event
                 plc_io: 0
@@ -151,7 +151,7 @@
                 echo: touch
               - name: sub_manual
                 type: event
-                freq: 1.0
+                freq: 5.0
                 action_chain:
                   - name: plc_port
                     type: write

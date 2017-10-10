@@ -40,7 +40,7 @@ template<>
 struct MD5Sum< ::scheduling_msgs::QueryAGVPose > {
   static const char* value()
   {
-    return "25cea3ea137cda52fb0ec38d9b842df0";
+    return "74133fddd2bb43bda6b3da7fc0c6b869";
   }
 
   static const char* value(const ::scheduling_msgs::QueryAGVPose&) { return value(); }

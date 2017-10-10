@@ -1,5 +1,5 @@
 int32 taskID
-int32 source_stationID
+string source_station
 int32 source_action
-int32 destination_stationID
+string destination_station
 int32 destination_action

@@ -44,6 +44,7 @@
 #include <scheduling_msgs/PathWithID.h>
 #include <scheduling_msgs/PathStampWithID.h>
 #include <global_planner/MixedPlannerConfig.h>
+#include <global_planner/FixedPlannerConfig.h>
 
 
 namespace global_planner {
@@ -97,55 +98,11 @@ namespace global_planner {
           const geometry_msgs::PoseStamped& goal, double tolerance, std::vector<geometry_msgs::PoseStamped>& plan);
 
       /**
-       * @brief  Computes the full navigation function for the map given a point in the world to start from
-       * @param world_point The point to use for seeding the navigation function 
-       * @return True if the navigation function was computed successfully, false otherwise
-       */
-      bool computePotential(const geometry_msgs::Point& world_point);
-
-      /**
-       * @brief Compute a plan to a goal after the potential for a start point has already been computed (Note: You should call computePotential first)
-       * @param goal The goal pose to create a plan to
-       * @param plan The plan... filled by the planner
-       * @return True if a valid plan was found, false otherwise
-       */
-      bool getPlanFromPotential(const geometry_msgs::PoseStamped& goal, std::vector<geometry_msgs::PoseStamped>& plan);
-
-      /**
-       * @brief Get the potential, or naviagation cost, at a given point in the world (Note: You should call computePotential first)
-       * @param world_point The point to get the potential for 
-       * @return The navigation function's value at that point in the world
-       */
-      double getPointPotential(const geometry_msgs::Point& world_point);
-
-      /**
-       * @brief Check for a valid potential value at a given point in the world (Note: You should call computePotential first)
-       * @param world_point The point to get the potential for 
-       * @return True if the navigation function is valid at that point in the world, false otherwise
-       */
-      bool validPointPotential(const geometry_msgs::Point& world_point);
-
-      /**
-       * @brief Check for a valid potential value at a given point in the world (Note: You should call computePotential first)
-       * @param world_point The point to get the potential for 
-       * @param tolerance The tolerance on searching around the world_point specified
-       * @return True if the navigation function is valid at that point in the world, false otherwise
-       */
-      bool validPointPotential(const geometry_msgs::Point& world_point, double tolerance);
-
-      /**
        * @brief  Publish a path for visualization purposes
        */
       void publishPlan(const std::vector<geometry_msgs::PoseStamped>& path, double r, double g, double b, double a);
 
       
-
-      bool makePlanService(nav_msgs::GetPlan::Request& req, nav_msgs::GetPlan::Response& resp);
-      
-      double poseDist(const geometry_msgs::PoseStamped pose0, const geometry_msgs::PoseStamped pose1);
-
-      void outlineMap(unsigned char* costarr, int nx, int ny, unsigned char value);
-
       boost::shared_ptr<navfn::NavfnROS> navfn_planner_;
       boost::shared_ptr<global_planner::FixedGlobalPlanner> fixed_planner_;
 
@@ -155,27 +112,19 @@ namespace global_planner {
        * @brief Store a copy of the current costmap in \a costmap.  Called by makePlan.
        */
       costmap_2d::Costmap2DROS* costmap_ros_;
-      ros::Publisher plan_pub_;
       std::string frame_id_;
       bool initialized_;
       costmap_2d::Costmap2D* costmap_;
 
     private:
-      ros::NodeHandle nh_;
-      bool planner_is_navfn_;
-      float convert_offset_;
-      scheduling_msgs::PathStampWithID specified_path_;
-      double endpoint_tolerance_;
-      boost::mutex mutex_;
-
+      bool planner_is_navfn_; //planner switch for navfn and fixed, true for navfn , false for fixed.
+      scheduling_msgs::PathStampWithID specified_path_; 
+    
       void path_callback(scheduling_msgs::PathStampWithID path);
-
-      void mapToWorld(double mx, double my, double& wx, double& wy);
-      bool worldToMap(double wx, double wy, double& mx, double& my);
-      void clearRobotCell(const tf::Stamped<tf::Pose>& global_pose, unsigned int mx, unsigned int my);
-
-      dynamic_reconfigure::Server<::mixed_planner::MixedPlannerConfig> *dsrv_;
-      void reconfigureCB(::mixed_planner::MixedPlannerConfig &config, uint32_t level);
+      dynamic_reconfigure::Server<::mixed_planner::MixedPlannerConfig> *dsrv_m_;  //dynamic_reconfigure of mixed planner
+      dynamic_reconfigure::Server<::mixed_planner::FixedPlannerConfig> *dsrv_f_;  //dynamic_reconfigure of fixed planner
+      void reconfigureCB_m(::mixed_planner::MixedPlannerConfig &config, uint32_t level);
+      void reconfigureCB_f(::mixed_planner::FixedPlannerConfig &config, uint32_t level);
   };
 } //end namespace global_planner
 

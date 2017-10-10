@@ -99,7 +99,7 @@ var Vm = Vm || {
     		},
 
     		submit: function(){
-    			window.evtEmitter.emit('addRobot', this.robots);
+    			window.vueBus.emit('addRobot', this.robots);
     		},
 
     		checkIP: function(ipStr){

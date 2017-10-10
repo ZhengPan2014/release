@@ -30,8 +30,8 @@
    (stationID
     :reader stationID
     :initarg :stationID
-    :type cl:integer
-    :initform 0)
+    :type cl:string
+    :initform "")
    (workType
     :reader workType
     :initarg :workType
@@ -107,12 +107,12 @@
     (cl:write-byte (cl:ldb (cl:byte 8 16) __ros_str_len) ostream)
     (cl:write-byte (cl:ldb (cl:byte 8 24) __ros_str_len) ostream))
   (cl:map cl:nil #'(cl:lambda (c) (cl:write-byte (cl:char-code c) ostream)) (cl:slot-value msg 'agvName))
-  (cl:let* ((signed (cl:slot-value msg 'stationID)) (unsigned (cl:if (cl:< signed 0) (cl:+ signed 4294967296) signed)))
-    (cl:write-byte (cl:ldb (cl:byte 8 0) unsigned) ostream)
-    (cl:write-byte (cl:ldb (cl:byte 8 8) unsigned) ostream)
-    (cl:write-byte (cl:ldb (cl:byte 8 16) unsigned) ostream)
-    (cl:write-byte (cl:ldb (cl:byte 8 24) unsigned) ostream)
-    )
+  (cl:let ((__ros_str_len (cl:length (cl:slot-value msg 'stationID))))
+    (cl:write-byte (cl:ldb (cl:byte 8 0) __ros_str_len) ostream)
+    (cl:write-byte (cl:ldb (cl:byte 8 8) __ros_str_len) ostream)
+    (cl:write-byte (cl:ldb (cl:byte 8 16) __ros_str_len) ostream)
+    (cl:write-byte (cl:ldb (cl:byte 8 24) __ros_str_len) ostream))
+  (cl:map cl:nil #'(cl:lambda (c) (cl:write-byte (cl:char-code c) ostream)) (cl:slot-value msg 'stationID))
   (cl:let* ((signed (cl:slot-value msg 'workType)) (unsigned (cl:if (cl:< signed 0) (cl:+ signed 4294967296) signed)))
     (cl:write-byte (cl:ldb (cl:byte 8 0) unsigned) ostream)
     (cl:write-byte (cl:ldb (cl:byte 8 8) unsigned) ostream)
@@ -149,12 +149,14 @@
       (cl:setf (cl:slot-value msg 'agvName) (cl:make-string __ros_str_len))
       (cl:dotimes (__ros_str_idx __ros_str_len msg)
         (cl:setf (cl:char (cl:slot-value msg 'agvName) __ros_str_idx) (cl:code-char (cl:read-byte istream)))))
-    (cl:let ((unsigned 0))
-      (cl:setf (cl:ldb (cl:byte 8 0) unsigned) (cl:read-byte istream))
-      (cl:setf (cl:ldb (cl:byte 8 8) unsigned) (cl:read-byte istream))
-      (cl:setf (cl:ldb (cl:byte 8 16) unsigned) (cl:read-byte istream))
-      (cl:setf (cl:ldb (cl:byte 8 24) unsigned) (cl:read-byte istream))
-      (cl:setf (cl:slot-value msg 'stationID) (cl:if (cl:< unsigned 2147483648) unsigned (cl:- unsigned 4294967296))))
+    (cl:let ((__ros_str_len 0))
+      (cl:setf (cl:ldb (cl:byte 8 0) __ros_str_len) (cl:read-byte istream))
+      (cl:setf (cl:ldb (cl:byte 8 8) __ros_str_len) (cl:read-byte istream))
+      (cl:setf (cl:ldb (cl:byte 8 16) __ros_str_len) (cl:read-byte istream))
+      (cl:setf (cl:ldb (cl:byte 8 24) __ros_str_len) (cl:read-byte istream))
+      (cl:setf (cl:slot-value msg 'stationID) (cl:make-string __ros_str_len))
+      (cl:dotimes (__ros_str_idx __ros_str_len msg)
+        (cl:setf (cl:char (cl:slot-value msg 'stationID) __ros_str_idx) (cl:code-char (cl:read-byte istream)))))
     (cl:let ((unsigned 0))
       (cl:setf (cl:ldb (cl:byte 8 0) unsigned) (cl:read-byte istream))
       (cl:setf (cl:ldb (cl:byte 8 8) unsigned) (cl:read-byte istream))
@@ -177,23 +179,23 @@
   "scheduling_msgs/Task")
 (cl:defmethod roslisp-msg-protocol:md5sum ((type (cl:eql '<Task>)))
   "Returns md5sum for a message object of type '<Task>"
-  "3bdee9c97c7338d330686f66947e38e5")
+  "92fc36efe8fb3c4d7962749d64c7c15e")
 (cl:defmethod roslisp-msg-protocol:md5sum ((type (cl:eql 'Task)))
   "Returns md5sum for a message object of type 'Task"
-  "3bdee9c97c7338d330686f66947e38e5")
+  "92fc36efe8fb3c4d7962749d64c7c15e")
 (cl:defmethod roslisp-msg-protocol:message-definition ((type (cl:eql '<Task>)))
   "Returns full string definition for message of type '<Task>"
-  (cl:format cl:nil "Header header~%int32 taskID~%int32 agvID~%string agvName~%int32 stationID~%int32 workType #0: Idle, 1: navigation without load, 2: navigation with load, 3: loading, 4: unloading~%int32 workStatus #0: completed, 1: executing, 2: waiting~%================================================================================~%MSG: std_msgs/Header~%# Standard metadata for higher-level stamped data types.~%# This is generally used to communicate timestamped data ~%# in a particular coordinate frame.~%# ~%# sequence ID: consecutively increasing ID ~%uint32 seq~%#Two-integer timestamp that is expressed as:~%# * stamp.sec: seconds (stamp_secs) since epoch (in Python the variable is called 'secs')~%# * stamp.nsec: nanoseconds since stamp_secs (in Python the variable is called 'nsecs')~%# time-handling sugar is provided by the client library~%time stamp~%#Frame this data is associated with~%# 0: no frame~%# 1: global frame~%string frame_id~%~%~%"))
+  (cl:format cl:nil "Header header~%int32 taskID~%int32 agvID~%string agvName~%string stationID~%int32 workType #0: Idle, 1: navigation without load, 2: navigation with load, 3: loading, 4: unloading~%int32 workStatus #0: completed, 1: executing, 2: waiting~%~%================================================================================~%MSG: std_msgs/Header~%# Standard metadata for higher-level stamped data types.~%# This is generally used to communicate timestamped data ~%# in a particular coordinate frame.~%# ~%# sequence ID: consecutively increasing ID ~%uint32 seq~%#Two-integer timestamp that is expressed as:~%# * stamp.sec: seconds (stamp_secs) since epoch (in Python the variable is called 'secs')~%# * stamp.nsec: nanoseconds since stamp_secs (in Python the variable is called 'nsecs')~%# time-handling sugar is provided by the client library~%time stamp~%#Frame this data is associated with~%# 0: no frame~%# 1: global frame~%string frame_id~%~%~%"))
 (cl:defmethod roslisp-msg-protocol:message-definition ((type (cl:eql 'Task)))
   "Returns full string definition for message of type 'Task"
-  (cl:format cl:nil "Header header~%int32 taskID~%int32 agvID~%string agvName~%int32 stationID~%int32 workType #0: Idle, 1: navigation without load, 2: navigation with load, 3: loading, 4: unloading~%int32 workStatus #0: completed, 1: executing, 2: waiting~%================================================================================~%MSG: std_msgs/Header~%# Standard metadata for higher-level stamped data types.~%# This is generally used to communicate timestamped data ~%# in a particular coordinate frame.~%# ~%# sequence ID: consecutively increasing ID ~%uint32 seq~%#Two-integer timestamp that is expressed as:~%# * stamp.sec: seconds (stamp_secs) since epoch (in Python the variable is called 'secs')~%# * stamp.nsec: nanoseconds since stamp_secs (in Python the variable is called 'nsecs')~%# time-handling sugar is provided by the client library~%time stamp~%#Frame this data is associated with~%# 0: no frame~%# 1: global frame~%string frame_id~%~%~%"))
+  (cl:format cl:nil "Header header~%int32 taskID~%int32 agvID~%string agvName~%string stationID~%int32 workType #0: Idle, 1: navigation without load, 2: navigation with load, 3: loading, 4: unloading~%int32 workStatus #0: completed, 1: executing, 2: waiting~%~%================================================================================~%MSG: std_msgs/Header~%# Standard metadata for higher-level stamped data types.~%# This is generally used to communicate timestamped data ~%# in a particular coordinate frame.~%# ~%# sequence ID: consecutively increasing ID ~%uint32 seq~%#Two-integer timestamp that is expressed as:~%# * stamp.sec: seconds (stamp_secs) since epoch (in Python the variable is called 'secs')~%# * stamp.nsec: nanoseconds since stamp_secs (in Python the variable is called 'nsecs')~%# time-handling sugar is provided by the client library~%time stamp~%#Frame this data is associated with~%# 0: no frame~%# 1: global frame~%string frame_id~%~%~%"))
 (cl:defmethod roslisp-msg-protocol:serialization-length ((msg <Task>))
   (cl:+ 0
      (roslisp-msg-protocol:serialization-length (cl:slot-value msg 'header))
      4
      4
      4 (cl:length (cl:slot-value msg 'agvName))
-     4
+     4 (cl:length (cl:slot-value msg 'stationID))
      4
      4
 ))
