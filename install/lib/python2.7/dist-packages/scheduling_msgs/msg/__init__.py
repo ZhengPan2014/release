@@ -2,6 +2,7 @@ from ._Agv import *
 from ._AgvList import *
 from ._AgvPose import *
 from ._NewTask import *
+from ._NewTask2 import *
 from ._Path import *
 from ._PathStampWithID import *
 from ._PathWithID import *

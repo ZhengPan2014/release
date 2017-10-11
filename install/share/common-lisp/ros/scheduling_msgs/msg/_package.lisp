@@ -5,6 +5,8 @@
    "AGVLIST"
    "<TASKSTATUS>"
    "TASKSTATUS"
+   "<NEWTASK2>"
+   "NEWTASK2"
    "<PATH>"
    "PATH"
    "<AGVPOSE>"

@@ -6,7 +6,13 @@
     <arg name="range_enabled" default="false"/>
     <arg name="range_topics" default="['/sonar_12oc', '/sonar_11oc', '/sonar_10oc', '/sonar_9oc', '/sonar_8oc', '/sonar_7oc', '/sonar_6oc', '/sonar_5oc', '/sonar_4oc', '/sonar_3oc', '/sonar_2oc', '/sonar_1oc']"/>
 
-    <node name="amcl" pkg="amcl" type="amcl" output="screen">
+    <include file="$(find bringup)/launch/amcl.launch">
+       <arg name="scan_topic" value="/scan_rectified" />
+       <arg name="initial_pose_x" value="0.0"/>
+       <arg name="initial_pose_y" value="0.0"/>
+       <arg name="initial_pose_a" value="0.0"/>
+    </include>
+    <!-- <node name="amcl" pkg="amcl" type="amcl" output="screen">
         <remap from="scan" to="scan_rectified" />
         <rosparam>
             initial_pose_x: 0.0
@@ -16,7 +22,7 @@
             odom_model_type: diff
             tf_broadcast: true
         </rosparam>
-    </node>
+    </node> -->
 
     <node name="robot_pose_publisher" pkg="robot_pose_publisher" type="robot_pose_publisher" output="screen"/>
 

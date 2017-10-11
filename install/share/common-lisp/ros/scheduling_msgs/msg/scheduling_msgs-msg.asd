@@ -10,6 +10,8 @@
     (:file "_package_AgvList" :depends-on ("_package"))
     (:file "TaskStatus" :depends-on ("_package_TaskStatus"))
     (:file "_package_TaskStatus" :depends-on ("_package"))
+    (:file "NewTask2" :depends-on ("_package_NewTask2"))
+    (:file "_package_NewTask2" :depends-on ("_package"))
     (:file "Path" :depends-on ("_package_Path"))
     (:file "_package_Path" :depends-on ("_package"))
     (:file "AgvPose" :depends-on ("_package_AgvPose"))
