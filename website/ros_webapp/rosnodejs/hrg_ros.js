@@ -24,7 +24,7 @@ else
 	console.log('[INFO]process.env.PATH_SHELL not found, using default');
 }
 
-const VOL_FACTOR = 0.008862;
+const VOL_FACTOR = 3.3*11/4096;
 // map edit
 const MAP_EDIT = '/home/hitrobot/workspaces/hitrobot/dbparam/map_edit.pgm';
 const OBSTACLE_COLOR = '#000';
@@ -65,12 +65,118 @@ const DIAGNOSTIC_LEVEL = {
 	STALE: 3
 };
 
+const CHARGE_ADJUST = 'pubsuber_charge_adjust';
+const CHARGE_YAW_TOLERANCE = 0.5; //rad
+const CHARGE_ADJUST_EXPECT = 'charge_adjust_done';
+const ANGULAR_VEL = 0.10;
+const DOCK_BEGIN_NAME = 'map_dockBegin';
+const CHARGING_TRAJ_NAME = 'dock_begin_charge';
+const DOCK_BEGIN_DIS = 0.35;
+const DOCK_OFFSET = 0.00; // 0.35
+const CHARGER_MOVED_THRESHOLD = 0.12;
+const AUTO_CHARGE_TRY_NUM = 2;
+const DOCK_CMD_VEL = 0.05;
+
+// charger setting
+var defaultPose = {
+	position: {
+		x: 0,
+		y: 0,
+		z: 0
+	},
+	orientation: {
+		x: 0,
+		y: 0,
+		z: 0,
+		w: 1
+	}
+}
+
+var waypointsForDock = {
+	pubsuber_auto_charge: {
+		name: 'pubsuber_auto_charge',
+		frame_id: 'pubsuber',
+		close_enough: 0,
+		goal_timeout: 0,
+		failure_mode: '3',
+		pose: defaultPose
+	},
+	pubsuber_charge_adjust: {
+		name: 'pubsuber_charge_adjust',
+		frame_id: 'pubsuber',
+		close_enough: 0,
+		goal_timeout: 0,
+		failure_mode: 'charge_adjust_done',
+		pose: defaultPose
+	},
+	vel_forward: {
+		name: 'vel_forward',
+		frame_id: 'cmd_vel',
+		close_enough: DOCK_CMD_VEL,
+		goal_timeout: 0,
+		failure_mode: 'NONE',
+		pose: defaultPose
+	},
+	vel_stop: {
+		name: 'vel_stop',
+		frame_id: 'cmd_vel',
+		close_enough: 0,
+		goal_timeout: 0,
+		failure_mode: 'NONE',
+		pose: defaultPose
+	},
+	vel_backward: {
+		name: 'vel_backward',
+		frame_id: 'cmd_vel',
+		close_enough: -DOCK_CMD_VEL,
+		goal_timeout: 0,
+		failure_mode: 'NONE',
+		pose: defaultPose
+	},
+	scanMarker_scan_6: {
+		name: 'scanMarker_scan_6',
+		frame_id: 'scan_marker',
+		close_enough: 0.6,
+		goal_timeout: 0,
+		failure_mode: 'LOOP',
+		pose: defaultPose
+	},
+	timer_sail: {
+		name: 'timer_sail',
+		frame_id: 'timer',
+		close_enough: 0,
+		goal_timeout: DOCK_BEGIN_DIS/DOCK_CMD_VEL,
+		failure_mode: 'NONE',
+		pose: defaultPose
+	},
+	map_dockBegin: {
+		name: 'map_dockBegin',
+		frame_id: 'map',
+		close_enough: 0,
+		goal_timeout: 0,
+		failure_mode: 'LOOP',
+		pose: defaultPose
+	}
+};
+var trajsForDock = {
+	dock_begin_charge: ['map_dockBegin', 'scanMarker_scan_6', 'pubsuber_charge_adjust',
+		'vel_forward', 'pubsuber_auto_charge', 'vel_stop'],
+	dock_end_charge: ['vel_backward', 'timer_sail', 'vel_stop']
+};
+
 class RosNodeJs
 {
 	constructor(){
 		this.robotStatus = {};
 		this.mapEditImg = null;
 		this.lightStatus = null;
+		this.robotPose = null;
+		this.dockPose = null;
+		this.chargeAdjustIdle = true;
+		this.triedNum = 0; 
+		this.waypoints = null;
+		this.trajectories = null;
+
 		this.config = paramServer.getParam('config');
 		if (!this.config)
 		{
@@ -94,6 +200,23 @@ class RosNodeJs
 			this.std_msgs = rosnodejs.require('std_msgs').msg;
 			this.nav_msgs = rosnodejs.require('nav_msgs').msg;
 			this.diagnostic_msgs = rosnodejs.require('diagnostic_msgs').msg;
+			this.geometry_msgs = rosnodejs.require('geometry_msgs').msg;
+			this.yocs_msgs = rosnodejs.require('yocs_msgs').msg;
+
+			//console.log(this.yocs_msgs)
+
+			this.navCtrlPub = nh.advertise('/nav_ctrl', 'yocs_msgs/NavigationControl', {
+				queueSize: 1,
+				latching: true,
+				throttleMs: -1
+			});
+			// hrg2.0 ONLY
+			// charging status
+			this.chargingStatusPub = nh.advertise('/rosnodejs/charging_status', 'yocs_msgs/NavigationControlStatus', {
+				queueSize: 1,
+				latching: true,
+				throttleMs: -1
+			});
 			this.cmdStringPub = nh.advertise('/cmd_string', 'std_msgs/String', {
 				queueSize: 1,
 				latching: true,
@@ -104,6 +227,39 @@ class RosNodeJs
 				latching: true,
 				throttleMs: -1
 			});
+			this.waypointUserSubPub = nh.advertise('/waypoint_user_sub', 'std_msgs/String', {
+				queueSize: 1,
+				latching: false,
+				throttleMs: -1
+			});
+			this.cmdVelPub = nh.advertise('/cmd_vel', 'geometry_msgs/Twist', {
+				queueSize: 1,
+				latching: true,
+				throttleMs: -1
+			});
+			// add/del waypoint
+			this.addWaypointPub = nh.advertise('/waypoint_add', 'yocs_msgs/Waypoint', {
+				queueSize: 1,
+				latching: true,
+				throttleMs: -1
+			});
+			this.delWaypointPub = nh.advertise('/waypoint_remove', 'yocs_msgs/Waypoint', {
+				queueSize: 1,
+				latching: true,
+				throttleMs: -1
+			});
+			// add/del trajectory
+			this.addTrajPub = nh.advertise('/trajectory_add', 'yocs_msgs/Trajectory', {
+				queueSize: 1,
+				latching: true,
+				throttleMs: -1
+			});
+			this.delTrajPub = nh.advertise('/trajectory_remove', 'yocs_msgs/Trajectory', {
+				queueSize: 1,
+				latching: true,
+				throttleMs: -1
+			})
+
 			this.mapSub = nh.subscribe('/map', 'nav_msgs/OccupancyGrid', this.mapSubCb());
 			this.mapEditObstacleSub = nh.subscribe('/map_edit_obstacle', 'geometry_msgs/Polygon', this.mapEditObstacleSubCb(), {
 				queueSize: 1000
@@ -113,6 +269,8 @@ class RosNodeJs
 			});
 			// subscribe waypoint_user_sub
 			this.waypointUserSub = nh.subscribe('/waypoint_user_sub', 'std_msgs/String', this.waypointUserSubCb());
+			this.waypointUserPubSub = nh.subscribe('/waypoint_user_pub', 'std_msgs/String', this.waypointUserPubSubCb());
+			this.robotPoseSub = nh.subscribe('/robot_pose', 'geometry_msgs/Pose', this.robotPoseSubCb());
 			// gmapping status
 			this.mappingStatusPub = nh.advertise('/rosnodejs/mappingStatus', 'std_msgs/String', {
 				queueSize: 10,
@@ -134,6 +292,8 @@ class RosNodeJs
 			this.shellFeedbackSub = nh.subscribe('/shell_feedback', 'std_msgs/String', this.mappingStatusCb());
 			this.netWorkSettingSub = nh.subscribe('/rosnodejs/network_setting', 'std_msgs/String', this.netWorkSettingSubCb());
 			this.diagnosticsAggSub = nh.subscribe('/diagnostics_agg', 'diagnostic_msgs/DiagnosticArray', this.diagnosticsAggSubCb());
+			this.waypointsSub = nh.subscribe('/waypoints', 'yocs_msgs/WaypointList', this.waypointsSubCb());
+			this.chargeCtrlSub = nh.subscribe('/rosnodejs/charge_ctrl', 'std_msgs/String', this.chargeCtrlSubCb());
 			// check chargestatus
 			this.checkRobotStatus('pubsuber_auto_charge', 1);
 			if (this.lastNetworkSetting)
@@ -335,7 +495,8 @@ class RosNodeJs
 							if (this.lightStatus !== LIGHT_STATUS.BLUE)
 							{
 								this.lightStatus = LIGHT_STATUS.BLUE;
-								this.updateLightStatus(this.lightStatus);	
+								this.updateLightStatus(this.lightStatus);
+								this.updateChargingStatus(3, 'charging');
 							}
 						}
 						else
@@ -344,6 +505,7 @@ class RosNodeJs
 							{
 								this.lightStatus = LIGHT_STATUS.GREEN;
 								this.updateLightStatus(this.lightStatus);
+								this.updateChargingStatus(0, 'uncharging');
 							}
 						}
 					default:
@@ -351,6 +513,75 @@ class RosNodeJs
 				}
 			}
 		};
+	}
+
+	waypointUserPubSubCb(){
+		return (msg) => {
+			if (msg.data === CHARGE_ADJUST && this.chargeAdjustIdle)
+			{
+				this.chargeAdjustIdle = false;
+				if (!this.robotPose)
+				{
+					rosnodejs.log.error('Can not get robot pose.');
+					// cancel auto charge
+					this.navCtrl('', 0);
+					this.updateChargingStatus(-1, 'charge_error: cannot get robot pose');
+					this.chargeAdjustIdle = true;
+					return;
+				}
+				if (!this.dockPose)
+				{
+					rosnodejs.log.error('Can not get dock pose, check if waypoint dock created.');
+					// cancel auto charge
+					this.navCtrl('', 0);
+					this.updateChargingStatus(-1, 'charge_error: cannot find charger');
+					this.chargeAdjustIdle = true;
+					return;
+				}
+				if (this.isChargerMoved())
+				{
+					rosnodejs.log.error('Charger may be moved. Auto charge aborted.');
+					this.navCtrl('', 0);
+					this.updateChargingStatus(-1, 'charge_error: charger may be moved');
+					this.chargeAdjustIdle = true;
+					return;
+				}
+				var angularTan = (this.robotPose.position.y-this.dockPose.position.y)/(this.dockPose.position.x-this.robotPose.position.x);
+				var angular = Math.atan(angularTan);
+				if (Math.abs(angular) > CHARGE_YAW_TOLERANCE)
+				{
+					// retry
+					if (this.triedNum < AUTO_CHARGE_TRY_NUM)
+					{
+						rosnodejs.log.error(`Got angular adjustment ${angular.toFixed(5)}, larger than tolerance ${CHARGE_YAW_TOLERANCE}, will try again.`);
+						this.retryCharge();
+						this.chargeAdjustIdle = true;
+						return;
+					}
+					else
+					{
+						rosnodejs.log.error(`Auto charge aborted. Got angular adjustment ${angular.toFixed(5)}, still larger than tolerance ${CHARGE_YAW_TOLERANCE} after retry.`);
+						this.triedNum = 0;
+						this.navCtrl('', 0);
+						this.updateChargingStatus(-1, 'charge_error: angular adjustment larger than tolerance');
+						this.chargeAdjustIdle = true;
+						return;
+					}
+				}
+				var yaw = this.quaternionToYaw(this.robotPose.orientation) + angular;
+				var isClockWise = yaw < 0 ? 1 : -1;
+				this.cmdVelPub.publish(this.velMsg(0, isClockWise * ANGULAR_VEL));
+				var adjustTime = Math.abs(yaw)/ANGULAR_VEL*1000;
+				rosnodejs.log.info(`Adjusting: ${yaw.toFixed(5)}, vel: ${isClockWise * ANGULAR_VEL}, time: ${adjustTime.toFixed(3)} ms`);
+				setTimeout(() => {
+					this.cmdVelPub.publish(this.velMsg(0, 0));
+					this.waypointUserSubPub.publish(this.strMsg(`${CHARGE_ADJUST}:${CHARGE_ADJUST_EXPECT}`));
+					this.chargeAdjustIdle = true;
+					rosnodejs.log.info('Charge adjust done');
+					this.triedNum = 0;
+				}, adjustTime);
+			}
+		} // return
 	}
 
 	netWorkSettingSubCb(msg){
@@ -485,6 +716,84 @@ class RosNodeJs
 		}
 	}
 
+	waypointsSubCb(){
+		return (waypoints) => {
+			this.waypoints = waypoints;
+			for (var i = 0; i < waypoints.waypoints.length; i++)
+			{
+				var waypoint = waypoints.waypoints[i];
+				if (waypoint.name === DOCK_BEGIN_NAME)
+				{
+					rosnodejs.log.info('Charger found.');
+					this.dockPose = this.toDockPose(waypoint.pose, DOCK_BEGIN_DIS+DOCK_OFFSET);
+					break;
+				}
+			}
+		}
+	}
+
+	robotPoseSubCb(){
+		return (pose) => {
+			this.robotPose = pose;
+		}
+	}
+
+	chargeCtrlSubCb(){
+		return (cmd) => {
+			console.log(cmd)
+			if (cmd.data === 'set_charger')
+			{
+				// add waypoints
+				// begin charge
+				var beginDockWaypoints = [];
+				for (var i = 0; i < trajsForDock.dock_begin_charge.length; i++)
+				{
+					var name = trajsForDock.dock_begin_charge[i];
+					var waypoint = waypointsForDock[name];
+					if (name === DOCK_BEGIN_NAME)
+					{
+						var dockBeginPose = this.toDockBeginPose(this.robotPose, DOCK_BEGIN_DIS);
+						waypoint.pose = dockBeginPose;
+					}
+					beginDockWaypoints.push(this.waypointMsg(waypoint));
+					this.addWaypoint(waypoint);
+				}
+				// end charge
+				var endDockWaypoints = [];
+				for (var i = 0; i < trajsForDock.dock_end_charge.length; i++)
+				{
+					var name = trajsForDock.dock_end_charge[i];
+					var waypoint = waypointsForDock[name];
+					endDockWaypoints.push(this.waypointMsg(waypoint));
+					this.addWaypoint(waypoint);
+				}
+				// add trajectories
+				// begin charge
+				var beginChargeMsg = new this.yocs_msgs.Trajectory();
+				beginChargeMsg.name = 'dock_begin_charge';
+				beginChargeMsg.waypoints = beginDockWaypoints;
+				this.addTrajPub.publish(beginChargeMsg);
+				// end charge
+				var endChargeMsg = new this.yocs_msgs.Trajectory();
+				endChargeMsg.name = 'dock_end_charge';
+				endChargeMsg.waypoints = endDockWaypoints;
+				this.addTrajPub.publish(endChargeMsg);
+			}
+			else if (cmd.data === 'charge')
+			{
+				this.navCtrl('dock_begin_charge', 1);
+			}
+			else if (cmd.data === 'uncharge')
+			{
+				this.navCtrl('dock_end_charge', 1);
+			}
+			else
+			{
+				rosnodejs.log.error('Invalid charge Cmd.');
+			}
+		}
+	}
+
 	calcPowerPercentage(voltage){
 		var voltage = voltage * VOL_FACTOR;
 		let percentage;
@@ -554,8 +863,117 @@ class RosNodeJs
 		var msg = new this.std_msgs.String();
 		msg.data = type;
 		setInterval((type) => {
-			this.waypointUserPub.publish(msg)
+			this.waypointUserPub.publish(msg);
 		}, duration);
+	}
+
+	// publish nav_ctrl cmd
+	// params: 
+	// 	1. string name: waypoint or trajectory name;
+	// 	2. int control: STOP(0), START(1), PAUSE(2)
+	navCtrl(name, control){
+		var msg = new this.yocs_msgs.NavigationControl();
+		msg.goal_name = name;
+		msg.control = control;
+		this.navCtrlPub.publish(msg);
+	}
+
+	// update charging status to topic '/rosnodejs/'
+	// hrg2.0 ONLY
+	// params: 
+	// 	1. int status
+	// 	2. string desc: status description
+	// 	3. string name(optional): waypoint name, 'dock_begin_charge' by default
+	updateChargingStatus(status, desc, name){
+		var msg = new this.yocs_msgs.NavigationControlStatus();
+		msg.status = status;
+		msg.status_desc = desc;
+		msg.waypoint_name = name || 'dock_begin_charge';
+		this.chargingStatusPub.publish(msg);
+	}
+
+	addWaypoint(waypoint){
+		this.addWaypointPub.publish(this.waypointMsg(waypoint));
+	}
+
+	delWaypoint(name){
+		var waypoint = this.getWaypointByName(name);
+		if (!waypoint)
+		{
+			return;
+		}
+		this.delWaypointPub.publish(this.waypointMsg(waypoint));
+	}
+
+	addTraj(name, waypointsName){
+		var waypoints = [];
+		for (var i = 0; i < waypointsName.length; i++)
+		{
+			waypoints.push(this.getWaypointByName(waypointsName[i]));
+		}
+		var msg = new this.yocs_msgs.Trajectory();
+		msg.name = name;
+		msg.waypoints = waypoints;
+		this.addTrajPub.publish(msg);
+	}
+
+	delTraj(name){
+		var traj = this.getTrajByName(name);
+		var msg = new this.yocs_msgs.Trajectory();
+		msg.name = name;
+		msg.waypoints = traj.waypoints;
+		this.delTrajPub.publish(msg);
+	}
+
+	getWaypointByName(name){
+		if (!this.waypoints)
+		{
+			return;
+		}
+		for (var i = 0; i < this.waypoints.waypoints.length; i++)
+		{
+			var waypoint = this.waypoints.waypoints[i];
+			if (name === waypoint.name)
+			{
+				return waypoint;
+			}
+		}
+	}
+
+	getTrajByName(name){
+		if (!this.trajectories)
+		{
+			return;
+		}
+		for (var i = 0; i < this.trajectories.trajectories[i]; i++)
+		{
+			var traj = this.trajectories.trajectories[i];
+			if (name === traj.name)
+			{
+				return traj;
+			}
+		}
+	}
+
+	waypointMsg(waypointInfo){
+		var msg = new this.yocs_msgs.Waypoint();
+		msg.header.seq = 0;
+		// var time = new Date().getTime();
+		// msg.header.stamp.secs = parseInt(time/1000);
+		// msg.header.stamp.nsecs = parseInt(time/1000-parseInt(time/1000));
+		msg.header.frame_id = waypointInfo.frame_id;
+		msg.name = waypointInfo.name;
+		msg.close_enough = waypointInfo.close_enough;
+		msg.goal_timeout = waypointInfo.goal_timeout;
+		msg.failure_mode = waypointInfo.failure_mode;
+		msg.pose.position.x = waypointInfo.pose.position.x;
+		msg.pose.position.y = waypointInfo.pose.position.y;
+		msg.pose.position.z = waypointInfo.pose.position.z;
+		msg.pose.orientation.x = waypointInfo.pose.orientation.x;
+		msg.pose.orientation.y = waypointInfo.pose.orientation.y;
+		msg.pose.orientation.z = waypointInfo.pose.orientation.z;
+		msg.pose.orientation.w = waypointInfo.pose.orientation.w;
+		return msg;
 	}
 
 	isMappingStatus(status){
@@ -569,6 +987,30 @@ class RosNodeJs
 			}
 		}
 		return flag;
+	}
+
+	// check if charger is moved based on the pose published by scan_marker 
+	// and the created dock waypoint.
+	// return: bool
+	isChargerMoved(){
+		if (this.robotPose && this.dockPose)
+		{
+			var tempPose = JSON.parse(JSON.stringify(this.robotPose));// deep copy
+			var dockPose = this.toDockPose(tempPose, DOCK_BEGIN_DIS+DOCK_OFFSET);
+			var dis = Math.sqrt(Math.pow(this.dockPose.position.x-dockPose.position.x, 2)
+				+ Math.pow(this.dockPose.position.y-dockPose.position.y, 2));
+			if (dis < CHARGER_MOVED_THRESHOLD)
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+
+	retryCharge(){
+		this.navCtrl('', 0);
+		this.navCtrl(CHARGING_TRAJ_NAME, 1);
+		this.triedNum++;
 	}
 
 	mapToPx(msg){
@@ -586,6 +1028,81 @@ class RosNodeJs
 		}
 		return msgMap;
 	}
+
+	// quaternion -> yaw
+    // params: 
+    // 	orientation
+    // return:
+    //	yaw(radian)
+    quaternionToYaw(orientation, ignoreXY){
+    	var rotation = orientation;
+    	var numerator;
+    	var denominator;
+    	if (ignoreXY)
+    	{
+    		numerator = 2*rotation.w*rotation.z;
+			denominator = 1-2*Math.pow(rotation.z,2);
+    	}
+    	else
+    	{
+    		numerator = 2*(rotation.w*rotation.z+rotation.x*rotation.y);
+			denominator = 1-2*(Math.pow(rotation.y,2)+Math.pow(rotation.z,2));
+    	}
+		var yaw = Math.atan2(numerator, denominator);
+		return yaw;
+    }
+
+    // calc dock pose
+    // params: 
+    // 	1. geometry_msgs/Pose pose
+    // 	2. float distance: distance from pose to dock
+    // return:
+    // 	geometry_msgs/Pose
+    toDockPose(pose, distance){
+    	var yaw = this.quaternionToYaw(pose.orientation, true);
+		var offset = {
+			x: distance * Math.cos(yaw),
+			y: distance * Math.sin(yaw)
+		};
+		pose.position.x += offset.x;
+		pose.position.y += offset.y;
+		return pose;
+    }
+
+    toDockBeginPose(pose, distance){
+    	var yaw = this.quaternionToYaw(pose.orientation, true);
+		var offset = {
+			x: distance * Math.cos(yaw),
+			y: distance * Math.sin(yaw)
+		};
+		pose.position.x -= offset.x;
+		pose.position.y -= offset.y;
+		return pose;
+    }
+
+    velMsg(linear, angular)
+    {
+    	var time = new Date().getTime();
+    	return new this.geometry_msgs.Twist({
+    		linear: {
+    			x: linear,
+    			y: 0,
+    			z: time
+    		},
+    		angular: {
+    			x: 0,
+    			y: 0,
+    			z: angular
+    		}
+    	});
+    }
+
+    strMsg(data)
+    {
+    	return new this.std_msgs.String({
+    		data: data
+    	});
+    }
 }
 
 module.exports = {

@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="tf_pub" default="true"/>
+    <arg name="tf_pub_footprint" default="false"/>
+    <arg name="type" default="driver"/>
+    <arg name="name" default=""/>
+    <arg name="x" default="0.0"/>
+    <arg name="y" default="0.0"/>
+    <arg name="z" default="0.0"/>
+    <arg name="roll" default="0.0"/>
+    <arg name="pitch" default="0.0"/>
+    <arg name="yaw" default="0.0"/>
+    <arg name="model" default=""/>
+    <arg name="port" default="/dev/usb_$(arg type)$(arg model)$(arg name)"/>
+
+    <node name="base_$(arg type)$(arg name)" pkg="tf_broadcaster" type="tf_broadcaster" output="screen" if="$(arg tf_pub)">
+        <param name="child_frame_id" value="base_$(arg type)$(arg name)"/>
+        <param name="x" value="$(arg x)"/>
+        <param name="y" value="$(arg y)"/>
+        <param name="z" value="$(arg z)"/>
+        <param name="roll" value="$(arg roll)"/>
+        <param name="pitch" value="$(arg pitch)"/>
+        <param name="yaw" value="$(arg yaw)"/>
+    </node>
+
+    <node name="base_footprint" pkg="tf_broadcaster" type="tf_broadcaster" output="screen" if="$(arg tf_pub_footprint)">
+        <param name="frame_id" value="base_footprint"/>
+        <param name="x" value="$(arg x)"/>
+        <param name="y" value="$(arg y)"/>
+        <param name="z" value="$(arg z)"/>
+        <param name="roll" value="$(arg roll)"/>
+        <param name="pitch" value="$(arg pitch)"/>
+        <param name="yaw" value="$(arg yaw)"/>
+    </node>
+
+    <include file="$(find bringup)/launch/driver_$(arg type)$(arg model).launch">
+        <arg name="name" value="$(arg name)"/>
+        <arg name="$(arg type)_port" value="$(arg port)"/>
+    </include>
+</launch>

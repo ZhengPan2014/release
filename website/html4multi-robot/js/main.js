@@ -122,7 +122,7 @@ function connectToRos(url)
     return ros;
 }
 
-function robotAddHandle(mapInfo, serverConnection, stage)
+function robotAddHandle(stageInfo, serverConnection, stage)
 {
     return (robotsInfo) => {
         var robots = [];
@@ -138,8 +138,12 @@ function robotAddHandle(mapInfo, serverConnection, stage)
                     connection = connectToRos(robotIP);
                 }
             }  
-            robots[i] = new Robot(connection, mapInfo.scale, mapInfo.reg, mapInfo.height, 
-            mapInfo.origin, mapInfo.resolution, robotID);
+            robots[i] = new Robot(connection, {
+                robotId: robotID,
+                stageInfo: stageInfo
+            });
+            // robots[i] = new Robot(connection, mapInfo.scale, mapInfo.reg, mapInfo.height, 
+            // mapInfo.origin, mapInfo.resolution, robotID);
             robots[i].dispRobotPose();
             // robots[i].dispWaypoints();
             robots[i].dispGlobalPlan();
@@ -159,6 +163,7 @@ function main()
     var screenHeight = window.innerHeight 
         || document.body.clientHeight || document.documentElement.clientHeight;
     var stage = new Stage(screenWidth, screenHeight, 'mapNavDiv', server.connection);
+    stage.dispMap();
     // Vue bus
     window.vueBus = new EventEmitter2();
     // subscribe map from server
@@ -171,7 +176,7 @@ function main()
             // TODO:
             // update robots on stage
         });
-        window.vueBus.emit('addRobot', [{robotID: '', robotIP: '192.168.0.159'}]);
+        window.vueBus.emit('addRobot', [{robotID: '', robotIP: 'server'}]);
     });
     // tasks handle
     var tasksVm = new Vue(Vm.task);
@@ -192,6 +197,53 @@ function main()
     })
 }
 
+function single()
+{
+    // websocket connection to server
+    var url = window.location.hostname;
+    var server = new Server(url);
+    // stage
+    var screenWidth = window.innerWidth 
+        || document.body.clientWidth || document.documentElement.clientWidth;
+    var screenHeight = window.innerHeight 
+        || document.body.clientHeight || document.documentElement.clientHeight;
+    var stage = new Stage(screenWidth, screenHeight, 'mapNavDiv', server.connection);
+    var robot = new Robot(server.connection, {
+        stage: stage
+    }); 
+    stage.addRobot(robot);
+    // robot.dispRobotPose();
+    // robot.dispGlobalPlan();
+    robot.display(['robotPose', 'globalPlan']);
+
+        // debug
+    $('#currentMapName').on('click', function(){
+        stage.zoom(1.1);   
+    });
+
+    $('.map_battery').on('click', function(){
+        stage.zoom(0.9);
+    });
+
+    $('.stop').on('click', function(){
+        stage.move(10,0);
+        robot.navigateTo({
+            position: {
+                x: 0,
+                y: 0,
+                z: 0
+            },
+            orientation: {
+                x: 0,
+                y: 0,
+                z: 0,
+                w: 1
+            }
+        });
+    })
+}
+
 $(()=>{
-	main();
+	// main();
+    single();
 });

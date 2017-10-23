@@ -36,7 +36,7 @@ class Stage extends EventEmitter2
 		var canvas = document.createElement('canvas');
 		canvas.width = this.width;
 		canvas.height = this.height;
-		$(`#${this.div}`).append(canvas);
+		document.getElementById(this.div).appendChild(canvas);
 		this.stage = new createjs.Stage(canvas);
 		if (this.enableTouch)
 		{
@@ -46,7 +46,10 @@ class Stage extends EventEmitter2
 		createjs.Ticker.addEventListener('tick', () => {
 			this.stage.update();
 		});
+	}
 
+	dispMap()
+	{
 		this.map = new RobotMap(this.ros, this.mapId);
 		this.map.dispMap();
 		this.map.on('map', (map) => {
@@ -76,6 +79,7 @@ class Stage extends EventEmitter2
 	// }
 	addMap(map)
 	{
+		this.removeMap();
 		this.mapBitmap = models.map(map);
 		var rMap = map.info.width / map.info.height;
 		var width = this.width;
@@ -110,6 +114,15 @@ class Stage extends EventEmitter2
 			origin: map.info.origin,
 			resolution: map.info.resolution
 		};
+	}
+
+	removeMap()
+	{
+		if (this.mapBitmap)
+		{
+			this.stage.removeChild(this.mapBitmap);
+			this.scale = 1;
+		}
 	}
 
 	// params:

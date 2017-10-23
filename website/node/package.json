@@ -39,6 +39,7 @@
     "xmlrpc": "chfritz/node-xmlrpc",
     "shelljs": "",
     "serialport": "",
+    "gm": "",
     "rosnodejs": ""
   },
   "devDependencies": {

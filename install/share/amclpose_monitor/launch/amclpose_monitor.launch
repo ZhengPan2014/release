@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+<!--	<group ns="gb">-->
+    	<node name="amclpose_monitor_node" pkg="amclpose_monitor" type="amclpose_monitor_node" output="screen">	
+    	</node>
+<!--	</group>-->
+</launch>

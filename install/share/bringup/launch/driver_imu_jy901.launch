@@ -1,11 +1,12 @@
 <?xml version="1.0"?>
 <launch>
     <arg name="name" default=""/>
-    <arg name="imu_port" default="/dev/ttyUSB0"/>
+    <arg name="imu_port" default="/dev/usb_imu"/>
     <node name="driver_imu$(arg name)" pkg="rosbridge_driver" type="rosbridge_driver" output="screen">
         <remap from="imu" to="imu$(arg name)"/>
         <param name="imu_port" value="$(arg imu_port)"/>
         <param name="imu_config_port" value="$(arg imu_port)"/>
+        <param name="imu_frame_id" value="base_imu$(arg name)"/>
         <rosparam>
             port_chain:
               - name: imu_config_port

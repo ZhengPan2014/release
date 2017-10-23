@@ -6,17 +6,23 @@
     <arg name="range_enabled" default="false"/>
     <arg name="range_topics" default="['/sonar_12oc', '/sonar_11oc', '/sonar_10oc', '/sonar_9oc', '/sonar_8oc', '/sonar_7oc', '/sonar_6oc', '/sonar_5oc', '/sonar_4oc', '/sonar_3oc', '/sonar_2oc', '/sonar_1oc']"/>
 
-    <node name="amcl" pkg="amcl" type="amcl" output="screen">
+    <include file="$(find bringup)/launch/amcl.launch">
+       <arg name="scan_topic" value="/scan_rectified" />
+       <arg name="initial_pose_x" value="0.0"/>
+       <arg name="initial_pose_y" value="0.0"/>
+       <arg name="initial_pose_a" value="0.0"/>
+    </include>
+    <!-- <node name="amcl" pkg="amcl" type="amcl" output="screen">
         <remap from="scan" to="scan_rectified" />
         <rosparam>
             initial_pose_x: 0.0
             initial_pose_y: 0.0
             initial_pose_a: 0.0
-            use_map_topic: true
+            use_map_topic: false
             odom_model_type: diff
             tf_broadcast: true
         </rosparam>
-    </node>
+    </node> -->
 
     <node name="robot_pose_publisher" pkg="robot_pose_publisher" type="robot_pose_publisher" output="screen"/>
 
@@ -171,6 +177,9 @@
                 latch_xy_goal_tolerance: true
                 occdist_scale: 0.0 #0.5
                 path_distance_bias: 96.0
+                vx_samples: 10
+                vy_samples: 1
+                vth_samples: 20
             TebLocalPlannerROS:
                 acc_lim_x: 0.5
                 acc_lim_theta: 3.2

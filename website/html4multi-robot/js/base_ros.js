@@ -56,7 +56,7 @@ class BaseRos extends EventEmitter2
 	{
 		return new ROSLIB.Topic({
 			ros: this.connection,
-			name: this.ID + name,
+			name: this.robotId + name,
 			messageType: messageType
 		});
 	}

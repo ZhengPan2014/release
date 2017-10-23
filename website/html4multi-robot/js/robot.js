@@ -1,29 +1,55 @@
 'use strict';
 
-class Robot extends RobotMap
+class Robot extends EventEmitter2
 {
 	// params:
 	// 	1. ROSLIB.Ros ros
-	// 	2. createjs.Stage stage
-	//  3. scale
-	//  4. reg
-	//  5. int height
-	//  6. origin
-	//  7. float resolution
-	// 	8. string robotId: hostname 
-	constructor(ros, scale, reg, height, origin, resolution, robotId)
+	//	2. options:
+	//		string robotId: hostname
+	//	 	stageInfo:
+	//			scale: {float x, float y}
+	//			reg: {float x, float y}
+	//			float height: 
+	//			float origin:
+	//			float resolution
+	//		createjs.Stage stage
+	//		string[] needPoseTypes: waypoints types which need a valid pose, 
+	//								['goal', 'pallet', 'mark', 'initial_pose'] by default
+	constructor(ros, options)
 	{
-		super(ros, robotId);
+		var options = options || {};
+		var robotId = options.robotId || '';
+		super();
 		this.ros = ros;
-		this.scale = scale;
-		this.reg = reg;
-		this.height = height;
-		this.origin = origin;
-		this.resolution = resolution;
-		this.robotId = robotId || '';
-		if (this.robotId.indexOf('-') !== -1)
+		this.robotId = robotId;
+		this.needPoseTypes = options.needPoseTypes || ['goal', 'pallet', 'mark', 'initial_pose'];
+		this.dispItems = {
+			robotPose: this.dispRobotPose,
+			globalPlan: this.dispGlobalPlan,
+			localPlan: this.dispLocalPlan,
+			waypoints: this.dispWaypoints
+		};
+		this.stage = null;
+		this.scale = null;
+		this.reg = null;
+		this.height = null;
+		this.origin = null;
+		this.resolution = null;
+		this.tf = null;
+		this.map = null;
+		if (options.stageInfo)
 		{
-			throw new ValueError(`'-' is not a legal string for ROS graph resource name`);
+			this.initParams(options.stageInfo);
+		}
+		else
+		{
+			this.stage = options.stage;
+			this.map = new RobotMap(this.ros, this.robotId);
+			this.map.dispMap();
+			this.map.on('map', (map) => {
+				var stageInfo = this.stage.addMap(map);
+				this.initParams(stageInfo);
+			});
 		}
 		// ros topics
 		this.topics = {}; 
@@ -33,12 +59,12 @@ class Robot extends RobotMap
 			map: null,
 			robotPose: null,
 			tf: null,
-			waypoints: null
+			waypoints: null,
+			trajectories: null
 		};
 		// container maps
 		this.containerMap = {};
 		this.tfMap = {};
-		this.tf = new Tf(this.scale, this.reg, this.height, this.origin, this.resolution);
 		this.container = new createjs.Container();
 		this.container.id = this.robotId;
 	}
@@ -56,24 +82,50 @@ class Robot extends RobotMap
 		this.reg.x += reg.x;
 		this.reg.y += reg.y;
 		super.emit(`${this.robotId}-zoom`, this.rosMsgs);
-		console.log(`${this.robotId}-zoom`);
+	}
+
+	// display robotPose, laserScan, etc.
+	// params:
+	//	1. string/string[] items: items to display, 
+	display(items)
+	{
+		var items = items;
+		if (typeof items === 'string')
+		{
+			items = [items];
+		}
+		for (var item of items)
+		{
+			if (this.dispItems.hasOwnProperty(item))
+			{
+				this.dispItems[item].call(this);
+			}
+			else
+			{
+				rosjs.logerr(`Can not display ${item}, Maybe this function not inplemented.`);
+			}
+		}
 	}
 
 	// params:
-	// 	1. string topicName: ros topic to undisplay
-	// return:
-	//  bool result
-	undisplay(topicName)
+	// 	1. string/string[] topicNames: ros topic to undisplay
+	undisplay(topicNames)
 	{
-		var topic = this.topics[topicName];
-		topic.unsubscribe();
-		var container = this.containerMap[topicName];
-		if (container)
+		var topicNames = topicNames;
+		if (typeof topicNames === 'string')
 		{
-			this.container.removeChild(container);
-			return true;	
+			topicNames = [topicNames];
 		}
-		return false;
+		for (var topicName of topicNames)
+		{
+			var topic = this.topics[topicName];
+			topic.unsubscribe();
+			var container = this.containerMap[topicName];
+			if (container)
+			{
+				this.container.removeChild(container);
+			}	
+		}
 	}
 
 	// params:
@@ -194,8 +246,391 @@ class Robot extends RobotMap
 			});
 		});
 	}
+
+	// pose estimate
+	// params: 
+	// 	1. geometry_msgs/Pose pose
+	// 	2. options:
+	// 		string frame: 'map' by default
+	// 		float64[36] covariance: covariance[0] = 0.25, covariance[7] = 0.25, covariance[35] = PI^2 by default
+	poseEstimate(pose, options)
+	{
+		var options = options || {};
+		var initialPoseTopic = this.topics['/initialpose'];
+		if (!initialPoseTopic)
+		{
+			initialPoseTopic = this.topic('/initialpose', 'geometry_msgs/PoseWithCovarianceStamped');
+		}
+		var frame = options.frame || 'map';
+		var covariance = options.covariance;
+		if (!covariance)
+		{
+			covariance = [];
+			for (var i = 0; i < 36; i++)
+			{
+				covariance[i] = 0;
+			}
+			covariance[0] = 0.5 * 0.5;
+			covariance[7] = 0.5 * 0.5;
+			covariance[35] = Math.pow((Math.PI/12), 2);
+		}
+		var msg = new ROSLIB.Message({
+			header: {
+				frame_id: frame
+			},
+			pose: {
+				pose: pose,
+				covariance: covariance
+			}
+		});
+		initialPoseTopic.publish(msg);
+		rosjs.loginfo(`Setting initial pose: ${JSON.stringify(pose)}, frame: ${frame}`);
+	}
+
+	// send navigation goal
+	// params: 
+	// 	1. geometry_msgs/Pose pose
+	// 	2. string frame[optional]: 'map' by default
+	navigateTo(pose, frame)
+	{
+		var goalTopic = this.topics['/move_base_simple/goal'];
+		if (!goalTopic)
+		{
+			goalTopic = this.topic('/move_base_simple/goal', 'geometry_msgs/PoseStamped');
+		}
+		var frame = frame || 'map';
+		var msg = new ROSLIB.Message({
+			header: {
+				frame_id: frame
+			},
+			pose: pose
+		});
+		goalTopic.publish(msg);
+		rosjs.loginfo(`Sending goal: ${JSON.stringify(pose)}, frame: ${frame}`);
+	}
+
+	// switch to mapping mode
+	toMapping()
+	{
+		this.pubCmdString('gmapping');
+	}
+
+	// switch to navigation
+	toNavigation()
+	{
+
+	}
+
+	// manual control by publish /cmd_vel
+	// e.g.: manualControl(1,0), manualControl([1,0,0], [0,0,0])
+	// params:
+	// 	1. float/float[] linear;
+	// 	2. float/float[] angular
+	manualControl(linear, angular)
+	{
+		var cmdVelTopic = this.topics['/cmd_vel'];
+		if (!cmdVelTopic)
+		{
+			cmdVelTopic = this.topic('/cmd_vel', 'geometry_msgs/Twist');
+		}
+		var linearVel = {x: 0, y: 0, z: 0};
+		var angularVel = {x: 0, y: 0, z: 0};
+		if (typeof linear === 'number')
+		{
+			linearVel.x = linear
+		}
+		else
+		{
+			if (linear.length === 2)
+			{
+				linearVel.x = linear[0];
+				linearVel.y = linear[1];
+			}
+			else if (linear.length === 3)
+			{
+				linearVel.x = linear[0];
+				linearVel.y = linear[1];
+				linearVel.z = linear[2];
+			}
+		}
+		if (typeof angular === 'number')
+		{
+			angularVel.z = angular;
+		}
+		else
+		{
+			if (angular.length === 2)
+			{
+				angularVel.x = angular[0];
+				angularVel.y = angular[1];
+			}
+			else if (angular.length === 3)
+			{
+				angularVel.x = angular[0];
+				angularVel.y = angular[1];
+				angularVel.z = angular[2];
+			}
+		}
+		var msg = new ROSLIB.Message({
+			linear: linearVel,
+			angular: angularVel
+		});
+		cmdVelTopic.publish(msg);
+	}
+
+	// TODO: solve this confusing logic
+	// add waypoint 
+	// params:
+	// 	1. waypoint:
+	// 		string name: waypoint name,
+	// 		float close_enough,
+	// 		float goal_timeout,
+	// 		string failure_mode,
+	// 		string type: waypoint type,
+	// 		string pose,
+	// 		string frame_id(optional),
+	// 		string mark(optional),
+	//		string access(optional).
+	addWaypoint(waypoint)
+	{
+		var addWaypointTopic = this.topics['/waypoint_add'];
+		if (!addWaypointTopic)
+		{
+			addWaypointTopic = this.topic('/waypoint_add', 'yocs_msgs/Waypoint');
+		}
+		var frameIdJson = {
+			close_enough: waypoint.close_enough,
+			goal_timeout: waypoint.goal_timeout,
+			failure_mode: waypoint.failure_mode,
+			type: waypoint.type
+		};
+		var pose = {
+			position: {x: 0, y: 0, z: 0},
+			orientation: {x: 0, y: 0, z: 0, w: 0}
+		};
+		if (this.needPose)
+		{
+			pose = waypoint.pose;
+		}
+		if (waypoint.frame_id)
+		{
+			frameIdJson.frame_id = waypoint.frame_id;
+		}
+		if (waypoint.mark)
+		{
+			frameIdJson.mark = waypoint.mark;
+		}
+		if (waypoint.access)
+		{
+			frameIdJson.access = waypoint.access;
+		}
+		var frameIdStr = JSON.stringify(frameIdJson);
+		var msg = new ROSLIB.Message({
+			header: {
+				frame_id: frameIdStr
+			},
+			name: waypoint.name,
+			close_enough: waypoint.close_enough,
+			goal_timeout: waypoint.goal_timeout,
+			failure_mode: waypoint.failure_mode,
+			pose: pose
+		});
+		addWaypointTopic.publish(msg);
+		rosjs.loginfo(`Adding waypoint: ${waypoint.name}`);
+	}
+
+	// delete waypoint by name
+	// params:
+	// 	1. string name
+	delWaypoint(name)
+	{
+		var delWaypointTopic = this.topics['/waypoint_remove'];
+		if (!delWaypointTopic)
+		{
+			delWaypointTopic = this.topic('/waypoint_remove', 'yocs_msgs/Waypoint');
+		}
+		var waypoint = this.getWaypointByName(name);
+		if (!waypoint)
+		{
+			rosjs.logerr(`Waypoint: ${name} not exist.`);
+			return;
+		}
+		var msg = new ROSLIB.Message(waypoint);
+		delWaypointTopic.publish(msg);
+		rosjs.loginfo(`Deleting waypoint: ${name}.`);
+	}
+
+	// add trajectory
+	// params: 
+	// 	1. string name: trajectory name,
+	// 	2. string[] waypoints: waypoints in trajectory
+	//	3. string access 
+	addTrajectory(name, waypoints, access)
+	{		
+		var addTrajTopic = this.topics['/trajectory_add'];
+		if (!addWaypointTopic)
+		{
+			addWaypointTopic = this.topic('/trajectory_add', 'yocs_msgs/Trajectory');
+		}
+		var msg = new ROSLIB.Message({
+			header: {
+				frame_id: JSON.stringify({access: access})
+			},
+			name: name,
+			waypoints: []
+		});
+		for (var w of waypoints)
+		{
+			msg.waypoints.push(this.getWaypointByName(w));
+		}
+		addWaypointTopic.publish(msg);
+		rosjs.loginfo(`Adding trajectory: ${name}`);
+	}
+
+	// delete trajectory by name
+	// params:
+	// 	1. string name
+	delTrajectory(name)
+	{
+		var delTrajTopic = this.topics['trajectory_remove'];
+		if (!delTrajTopic)
+		{
+			delTrajTopic = this.topic('/trajectory_remove', 'yocs_msgs/Trajectory');
+		}
+		var traj = this.getTrajByName(name);
+		if (!traj)
+		{
+			rosjs.logerr(`Trajectory: ${name} not exist.`);
+			return;
+		}
+		var msg = new ROSLIB.Message(traj);
+		delTrajTopic.publish(msg);
+		rosjs.loginfo(`Deleting trajectory: ${name}.`);
+	}
+
+	// wayoints or trajectories navigation control
+	// params:
+	// 	1. string goalName: waypoint or trajectory name
+	// 	2. int control: STOP=0, START=1, PAUSE=2
+	navCtrl(goalName, control)
+	{
+		var navCtrlTopic = this.topics['/nav_ctrl'];
+		if (!navCtrlTopic)
+		{
+			navCtrlTopic = this.topic('/nav_ctrl', 'yocs_msgs/NavigationControl');
+		}
+		var msg = new ROSLIB({
+			goal_name: goalName,
+			control: control
+		});
+		navCtrlTopic.publish(msg);
+		rosjs.loginfo(`Navigation control: ${goalName}, ${control}`);
+	}
+
+	pubCmdString(cmd)
+	{
+		var cmdStringTopic = this.topics['/cmd_string'];
+		if (!cmdStringTopic)
+		{
+			cmdStringTopic = this.topic('/cmd_string', 'std_msgs/String');
+		}
+		var msg = new ROSLIB.Message({
+			data: cmd
+		});
+		cmdStringTopic.publish(msg);
+		rosjs.loginfo(`Publishing cmd string: ${cmd}`);
+	}
+
+	// get waypoint by name
+	// params:
+	// 	1. string name: waypoint.name
+	// return: yocs_msgs/Waypoint / undefined if not found
+	getWaypointByName(name)
+	{
+		var result;
+		if (this.rosMsgs.waypoints)
+		{
+			for (var waypoint of this.rosMsgs.waypoints.waypoints)
+			{
+				if (waypoint.name === name)
+				{
+					result = waypoint;
+					break;
+				}
+			}
+		}
+		return result;
+	}
+
+	// get trajectory by name
+	// params:
+	// 	1. string name: trajectory.name
+	// return: yocs_msgs/Trajectory / undefined if not found
+	getTrajByName(name)
+	{
+		var result;
+		if (this.rosMsgs.trajectories)
+		{
+			for (var traj of this.rosMsgs.trajectories.trajectories)
+			{
+				if (traj.name === name)
+				{
+					result = traj;
+					break;
+				}
+			}
+		}
+		return result;
+	}
+
+	// check if name already used in waypoints or trajectories
+	// params: 
+	//	1. string name
+	// return: bool
+	isNameUsed(name)
+	{
+		if (this.rosMsgs.waypoints)
+		{
+			for (var waypoint of this.rosMsgs.waypoints.waypoints)
+			{
+				if (waypoint.name === name)
+				{
+					return true;
+				}
+			}
+		}
+		if (this.rosMsgs.trajectories.trajectories)
+		{
+			for (var traj of this.rosMsgs.trajectories.trajectories)
+			{
+				if (traj.name === name)
+				{
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+/*********private***********/	
 	
-	//private:
+	// params:
+	//	1. stageInfo:
+	//		scale: {float x, float y}
+	//		reg: {float x, float y}
+	//		float height: 
+	//		float origin:
+	//		float resolution
+	initParams(stageInfo)
+	{
+		this.scale = stageInfo.scale;
+		this.reg = stageInfo.reg;
+		this.height = stageInfo.height;
+		this.origin = stageInfo.origin;
+		this.resolution = stageInfo.resolution;
+		this.tf = new Tf(this.scale, this.reg, this.height, this.origin, this.resolution);
+	}
+
 	// params:
 	// 	1. msg: rostopic subscribed msg or emitted msg
 	// 	2. string name: msg name
@@ -340,6 +775,19 @@ class Robot extends RobotMap
 			var tfName = frameId + '2' + childFrameId; // eg: map2odom
 			this.tfMap[tfName] = tfMsg;
 		}// return
+	}
+
+	// check if waypoint needs a valid pose
+	// params:
+	// 	1. string type: waypoint type
+	// reeturn bool
+	needPose(type)
+	{
+		if (this.needPoseTypes.indexOf(type) === -1)
+		{
+			return false;
+		}
+		return true;
 	}
 
 	// params: 

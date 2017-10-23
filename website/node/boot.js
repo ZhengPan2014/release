@@ -3,7 +3,7 @@
 const os = require('os');
 const shell = require('shelljs');
 const child = require('child_process');
-const ttys = require('./serial');
+const comm = require('./comm');
 
 if (!shell.which('apache2')) {
     shell.echo('apache2haha');
@@ -55,31 +55,27 @@ shell.exec('cd ~/catkin_ws/www/ros_webapp; node app.js;', function(code, stdout,
     console.log(`${code}: ${stdout} ${stderr}`);
 }); // TODO: use other strategy to replace this
 
-// ttys();
-
 function rosnode() {
     shell.exec('rosnode list', { silent: true }, function(code, stdout, stderr) {
         if (stderr) {
             rosnode();
         } else {
-            console.log(`[INFO] [ROSNODE_LIST] ${code}`);
+            console.log(`[INFO] [ROSNODE_LIST] ok`);
             roslaunch();
         }
     });
 }
 
 function roslaunch() {
+    // comm();
+
+    // shell.exec('roslaunch bringup comm.launch', function(code, stdout, stderr) {
     shell.exec('roslaunch bringup bringup-boot.launch', function(code, stdout, stderr) {
         if (stderr) {
-            console.log(`[ERROR] [ROSLAUNCH_BRINGUP] ${code} : ${stderr}`);
+            console.log(`[ERROR] [ROSLAUNCH_BRINGUP] code ${code} : ${stderr}`);
         }
     });
 }
-
-                // shell.exec(`roslaunch bringup rosbridge_driver_config.launch driver_port:=${port.comName}`, {silent: true}, function(code, stdout, stderr) {
-                //     console.log(port.comName + ": " + code);
-                // })
-
 
 
 // shell.echo(process.cwd());
