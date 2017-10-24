@@ -8,6 +8,7 @@
               - name: plc_port
                 type: serial
                 serial_stop: 1
+                timeout: 0.1
                 action_chain:
                   <!-- bumper-->
                   - name: plc_port  

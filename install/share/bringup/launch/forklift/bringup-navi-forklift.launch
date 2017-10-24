@@ -30,7 +30,7 @@
         <remap from="odom" to="/odometry/filtered"/>
         <rosparam>
             base_global_planner: "navfn/NavfnROS" <!--"navfn/NavfnROS"--> <!--"global_planner/FixedGlobalPlanner"--> <!--"global_planner/MixedPlanner"-->
-            base_local_planner: "dwa_local_planner/DWAPlannerROS"
+            base_local_planner: "dwa_local_planner/DWAPlannerROS" <!--"rsband_local_planner/RSBandPlannerROS"-->
             recovery_behaviors:
               - name: 'conservative_reset'
                 type: 'clear_costmap_recovery/ClearCostmapRecovery'
@@ -104,6 +104,8 @@
                         clearing: true
                         max_obstacle_height: 2.0
                         min_obstacle_height: 0.0
+                        obstacle_range: 1.0
+                        raytrace_range: 4.0
                         inf_is_valid: true
                     track_unknown_space: true
                     footprint_clearing_enabled: false
@@ -168,6 +170,18 @@
                 viapoints_all_candidates: false #true
                 odom_topic: /odometry/filtered
                 map_frame: /map
+            RSBandPlannerROS:
+                rear_steering_mode: 0
+                eband_to_rs_strategy: 1
+                wheelbase: 1.359 #1.425
+                xy_goal_tolerance: 0.5
+                yaw_goal_tolerance: 0.01
+                goal_dist_threshold: 0.4
+                state_checking_mode: 1
+                interpolation_num_poses: 50
+                max_planning_duration: 0.05
+                state_checking_mode: 1
+                update_sub_goal_dist_threshold: 0.2
         </rosparam>
         
         <param name="TrajectoryPlannerROS/max_vel_x" value="$(arg max_vel_x)"/>

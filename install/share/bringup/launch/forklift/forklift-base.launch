@@ -21,7 +21,7 @@
     <node name="tf_base_laser_down" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
         <rosparam>
             child_frame_id: base_laser_down
-            x: 1.79 #0.915 #0.25 
+            x: 1.63 #1.79 #0.915 #0.25 
             z: 0.01
             roll: 3.14
         </rosparam>
