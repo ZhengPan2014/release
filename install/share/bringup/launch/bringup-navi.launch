@@ -31,7 +31,7 @@
     <node name="move_base" pkg="move_base" type="move_base" output="screen">
         <rosparam>
             base_global_planner: "navfn/NavfnROS"
-            base_local_planner: "dwa_local_planner/DWAPlannerROS"
+            base_local_planner: "dwa_local_planner/DWAPlannerROS" <!--"rsband_local_planner/RSBandPlannerROS"-->
             recovery_behaviors:
               - name: 'conservative_reset'
                 type: 'clear_costmap_recovery/ClearCostmapRecovery'

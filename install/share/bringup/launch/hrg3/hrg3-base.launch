@@ -29,101 +29,68 @@
     <node name="tf_base_infrared1" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
         <rosparam>
             child_frame_id: base_infrared_01
-            x: 0.2944
-            y: -0.268
+            x: 0.2953
+            y: -0.2241
             z: 0.0555
-            yaw: -0.8435
-            pitch: -0.262
+            yaw: -0.845
+            pitch: -0.218
         </rosparam>
     </node>
 
     <node name="tf_base_infrared2" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
         <rosparam>
             child_frame_id: base_infrared_02
-            x: 0.3184
-            y: -0.197
+            x: 0.3288
+            y: -0.1755
             z: 0.0555
-            yaw: -0.5257
-            pitch: -0.349
+            yaw: -0.3838
+            pitch: -0.218
         </rosparam>
     </node>
 
     <node name="tf_base_infrared3" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
         <rosparam>
             child_frame_id: base_infrared_03
-            x: 0.35
-            y: -0.149
+            x: 0.3449
+            y: -0.09
             z: 0.0555
-            yaw: -0.233
-            pitch: -0.349
+            yaw: -0.055
+            pitch: -0.218
         </rosparam>
     </node>
 
     <node name="tf_base_infrared4" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
         <rosparam>
             child_frame_id: base_infrared_04
-            x: 0.35
-            y: -0.09
+            x: 0.3449
+            y: 0.09
             z: 0.0555
-            yaw: 0.0
-            pitch: -0.349
+            yaw: 0.055
+            pitch: -0.218
         </rosparam>
     </node>
 
     <node name="tf_base_infrared5" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
         <rosparam>
             child_frame_id: base_infrared_05
-            x: 0.35
-            y: 0.0
+            x: 0.3288
+            y: 0.1755
             z: 0.0555
-            yaw: 0.0
-            pitch: -0.349
+            yaw: 0.3838
+            pitch: -0.218
         </rosparam>
     </node>
 
     <node name="tf_base_infrared6" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
         <rosparam>
             child_frame_id: base_infrared_06
-            x: 0.35
-            y: 0.09
+            x: 0.2953
+            y: 0.2241
             z: 0.0555
-            yaw: 0.0
-            pitch: -0.349
+            yaw: 0.845
+            pitch: -0.218
         </rosparam>
-    </node>
-
-    <node name="tf_base_infrared7" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
-        <rosparam>
-            child_frame_id: base_infrared_07
-            x: 0.35
-            y: 0.149
-            z: 0.0555
-            yaw: 0.233
-            pitch: -0.349
-        </rosparam>
-    </node>
-
-    <node name="tf_base_infrared8" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
-        <rosparam>
-            child_frame_id: base_infrared_08
-            x: 0.318
-            y: 0.197
-            z: 0.0555
-            yaw: 0.5257
-            pitch: -0.262
-        </rosparam>
-    </node>
-
-    <node name="tf_base_infrared9" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
-        <rosparam>
-            child_frame_id: base_infrared_09
-            x: 0.2944
-            y: 0.268
-            z: 0.05
-            yaw: 0.8435
-            pitch: -0.349
-        </rosparam>
-    </node>
+    </node> 
    
 
     <node name="robot_pose_publisher" pkg="robot_pose_publisher" type="robot_pose_publisher" output="screen"/>
@@ -143,7 +110,9 @@
         <arg name="plc_port" value="/dev/usb_intern24"/>
     </include>
 
-    <include file="$(find bringup)/launch/sick_s300.launch"/>
+    <include file="$(find bringup)/launch/sick_s300.launch">
+    	<arg name="scan_port" value="/dev/usb_intern43"/>
+    </include>
   
     <node name="scan_filter" pkg="laser_filters" type="scan_to_scan_filter_chain" output="screen">
         <remap from="scan" to="scan"/>
