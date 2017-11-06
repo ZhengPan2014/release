@@ -625,8 +625,9 @@ msg <geometry_msgs/PoseWithCovarianceStamped>
 
 ```json
 msg <move_base_msgs/MoveBaseActionGoal>
-{ "target_pose": { "header": { "frame_id": "/map" }, "pose": <geometry_msgs/Pose> },
-  "base_position": { "header": { "frame_id": "/map" }, "pose": <geometry_msgs/Pose> }
+{ "header": <std_msgs/Header>,
+  "goal_id": <actionlib_msgs/GoalID>,
+  "goal": {"target_pose": <geometry_msgs/PoseStamped>}
 }
 ```
 
