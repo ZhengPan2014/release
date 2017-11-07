@@ -320,7 +320,7 @@ class Robot extends EventEmitter2
 	{
 
 	}
-
+	
 	// manual control by publish /cmd_vel
 	// e.g.: manualControl(1,0), manualControl([1,0,0], [0,0,0])
 	// params:
