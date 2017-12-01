@@ -438,7 +438,7 @@ FixedGlobalPlannerConfig::GroupDescription<FixedGlobalPlannerConfig::DEFAULT, Fi
 //#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.use_goal_direction = 1;
 //#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __default__.use_goal_direction = 0;
+      __default__.use_goal_direction = 1;
 //#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.abstract_parameters.push_back(FixedGlobalPlannerConfig::AbstractParamDescriptionConstPtr(new FixedGlobalPlannerConfig::ParamDescription<bool>("use_goal_direction", "bool", 0, "Use the goal direction as the direction of path end point", "", &FixedGlobalPlannerConfig::use_goal_direction)));
 //#line 280 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"

@@ -1,11 +1,19 @@
 <?xml version="1.0"?>
 <launch>
     <arg name="name" default=""/>
-    <arg name="drive_port" default="/dev/usb_drive"/>
+
+    <!-- <arg name="drive_port" default="/dev/usb_drive"/>
     <arg name="drive_port_left" default="$(arg drive_port)_left"/>
-    <arg name="drive_port_right" default="$(arg drive_port)_right"/>
+    <arg name="drive_port_right" default="$(arg drive_port)_right"/> -->
+
+    <!-- modified for auto boot -->
+    <arg name="drive_port_left" default=""/>
+    <arg name="drive_port_right" default=""/>
+    <!-- end -->
+
     <arg name="wheel_seperation" default="0.452"/>
     <arg name="wheel_ratio" default="16303.32"/>
+    
     <node name="rosbridge_drive" pkg="rosbridge_driver" type="rosbridge_driver" output="screen">
         <remap from="odom" to="odom$(arg name)"/>
         <param name="drive_port_left" value="$(arg drive_port_left)"/>

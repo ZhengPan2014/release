@@ -13,6 +13,14 @@
     <arg name="model" default=""/>
     <arg name="port" default="/dev/usb_$(arg type)$(arg model)$(arg name)"/>
 
+    <!-- added for auto boot -->
+    <arg name="drive_port_left" default=""/>
+    <arg name="drive_port_right" default=""/>
+    <arg name="is_aqmd" default="false"/>
+    <arg name="wheel_seperation" default="0.452"/>
+    <arg name="wheel_ratio" default="16303.32"/>
+    <!-- end -->
+
     <node name="base_$(arg type)$(arg name)" pkg="tf_broadcaster" type="tf_broadcaster" output="screen" if="$(arg tf_pub)">
         <param name="child_frame_id" value="base_$(arg type)$(arg name)"/>
         <param name="x" value="$(arg x)"/>
@@ -33,8 +41,22 @@
         <param name="yaw" value="$(arg yaw)"/>
     </node>
 
-    <include file="$(find bringup)/launch/driver_$(arg type)$(arg model).launch">
+    <!-- <include file="$(find bringup)/launch/driver_$(arg type)$(arg model).launch">
         <arg name="name" value="$(arg name)"/>
         <arg name="$(arg type)_port" value="$(arg port)"/>
+    </include> -->
+
+    <include file="$(find bringup)/launch/driver_$(arg type)$(arg model).launch" unless="$(arg is_aqmd)">
+        <arg name="name" value="$(arg name)"/>
+        <arg name="$(arg type)_port" value="$(arg port)"/>
+    </include>
+
+    <!-- for aqmd -->
+    <include file="$(find bringup)/launch/driver_$(arg type)$(arg model).launch" if="$(arg is_aqmd)">
+        <arg name="name" value="$(arg name)"/>
+        <arg name="drive_port_left" value="$(arg drive_port_left)"/>
+        <arg name="drive_port_right" value="$(arg drive_port_right)"/>
+        <arg name="wheel_seperation" value="$(arg wheel_seperation)"/>
+        <arg name="wheel_ratio" value="$(arg wheel_ratio)"/>
     </include>
 </launch>

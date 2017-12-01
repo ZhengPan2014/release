@@ -29,8 +29,8 @@
     <node name="move_base" pkg="move_base" type="move_base" output="screen">
         <remap from="odom" to="/odometry/filtered"/>
         <rosparam>
-            base_global_planner: "navfn/NavfnROS" <!--"navfn/NavfnROS"--> <!--"global_planner/FixedGlobalPlanner"--> <!--"global_planner/MixedPlanner"-->
-            base_local_planner: "dwa_local_planner/DWAPlannerROS" <!--"rsband_local_planner/RSBandPlannerROS"-->
+            base_global_planner: "global_planner/GlobalPlanner" <!--"navfn/NavfnROS"--> <!--"global_planner/FixedGlobalPlanner"--> <!--"global_planner/MixedPlanner"-->
+            base_local_planner: "teb_local_planner/TebLocalPlannerROS"<!-- "dwa_local_planner/DWAPlannerROS" --> <!--"rsband_local_planner/RSBandPlannerROS"-->
             recovery_behaviors:
               - name: 'conservative_reset'
                 type: 'clear_costmap_recovery/ClearCostmapRecovery'
@@ -62,14 +62,36 @@
                 plugins:
                   - name: static_layer
                     type: "costmap_2d::StaticLayer"
-                  <!-- - name: obstacle_layer
-                    type: "costmap_2d::ObstacleLayer" -->
+                  - name: obstacle_layer
+                    type: "costmap_2d::ObstacleLayer"
                   - name: inflation_layer
                     type: "costmap_2d::InflationLayer"
                 static_layer:
                     map_topic: /map_edit
+                obstacle_layer:
+                    observation_sources: scan_rectified_down scan_rectified
+                    scan_rectified_down:
+                        expected_update_rate: 5.0
+                        data_type: LaserScan
+                        clearing: true
+                        marking: true
+                        max_obstacle_height: 2.0
+                        min_obstacle_height: 0.0
+                        obstacle_range: 3.0
+                        raytrace_range: 4.0
+                        inf_is_valid: true
+                    scan_rectified:
+                        expected_update_rate: 5.0
+                        data_type: LaserScan
+                        clearing: true
+                        marking: false
+                        max_obstacle_height: 3.0
+                        min_obstacle_height: -1.0
+                        raytrace_range: 4.0
+                        inf_is_valid: true
                 inflation_layer:
-                    inflation_radius: 0.75
+                    inflation_radius: 2.0 #0.75
+                    cost_scaling_factor: 5.0
                 footprint_topic: footprint_setup
             local_costmap:
                 global_frame: odom
@@ -79,11 +101,11 @@
                 publish_frequency: 1.0 #0.0
                 static_map: false
                 rolling_window: true
-                width: 6.0
-                height: 6.0
+                width: 8.0
+                height: 8.0
                 origin_x: -4.0
                 origin_y: 0.05
-                resolution: 0.05 #0.025
+                resolution: 0.075 #0.025
                 plugins:
                   - name: obstacle_layer
                     type: "costmap_2d::ObstacleLayer"
@@ -104,13 +126,14 @@
                         clearing: true
                         max_obstacle_height: 2.0
                         min_obstacle_height: 0.0
-                        obstacle_range: 1.0
+                        obstacle_range: 2.0
                         raytrace_range: 4.0
                         inf_is_valid: true
                     track_unknown_space: true
                     footprint_clearing_enabled: false
                 inflation_layer:
-                    inflation_radius: 0.75
+                    inflation_radius: 2.0 #0.75
+                    cost_scaling_factor: 5.0
                 footprint_topic: footprint_setup
             GlobalPlanner:
                 allow_unknown: false
@@ -156,7 +179,7 @@
                 vx_samples: 10
                 vy_samples: 1
                 vth_samples: 20
-            TebLocalPlannerROS:
+            <!-- TebLocalPlannerROS:
                 acc_lim_x: 0.5
                 acc_lim_theta: 3.2
                 max_vel_x_backwards: 0.3 #0.2
@@ -169,7 +192,7 @@
                 free_goal_vel: false
                 viapoints_all_candidates: false #true
                 odom_topic: /odometry/filtered
-                map_frame: /map
+                map_frame: /map -->
             RSBandPlannerROS:
                 rear_steering_mode: 0
                 eband_to_rs_strategy: 1
@@ -187,14 +210,14 @@
         <param name="TrajectoryPlannerROS/max_vel_x" value="$(arg max_vel_x)"/>
         <param name="DWAPlannerROS/max_trans_vel" value="$(arg max_vel_x)"/>
         <param name="DWAPlannerROS/max_vel_x" value="$(arg max_vel_x)"/>
-        <param name="TebLocalPlannerROS/max_vel_x" value="$(arg max_vel_x)"/>
+        <!-- <param name="TebLocalPlannerROS/max_vel_x" value="$(arg max_vel_x)"/> -->
         <param name="TrajectoryPlannerROS/max_vel_theta" value="$(arg max_vel_theta)"/>
         <param name="TrajectoryPlannerROS/min_vel_theta" value="-$(arg max_vel_theta)"/>
         <param name="DWAPlannerROS/max_rot_vel" value="$(arg max_vel_theta)"/>
-        <param name="TebLocalPlannerROS/max_vel_theta" value="$(arg max_vel_theta)"/>
+        <!-- <param name="TebLocalPlannerROS/max_vel_theta" value="$(arg max_vel_theta)"/> -->
         <param name="global_costmap/footprint" value="$(arg footprint)"/>
         <param name="local_costmap/footprint" value="$(arg footprint)"/>
-        <param name="TebLocalPlannerROS/footprint_model/vertices" value="$(arg footprint)"/>
+        <!-- <param name="TebLocalPlannerROS/footprint_model/vertices" value="$(arg footprint)"/> -->
         <rosparam if="$(arg range_enabled)">
             aggressive_reset:
                 reset_distance: 0.0
@@ -226,5 +249,6 @@
         </rosparam>
         <param name="global_costmap/range_sensor_layer/range_topics" value="$(arg range_topics)"/>
         <param name="local_costmap/range_sensor_layer/range_topics" value="$(arg range_topics)"/>
+        <rosparam file="$(find bringup)/launch/forklift/teb_local_planner_params_forklift.yaml" command="load" />
     </node>
 </launch>

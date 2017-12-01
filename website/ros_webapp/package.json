@@ -32,6 +32,7 @@
         "shelljs": "",
         "gm": "1.23.0",
         "javascript-state-machine": "3.0.1",
+        "promise": "",
         
         "argparse": "1.0.7",
         "async": "2.0.1",

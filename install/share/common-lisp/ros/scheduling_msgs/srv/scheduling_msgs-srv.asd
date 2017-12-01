@@ -13,6 +13,8 @@
     (:file "_package_ClearOccupiedRoad" :depends-on ("_package"))
     (:file "CreateNewForkliftTask" :depends-on ("_package_CreateNewForkliftTask"))
     (:file "_package_CreateNewForkliftTask" :depends-on ("_package"))
+    (:file "TaskQueryAndGainPath" :depends-on ("_package_TaskQueryAndGainPath"))
+    (:file "_package_TaskQueryAndGainPath" :depends-on ("_package"))
     (:file "CreateNewTask" :depends-on ("_package_CreateNewTask"))
     (:file "_package_CreateNewTask" :depends-on ("_package"))
     (:file "CancelPath" :depends-on ("_package_CancelPath"))

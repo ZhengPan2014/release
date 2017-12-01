@@ -44,7 +44,20 @@
 
     <include file="$(find bringup)/launch/rosbridge_imu_jy901.launch">
         <arg name="imu_port" value="/dev/usb_left"/>
+        <arg name="pub_name" value="/imu"/>
     </include>
+
+    <node name="imu_filter" pkg="imu_complementary_filter" type="complementary_filter_node" output="screen">
+        <remap from="/imu/data_raw" to="/imu"/>
+        <remap from="/imu/data" to="/imu_data"/>
+        <remap from="/imu_filter/cmd_vel" to="/cmd_vel"/>
+        <rosparam>
+            use_cmd_vel: true
+            kAngularVelocityThreshold: 0.05
+            kDeltaAngularVelocityThreshold: 0.002
+            publish_debug_topics: true
+        </rosparam>
+    </node>
 
     <node name="lms1xx" pkg="lms1xx" type="LMS1xx_node">
         <rosparam>

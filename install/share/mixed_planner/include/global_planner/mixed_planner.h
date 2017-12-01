@@ -43,8 +43,8 @@
 #include <dynamic_reconfigure/server.h>
 #include <scheduling_msgs/PathWithID.h>
 #include <scheduling_msgs/PathStampWithID.h>
-#include <global_planner/MixedPlannerConfig.h>
-#include <global_planner/FixedPlannerConfig.h>
+#include <mixed_planner/MixedPlannerConfig.h>
+#include <mixed_planner/FixedPlannerConfig.h>
 
 
 namespace global_planner {

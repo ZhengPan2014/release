@@ -12,7 +12,7 @@
     </include>
     
     <include file="$(find bringup)/launch/forklift/hector_mapping_localization.launch">
-        <arg name="scan_topic" default="/scan_rectified"/>
+        <arg name="scan_topic" value="/scan_rectified"/>
     </include>
 
     <!-- <include file="$(find bringup)/launch/hector_initmap.launch"/> -->

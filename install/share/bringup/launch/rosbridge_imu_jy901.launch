@@ -26,6 +26,30 @@
                 type: serial
                 action_chain:
                   - name: imu_port
+                    type: timer
+                    time_out: 0.1
+                  - name: imu_port
+                    type: write
+                    byte: [0xff, 0xaa, 0x63, 0x01, 0x00] #cali_off
+                    lock: false
+                  - name: imu_port
+                    type: timer
+                    time_out: 0.1
+#                  - name: imu_port
+#                    type: write
+#                    byte: [0xff, 0xaa, 0x01, 0x01, 0x00] #cali_acc
+#                    lock: false
+#                  - name: imu_port
+#                    type: timer
+#                    time_out: 1.0
+#                  - name: imu_port
+#                    type: write
+#                    byte: [0xff, 0xaa, 0x01, 0x00, 0x00] #cali_rtn
+#                    lock: false
+#                  - name: imu_port
+#                    type: timer
+#                    time_out: 0.1
+                  - name: imu_port
                     type: write
                     byte: [0xff, 0xaa, 0x24, 0x01, 0x00] #axis
                     lock: false

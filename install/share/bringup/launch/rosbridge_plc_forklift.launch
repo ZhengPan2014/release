@@ -27,6 +27,8 @@
                 analog_min: 0.574 # 8.2*7%
                 analog_max: 2.87 # 8.2*35%
                 analog_mid: 4.1 # 8.2*50%
+                analog_seg: [0.0,0.1556,0.4667,0.9333,1.5556]
+                analog_offset: -0.005 # ratio percent
                 steer_ratio: 4.6875 #4.35
                 steer_mid: 5.1 #4.1
                 plc_ratio: 3200.0 # 0~32000/0-10(v)
@@ -127,7 +129,17 @@
                   - name: plc_port
                     type: read
                     byte: [0x06, 0x10, 0x00, 0x64, 0x00, 0x02, crc16, little]
-                    #time_out: 5.0    
+                    #time_out: 5.0
+              - name: pub_hang
+                type: event
+                action_chain:
+                  - name: plc_port
+                    type: write
+                    byte: [0x06, 0x10, 0x00, 0x64, 0x00, 0x02, 0x04, 0x00, 0x00, 0x00, 0x00, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0x06, 0x10, 0x00, 0x64, 0x00, 0x02, crc16, little]
+                    #time_out: 5.0        
               - name: pub_raise
                 type: event
                 action_chain:

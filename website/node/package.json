@@ -40,7 +40,8 @@
     "shelljs": "",
     "serialport": "",
     "gm": "",
-    "rosnodejs": ""
+    "rosnodejs": "",
+    "promise": ""
   },
   "devDependencies": {
     "babel-core": "^6.26.0",

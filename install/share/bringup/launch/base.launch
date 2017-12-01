@@ -5,4 +5,10 @@
     <include file="$(find bringup)/launch/bringup-navi.launch" >
         <arg name="footprint" value="[[0.37, -0.29], [0.37, 0.29], [-0.37, 0.29], [-0.37, -0.29]]"/>
     </include>
+
+    <node name="rosbridge_shell" pkg="rosbridge_shell" type="rosbridge_shell" output="screen">
+        <rosparam if="$(optenv ROS_USER_VALID false)">
+            init_cmd: navigation
+        </rosparam>
+    </node>
 </launch>
