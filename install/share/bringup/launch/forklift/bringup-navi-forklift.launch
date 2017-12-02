@@ -30,7 +30,7 @@
         <remap from="odom" to="/odometry/filtered"/>
         <rosparam>
             base_global_planner: "global_planner/GlobalPlanner" <!--"navfn/NavfnROS"--> <!--"global_planner/FixedGlobalPlanner"--> <!--"global_planner/MixedPlanner"-->
-            base_local_planner: "teb_local_planner/TebLocalPlannerROS"<!-- "dwa_local_planner/DWAPlannerROS" --> <!--"rsband_local_planner/RSBandPlannerROS"-->
+            base_local_planner: "dwa_local_planner/DWAPlannerROS"<!-- "dwa_local_planner/DWAPlannerROS" --> <!--"rsband_local_planner/RSBandPlannerROS"-->
             recovery_behaviors:
               - name: 'conservative_reset'
                 type: 'clear_costmap_recovery/ClearCostmapRecovery'
@@ -62,8 +62,8 @@
                 plugins:
                   - name: static_layer
                     type: "costmap_2d::StaticLayer"
-                  - name: obstacle_layer
-                    type: "costmap_2d::ObstacleLayer"
+#                  - name: obstacle_layer
+#                    type: "costmap_2d::ObstacleLayer"
                   - name: inflation_layer
                     type: "costmap_2d::InflationLayer"
                 static_layer:
