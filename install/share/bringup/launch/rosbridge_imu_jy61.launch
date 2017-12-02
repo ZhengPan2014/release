@@ -32,20 +32,6 @@
                   - name: imu_port
                     type: timer
                     time_out: 0.1
-#                  - name: imu_port
-#                    type: write
-#                    byte: [0xff, 0xaa, 0x01, 0x01, 0x00] #cali_acc
-#                    lock: false
-#                  - name: imu_port
-#                    type: timer
-#                    time_out: 1.0
-#                  - name: imu_port
-#                    type: write
-#                    byte: [0xff, 0xaa, 0x01, 0x00, 0x00] #cali_rtn
-#                    lock: false
-#                  - name: imu_port
-#                    type: timer
-#                    time_out: 0.1
                   - name: imu_port
                     type: write
                     byte: [0xff, 0xaa, 0x24, 0x01, 0x00] #axis
@@ -74,6 +60,25 @@
                     type: read
                     byte: [0x55, 0x51, int_acc_x, little, int_acc_y, little, int_acc_z, little, int_temperature, little, sum81, 0x55, 0x52, int_gyr_x, little, int_gyr_y, little, int_gyr_z, little, int_temperature, little, sum82, 0x55, 0x53, int_roll, little, int_pitch, little, int_yaw, little, int_temperature, little, sum83]
                     lock: true
+              - name: waypoint_user_pub
+                type: subscribe
+              - name: cali_acc
+                type: event
+                action_chain:
+                  - name: imu_port
+                    type: write
+                    byte: [0xff, 0xaa, 0x01, 0x01, 0x00] #cali_acc
+                    lock: false
+                  - name: imu_port
+                    type: timer
+                    time_out: 1.0
+                  - name: imu_port
+                    type: write
+                    byte: [0xff, 0xaa, 0x01, 0x00, 0x00] #cali_rtn
+                    lock: false
+                  - name: imu_port
+                    type: timer
+                    time_out: 0.1
               - name: diagnostics
                 type: publish
         </rosparam>
