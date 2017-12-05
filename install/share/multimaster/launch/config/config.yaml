@@ -1,0 +1,4 @@
+local_pubs: [robot_pose, nav_ctrl_status]
+foreign_pubs: [move_base_simple/goal, nav_ctrl, waypoints, trajectories, specified_path]
+local_services: []
+foreign_services: [register_agv, unregister_agv]

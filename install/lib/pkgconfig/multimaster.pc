@@ -1,0 +1,8 @@
+prefix=/home/ouiyeah/catkin_ws/install
+
+Name: multimaster
+Description: Description of multimaster
+Version: 1.0.0
+Cflags: 
+Libs: -L/home/ouiyeah/catkin_ws/install/lib -lmultimaster
+Requires: rosgraph rospy roslib

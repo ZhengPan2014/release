@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="namespace" default="$(optenv AGV_NAME)"/>
+    <group ns="$(arg namespace)">
+        <include file="$(find multimaster)/launch/master.launch">
+           <arg name="master" value="hitrobot-forklift-server" />
+        </include>
+    </group>
+</launch>

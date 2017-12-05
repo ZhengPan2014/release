@@ -26,7 +26,7 @@ else
 
 const VOL_FACTOR = 0.008862;
 // map edit
-const MAP_EDIT = '/home/hitrobot/workspaces/hitrobot/dbparam/map_edit.pgm';
+const MAP_EDIT = '/home/hitrobot/workspaces/hitrobot/dbparam/map_edit.png';
 const OBSTACLE_COLOR = '#000';
 const CLEAR_COLOR = '#fff';
 const OBSTACLE_SIZE = 2;

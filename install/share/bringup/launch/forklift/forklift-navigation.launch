@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <launch>
+    <arg name="namespace" default="$(optenv AGV_NAME)"/>
     <include file="$(find bringup)/launch/forklift/bringup-dbparam-forklift.launch" />
 
     <include file="$(find bringup)/launch/forklift/bringup-navi-forklift.launch" >
@@ -12,12 +13,15 @@
     </include>
     
     <include file="$(find bringup)/launch/forklift/hector_mapping_localization.launch">
-        <arg name="scan_topic" value="/scan_rectified"/>
+        <arg name="scan_topic" default="$(arg namespace)/scan_rectified"/>
     </include>
 
     <!-- <include file="$(find bringup)/launch/hector_initmap.launch"/> -->
 
     <node pkg="robot_localization" type="ekf_localization_node" name="ekf_se" clear_params="true">
-       <rosparam command="load" file="$(find bringup)/launch/forklift/ekf_hector_mapping.yaml" />
+	<rosparam command="load" file="$(find bringup)/launch/forklift/ekf_hector_mapping.yaml" />
+	<param name="pose0" value="$(arg namespace)/poseupdate"/>
+	<param name="imu0" value="$(arg namespace)/imu_data"/>
+
     </node>
 </launch>

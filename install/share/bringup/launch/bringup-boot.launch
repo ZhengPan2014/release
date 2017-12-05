@@ -1,8 +1,9 @@
 <?xml version="1.0"?>
 <launch>
   <!-- group ns="$(env ROS_USER_GROUP)" -->
-    <include file="$(find bringup)/launch/bringup-comm.launch"/>
+    <group ns="$(optenv AGV_NAME /)">
+        <include file="$(find bringup)/launch/bringup-comm.launch"/>
 
-    <include file="$(find bringup)/launch/$(optenv ROS_USER_MODEL)/$(optenv ROS_USER_MODEL bringup)-base.launch"/>
-  <!-- /group -->
+        <include file="$(find bringup)/launch/$(optenv ROS_USER_MODEL)/$(optenv ROS_USER_MODEL bringup)-base.launch"/>
+    </group>
 </launch>

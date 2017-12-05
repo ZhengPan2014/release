@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<package format="2">
+  <name>multimaster</name>
+  <version>1.0.0</version>
+  <description>
+
+    Multimaster is a script allowing to register topics and services at a second master and to subscribe to topics and services from a second master.
+
+  </description>
+  <maintainer email="daniel.claes@liverpool.ac.uk">Daniel Claes</maintainer>
+  <license>BSD</license>
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>rosgraph</depend>
+  <depend>rospy</depend>
+  <depend>roslib</depend>
+</package>
+

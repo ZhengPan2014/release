@@ -1,6 +1,6 @@
 TebLocalPlannerROS:
 
- odom_topic: /odometry/filtered
+ odom_topic: /AGV2/odometry/filtered
  map_frame: /map
  # Trajectory
   
@@ -92,5 +92,5 @@ TebLocalPlannerROS:
  viapoints_all_candidates: False #True #If true, all trajectories of different topologies are attached to the set of via-points, otherwise only the trajectory sharing the same one as the initial/global plan is attached
 
  costmap_converter/CostmapToPolygonsDBSConcaveHull:
-    costmap_topic: move_base/local_costmap/costmap
-    odom_topic: odometry/filtered
+    costmap_topic: /AGV2/move_base/local_costmap/costmap
+    odom_topic: /AGV2/odometry/filtered

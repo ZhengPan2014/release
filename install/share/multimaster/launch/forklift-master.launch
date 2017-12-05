@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="agv_ns" default="AGV0"/>
+    <group ns="$(arg agv_ns)">
+        <include file="$(find multimaster)/launch/master.launch">
+            <arg name="master" value="ubuntu" />
+        </include>
+  </group>																					
+</launch>

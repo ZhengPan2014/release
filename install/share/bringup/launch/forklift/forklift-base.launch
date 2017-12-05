@@ -1,5 +1,10 @@
 <?xml version="1.0"?>
 <launch>
+    <node name="rviz" pkg="rviz" type="rviz">
+        <remap from="/initialpose" to="/$(optenv AGV_NAME)/initialpose"/>
+        <remap from="/move_base_simple/goal" to="/$(optenv AGV_NAME)/move_base_simple/goal"/>
+    </node>
+
     <include file="$(find bringup)/launch/bringup-base.launch"/>
 
      <node name="tf_base_footprint" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
@@ -44,13 +49,13 @@
 
     <include file="$(find bringup)/launch/rosbridge_imu_jy901.launch">
         <arg name="imu_port" value="/dev/usb_left"/>
-        <arg name="pub_name" value="/imu"/>
+        <arg name="pub_name" value="imu"/>
     </include>
 
     <node name="imu_filter" pkg="imu_complementary_filter" type="complementary_filter_node" output="screen">
-        <remap from="/imu/data_raw" to="/imu"/>
-        <remap from="/imu/data" to="/imu_data"/>
-        <remap from="/imu_filter/cmd_vel" to="/cmd_vel"/>
+        <remap from="imu/data_raw" to="imu"/>
+        <remap from="imu/data" to="imu_data"/>
+        <remap from="imu_filter/cmd_vel" to="cmd_vel"/>
         <rosparam>
             use_cmd_vel: true
             kAngularVelocityThreshold: 0.05
