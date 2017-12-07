@@ -25,6 +25,8 @@
     (:file "_package_AddOrModifyForkliftTask" :depends-on ("_package"))
     (:file "QueryTaskStatus2" :depends-on ("_package_QueryTaskStatus2"))
     (:file "_package_QueryTaskStatus2" :depends-on ("_package"))
+    (:file "QueryPathOnly" :depends-on ("_package_QueryPathOnly"))
+    (:file "_package_QueryPathOnly" :depends-on ("_package"))
     (:file "register_agv" :depends-on ("_package_register_agv"))
     (:file "_package_register_agv" :depends-on ("_package"))
     (:file "PublishBufferPath" :depends-on ("_package_PublishBufferPath"))
