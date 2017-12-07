@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+<launch>
+     <node name="tf_base_footprint" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+        <rosparam>
+            frame_id: base_footprint
+            z: 0.05
+        </rosparam>
+    </node>
+
+    <node name="tf_base_laser" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+        <rosparam>
+            child_frame_id: base_laser
+            x: -0.02 #0.475 #0 #1.36
+            z: 0.17
+            yaw: 0
+        </rosparam>
+    </node>
+
+    <node name="tf_base_laser_down" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+        <rosparam>
+            child_frame_id: base_laser_down
+            x: 1.63 #1.79 #0.915 #0.25 
+            z: 0.01
+            roll: 3.14
+        </rosparam>
+    </node>
+
+    <node name="tf_base_imu" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+        <rosparam>
+            child_frame_id: base_imu
+            x: 1.45 #0.575 #0.1
+            y: 0.08
+            z: 1.33
+        </rosparam>
+    </node>
+
+    <node name="robot_pose_publisher" pkg="robot_pose_publisher" type="robot_pose_publisher" output="screen"/>
+
+    <include file="$(find bringup)/launch/rosbridge_imu_jy901.launch">
+        <arg name="imu_port" value="/dev/usb_left"/>
+        <arg name="pub_name" value="/imu"/>
+    </include>
+
+    <node name="imu_filter" pkg="imu_complementary_filter" type="complementary_filter_node" output="screen">
+        <remap from="/imu/data_raw" to="/imu"/>
+        <remap from="/imu/data" to="/imu_data"/>
+        <remap from="/imu_filter/cmd_vel" to="/cmd_vel"/>
+        <rosparam>
+            use_cmd_vel: true
+            kAngularVelocityThreshold: 0.05
+            kDeltaAngularVelocityThreshold: 0.002
+            publish_debug_topics: true
+        </rosparam>
+    </node>
+
+    <node name="lms1xx" pkg="lms1xx" type="LMS1xx_node">
+        <rosparam>
+            host: 192.168.0.10
+            frame_id: base_laser
+        </rosparam>
+    </node>
+  
+    <node name="scan_filter" pkg="laser_filters" type="scan_to_scan_filter_chain" output="screen">
+        <remap from="scan" to="scan"/>
+        <remap from="scan_filtered" to="scan_filtered"/>
+        <rosparam>
+            scan_filter_chain:
+            - type: laser_filters/LaserArrayFilter
+              name: laser_median_filter
+              params: 
+                range_filter_chain:
+                  - name: median_5
+                    type: filters/MultiChannelMedianFilterFloat 
+                    params:
+                      number_of_observations: 5
+                      unused: 10
+                intensity_filter_chain:
+                  - name: median_5
+                    type: filters/MultiChannelMedianFilterFloat 
+                    params:
+                      number_of_observations: 5
+                      unused: 10
+        </rosparam>
+    </node>
+
+    <node name="scan_rectifier" pkg="scan_rectifier" type="scan_rectifier" output="screen">
+        <remap from="scan_input" to="scan_filtered"/>
+        <remap from="scan_output" to="scan_rectified"/>
+        <rosparam>
+            max_range: 20.0
+        </rosparam>
+    </node>
+    
+    <node name="tf2_web_republisher" pkg="tf2_web_republisher" type="tf2_web_republisher" output="screen"/>
+</launch>

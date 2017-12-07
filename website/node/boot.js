@@ -7,12 +7,29 @@ const os = require('os');
 const shell = require('shelljs');
 const child = require('child_process');
 const Promise = require('promise');
+const fs = require('fs');
 // const comm = require('./comm');
 
 const ROS_REMOTE_MASTER = {
     hostname: 'hitrobot-null',
     uri: '192.168.43.254'
 };
+
+function asyncReadFile(file)
+{
+    return new Promise((resolve, reject) => {
+        fs.readFile(file, 'utf8', (err, data) => {
+            if (err)
+            {
+                reject(err);
+            }
+            else
+            {
+                resolve(data);
+            }
+        });
+    });
+}
 
 /**
  * Promise wrapper for shelljs.exec()
@@ -162,6 +179,32 @@ async function main()
     	console.log(`${code}, ${stdout}, ${stderr}`);
     });
 
+    // export AGV_NAME = namespace
+    try
+    {
+        let cfgFile = process.env.PATH_BRINGUP + '/param/.cfg';
+        let data = await asyncReadFile(cfgFile);
+        let cfg = JSON.parse(data);
+        if (cfg.hasOwnProperty('ns'))
+        {
+            if (cfg['ns'] !== '')
+            {
+                let ns = cfg['ns'].trim();
+                console.log(`ROS starting with namespace: ${ns}`);
+                process.env.AGV_NAME = ns;
+            }
+            else
+            {
+                console.log(`Invalid namespace, ROS starting without namespace.`);
+            }
+        }
+    }
+    catch(e)
+    {
+        // console.log(e);
+        console.log('Read namespace failed.\nROS starting without namespace');
+    }
+
     
     // launch ros nodes
     shell.exec('roslaunch bringup bringup-boot.launch', (code, stdout, stderr) => {
@@ -170,7 +213,6 @@ async function main()
             console.log(`[ERROR] [ROSLAUNCH_BRINGUP] code ${code} : ${stderr}`);
         }
     });
-    
     
     // require('../boot/auto_boot');
 
