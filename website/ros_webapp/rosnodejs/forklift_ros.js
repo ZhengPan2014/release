@@ -72,6 +72,7 @@ class RosNodeJs
 		this.mapEditImg = null;
 		this.lightStatus = null;
 		this.config = paramServer.getParam('config');
+		this.ns = paramServer.getParam('namespace');
 		if (!this.config)
 		{
 			return;
@@ -88,52 +89,52 @@ class RosNodeJs
 			this.chargeCurve.reverse();
 		}
 		(async () =>{
-			let nh = await rosnodejs.initNode('rosnodejs', {
+			let nh = await rosnodejs.initNode(this.withNs('rosnodejs'), {
 					onTheFly: true	
 				});
 			this.std_msgs = rosnodejs.require('std_msgs').msg;
 			this.nav_msgs = rosnodejs.require('nav_msgs').msg;
 			this.diagnostic_msgs = rosnodejs.require('diagnostic_msgs').msg;
-			this.cmdStringPub = nh.advertise('/cmd_string', 'std_msgs/String', {
+			this.cmdStringPub = nh.advertise(this.withNs('/cmd_string'), 'std_msgs/String', {
 				queueSize: 1,
 				latching: true,
 				throttleMs: -1
 			});
-			this.waypointUserPub = nh.advertise('/waypoint_user_pub', 'std_msgs/String', {
+			this.waypointUserPub = nh.advertise(this.withNs('/waypoint_user_pub'), 'std_msgs/String', {
 				queueSize: 1,
 				latching: true,
 				throttleMs: -1
 			});
-			this.mapSub = nh.subscribe('/map', 'nav_msgs/OccupancyGrid', this.mapSubCb());
-			this.mapEditObstacleSub = nh.subscribe('/map_edit_obstacle', 'geometry_msgs/Polygon', this.mapEditObstacleSubCb(), {
+			this.mapSub = nh.subscribe(this.withNs('/map'), 'nav_msgs/OccupancyGrid', this.mapSubCb());
+			this.mapEditObstacleSub = nh.subscribe(this.withNs('/map_edit_obstacle'), 'geometry_msgs/Polygon', this.mapEditObstacleSubCb(), {
 				queueSize: 1000
 			});
-			this.mapEditDoneSub = nh.subscribe('/cmd_string', 'std_msgs/String', this.mapEditDoneSubCb(), {
+			this.mapEditDoneSub = nh.subscribe(this.withNs('/cmd_string'), 'std_msgs/String', this.mapEditDoneSubCb(), {
 				queueSize: 1000
 			});
 			// subscribe waypoint_user_sub
-			this.waypointUserSub = nh.subscribe('/waypoint_user_sub', 'std_msgs/String', this.waypointUserSubCb());
+			this.waypointUserSub = nh.subscribe(this.withNs('/waypoint_user_sub'), 'std_msgs/String', this.waypointUserSubCb());
 			// gmapping status
-			this.mappingStatusPub = nh.advertise('/rosnodejs/mappingStatus', 'std_msgs/String', {
+			this.mappingStatusPub = nh.advertise(this.withNs('/rosnodejs/mappingStatus'), 'std_msgs/String', {
 				queueSize: 10,
 				latching: true,
 				throttleMs: -1
 			});
 			// publish robot status
-			this.robotStatusPub = nh.advertise('/rosnodejs/robot_status', 'std_msgs/String', {
+			this.robotStatusPub = nh.advertise(this.withNs('/rosnodejs/robot_status'), 'std_msgs/String', {
 				queueSize: 10,
 				latching: true,
 				throttleMs: -1
 			});
-			this.netWorkSettingPub = nh.advertise('/rosnodejs/last_network_setting', 'std_msgs/String', {
+			this.netWorkSettingPub = nh.advertise(this.withNs('/rosnodejs/last_network_setting'), 'std_msgs/String', {
 				queueSize: 1,
 				latching: true,
 				throttleMs: -1
 			});
-			this.rosModeSub = nh.subscribe('/ros_mode', 'std_msgs/String', this.mappingStatusCb());
-			this.shellFeedbackSub = nh.subscribe('/shell_feedback', 'std_msgs/String', this.mappingStatusCb());
-			this.netWorkSettingSub = nh.subscribe('/rosnodejs/network_setting', 'std_msgs/String', this.netWorkSettingSubCb());
-			this.diagnosticsAggSub = nh.subscribe('/diagnostics_agg', 'diagnostic_msgs/DiagnosticArray', this.diagnosticsAggSubCb());
+			this.rosModeSub = nh.subscribe(this.withNs('/ros_mode'), 'std_msgs/String', this.mappingStatusCb());
+			this.shellFeedbackSub = nh.subscribe(this.withNs('/shell_feedback'), 'std_msgs/String', this.mappingStatusCb());
+			this.netWorkSettingSub = nh.subscribe(this.withNs('/rosnodejs/network_setting'), 'std_msgs/String', this.netWorkSettingSubCb());
+			this.diagnosticsAggSub = nh.subscribe(this.withNs('/diagnostics_agg'), 'diagnostic_msgs/DiagnosticArray', this.diagnosticsAggSubCb());
 			// check chargestatus
 			this.checkRobotStatus('pubsuber_auto_charge', 1);
 			if (this.lastNetworkSetting)
@@ -142,7 +143,7 @@ class RosNodeJs
 				this.pubLastNetworkSetting(this.lastNetworkSetting);
 			}
 			// robot status service
-			this.robotStatusSrv = nh.advertiseService('/rosnodejs/robot_status', 'rosapi/Publishers', (req, res) => {
+			this.robotStatusSrv = nh.advertiseService(this.withNs('/rosnodejs/robot_status'), 'rosapi/Publishers', (req, res) => {
 				if (this.robotStatus)
 				{
 					var status = [];
@@ -585,6 +586,15 @@ class RosNodeJs
 			msgMap.points.push(point);
 		}
 		return msgMap;
+	}
+
+	withNs(name){
+		let name_ = name.startsWith('/') ? name : '/'+name;
+		if (this.ns === 'undefined')
+		{
+			return name_;
+		}
+		return this.ns.startsWith('/') ? this.ns+name_ : '/'+this.ns+name_;
 	}
 }
 

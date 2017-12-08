@@ -63,6 +63,7 @@ function getVersion(path)
 	{
 		// TODO
 		console.log(e);
+		paramServer.setParam({'version': 'undefined'});
 	}
 }	
 
@@ -94,6 +95,17 @@ function getConfig(path)
 	}
 }
 
+function getNamespace()
+{
+	let ns = process.env.AGV_NAME;
+	if (!ns)
+	{
+		ns = 'undefined';
+	}
+	paramServer.setParam({'namespace': ns});
+	return ns;
+}
+
 function init()
 {
 	// boot.init();
@@ -102,6 +114,7 @@ function init()
 	setPathPrefix(paths.pathPrefix);
 	getVersion(paths.readmePath);	
 	getConfig();
+	getNamespace();
 }
 
 module.exports = {

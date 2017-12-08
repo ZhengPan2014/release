@@ -11,7 +11,13 @@ var fn_version = async (ctx, next) => {
 	ctx.rest({'version': version});
 };
 
+var fn_namespace = async (ctx, next) => {
+	var namespace = paramServer.getParam('namespace');
+	ctx.rest({'namespace': namespace});
+}
+
 module.exports = {
 	'GET /api/model': fn_model,
-	'GET /api/version': fn_version
+	'GET /api/version': fn_version,
+	'GET /api/namespace': fn_namespace
 };

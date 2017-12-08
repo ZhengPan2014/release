@@ -1,4 +1,5 @@
 //////////////////////////
+// ouiyeah              //
 // GrayLoo @ 2017.11.01 //
 //////////////////////////
 'use strict';
@@ -173,12 +174,6 @@ async function main()
     	return;
     }
 
-    // start ros_webapp
-    shell.cd('~/catkin_ws/www/ros_webapp');
-    shell.exec('node app.js', (code, stdout, stderr) => {
-    	console.log(`${code}, ${stdout}, ${stderr}`);
-    });
-
     // export AGV_NAME = namespace
     try
     {
@@ -205,6 +200,14 @@ async function main()
         console.log('Read namespace failed.\nROS starting without namespace');
     }
 
+    // start ros_webapp
+    // Make sure ros_webapp starts after the namespace export,
+    // since we will use process.env.AGV_NAME in nodejs server 
+    // to provide a restful namespace api.
+    shell.cd('~/catkin_ws/www/ros_webapp');
+    shell.exec('node app.js', (code, stdout, stderr) => {
+        console.log(`${code}, ${stdout}, ${stderr}`);
+    });
     
     // launch ros nodes
     shell.exec('roslaunch bringup bringup-boot.launch', (code, stdout, stderr) => {
@@ -219,84 +222,3 @@ async function main()
 }
 
 main();
-
-
-/////////////
-// ouiyeah //
-/////////////
-/*
-
-/// TODO: check if ros is ok
-// shell.echo(os.EOL);
-
-// if (os.arch() !== process.env['NODEJS_ORG_ARCH']) {
-//     shell.echo(os.arch());
-// }
-
-const ROS_HOSTNAME="hitrobot-null"; // TODO: hostname for external roscore
-// shell.exec("ping -c 1 " + ROS_HOSTNAME + ".local", {silent:true}, function(code, stdout, stderr) {
-// 
-function hasRosRemoteServer()
-{
-
-shell.exec("ping -c 1 " + "192.168.43.254", {silent:true}, function(code, stdout, stderr) {
-    if (code) {
-        process.env['ROS_MASTER_URI'] = 'http://' + os.hostname() + ':11311';
-        process.env['ROS_HOSTNAME'] = os.hostname();
-
-        const roscore = child.spawn('roscore');
-        // const roscore = shell.exec('roscore', function(code, stdout, stderr) {
-        //     console.log('Exit code:', code);
-        // });
-        roscore.on('close', (code, signal) => {
-        console.log(
-            `child process terminated due to receipt of signal ${signal}`);
-        });
-        roscore.on('error', (code, signal) => {
-        console.log(
-            `child process error due to receipt of signal ${signal}`);
-        });
-        roscore.on('exit', (code, signal) => {
-        console.log(
-            `child process exit due to receipt of signal ${signal}`);
-        });
-    } else {
-        process.env['ROS_MASTER_URI'] = 'http://' + ROS_HOSTNAME + '.local:11311';
-        process.env['ROS_HOSTNAME'] = ROS_HOSTNAME;
-        console.log(process.env['ROS_MASTER_URI']);
-    }
-    rosnode();
-});
-
-}
-
-function startNodejs()
-{
-    shell.exec('cd ~/catkin_ws/www/ros_webapp; node app.js;', function(code, stdout, stderr) {
-        console.log(`${code}: ${stdout} ${stderr}`);
-    }); // TODO: use other strategy to replace this    
-}
-
-function rosnode() {
-    shell.exec('rosnode list', { silent: true }, function(code, stdout, stderr) {
-        if (stderr) {
-            rosnode();
-        } else {
-            console.log(`[INFO] [ROSNODE_LIST] ok`);
-            roslaunch();
-        }
-    });
-}
-
-function roslaunch() {
-    // comm();
-
-    // shell.exec('roslaunch bringup comm.launch', function(code, stdout, stderr) {
-    shell.exec('roslaunch bringup bringup-boot.launch', function(code, stdout, stderr) {
-        if (stderr) {
-            console.log(`[ERROR] [ROSLAUNCH_BRINGUP] code ${code} : ${stderr}`);
-        }
-    });
-}
-
-*/
