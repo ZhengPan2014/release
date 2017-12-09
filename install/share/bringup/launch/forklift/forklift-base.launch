@@ -59,6 +59,7 @@
         <rosparam>
             use_cmd_vel: true
             kAngularVelocityThreshold: 0.05
+            kAccelerationThreshold: 0.5
             kDeltaAngularVelocityThreshold: 0.002
             publish_debug_topics: true
         </rosparam>
