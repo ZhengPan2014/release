@@ -60,7 +60,7 @@
             use_cmd_vel: true
             kAngularVelocityThreshold: 0.05
             kAccelerationThreshold: 0.5
-            kDeltaAngularVelocityThreshold: 0.002
+            kDeltaAngularVelocityThreshold: 0.005
             publish_debug_topics: true
         </rosparam>
     </node>
