@@ -206,4 +206,5 @@ analyzers:
         remove_prefix: 'ps3_joy'
         </rosparam>
     </node>
+    <include file="$(find bringup)/launch/forklift/forklift-scheduling-system.launch"/>
 </launch>

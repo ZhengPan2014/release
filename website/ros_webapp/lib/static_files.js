@@ -11,11 +11,10 @@ function staticFiles(url, dir)
 		if (rpath.startsWith(url))
 		{
 			let fp = path.join(dir, rpath.substring(url.length));
-			console.log(fp);
 			if (await fs.exists(fp))
 			{
 				ctx.response.type = mime.lookup(rpath);
-				ctx.reaponse.body = await fs.readFile(fp);
+				ctx.response.body = await fs.readFile(fp);
 			}
 			else
 			{

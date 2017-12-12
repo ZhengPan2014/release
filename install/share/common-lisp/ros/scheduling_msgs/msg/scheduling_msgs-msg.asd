@@ -26,6 +26,8 @@
     (:file "_package_RoadSet" :depends-on ("_package"))
     (:file "PathWithID" :depends-on ("_package_PathWithID"))
     (:file "_package_PathWithID" :depends-on ("_package"))
+    (:file "TaskList2" :depends-on ("_package_TaskList2"))
+    (:file "_package_TaskList2" :depends-on ("_package"))
     (:file "PathStampWithID" :depends-on ("_package_PathStampWithID"))
     (:file "_package_PathStampWithID" :depends-on ("_package"))
     (:file "TaskStatus2" :depends-on ("_package_TaskStatus2"))

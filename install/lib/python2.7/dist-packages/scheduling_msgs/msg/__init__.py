@@ -10,5 +10,6 @@ from ._RoadSet import *
 from ._ServerStatus import *
 from ._Task import *
 from ._TaskList import *
+from ._TaskList2 import *
 from ._TaskStatus import *
 from ._TaskStatus2 import *

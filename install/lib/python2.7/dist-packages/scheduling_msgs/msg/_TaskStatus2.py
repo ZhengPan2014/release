@@ -7,17 +7,17 @@ import struct
 
 
 class TaskStatus2(genpy.Message):
-  _md5sum = "d46becfbb488a2ba12d9dd07a5433a2d"
+  _md5sum = "a29f6c5b9ab24278437c3c8f5d985145"
   _type = "scheduling_msgs/TaskStatus2"
   _has_header = False #flag to mark the presence of a Header object
   _full_text = """int32 task_id
 int32 agv_id
 string loading_station
-string unloading_sation
+string unloading_station
 int32 status
 string text
 """
-  __slots__ = ['task_id','agv_id','loading_station','unloading_sation','status','text']
+  __slots__ = ['task_id','agv_id','loading_station','unloading_station','status','text']
   _slot_types = ['int32','int32','string','string','int32','string']
 
   def __init__(self, *args, **kwds):
@@ -28,7 +28,7 @@ string text
     changes.  You cannot mix in-order arguments and keyword arguments.
 
     The available fields are:
-       task_id,agv_id,loading_station,unloading_sation,status,text
+       task_id,agv_id,loading_station,unloading_station,status,text
 
     :param args: complete set of field values, in .msg order
     :param kwds: use keyword arguments corresponding to message field names
@@ -43,8 +43,8 @@ string text
         self.agv_id = 0
       if self.loading_station is None:
         self.loading_station = ''
-      if self.unloading_sation is None:
-        self.unloading_sation = ''
+      if self.unloading_station is None:
+        self.unloading_station = ''
       if self.status is None:
         self.status = 0
       if self.text is None:
@@ -53,7 +53,7 @@ string text
       self.task_id = 0
       self.agv_id = 0
       self.loading_station = ''
-      self.unloading_sation = ''
+      self.unloading_station = ''
       self.status = 0
       self.text = ''
 
@@ -80,7 +80,7 @@ string text
         buff.write(struct.pack('<I%sB'%length, length, *_x))
       else:
         buff.write(struct.pack('<I%ss'%length, length, _x))
-      _x = self.unloading_sation
+      _x = self.unloading_station
       length = len(_x)
       if python3 or type(_x) == unicode:
         _x = _x.encode('utf-8')
@@ -128,9 +128,9 @@ string text
       start = end
       end += length
       if python3:
-        self.unloading_sation = str[start:end].decode('utf-8')
+        self.unloading_station = str[start:end].decode('utf-8')
       else:
-        self.unloading_sation = str[start:end]
+        self.unloading_station = str[start:end]
       start = end
       end += 4
       (self.status,) = _struct_i.unpack(str[start:end])
@@ -166,7 +166,7 @@ string text
         buff.write(struct.pack('<I%sB'%length, length, *_x))
       else:
         buff.write(struct.pack('<I%ss'%length, length, _x))
-      _x = self.unloading_sation
+      _x = self.unloading_station
       length = len(_x)
       if python3 or type(_x) == unicode:
         _x = _x.encode('utf-8')
@@ -215,9 +215,9 @@ string text
       start = end
       end += length
       if python3:
-        self.unloading_sation = str[start:end].decode('utf-8')
+        self.unloading_station = str[start:end].decode('utf-8')
       else:
-        self.unloading_sation = str[start:end]
+        self.unloading_station = str[start:end]
       start = end
       end += 4
       (self.status,) = _struct_i.unpack(str[start:end])

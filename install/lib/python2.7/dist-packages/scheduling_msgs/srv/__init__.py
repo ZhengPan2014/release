@@ -1,5 +1,6 @@
 from ._AddOrModifyForkliftTask import *
 from ._CancelPath import *
+from ._CancelTask import *
 from ._CreateNewForkliftTask import *
 from ._CreateNewTask import *
 from ._PublishBufferPath import *

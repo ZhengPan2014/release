@@ -7,6 +7,8 @@
                :std_msgs-msg
 )
   :components ((:file "_package")
+    (:file "CancelTask" :depends-on ("_package_CancelTask"))
+    (:file "_package_CancelTask" :depends-on ("_package"))
     (:file "SetRoadSet" :depends-on ("_package_SetRoadSet"))
     (:file "_package_SetRoadSet" :depends-on ("_package"))
     (:file "ClearOccupiedRoad" :depends-on ("_package_ClearOccupiedRoad"))

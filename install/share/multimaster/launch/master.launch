@@ -1,6 +1,6 @@
 <launch>
   <arg name="master" default="192.168.66.113"/>
-  <node pkg="multimaster" type="master_sync.py" name="master_sync" output="screen"> 
+  <node pkg="multimaster" type="master_sync.py" name="master_sync" output="screen" respawn="true"> 
     <param name="foreign_master" value="http://$(arg master):11311" />      
     <rosparam command="load" file="$(find multimaster)/launch/config/config.yaml" />
   </node>

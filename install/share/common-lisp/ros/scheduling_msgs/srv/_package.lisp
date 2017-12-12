@@ -1,6 +1,11 @@
 (cl:defpackage scheduling_msgs-srv
   (:use )
   (:export
+   "CANCELTASK"
+   "<CANCELTASK-REQUEST>"
+   "CANCELTASK-REQUEST"
+   "<CANCELTASK-RESPONSE>"
+   "CANCELTASK-RESPONSE"
    "SETROADSET"
    "<SETROADSET-REQUEST>"
    "SETROADSET-REQUEST"

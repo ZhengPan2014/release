@@ -27,7 +27,7 @@ struct TaskStatus2_
     : task_id(0)
     , agv_id(0)
     , loading_station()
-    , unloading_sation()
+    , unloading_station()
     , status(0)
     , text()  {
     }
@@ -35,7 +35,7 @@ struct TaskStatus2_
     : task_id(0)
     , agv_id(0)
     , loading_station(_alloc)
-    , unloading_sation(_alloc)
+    , unloading_station(_alloc)
     , status(0)
     , text(_alloc)  {
   (void)_alloc;
@@ -52,8 +52,8 @@ struct TaskStatus2_
    typedef std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other >  _loading_station_type;
   _loading_station_type loading_station;
 
-   typedef std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other >  _unloading_sation_type;
-  _unloading_sation_type unloading_sation;
+   typedef std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other >  _unloading_station_type;
+  _unloading_station_type unloading_station;
 
    typedef int32_t _status_type;
   _status_type status;
@@ -138,12 +138,12 @@ struct MD5Sum< ::scheduling_msgs::TaskStatus2_<ContainerAllocator> >
 {
   static const char* value()
   {
-    return "d46becfbb488a2ba12d9dd07a5433a2d";
+    return "a29f6c5b9ab24278437c3c8f5d985145";
   }
 
   static const char* value(const ::scheduling_msgs::TaskStatus2_<ContainerAllocator>&) { return value(); }
-  static const uint64_t static_value1 = 0xd46becfbb488a2baULL;
-  static const uint64_t static_value2 = 0x12d9dd07a5433a2dULL;
+  static const uint64_t static_value1 = 0xa29f6c5b9ab24278ULL;
+  static const uint64_t static_value2 = 0x437c3c8f5d985145ULL;
 };
 
 template<class ContainerAllocator>
@@ -165,7 +165,7 @@ struct Definition< ::scheduling_msgs::TaskStatus2_<ContainerAllocator> >
     return "int32 task_id\n\
 int32 agv_id\n\
 string loading_station\n\
-string unloading_sation\n\
+string unloading_station\n\
 int32 status\n\
 string text\n\
 ";
@@ -189,7 +189,7 @@ namespace serialization
       stream.next(m.task_id);
       stream.next(m.agv_id);
       stream.next(m.loading_station);
-      stream.next(m.unloading_sation);
+      stream.next(m.unloading_station);
       stream.next(m.status);
       stream.next(m.text);
     }
@@ -216,8 +216,8 @@ struct Printer< ::scheduling_msgs::TaskStatus2_<ContainerAllocator> >
     Printer<int32_t>::stream(s, indent + "  ", v.agv_id);
     s << indent << "loading_station: ";
     Printer<std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other > >::stream(s, indent + "  ", v.loading_station);
-    s << indent << "unloading_sation: ";
-    Printer<std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other > >::stream(s, indent + "  ", v.unloading_sation);
+    s << indent << "unloading_station: ";
+    Printer<std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other > >::stream(s, indent + "  ", v.unloading_station);
     s << indent << "status: ";
     Printer<int32_t>::stream(s, indent + "  ", v.status);
     s << indent << "text: ";

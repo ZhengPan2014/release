@@ -10,6 +10,11 @@ var fn_test = async (ctx, next) => {
 	});
 };
 
+var fn_scheduling = async (ctx, next) => {
+	ctx.render('scheduling.html', {});
+}
+
 module.exports = {
-	'GET /test': fn_test
+	'GET /test': fn_test,
+	'GET /scheduling': fn_scheduling
 };
