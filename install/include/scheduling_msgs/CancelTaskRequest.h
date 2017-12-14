@@ -24,17 +24,17 @@ struct CancelTaskRequest_
   typedef CancelTaskRequest_<ContainerAllocator> Type;
 
   CancelTaskRequest_()
-    : agvID(0)  {
+    : id(0)  {
     }
   CancelTaskRequest_(const ContainerAllocator& _alloc)
-    : agvID(0)  {
+    : id(0)  {
   (void)_alloc;
     }
 
 
 
-   typedef int32_t _agvID_type;
-  _agvID_type agvID;
+   typedef int32_t _id_type;
+  _id_type id;
 
 
 
@@ -113,12 +113,12 @@ struct MD5Sum< ::scheduling_msgs::CancelTaskRequest_<ContainerAllocator> >
 {
   static const char* value()
   {
-    return "1d796b271a7ca0990ab3b6cae10c54d3";
+    return "c5e4a7d59c68f74eabcec876a00216aa";
   }
 
   static const char* value(const ::scheduling_msgs::CancelTaskRequest_<ContainerAllocator>&) { return value(); }
-  static const uint64_t static_value1 = 0x1d796b271a7ca099ULL;
-  static const uint64_t static_value2 = 0x0ab3b6cae10c54d3ULL;
+  static const uint64_t static_value1 = 0xc5e4a7d59c68f74eULL;
+  static const uint64_t static_value2 = 0xabcec876a00216aaULL;
 };
 
 template<class ContainerAllocator>
@@ -137,7 +137,7 @@ struct Definition< ::scheduling_msgs::CancelTaskRequest_<ContainerAllocator> >
 {
   static const char* value()
   {
-    return "int32 agvID\n\
+    return "int32 id\n\
 ";
   }
 
@@ -156,7 +156,7 @@ namespace serialization
   {
     template<typename Stream, typename T> inline static void allInOne(Stream& stream, T m)
     {
-      stream.next(m.agvID);
+      stream.next(m.id);
     }
 
     ROS_DECLARE_ALLINONE_SERIALIZER
@@ -175,8 +175,8 @@ struct Printer< ::scheduling_msgs::CancelTaskRequest_<ContainerAllocator> >
 {
   template<typename Stream> static void stream(Stream& s, const std::string& indent, const ::scheduling_msgs::CancelTaskRequest_<ContainerAllocator>& v)
   {
-    s << indent << "agvID: ";
-    Printer<int32_t>::stream(s, indent + "  ", v.agvID);
+    s << indent << "id: ";
+    Printer<int32_t>::stream(s, indent + "  ", v.id);
   }
 };
 

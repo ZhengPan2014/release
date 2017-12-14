@@ -164,3 +164,12 @@ buttons {
   color: #eeeeee;
   border: 0px;
 }
+
+.executing-task-btn, .pending-task-btn{
+  border: solid 1px;
+  border-radius: 50%;
+  color: #ffffff;
+  background-color: #2196F3;
+  position: relative;
+  z-index: 999;
+}

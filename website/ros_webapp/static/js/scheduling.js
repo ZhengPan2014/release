@@ -1,24 +1,39 @@
 'use strict';
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 var sch = sch || {
 	ns: 'undefined',
 	serverIP: 'localhost',
-	scheduling: null
+	scheduling: null,
+	taskStatusMap: ['等待执行', '前往叉货工位', '开始叉货', '叉货完成', '等待指定卸货工位', '前往卸货工位', '开始卸货', '卸货完成', '返回', '完成']
 };
 
 /***********************************************/
 
-class Scheduling
-{
-	constructor(serverIP, ns)
-	{
+var Scheduling = function () {
+	function Scheduling(serverIP, ns) {
+		_classCallCheck(this, Scheduling);
+
 		this.serverIP = serverIP;
 		this.ns = ns;
 		this.workstations = [];
 		this.taskIDs = [-1];
 		this.isConnected = false;
+		// HTML elements
+		this._taskIDEl = $('#task-id');
+		this._loadingStationEl = $('#loading-station');
+		this._unloadingStationEl = $('#unloading-station');
+		this._executingTasksEl = $('#executing-tasks');
+		this._pendingTasksEl = $('#pending-tasks');
+
+		this._resetInfoUI();
 		this.ros = this._initROS();
 		this._subWorkstations();
+		this._subExecutingTasks();
+		this._subPendingTasks();
 		this._getAGVs();
 		this._getTaskIDs();
 		this.taskClient = new ROSLIB.Service({
@@ -28,205 +43,395 @@ class Scheduling
 		});
 	}
 
-	addTask(taskID, loadingStation, unloadingStation)
-	{
-		if (this.taskIDs.indexOf(taskID) === -1)
-		{
-			console.error(`task [${taskID}] does not exist.`);
-			return;
+	_createClass(Scheduling, [{
+		key: 'addTask',
+		value: function addTask(taskID, loadingStation, unloadingStation) {
+			if (this.taskIDs.indexOf(taskID) === -1) {
+				console.error('task [' + taskID + '] does not exist.');
+				return;
+			}
+			var req = this._taskSrvMsg(taskID, loadingStation, unloadingStation);
+			this._callTaskSrv(req);
 		}
-		var req = this._taskSrvMsg(taskID, loadingStation, unloadingStation);
-		this._callTaskSrv(req);
-	}
+	}, {
+		key: '_initROS',
+		value: function _initROS() {
+			var _this = this;
 
-	_initROS()
-	{
-		if (!this.serverIP.startsWith('ws://'))
-		{
-			this.serverIP = 'ws://' + this.serverIP;
+			if (!this.serverIP.startsWith('ws://')) {
+				this.serverIP = 'ws://' + this.serverIP;
+			}
+			if (!this.serverIP.endsWith(':9090')) {
+				this.serverIP += ':9090';
+			}
+			var ros = new ROSLIB.Ros();
+			ros.connect(this.serverIP);
+			ros.on('connection', function () {
+				$('#connection-info').text('[\u8FDE\u63A5\u72B6\u6001] \u5DF2\u8FDE\u63A5\u81F3\u670D\u52A1\u5668: [' + _this.serverIP + ']');
+				_this.isConnected = true;
+			});
+			ros.on('close', function () {
+				$('#connection-info').text('[\u8FDE\u63A5\u72B6\u6001] \u670D\u52A1\u5668\u5DF2\u5173\u95ED\u8FDE\u63A5: [' + _this.serverIP + ']');
+				_this.isConnected = false;
+			});
+			ros.on('error', function () {
+				$('#connection-info').text('[\u8FDE\u63A5\u72B6\u6001] \u8FDE\u63A5\u9519\u8BEF: [' + _this.serverIP + ']');
+				_this.isConnected = false;
+			});
+			return ros;
 		}
-		if (!this.serverIP.endsWith(':9090'))
-		{
-			this.serverIP += ':9090';
-		}
-		var ros = new ROSLIB.Ros();
-		ros.connect(this.serverIP);
-		ros.on('connection', () => {
-			console.log(`Connected to ${this.serverIP}`);
-			$('#connection-info').text(`[Connection] Connected to server: [${this.serverIP}]`);
-			this.isConnected = true;
-		});
-		ros.on('close', () => {
-			console.warn(`${this.serverIP} closed`);
-			$('#connection-info').text(`[Connection] Server: [${this.serverIP}] closed`);
-			this.isConnected = false;
-		});
-		ros.on('error', () => {
-			console.error(`${this.serverIP} error`);
-			$('#connection-info').text(`[Connection] Server: [${this.serverIP}] error`);
-			this.isConnected = false;
-		});
-		return ros;
-	}
+	}, {
+		key: '_subWorkstations',
+		value: function _subWorkstations(wType) {
+			var _this2 = this;
 
-	_subWorkstations(wType)
-	{
-		var wType = wType || 'tail';
-		var topic = new ROSLIB.Topic({
-			ros: this.ros,
-			name: this._withNs('/waypoints'),
-			messageType: 'yocs_msgs/WaypointList'
-		});
-		topic.subscribe((waypoints) => {
-			console.log(`Got ${waypoints.waypoints.length} waypoints`);
-			this.workstations = [];
-			for(var waypoint of waypoints.waypoints)
-			{
-				var type;
-				try
-				{
-					var info = JSON.parse(waypoint.header.frame_id);
-					type = info.type;
+			var wType = wType || 'workstation';
+			var topic = new ROSLIB.Topic({
+				ros: this.ros,
+				name: this._withNs('/waypoints'),
+				messageType: 'yocs_msgs/WaypointList'
+			});
+			topic.subscribe(function (waypoints) {
+				console.log('Got ' + waypoints.waypoints.length + ' waypoints');
+				_this2.workstations = [];
+				var _iteratorNormalCompletion = true;
+				var _didIteratorError = false;
+				var _iteratorError = undefined;
+
+				try {
+					for (var _iterator = waypoints.waypoints[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+						var waypoint = _step.value;
+
+						var type;
+						try {
+							var info = JSON.parse(waypoint.header.frame_id);
+							type = info.type;
+						} catch (e) {
+							console.error('Invalid waypoints. Make sure you use the waypoint which contains a JSON obejct in header.frame_id.');
+							continue;
+						}
+						if (type === wType) {
+							_this2.workstations.push(waypoint.name);
+						}
+					}
+				} catch (err) {
+					_didIteratorError = true;
+					_iteratorError = err;
+				} finally {
+					try {
+						if (!_iteratorNormalCompletion && _iterator.return) {
+							_iterator.return();
+						}
+					} finally {
+						if (_didIteratorError) {
+							throw _iteratorError;
+						}
+					}
 				}
-				catch(e)
-				{
-					console.error(
-						'Invalid waypoints. Make sure you use the waypoint which contains a JSON obejct in header.frame_id.');
-					continue;
+
+				console.log('Got ' + _this2.workstations.length + ' workstations');
+				_this2._updateUI(_this2._loadingStationEl, _this2.workstations);
+				_this2._updateUI(_this2._unloadingStationEl, _this2.workstations);
+			});
+		}
+
+		// TODO:
+
+	}, {
+		key: '_getAGVs',
+		value: function _getAGVs() {
+			this.agvs = ['AllocatedByServer'];
+			// this._updateUI(el, this.agvs);
+		}
+
+		// TODO:
+
+	}, {
+		key: '_getTaskIDs',
+		value: function _getTaskIDs() {
+			this.taskIDs = [-1];
+			this._updateUI(this._taskIDEl, this.taskIDs);
+		}
+	}, {
+		key: '_subExecutingTasks',
+		value: function _subExecutingTasks() {
+			var _this3 = this;
+
+			var topic = new ROSLIB.Topic({
+				ros: this.ros,
+				name: this._withNs('/executing_task_list'),
+				messageType: 'scheduling_msgs/TaskList2'
+				// throttle_rate: 3000
+			});
+			topic.subscribe(function (tasks) {
+				_this3._updateExecutingTasksUI(tasks.status);
+			});
+		}
+	}, {
+		key: '_subPendingTasks',
+		value: function _subPendingTasks() {
+			var _this4 = this;
+
+			var topic = new ROSLIB.Topic({
+				ros: this.ros,
+				name: this._withNs('/pending_task_list'),
+				messageType: 'scheduling_msgs/TaskList2'
+				// throttle_rate: 3000
+			});
+			topic.subscribe(function (tasks) {
+				_this4._updatePendingTasksUI(tasks.status);
+			});
+		}
+	}, {
+		key: '_resetInfoUI',
+		value: function _resetInfoUI() {
+			$('#connection-info').text('');
+			$('#task-info').text('');
+			$('#task-feedback').text('');
+			// $('.executing-task').remove();
+		}
+
+		/**
+   * update task id, loading station, unloading station options UI
+   * @param  {object} el   
+   * @param  {list} data
+   */
+
+	}, {
+		key: '_updateUI',
+		value: function _updateUI(el, data) {
+			el.children().empty();
+			var els = '<option value=""></option>';
+			var _iteratorNormalCompletion2 = true;
+			var _didIteratorError2 = false;
+			var _iteratorError2 = undefined;
+
+			try {
+				for (var _iterator2 = data[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+					var d = _step2.value;
+
+					els += '<option value="' + d + '">' + d + '</option>';
 				}
-				if (type === wType)
-				{
-					this.workstations.push(waypoint.name);
+			} catch (err) {
+				_didIteratorError2 = true;
+				_iteratorError2 = err;
+			} finally {
+				try {
+					if (!_iteratorNormalCompletion2 && _iterator2.return) {
+						_iterator2.return();
+					}
+				} finally {
+					if (_didIteratorError2) {
+						throw _iteratorError2;
+					}
 				}
 			}
-			console.log(`Got ${this.workstations.length} workstations`);
-			this._updateUI('#loading-station', this.workstations);
-			this._updateUI('#unloading-station', this.workstations);
-		});
-	}
 
-	_updateUI(el, data)
-	{
-		$(el).children().remove();
-		var els = '';
-		for (var d of data)
-		{
-			els += `<option value="${d}">${d}</option>`;
+			el.append(els);
 		}
-		$(el).append(els);
-	}
+	}, {
+		key: '_updateExecutingTasksUI',
+		value: function _updateExecutingTasksUI(tasks) {
+			$('.executing-task').remove();
+			var els = '';
+			var _iteratorNormalCompletion3 = true;
+			var _didIteratorError3 = false;
+			var _iteratorError3 = undefined;
 
-	// TODO:
-	_getAGVs()
-	{
-		this.agvs = ['AllocatedByServer'];
-		this._updateUI('', this.agvs);
-	}
+			try {
+				for (var _iterator3 = tasks[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+					var task = _step3.value;
 
-	// TODO:
-	_getTaskIDs()
-	{
-		this.taskIDs = [-1];
-		this._updateUI('#task-id', this.taskIDs);
-	}
+					els += '<p class="executing-task">';
+					els += '[\u4EFB\u52A1\u4FE1\u606F] \u4EFB\u52A1ID: ' + task.task_id + '; AGV ID: ' + task.agv_id + '; \u4E0A\u6599\u70B9: ' + task.loading_station + '; \u4E0B\u6599\u70B9: ' + task.unloading_station + '; ';
+					var status = task.status < 0 ? '任务出错' : sch.taskStatusMap[task.status];
+					els += '\u72B6\u6001: ' + status;
+					els += '</p>';
+				}
+			} catch (err) {
+				_didIteratorError3 = true;
+				_iteratorError3 = err;
+			} finally {
+				try {
+					if (!_iteratorNormalCompletion3 && _iterator3.return) {
+						_iterator3.return();
+					}
+				} finally {
+					if (_didIteratorError3) {
+						throw _iteratorError3;
+					}
+				}
+			}
 
-	_taskSrvMsg(taskID, loadingStation, unloadingStation)
-	{
-		return new ROSLIB.ServiceRequest({
-			task_id: taskID,
-			loading_station: loadingStation,
-			unloading_station: unloadingStation
-		});
-	}
-
-	_callTaskSrv(request)
-	{
-		this.taskClient.callSerice(request, (response) => {
-			console.log(`--${request.task_id}\n\x20\x20${request.loading_station}\n\x20\x20${request.unloading_station}`);
-			console.log(`--Feedback: [response.feedback]`);
-			$('#task-eedback').text(`[Task]Task feedback: [${response.feedback}]`);
-		});
-	}
-
-	_withNs(name)
-	{
-		var name = name.startsWith('/') ? name : '/'+name;
-		if (this.ns === 'undefined')
-		{
-			return name;
+			this._executingTasksEl.append(els);
 		}
-		return this.ns.startsWith('/') ? this.ns+name : '/'+this.ns+name;
-	}
-}
+	}, {
+		key: '_updatePendingTasksUI',
+		value: function _updatePendingTasksUI(tasks) {
+			$('.pending-task').remove();
+			var els = '';
+			var _iteratorNormalCompletion4 = true;
+			var _didIteratorError4 = false;
+			var _iteratorError4 = undefined;
+
+			try {
+				for (var _iterator4 = tasks[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+					var task = _step4.value;
+
+					els += '<p class="pending-task">';
+					els += '[\u4EFB\u52A1\u4FE1\u606F] \u4EFB\u52A1ID: ' + task.task_id + '; AGV ID: ' + task.agv_id + '; \u4E0A\u6599\u70B9: ' + task.loading_station + '; \u4E0B\u6599\u70B9: ' + task.unloading_station + '; ';
+					// var status = task.status < 0 ? '任务出错' : sch.taskStatusMap[task.status];
+					// els += `状态: ${status}`;
+					els += '</p>';
+				}
+			} catch (err) {
+				_didIteratorError4 = true;
+				_iteratorError4 = err;
+			} finally {
+				try {
+					if (!_iteratorNormalCompletion4 && _iterator4.return) {
+						_iterator4.return();
+					}
+				} finally {
+					if (_didIteratorError4) {
+						throw _iteratorError4;
+					}
+				}
+			}
+
+			this._pendingTasksEl.append(els);
+		}
+	}, {
+		key: '_taskSrvMsg',
+		value: function _taskSrvMsg(taskID, loadingStation, unloadingStation) {
+			return new ROSLIB.ServiceRequest({
+				task_id: taskID,
+				loading_station: loadingStation,
+				unloading_station: unloadingStation
+			});
+		}
+	}, {
+		key: '_callTaskSrv',
+		value: function _callTaskSrv(request) {
+			$('#task-info').text('[\u4EFB\u52A1\u6DFB\u52A0] \u6B63\u5728\u6DFB\u52A0\u4EFB\u52A1 ID: ' + request.task_id + '; \u4E0A\u6599\u70B9: ' + request.loading_station + '; \u4E0B\u6599\u70B9: ' + request.unloading_station);
+			this.taskClient.callService(request, function (response) {
+				$('#task-info').text('[\u4EFB\u52A1\u6DFB\u52A0] \u4EFB\u52A1ID: ' + request.task_id + '; \u4E0A\u6599\u70B9: ' + request.loading_station + '; \u4E0B\u6599\u70B9: ' + request.unloading_station);
+				var info = '[任务状态] ';
+				switch (response.feedback) {
+					case -1:
+						info += '无效的站点名称';
+						break;
+					case -2:
+						info += '无效的动作';
+						break;
+					case -3:
+						info += '任务列表已满';
+						break;
+					case -4:
+						info += '已存在相同的任务';
+						break;
+					case -5:
+						info += '任务ID不存在';
+						break;
+					case -6:
+						info += '该任务已完成';
+						break;
+					case -7:
+						info += '该任务无法调整';
+						break;
+					default:
+						info += '任务添加/调整成功';
+						break;
+				}
+				$('#task-feedback').text(info);
+			});
+		}
+	}, {
+		key: '_withNs',
+		value: function _withNs(name) {
+			var name = name.startsWith('/') ? name : '/' + name;
+			if (this.ns === 'undefined') {
+				return name;
+			}
+			return this.ns.startsWith('/') ? this.ns + name : '/' + this.ns + name;
+		}
+	}]);
+
+	return Scheduling;
+}();
 
 /******************************************************************/
 
-function getNamespace()
-{
-    var url = "http://" + sch.serverIP + ":8808/api/namespace";
-    $.ajax({
-        type: 'get',
-        url: url,
-        async: false,
-        success: (data) => {
-            sch.namespace = data.namespace;
-            console.log(`ROS namespace: ${data.namespace}`);
-        },
-        dataType: 'json'
-    });
+function getNamespace() {
+	var url = "http://" + sch.serverIP + ":8808/api/namespace";
+	$.ajax({
+		type: 'get',
+		url: url,
+		async: false,
+		success: function success(data) {
+			sch.namespace = data.namespace;
+			console.log('ROS namespace: ' + data.namespace);
+		},
+		dataType: 'json'
+	});
 }
 
-
-function showSidedrawer(sidedrawerEl)
-{
-	return () => {
+function showSidedrawer(sidedrawerEl) {
+	return function () {
 		var options = {
-			onclose: () => {
+			onclose: function onclose() {
 				sidedrawerEl.removeClass('active').appendTo(document.body);
 			}
 		};
 		var overlayEl = $(mui.overlay('on', options));
 		sidedrawerEl.appendTo(overlayEl);
-		setTimeout(() => {
+		setTimeout(function () {
 			sidedrawerEl.addClass('active');
 		}, 20);
-	}
+	};
 }
 
-function hideSidedrawer(bodyEl)
-{
-	return () => {
+function hideSidedrawer(bodyEl) {
+	return function () {
 		bodyEl.toggleClass('hide-sidedrawer');
-	}
+	};
 }
 
 // main
-$(()=>{
+$(function () {
+	console.log('es5');
 	var bodyEl = $('body');
-	var	sidedrawerEl = $('#sidedrawer');
+	var sidedrawerEl = $('#sidedrawer');
 	var titleEls = $('strong', sidedrawerEl);
 	$('.js-show-sidedrawer').on('click', showSidedrawer(sidedrawerEl));
-  	$('.js-hide-sidedrawer').on('click', hideSidedrawer(bodyEl));
-  	titleEls.next().hide();
-	titleEls.on('click', function() {
+	$('.js-hide-sidedrawer').on('click', hideSidedrawer(bodyEl));
+	titleEls.next().hide();
+	titleEls.on('click', function () {
 		$(this).next().slideToggle(200);
 	});
 
-	$('#connect-ros').on('click', () => {
+	$('#connect-ros').on('click', function () {
 		var ip = $('#server-ip')[0].value.trim();
 		sch.serverIP = ip;
 		sch.scheduling = new Scheduling(sch.serverIP, sch.ns);
 	});
 
-	$('#add-task').on('click', () => {
-		if (!sch.scheduling)
-		{
-			console.log(`Server not connected.`);
+	$('#add-task').on('click', function () {
+		if (!sch.scheduling) {
+			console.log('Server not connected.');
 			return;
 		}
-		var taskID = $('#task-id').val();
+		var taskID = parseInt($('#task-id').val());
 		var loadingStation = $('#loading-station').val();
 		var unloadingStation = $('#unloading-station').val();
+		if (taskID === 'NaN') {
+			$('#task-info').text('[\u4EFB\u52A1\u6DFB\u52A0] \u4EFB\u52A1ID\u4E0D\u80FD\u4E3A\u7A7A');
+			return;
+		}
+		if (taskID === 'NaN' || !loadingStation || !unloadingStation) {
+			$('#task-info').text('[\u4EFB\u52A1\u6DFB\u52A0] \u4EFB\u52A1ID, \u4E0A\u6599\u70B9\u548C\u4E0B\u6599\u70B9\u5747\u4E0D\u80FD\u4E3A\u7A7A');
+			return;
+		}
 		sch.scheduling.addTask(taskID, loadingStation, unloadingStation);
 	});
 });

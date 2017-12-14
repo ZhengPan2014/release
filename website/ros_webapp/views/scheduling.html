@@ -4,59 +4,59 @@
 <head>
 	<title>Scheduling Webapp</title>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="../static/lib/mui.min.css" rel="stylesheet" type="text/css" />
-    <script src="../static/lib/mui.min.js"></script>
-	<!-- <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no"> -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="../static/lib/mui.min.css" rel="stylesheet" type="text/css" />
+  <script src="../static/lib/mui.min.js"></script>
+	
 	<link rel="stylesheet" type="text/css" href="../static/lib/jquery.mobile-1.4.5.min.css">
 	<script type="text/javascript" src="../static/lib/jquery-1.8.3.min.js"></script>
 	<script type="text/javascript" src="../static/lib/jquery.mobile-1.4.5.min.js"></script>
 	<script type="text/javascript" src="../static/lib/eventemitter2.min.js"></script>
 	<script type="text/javascript" src="../static/lib/roslib.js"></script>
 
-	<script type="text/javascript" src="../static/js/scheduling.js"></script>
+	<script type="text/javascript" src="../static/js/scheduling_org.js"></script>
 	<link rel="stylesheet" type="text/css" href="../static/style/scheduling.css">
 </head>
 <body>
 
 <div id="sidedrawer" class="mui--no-user-select">
   <div id="sidedrawer-brand" class="mui--appbar-line-height">
-    <span class="mui--text-title">HIT Robot Group</span>
+    <span class="mui--text-title">HRG</span>
   </div>
   <div class="mui-divider"></div>
 
   <ul>
   	<li>
-  		<p>Server IP:</p>
+  		<p>服务器IP:</p>
   		<input id="server-ip" type="" name="" value="localhost">
   	</li>
   </ul>
-  <button id="connect-ros" class="mui-btn mui-btn--flat mui-btn--primary">Connect</button>
+  <button id="connect-ros" class="mui-btn mui-btn--flat mui-btn--primary">连接</button>
   <div class="mui-divider"></div>
 
   <ul>
     <li>
-      <strong>Task ID</strong>
+      <strong>任务ID</strong>
 		<select id="task-id">
-			<option value="-1">-1</option>
+			<!-- <option value="-1">-1</option> -->
 		</select>
     </li>
 
     <li>
-      <strong>Loading Station</strong>
+      <strong>上料点</strong>
 		<select id="loading-station">
-		  <option value="">loading workstation</option>
+		  <!--   -->
 		</select>
     </li>
 
     <li>
-      <strong>Unloading Station</strong>
+      <strong>下料点</strong>
 		<select id="unloading-station">
-		  <option value="">unloading workstation</option>
+		  <!-- <option value="">选择下料点</option> -->
 		</select>
     </li>
   </ul>
-  <button id="add-task" class="mui-btn mui-btn--flat mui-btn--primary">Submit</button>
+  <button id="add-task" class="mui-btn mui-btn--flat mui-btn--primary">确认</button>
   <div class="mui-divider"></div>
 </div>
 
@@ -66,7 +66,7 @@
     <div class="mui-container-fluid">
       <a class="sidedrawer-toggle mui--visible-xs-inline-block mui--visible-sm-inline-block js-show-sidedrawer">☰</a>
       <a class="sidedrawer-toggle mui--hidden-xs mui--hidden-sm js-hide-sidedrawer">☰</a>
-      <span class="mui--text-title mui--visible-xs-inline-block mui--visible-sm-inline-block">Scheduling System</span>
+      <span class="mui--text-title mui--visible-xs-inline-block mui--visible-sm-inline-block"></span>
     </div>
   </div>
 </header>
@@ -75,11 +75,23 @@
   <div class="mui--appbar-height"></div>
   <div class="mui-container-fluid">
     <br>
-    <h1>Task Information</h1>
+    <h3>任务信息:</h3>
     <p id="connection-info"></p>
+    <p id="task-info"></p>
     <p id="task-feedback"></p>
   </div>
-</div>
+  <div class="mui-divider"></div>
 
+  <div id="executing-tasks" class="mui-container-fluid">
+      <h3>正在执行:</h3>
+  </div>
+  <div class="mui-divider"></div>
+  
+  <div id="pending-tasks" class="mui-container-fluid">
+      <h3>等待执行:</h3>
+  </div>
+</div>
+<button class="executing-task-btn" id="executing-task-${task.agv_id}">X</button>
+<button class="mui-btn mui-btn--fab mui-btn--primary executing-task-btn">+</button>
 </body>
 </html>

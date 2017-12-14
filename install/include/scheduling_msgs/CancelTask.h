@@ -40,7 +40,7 @@ template<>
 struct MD5Sum< ::scheduling_msgs::CancelTask > {
   static const char* value()
   {
-    return "1c9e4c32ae35eb909d044aea13aae25c";
+    return "c66583786e60ff524f511d901ff09db8";
   }
 
   static const char* value(const ::scheduling_msgs::CancelTask&) { return value(); }

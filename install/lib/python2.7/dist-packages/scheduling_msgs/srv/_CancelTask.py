@@ -7,12 +7,12 @@ import struct
 
 
 class CancelTaskRequest(genpy.Message):
-  _md5sum = "1d796b271a7ca0990ab3b6cae10c54d3"
+  _md5sum = "c5e4a7d59c68f74eabcec876a00216aa"
   _type = "scheduling_msgs/CancelTaskRequest"
   _has_header = False #flag to mark the presence of a Header object
-  _full_text = """int32 agvID
+  _full_text = """int32 id
 """
-  __slots__ = ['agvID']
+  __slots__ = ['id']
   _slot_types = ['int32']
 
   def __init__(self, *args, **kwds):
@@ -23,7 +23,7 @@ class CancelTaskRequest(genpy.Message):
     changes.  You cannot mix in-order arguments and keyword arguments.
 
     The available fields are:
-       agvID
+       id
 
     :param args: complete set of field values, in .msg order
     :param kwds: use keyword arguments corresponding to message field names
@@ -32,10 +32,10 @@ class CancelTaskRequest(genpy.Message):
     if args or kwds:
       super(CancelTaskRequest, self).__init__(*args, **kwds)
       #message fields cannot be None, assign default values for those that are
-      if self.agvID is None:
-        self.agvID = 0
+      if self.id is None:
+        self.id = 0
     else:
-      self.agvID = 0
+      self.id = 0
 
   def _get_types(self):
     """
@@ -49,7 +49,7 @@ class CancelTaskRequest(genpy.Message):
     :param buff: buffer, ``StringIO``
     """
     try:
-      buff.write(_struct_i.pack(self.agvID))
+      buff.write(_struct_i.pack(self.id))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
@@ -62,7 +62,7 @@ class CancelTaskRequest(genpy.Message):
       end = 0
       start = end
       end += 4
-      (self.agvID,) = _struct_i.unpack(str[start:end])
+      (self.id,) = _struct_i.unpack(str[start:end])
       return self
     except struct.error as e:
       raise genpy.DeserializationError(e) #most likely buffer underfill
@@ -75,7 +75,7 @@ class CancelTaskRequest(genpy.Message):
     :param numpy: numpy python module
     """
     try:
-      buff.write(_struct_i.pack(self.agvID))
+      buff.write(_struct_i.pack(self.id))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
@@ -89,7 +89,7 @@ class CancelTaskRequest(genpy.Message):
       end = 0
       start = end
       end += 4
-      (self.agvID,) = _struct_i.unpack(str[start:end])
+      (self.id,) = _struct_i.unpack(str[start:end])
       return self
     except struct.error as e:
       raise genpy.DeserializationError(e) #most likely buffer underfill
@@ -199,6 +199,6 @@ _struct_I = genpy.struct_I
 _struct_i = struct.Struct("<i")
 class CancelTask(object):
   _type          = 'scheduling_msgs/CancelTask'
-  _md5sum = '1c9e4c32ae35eb909d044aea13aae25c'
+  _md5sum = 'c66583786e60ff524f511d901ff09db8'
   _request_class  = CancelTaskRequest
   _response_class = CancelTaskResponse

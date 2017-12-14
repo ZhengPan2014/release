@@ -30,7 +30,7 @@
     <node name="move_base" pkg="move_base" type="move_base" output="screen">
         <remap from="odom" to="$(arg namespace)/odometry/filtered"/>
         <rosparam>
-            base_global_planner: "global_planner/MixedPlanner" <!--"navfn/NavfnROS"--> <!--"global_planner/FixedGlobalPlanner"--> <!--"global_planner/MixedPlanner"-->
+            base_global_planner: "global_planner/MixedPlanner" <!--"navfn/NavfnROS"--> <!--"global_planner/FixedGlobalPlanner"--> 
             base_local_planner: "dwa_local_planner/DWAPlannerROS"<!--"teb_local_planner/TebLocalPlannerROS"--><!-- "dwa_local_planner/DWAPlannerROS" --> <!--"rsband_local_planner/RSBandPlannerROS"-->
             recovery_behaviors:
               - name: 'conservative_reset'
@@ -147,6 +147,12 @@
                 endpoint_tolerance: 2.0
                 retrace_path: true
                 use_goal_direction: true
+            MixedPlanner:
+                endpoint_tolerance: 4.995
+                fixed_planner:
+                    endpoint_tolerance: 5.0
+                navfn_planner:
+                    planner_is_navfn: true
             TrajectoryPlannerROS:
                 acc_lim_x: 0.5
                 acc_lim_y: 0.0
@@ -173,8 +179,8 @@
                 min_vel_y: 0.0
                 min_rot_vel: 0.05
                 forward_point_distance: 0.4
-                yaw_goal_tolerance: 0.01 #0.025
-                xy_goal_tolerance: 0.5 #0.10 #0.05
+                yaw_goal_tolerance: 3.1416 #0.01
+                xy_goal_tolerance: 2.0 #0.5
                 latch_xy_goal_tolerance: true
                 occdist_scale: 0.0
                 path_distance_bias: 32.0 #64.0
@@ -196,18 +202,6 @@
                 viapoints_all_candidates: false #true
                 odom_topic: /odometry/filtered
                 map_frame: /map -->
-            RSBandPlannerROS:
-                rear_steering_mode: 0
-                eband_to_rs_strategy: 1
-                wheelbase: 1.359 #1.425
-                xy_goal_tolerance: 0.5
-                yaw_goal_tolerance: 0.01
-                goal_dist_threshold: 0.4
-                state_checking_mode: 1
-                interpolation_num_poses: 50
-                max_planning_duration: 0.05
-                state_checking_mode: 1
-                update_sub_goal_dist_threshold: 0.2
         </rosparam>
         
         <param name="TrajectoryPlannerROS/max_vel_x" value="$(arg max_vel_x)"/>
