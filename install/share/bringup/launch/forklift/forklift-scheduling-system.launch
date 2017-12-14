@@ -1,8 +1,9 @@
 <?xml version="1.0"?>
 <launch>
-    <arg name="namespace" default="$(optenv AGV_NAME)"/>
+    <arg name="namespace" default="$(optenv AGV_NAME /)"/>
+    <arg name="has_server" value="$(optenv HAS_SERVER 0)" />
     <group ns="$(arg namespace)">
-        <include file="$(find multimaster)/launch/master.launch">
+        <include if="$(arg has_server)" file="$(find multimaster)/launch/master.launch">
            <arg name="master" value="hitrobot-forklift-server" />
         </include>
     </group>

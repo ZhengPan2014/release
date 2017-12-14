@@ -113,12 +113,15 @@ async function main()
 
     // check if there exists a ros remote master
     let hasRemote;
+    // remove ping
+    /*
     try 
     {
     	console.log(`Detecting roscore remote server: ${ROS_REMOTE_MASTER.hostname}@${ROS_REMOTE_MASTER.uri}...`);
         hasRemote = await asyncShell('ping -c 1 ' + ROS_REMOTE_MASTER.uri);
     }
     catch(e){}
+    */
 
     if (hasRemote)
     {
@@ -193,11 +196,51 @@ async function main()
                 console.log(`Invalid namespace, ROS starting without namespace.`);
             }
         }
+        if (cfg.hasOwnProperty('is_scheduling_server'))
+        {
+            if (cfg['is_scheduling_server'] === 1
+                || cfg['is_scheduling_server'] === '1'
+                || cfg['is_scheduling_server'] === 'true'
+                || cfg['is_scheduling_server'] === 'True'
+                || cfg['is_scheduling_server'] === 'TRUE')
+            {
+                process.env.SCHEDULING_SERVER = 1;   
+                console.log(`ROS starting as scheduling server`); 
+            }
+            else
+            {
+                process.env.SCHEDULING_SERVER = 0; 
+            }
+        }
+        else
+        {
+            process.env.SCHEDULING_SERVER = 0;
+        }
+        if (cfg.hasOwnProperty('has_server'))
+        {
+            if (cfg['has_server'] === 1
+                || cfg['has_server'] === '1'
+                || cfg['has_server'] === 'true'
+                || cfg['has_server'] === 'True'
+                || cfg['has_server'] === 'TRUE')
+            {
+                process.env.HAS_SERVER = 1;   
+                console.log(`ROS starting as client has server`); 
+            }
+            else
+            {
+                process.env.HAS_SERVER = 0; 
+            }
+        }
+        else
+        {
+            process.env.HAS_SERVER = 0;
+        }
     }
     catch(e)
     {
         // console.log(e);
-        console.log('Read namespace failed.\nROS starting without namespace');
+        console.log('Read cfg or parse to JSON failed.\nROS starting as as non-scheduling server without namespace');
     }
 
     // start ros_webapp

@@ -8,7 +8,7 @@ var sch = sch || {
 	ns: 'undefined',
 	serverIP: 'localhost',
 	scheduling: null,
-	taskStatusMap: ['等待执行', '前往叉货工位', '开始叉货', '叉货完成', '等待指定卸货工位', '前往卸货工位', '开始卸货', '卸货完成', '返回', '完成']
+	taskStatusMap: ['空闲', '等待执行', '前往叉货工位', '开始叉货', '叉货完成', '等待前往卸货工位', '前往卸货工位', '开始卸货', '卸货完成', '返回', '完成']
 };
 
 /***********************************************/
@@ -29,17 +29,23 @@ var Scheduling = function () {
 		this._executingTasksEl = $('#executing-tasks');
 		this._pendingTasksEl = $('#pending-tasks');
 
-		this._resetInfoUI();
+		this._resetUI();
 		this.ros = this._initROS();
 		this._subWorkstations();
 		this._subExecutingTasks();
 		this._subPendingTasks();
 		this._getAGVs();
 		this._getTaskIDs();
-		this.taskClient = new ROSLIB.Service({
+		this.taskAddClient = new ROSLIB.Service({
 			ros: this.ros,
 			name: this._withNs('/add_or_modify_forklift_task'),
 			serviceType: 'scheduling_msgs/AddOrModifyForkliftTask'
+		});
+
+		this.taskCancelClient = new ROSLIB.Service({
+			ros: this.ros,
+			name: this._withNs('/cancel_specified_task'),
+			serviceType: 'scheduling_msgs/CancelTask'
 		});
 	}
 
@@ -50,8 +56,14 @@ var Scheduling = function () {
 				console.error('task [' + taskID + '] does not exist.');
 				return;
 			}
-			var req = this._taskSrvMsg(taskID, loadingStation, unloadingStation);
-			this._callTaskSrv(req);
+			var req = this._taskAddSrvMsg(taskID, loadingStation, unloadingStation);
+			this._callTaskAddSrv(req);
+		}
+	}, {
+		key: 'cancelTask',
+		value: function cancelTask(taskID, loadingStation, unloadingStation) {
+			var req = this._taskCancelSrvMsg(taskID);
+			this._callTaskCancelSrv(req, loadingStation, unloadingStation);
 		}
 	}, {
 		key: '_initROS',
@@ -161,7 +173,6 @@ var Scheduling = function () {
 				ros: this.ros,
 				name: this._withNs('/executing_task_list'),
 				messageType: 'scheduling_msgs/TaskList2'
-				// throttle_rate: 3000
 			});
 			topic.subscribe(function (tasks) {
 				_this3._updateExecutingTasksUI(tasks.status);
@@ -176,19 +187,22 @@ var Scheduling = function () {
 				ros: this.ros,
 				name: this._withNs('/pending_task_list'),
 				messageType: 'scheduling_msgs/TaskList2'
-				// throttle_rate: 3000
 			});
 			topic.subscribe(function (tasks) {
 				_this4._updatePendingTasksUI(tasks.status);
 			});
 		}
 	}, {
-		key: '_resetInfoUI',
-		value: function _resetInfoUI() {
+		key: '_resetUI',
+		value: function _resetUI() {
 			$('#connection-info').text('');
 			$('#task-info').text('');
 			$('#task-feedback').text('');
-			// $('.executing-task').remove();
+			$('.executing-task').remove();
+			$('.pending-task').remove();
+			this._loadingStationEl.children().remove();
+			this._unloadingStationEl.children().remove();
+			this._taskIDEl.children().remove();
 		}
 
 		/**
@@ -200,7 +214,7 @@ var Scheduling = function () {
 	}, {
 		key: '_updateUI',
 		value: function _updateUI(el, data) {
-			el.children().empty();
+			el.children().remove();
 			var els = '<option value=""></option>';
 			var _iteratorNormalCompletion2 = true;
 			var _didIteratorError2 = false;
@@ -232,6 +246,8 @@ var Scheduling = function () {
 	}, {
 		key: '_updateExecutingTasksUI',
 		value: function _updateExecutingTasksUI(tasks) {
+			var _this5 = this;
+
 			$('.executing-task').remove();
 			var els = '';
 			var _iteratorNormalCompletion3 = true;
@@ -243,6 +259,7 @@ var Scheduling = function () {
 					var task = _step3.value;
 
 					els += '<p class="executing-task">';
+					els += '<button class="executing-task-btn" id="executing-task#' + task.task_id + '#' + task.loading_station + '#' + task.unloading_station + '">X</button>';
 					els += '[\u4EFB\u52A1\u4FE1\u606F] \u4EFB\u52A1ID: ' + task.task_id + '; AGV ID: ' + task.agv_id + '; \u4E0A\u6599\u70B9: ' + task.loading_station + '; \u4E0B\u6599\u70B9: ' + task.unloading_station + '; ';
 					var status = task.status < 0 ? '任务出错' : sch.taskStatusMap[task.status];
 					els += '\u72B6\u6001: ' + status;
@@ -264,10 +281,17 @@ var Scheduling = function () {
 			}
 
 			this._executingTasksEl.append(els);
+
+			$('.executing-task-btn').on('click', function (el) {
+				var info = _this5._getTaskInfoFromElID($(el.currentTarget).attr('id'));
+				sch.scheduling.cancelTask(parseInt(info.taskID), info.loadingStation, info.unloadingStation);
+			});
 		}
 	}, {
 		key: '_updatePendingTasksUI',
 		value: function _updatePendingTasksUI(tasks) {
+			var _this6 = this;
+
 			$('.pending-task').remove();
 			var els = '';
 			var _iteratorNormalCompletion4 = true;
@@ -278,10 +302,10 @@ var Scheduling = function () {
 				for (var _iterator4 = tasks[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
 					var task = _step4.value;
 
-					els += '<p class="pending-task">';
+					// els += `<button class="pending-task-btn" id="pending-task#${task.task_id}#${task.loading_station}#${task.unloading_station}">X</button>`;
+					els += '<p class="pending-task" id="pending-task-' + task.agv_id + '">';
+					els += '<button class="pending-task-btn" id="pending-task#' + task.task_id + '#' + task.loading_station + '#' + task.unloading_station + '">X</button>';
 					els += '[\u4EFB\u52A1\u4FE1\u606F] \u4EFB\u52A1ID: ' + task.task_id + '; AGV ID: ' + task.agv_id + '; \u4E0A\u6599\u70B9: ' + task.loading_station + '; \u4E0B\u6599\u70B9: ' + task.unloading_station + '; ';
-					// var status = task.status < 0 ? '任务出错' : sch.taskStatusMap[task.status];
-					// els += `状态: ${status}`;
 					els += '</p>';
 				}
 			} catch (err) {
@@ -300,10 +324,25 @@ var Scheduling = function () {
 			}
 
 			this._pendingTasksEl.append(els);
+
+			$('.pending-task-btn').on('click', function (el) {
+				var info = _this6._getTaskInfoFromElID($(el.currentTarget).attr('id'));
+				sch.scheduling.cancelTask(parseInt(info.taskID), info.loadingStation, info.unloadingStation);
+			});
 		}
 	}, {
-		key: '_taskSrvMsg',
-		value: function _taskSrvMsg(taskID, loadingStation, unloadingStation) {
+		key: '_getTaskInfoFromElID',
+		value: function _getTaskInfoFromElID(idStr) {
+			var info = idStr.split('#');
+			return {
+				taskID: info[1],
+				loadingStation: info[2],
+				unloadingStation: info[3]
+			};
+		}
+	}, {
+		key: '_taskAddSrvMsg',
+		value: function _taskAddSrvMsg(taskID, loadingStation, unloadingStation) {
 			return new ROSLIB.ServiceRequest({
 				task_id: taskID,
 				loading_station: loadingStation,
@@ -311,10 +350,17 @@ var Scheduling = function () {
 			});
 		}
 	}, {
-		key: '_callTaskSrv',
-		value: function _callTaskSrv(request) {
+		key: '_taskCancelSrvMsg',
+		value: function _taskCancelSrvMsg(taskID) {
+			return new ROSLIB.ServiceRequest({
+				id: taskID
+			});
+		}
+	}, {
+		key: '_callTaskAddSrv',
+		value: function _callTaskAddSrv(request) {
 			$('#task-info').text('[\u4EFB\u52A1\u6DFB\u52A0] \u6B63\u5728\u6DFB\u52A0\u4EFB\u52A1 ID: ' + request.task_id + '; \u4E0A\u6599\u70B9: ' + request.loading_station + '; \u4E0B\u6599\u70B9: ' + request.unloading_station);
-			this.taskClient.callService(request, function (response) {
+			this.taskAddClient.callService(request, function (response) {
 				$('#task-info').text('[\u4EFB\u52A1\u6DFB\u52A0] \u4EFB\u52A1ID: ' + request.task_id + '; \u4E0A\u6599\u70B9: ' + request.loading_station + '; \u4E0B\u6599\u70B9: ' + request.unloading_station);
 				var info = '[任务状态] ';
 				switch (response.feedback) {
@@ -341,6 +387,30 @@ var Scheduling = function () {
 						break;
 					default:
 						info += '任务添加/调整成功';
+						break;
+				}
+				$('#task-feedback').text(info);
+			});
+		}
+	}, {
+		key: '_callTaskCancelSrv',
+		value: function _callTaskCancelSrv(request, loadingStation, unloadingStation) {
+			$('#task-info').text('[\u4EFB\u52A1\u53D6\u6D88] \u6B63\u5728\u53D6\u6D88\u4EFB\u52A1 ID: ' + request.id + '; \u4E0A\u6599\u70B9: ' + loadingStation + '; \u4E0B\u6599\u70B9: ' + unloadingStation);
+			this.taskCancelClient.callService(request, function (response) {
+				$('#task-info').text('[\u4EFB\u52A1\u53D6\u6D88] \u4EFB\u52A1ID: ' + request.id + '; \u4E0A\u6599\u70B9: ' + loadingStation + '; \u4E0B\u6599\u70B9: ' + unloadingStation);
+				var info = '[任务状态] ';
+				switch (response.feedback) {
+					case -1:
+						info += '该AGV不在列表中';
+						break;
+					case -2:
+						info += '该AGV无任务';
+						break;
+					case -3:
+						info += '该任务无法被取消';
+						break;
+					default:
+						info += '任务取消成功';
 						break;
 				}
 				$('#task-feedback').text(info);
@@ -399,7 +469,6 @@ function hideSidedrawer(bodyEl) {
 
 // main
 $(function () {
-	console.log('es5');
 	var bodyEl = $('body');
 	var sidedrawerEl = $('#sidedrawer');
 	var titleEls = $('strong', sidedrawerEl);

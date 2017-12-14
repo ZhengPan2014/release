@@ -146,7 +146,6 @@ class Scheduling
 			ros: this.ros,
 			name: this._withNs('/executing_task_list'),
 			messageType: 'scheduling_msgs/TaskList2',
-			throttle_rate: 3000
 		});
 		topic.subscribe((tasks) => {
 			this._updateExecutingTasksUI(tasks.status);
@@ -159,7 +158,6 @@ class Scheduling
 			ros: this.ros,
 			name: this._withNs('/pending_task_list'),
 			messageType: 'scheduling_msgs/TaskList2',
-			throttle_rate: 3000
 		});
 		topic.subscribe((tasks) => {
 			this._updatePendingTasksUI(tasks.status);
@@ -172,9 +170,7 @@ class Scheduling
 		$('#task-info').text('');
 		$('#task-feedback').text('');
 		$('.executing-task').remove();
-		$('.executing-task-btn').remove();
 		$('.pending-task').remove();
-		$('.pending-task-btn').remove();
 		this._loadingStationEl.children().remove();
 		this._unloadingStationEl.children().remove();
 		this._taskIDEl.children().remove();
@@ -199,35 +195,52 @@ class Scheduling
 	_updateExecutingTasksUI(tasks)
 	{
 		$('.executing-task').remove();
-		$('.executing-task-btn').remove();
 		var els = '';
 		for (var task of tasks)
 		{
-			els += `<button class="executing-task-btn" id="executing-task-${task.agv_id}">X</button>`;
 			els += `<p class="executing-task">`;
+			els += `<button class="executing-task-btn" id="executing-task#${task.task_id}#${task.loading_station}#${task.unloading_station}">X</button>`;
 			els += `[任务信息] 任务ID: ${task.task_id}; AGV ID: ${task.agv_id}; 上料点: ${task.loading_station}; 下料点: ${task.unloading_station}; `;
 			var status = task.status < 0 ? '任务出错' : sch.taskStatusMap[task.status];
 			els += `状态: ${status}`;
 			els += '</p>';
 		}
 		this._executingTasksEl.append(els);
+		
+		$('.executing-task-btn').on('click', (el) => {
+			var info = this._getTaskInfoFromElID($(el.currentTarget).attr('id'));
+			sch.scheduling.cancelTask(parseInt(info.taskID), info.loadingStation, info.unloadingStation);
+		});
 	}
 
 	_updatePendingTasksUI(tasks)
 	{
 		$('.pending-task').remove();
-		$('.pending-task-btn').remove();
 		var els = '';
 		for (var task of tasks)
 		{
-			els += `<button class="pending-task-btn" id="pending-task-${task.agv_id}">X</button>`;
+			// els += `<button class="pending-task-btn" id="pending-task#${task.task_id}#${task.loading_station}#${task.unloading_station}">X</button>`;
 			els += `<p class="pending-task" id="pending-task-${task.agv_id}">`;
+			els += `<button class="pending-task-btn" id="pending-task#${task.task_id}#${task.loading_station}#${task.unloading_station}">X</button>`;
 			els += `[任务信息] 任务ID: ${task.task_id}; AGV ID: ${task.agv_id}; 上料点: ${task.loading_station}; 下料点: ${task.unloading_station}; `;
-			// var status = task.status < 0 ? '任务出错' : sch.taskStatusMap[task.status];
-			// els += `状态: ${status}`;
 			els += '</p>';
 		}
 		this._pendingTasksEl.append(els);
+
+		$('.pending-task-btn').on('click', (el) => {
+			var info = this._getTaskInfoFromElID($(el.currentTarget).attr('id'));
+			sch.scheduling.cancelTask(parseInt(info.taskID), info.loadingStation, info.unloadingStation);
+		});
+	}
+
+	_getTaskInfoFromElID(idStr)
+	{
+		var info = idStr.split('#');
+		return {
+			taskID: info[1],
+			loadingStation: info[2],
+			unloadingStation: info[3]
+		};
 	}
 
 	_taskAddSrvMsg(taskID, loadingStation, unloadingStation)
@@ -288,10 +301,10 @@ class Scheduling
 	_callTaskCancelSrv(request, loadingStation, unloadingStation)
 	{
 		$('#task-info').text(
-			`[任务取消] 正在取消任务 ID: ${request.task_id}; 上料点: ${loadingStation}; 下料点: ${unloadingStation}`);
+			`[任务取消] 正在取消任务 ID: ${request.id}; 上料点: ${loadingStation}; 下料点: ${unloadingStation}`);
 		this.taskCancelClient.callService(request, (response) => {
 			$('#task-info').text(
-				`[任务取消] 任务ID: ${request.task_id}; 上料点: ${loadingStation}; 下料点: ${unloadingStation}`);
+				`[任务取消] 任务ID: ${request.id}; 上料点: ${loadingStation}; 下料点: ${unloadingStation}`);
 			var info = '[任务状态] ';
 			switch(response.feedback)
 			{
@@ -402,11 +415,5 @@ $(()=>{
 			return;
 		}
 		sch.scheduling.addTask(taskID, loadingStation, unloadingStation);
-	});
-
-	$('.executing-task-btn').on('click', (el) => {
-
-		console.log('el');
-		sch.scheduling.cancelTask(taskID);
 	});
 });

@@ -14,7 +14,7 @@
 	<script type="text/javascript" src="../static/lib/eventemitter2.min.js"></script>
 	<script type="text/javascript" src="../static/lib/roslib.js"></script>
 
-	<script type="text/javascript" src="../static/js/scheduling_org.js"></script>
+	<script type="text/javascript" src="../static/js/scheduling.js"></script>
 	<link rel="stylesheet" type="text/css" href="../static/style/scheduling.css">
 </head>
 <body>
@@ -84,6 +84,7 @@
 
   <div id="executing-tasks" class="mui-container-fluid">
       <h3>正在执行:</h3>
+      <!-- <span class="executing-task-btn" id="executing-task-${task.agv_id}-${task.loading_station}-${task.unloading_station}">X</span> -->
   </div>
   <div class="mui-divider"></div>
   
@@ -91,7 +92,5 @@
       <h3>等待执行:</h3>
   </div>
 </div>
-<button class="executing-task-btn" id="executing-task-${task.agv_id}">X</button>
-<button class="mui-btn mui-btn--fab mui-btn--primary executing-task-btn">+</button>
 </body>
 </html>

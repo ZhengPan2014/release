@@ -1,10 +1,11 @@
 <?xml version="1.0"?>
 <launch>
+    <arg name="has_server" value="$(optenv HAS_SERVER 0)" />
     <include file="$(find bringup)/launch/map_server.launch"/>
 
     <include file="$(find bringup)/launch/map_edit_server.launch"/>
 
-    <include file="$(find yocs_waypoint_provider)/launch/provider.launch"/>
+    <include unless="$(arg has_server)" file="$(find yocs_waypoint_provider)/launch/provider.launch"/>
 
     <include file="$(find yocs_waypoints_navi)/launch/waypoints_navi.launch"/>
 
