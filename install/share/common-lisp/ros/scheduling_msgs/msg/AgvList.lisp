@@ -58,16 +58,16 @@
   "scheduling_msgs/AgvList")
 (cl:defmethod roslisp-msg-protocol:md5sum ((type (cl:eql '<AgvList>)))
   "Returns md5sum for a message object of type '<AgvList>"
-  "159cc8fbfdec43c0feb1a4ce0218db38")
+  "0ab4fe433cd794e9c63428ead5835410")
 (cl:defmethod roslisp-msg-protocol:md5sum ((type (cl:eql 'AgvList)))
   "Returns md5sum for a message object of type 'AgvList"
-  "159cc8fbfdec43c0feb1a4ce0218db38")
+  "0ab4fe433cd794e9c63428ead5835410")
 (cl:defmethod roslisp-msg-protocol:message-definition ((type (cl:eql '<AgvList>)))
   "Returns full string definition for message of type '<AgvList>"
-  (cl:format cl:nil "Agv[] agvList~%~%================================================================================~%MSG: scheduling_msgs/Agv~%int32 agvID~%string agvName~%~%~%~%~%"))
+  (cl:format cl:nil "Agv[] agvList~%================================================================================~%MSG: scheduling_msgs/Agv~%int32 agvID~%string agvName~%bool isWorking~%bool isAgvBoot~%#bool isTaskOverTime~%int32 errorInfo~%#0 : no error~%#1 : obstacle~%#2 : battery low~%#3 : navigation error ~%string working_station_name~%geometry_msgs/Pose pose~%================================================================================~%MSG: geometry_msgs/Pose~%# A representation of pose in free space, composed of postion and orientation. ~%Point position~%Quaternion orientation~%~%================================================================================~%MSG: geometry_msgs/Point~%# This contains the position of a point in free space~%float64 x~%float64 y~%float64 z~%~%================================================================================~%MSG: geometry_msgs/Quaternion~%# This represents an orientation in free space in quaternion form.~%~%float64 x~%float64 y~%float64 z~%float64 w~%~%~%"))
 (cl:defmethod roslisp-msg-protocol:message-definition ((type (cl:eql 'AgvList)))
   "Returns full string definition for message of type 'AgvList"
-  (cl:format cl:nil "Agv[] agvList~%~%================================================================================~%MSG: scheduling_msgs/Agv~%int32 agvID~%string agvName~%~%~%~%~%"))
+  (cl:format cl:nil "Agv[] agvList~%================================================================================~%MSG: scheduling_msgs/Agv~%int32 agvID~%string agvName~%bool isWorking~%bool isAgvBoot~%#bool isTaskOverTime~%int32 errorInfo~%#0 : no error~%#1 : obstacle~%#2 : battery low~%#3 : navigation error ~%string working_station_name~%geometry_msgs/Pose pose~%================================================================================~%MSG: geometry_msgs/Pose~%# A representation of pose in free space, composed of postion and orientation. ~%Point position~%Quaternion orientation~%~%================================================================================~%MSG: geometry_msgs/Point~%# This contains the position of a point in free space~%float64 x~%float64 y~%float64 z~%~%================================================================================~%MSG: geometry_msgs/Quaternion~%# This represents an orientation in free space in quaternion form.~%~%float64 x~%float64 y~%float64 z~%float64 w~%~%~%"))
 (cl:defmethod roslisp-msg-protocol:serialization-length ((msg <AgvList>))
   (cl:+ 0
      4 (cl:reduce #'cl:+ (cl:slot-value msg 'agvList) :key #'(cl:lambda (ele) (cl:declare (cl:ignorable ele)) (cl:+ (roslisp-msg-protocol:serialization-length ele))))

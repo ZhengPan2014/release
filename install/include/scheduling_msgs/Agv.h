@@ -15,6 +15,7 @@
 #include <ros/builtin_message_traits.h>
 #include <ros/message_operations.h>
 
+#include <geometry_msgs/Pose.h>
 
 namespace scheduling_msgs
 {
@@ -25,11 +26,21 @@ struct Agv_
 
   Agv_()
     : agvID(0)
-    , agvName()  {
+    , agvName()
+    , isWorking(false)
+    , isAgvBoot(false)
+    , errorInfo(0)
+    , working_station_name()
+    , pose()  {
     }
   Agv_(const ContainerAllocator& _alloc)
     : agvID(0)
-    , agvName(_alloc)  {
+    , agvName(_alloc)
+    , isWorking(false)
+    , isAgvBoot(false)
+    , errorInfo(0)
+    , working_station_name(_alloc)
+    , pose(_alloc)  {
   (void)_alloc;
     }
 
@@ -40,6 +51,21 @@ struct Agv_
 
    typedef std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other >  _agvName_type;
   _agvName_type agvName;
+
+   typedef uint8_t _isWorking_type;
+  _isWorking_type isWorking;
+
+   typedef uint8_t _isAgvBoot_type;
+  _isAgvBoot_type isAgvBoot;
+
+   typedef int32_t _errorInfo_type;
+  _errorInfo_type errorInfo;
+
+   typedef std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other >  _working_station_name_type;
+  _working_station_name_type working_station_name;
+
+   typedef  ::geometry_msgs::Pose_<ContainerAllocator>  _pose_type;
+  _pose_type pose;
 
 
 
@@ -118,12 +144,12 @@ struct MD5Sum< ::scheduling_msgs::Agv_<ContainerAllocator> >
 {
   static const char* value()
   {
-    return "d5c3d9da008fc08c632ddde4bbf572ba";
+    return "f01657a2f82714212a73e3a8e964b946";
   }
 
   static const char* value(const ::scheduling_msgs::Agv_<ContainerAllocator>&) { return value(); }
-  static const uint64_t static_value1 = 0xd5c3d9da008fc08cULL;
-  static const uint64_t static_value2 = 0x632ddde4bbf572baULL;
+  static const uint64_t static_value1 = 0xf01657a2f8271421ULL;
+  static const uint64_t static_value2 = 0x2a73e3a8e964b946ULL;
 };
 
 template<class ContainerAllocator>
@@ -144,8 +170,37 @@ struct Definition< ::scheduling_msgs::Agv_<ContainerAllocator> >
   {
     return "int32 agvID\n\
 string agvName\n\
+bool isWorking\n\
+bool isAgvBoot\n\
+#bool isTaskOverTime\n\
+int32 errorInfo\n\
+#0 : no error\n\
+#1 : obstacle\n\
+#2 : battery low\n\
+#3 : navigation error \n\
+string working_station_name\n\
+geometry_msgs/Pose pose\n\
+================================================================================\n\
+MSG: geometry_msgs/Pose\n\
+# A representation of pose in free space, composed of postion and orientation. \n\
+Point position\n\
+Quaternion orientation\n\
 \n\
+================================================================================\n\
+MSG: geometry_msgs/Point\n\
+# This contains the position of a point in free space\n\
+float64 x\n\
+float64 y\n\
+float64 z\n\
 \n\
+================================================================================\n\
+MSG: geometry_msgs/Quaternion\n\
+# This represents an orientation in free space in quaternion form.\n\
+\n\
+float64 x\n\
+float64 y\n\
+float64 z\n\
+float64 w\n\
 ";
   }
 
@@ -166,6 +221,11 @@ namespace serialization
     {
       stream.next(m.agvID);
       stream.next(m.agvName);
+      stream.next(m.isWorking);
+      stream.next(m.isAgvBoot);
+      stream.next(m.errorInfo);
+      stream.next(m.working_station_name);
+      stream.next(m.pose);
     }
 
     ROS_DECLARE_ALLINONE_SERIALIZER
@@ -188,6 +248,17 @@ struct Printer< ::scheduling_msgs::Agv_<ContainerAllocator> >
     Printer<int32_t>::stream(s, indent + "  ", v.agvID);
     s << indent << "agvName: ";
     Printer<std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other > >::stream(s, indent + "  ", v.agvName);
+    s << indent << "isWorking: ";
+    Printer<uint8_t>::stream(s, indent + "  ", v.isWorking);
+    s << indent << "isAgvBoot: ";
+    Printer<uint8_t>::stream(s, indent + "  ", v.isAgvBoot);
+    s << indent << "errorInfo: ";
+    Printer<int32_t>::stream(s, indent + "  ", v.errorInfo);
+    s << indent << "working_station_name: ";
+    Printer<std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other > >::stream(s, indent + "  ", v.working_station_name);
+    s << indent << "pose: ";
+    s << std::endl;
+    Printer< ::geometry_msgs::Pose_<ContainerAllocator> >::stream(s, indent + "  ", v.pose);
   }
 };
 

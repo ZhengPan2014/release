@@ -113,14 +113,14 @@ import struct
 
 
 class CancelPathResponse(genpy.Message):
-  _md5sum = "358e233cde0c8a8bcfea4ce193f8fc15"
+  _md5sum = "49ceb5b32ea3af22073ede4a0328249e"
   _type = "scheduling_msgs/CancelPathResponse"
   _has_header = False #flag to mark the presence of a Header object
-  _full_text = """bool success
+  _full_text = """int32 feedback
 
 """
-  __slots__ = ['success']
-  _slot_types = ['bool']
+  __slots__ = ['feedback']
+  _slot_types = ['int32']
 
   def __init__(self, *args, **kwds):
     """
@@ -130,7 +130,7 @@ class CancelPathResponse(genpy.Message):
     changes.  You cannot mix in-order arguments and keyword arguments.
 
     The available fields are:
-       success
+       feedback
 
     :param args: complete set of field values, in .msg order
     :param kwds: use keyword arguments corresponding to message field names
@@ -139,10 +139,10 @@ class CancelPathResponse(genpy.Message):
     if args or kwds:
       super(CancelPathResponse, self).__init__(*args, **kwds)
       #message fields cannot be None, assign default values for those that are
-      if self.success is None:
-        self.success = False
+      if self.feedback is None:
+        self.feedback = 0
     else:
-      self.success = False
+      self.feedback = 0
 
   def _get_types(self):
     """
@@ -156,7 +156,7 @@ class CancelPathResponse(genpy.Message):
     :param buff: buffer, ``StringIO``
     """
     try:
-      buff.write(_struct_B.pack(self.success))
+      buff.write(_struct_i.pack(self.feedback))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
@@ -168,9 +168,8 @@ class CancelPathResponse(genpy.Message):
     try:
       end = 0
       start = end
-      end += 1
-      (self.success,) = _struct_B.unpack(str[start:end])
-      self.success = bool(self.success)
+      end += 4
+      (self.feedback,) = _struct_i.unpack(str[start:end])
       return self
     except struct.error as e:
       raise genpy.DeserializationError(e) #most likely buffer underfill
@@ -183,7 +182,7 @@ class CancelPathResponse(genpy.Message):
     :param numpy: numpy python module
     """
     try:
-      buff.write(_struct_B.pack(self.success))
+      buff.write(_struct_i.pack(self.feedback))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
@@ -196,17 +195,16 @@ class CancelPathResponse(genpy.Message):
     try:
       end = 0
       start = end
-      end += 1
-      (self.success,) = _struct_B.unpack(str[start:end])
-      self.success = bool(self.success)
+      end += 4
+      (self.feedback,) = _struct_i.unpack(str[start:end])
       return self
     except struct.error as e:
       raise genpy.DeserializationError(e) #most likely buffer underfill
 
 _struct_I = genpy.struct_I
-_struct_B = struct.Struct("<B")
+_struct_i = struct.Struct("<i")
 class CancelPath(object):
   _type          = 'scheduling_msgs/CancelPath'
-  _md5sum = 'db59392a901b1150779898504586c9bb'
+  _md5sum = '7da36ca53b57c9ab8c96a055f5a1d1e1'
   _request_class  = CancelPathRequest
   _response_class = CancelPathResponse

@@ -114,12 +114,12 @@ struct MD5Sum< ::scheduling_msgs::AgvList_<ContainerAllocator> >
 {
   static const char* value()
   {
-    return "159cc8fbfdec43c0feb1a4ce0218db38";
+    return "0ab4fe433cd794e9c63428ead5835410";
   }
 
   static const char* value(const ::scheduling_msgs::AgvList_<ContainerAllocator>&) { return value(); }
-  static const uint64_t static_value1 = 0x159cc8fbfdec43c0ULL;
-  static const uint64_t static_value2 = 0xfeb1a4ce0218db38ULL;
+  static const uint64_t static_value1 = 0x0ab4fe433cd794e9ULL;
+  static const uint64_t static_value2 = 0xc63428ead5835410ULL;
 };
 
 template<class ContainerAllocator>
@@ -139,13 +139,41 @@ struct Definition< ::scheduling_msgs::AgvList_<ContainerAllocator> >
   static const char* value()
   {
     return "Agv[] agvList\n\
-\n\
 ================================================================================\n\
 MSG: scheduling_msgs/Agv\n\
 int32 agvID\n\
 string agvName\n\
+bool isWorking\n\
+bool isAgvBoot\n\
+#bool isTaskOverTime\n\
+int32 errorInfo\n\
+#0 : no error\n\
+#1 : obstacle\n\
+#2 : battery low\n\
+#3 : navigation error \n\
+string working_station_name\n\
+geometry_msgs/Pose pose\n\
+================================================================================\n\
+MSG: geometry_msgs/Pose\n\
+# A representation of pose in free space, composed of postion and orientation. \n\
+Point position\n\
+Quaternion orientation\n\
 \n\
+================================================================================\n\
+MSG: geometry_msgs/Point\n\
+# This contains the position of a point in free space\n\
+float64 x\n\
+float64 y\n\
+float64 z\n\
 \n\
+================================================================================\n\
+MSG: geometry_msgs/Quaternion\n\
+# This represents an orientation in free space in quaternion form.\n\
+\n\
+float64 x\n\
+float64 y\n\
+float64 z\n\
+float64 w\n\
 ";
   }
 

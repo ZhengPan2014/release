@@ -120,7 +120,7 @@ namespace global_planner {
       bool planner_is_navfn_; //planner switch for navfn and fixed, true for navfn , false for fixed.
       scheduling_msgs::PathStampWithID specified_path_; 
     
-      void path_callback(scheduling_msgs::PathStampWithID path);
+      void pathCallback(scheduling_msgs::PathStampWithID path);
       dynamic_reconfigure::Server<::mixed_planner::MixedPlannerConfig> *dsrv_m_;  //dynamic_reconfigure of mixed planner
       dynamic_reconfigure::Server<::mixed_planner::FixedPlannerConfig> *dsrv_f_;  //dynamic_reconfigure of fixed planner
       void reconfigureCB_m(::mixed_planner::MixedPlannerConfig &config, uint32_t level);

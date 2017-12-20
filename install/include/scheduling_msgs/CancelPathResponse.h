@@ -24,17 +24,17 @@ struct CancelPathResponse_
   typedef CancelPathResponse_<ContainerAllocator> Type;
 
   CancelPathResponse_()
-    : success(false)  {
+    : feedback(0)  {
     }
   CancelPathResponse_(const ContainerAllocator& _alloc)
-    : success(false)  {
+    : feedback(0)  {
   (void)_alloc;
     }
 
 
 
-   typedef uint8_t _success_type;
-  _success_type success;
+   typedef int32_t _feedback_type;
+  _feedback_type feedback;
 
 
 
@@ -113,12 +113,12 @@ struct MD5Sum< ::scheduling_msgs::CancelPathResponse_<ContainerAllocator> >
 {
   static const char* value()
   {
-    return "358e233cde0c8a8bcfea4ce193f8fc15";
+    return "49ceb5b32ea3af22073ede4a0328249e";
   }
 
   static const char* value(const ::scheduling_msgs::CancelPathResponse_<ContainerAllocator>&) { return value(); }
-  static const uint64_t static_value1 = 0x358e233cde0c8a8bULL;
-  static const uint64_t static_value2 = 0xcfea4ce193f8fc15ULL;
+  static const uint64_t static_value1 = 0x49ceb5b32ea3af22ULL;
+  static const uint64_t static_value2 = 0x073ede4a0328249eULL;
 };
 
 template<class ContainerAllocator>
@@ -137,7 +137,7 @@ struct Definition< ::scheduling_msgs::CancelPathResponse_<ContainerAllocator> >
 {
   static const char* value()
   {
-    return "bool success\n\
+    return "int32 feedback\n\
 \n\
 ";
   }
@@ -157,7 +157,7 @@ namespace serialization
   {
     template<typename Stream, typename T> inline static void allInOne(Stream& stream, T m)
     {
-      stream.next(m.success);
+      stream.next(m.feedback);
     }
 
     ROS_DECLARE_ALLINONE_SERIALIZER
@@ -176,8 +176,8 @@ struct Printer< ::scheduling_msgs::CancelPathResponse_<ContainerAllocator> >
 {
   template<typename Stream> static void stream(Stream& s, const std::string& indent, const ::scheduling_msgs::CancelPathResponse_<ContainerAllocator>& v)
   {
-    s << indent << "success: ";
-    Printer<uint8_t>::stream(s, indent + "  ", v.success);
+    s << indent << "feedback: ";
+    Printer<int32_t>::stream(s, indent + "  ", v.feedback);
   }
 };
 

@@ -13,7 +13,7 @@ class register_agvRequest(genpy.Message):
   _full_text = """int32 id
 int32 type
 string name
-bool   charging
+bool charging
 """
   __slots__ = ['id','type','name','charging']
   _slot_types = ['int32','int32','string','bool']

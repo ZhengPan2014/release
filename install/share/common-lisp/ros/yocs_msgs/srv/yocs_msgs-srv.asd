@@ -7,4 +7,6 @@
   :components ((:file "_package")
     (:file "WaypointListService" :depends-on ("_package_WaypointListService"))
     (:file "_package_WaypointListService" :depends-on ("_package"))
+    (:file "NavgationCtrlService" :depends-on ("_package_NavgationCtrlService"))
+    (:file "_package_NavgationCtrlService" :depends-on ("_package"))
   ))

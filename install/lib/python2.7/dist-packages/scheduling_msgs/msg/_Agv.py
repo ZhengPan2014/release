@@ -5,18 +5,48 @@ python3 = True if sys.hexversion > 0x03000000 else False
 import genpy
 import struct
 
+import geometry_msgs.msg
 
 class Agv(genpy.Message):
-  _md5sum = "d5c3d9da008fc08c632ddde4bbf572ba"
+  _md5sum = "f01657a2f82714212a73e3a8e964b946"
   _type = "scheduling_msgs/Agv"
   _has_header = False #flag to mark the presence of a Header object
   _full_text = """int32 agvID
 string agvName
+bool isWorking
+bool isAgvBoot
+#bool isTaskOverTime
+int32 errorInfo
+#0 : no error
+#1 : obstacle
+#2 : battery low
+#3 : navigation error 
+string working_station_name
+geometry_msgs/Pose pose
+================================================================================
+MSG: geometry_msgs/Pose
+# A representation of pose in free space, composed of postion and orientation. 
+Point position
+Quaternion orientation
 
+================================================================================
+MSG: geometry_msgs/Point
+# This contains the position of a point in free space
+float64 x
+float64 y
+float64 z
 
+================================================================================
+MSG: geometry_msgs/Quaternion
+# This represents an orientation in free space in quaternion form.
+
+float64 x
+float64 y
+float64 z
+float64 w
 """
-  __slots__ = ['agvID','agvName']
-  _slot_types = ['int32','string']
+  __slots__ = ['agvID','agvName','isWorking','isAgvBoot','errorInfo','working_station_name','pose']
+  _slot_types = ['int32','string','bool','bool','int32','string','geometry_msgs/Pose']
 
   def __init__(self, *args, **kwds):
     """
@@ -26,7 +56,7 @@ string agvName
     changes.  You cannot mix in-order arguments and keyword arguments.
 
     The available fields are:
-       agvID,agvName
+       agvID,agvName,isWorking,isAgvBoot,errorInfo,working_station_name,pose
 
     :param args: complete set of field values, in .msg order
     :param kwds: use keyword arguments corresponding to message field names
@@ -39,9 +69,24 @@ string agvName
         self.agvID = 0
       if self.agvName is None:
         self.agvName = ''
+      if self.isWorking is None:
+        self.isWorking = False
+      if self.isAgvBoot is None:
+        self.isAgvBoot = False
+      if self.errorInfo is None:
+        self.errorInfo = 0
+      if self.working_station_name is None:
+        self.working_station_name = ''
+      if self.pose is None:
+        self.pose = geometry_msgs.msg.Pose()
     else:
       self.agvID = 0
       self.agvName = ''
+      self.isWorking = False
+      self.isAgvBoot = False
+      self.errorInfo = 0
+      self.working_station_name = ''
+      self.pose = geometry_msgs.msg.Pose()
 
   def _get_types(self):
     """
@@ -65,6 +110,19 @@ string agvName
         buff.write(struct.pack('<I%sB'%length, length, *_x))
       else:
         buff.write(struct.pack('<I%ss'%length, length, _x))
+      _x = self
+      buff.write(_struct_2Bi.pack(_x.isWorking, _x.isAgvBoot, _x.errorInfo))
+      _x = self.working_station_name
+      length = len(_x)
+      if python3 or type(_x) == unicode:
+        _x = _x.encode('utf-8')
+        length = len(_x)
+      if python3:
+        buff.write(struct.pack('<I%sB'%length, length, *_x))
+      else:
+        buff.write(struct.pack('<I%ss'%length, length, _x))
+      _x = self
+      buff.write(_struct_7d.pack(_x.pose.position.x, _x.pose.position.y, _x.pose.position.z, _x.pose.orientation.x, _x.pose.orientation.y, _x.pose.orientation.z, _x.pose.orientation.w))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
@@ -74,6 +132,8 @@ string agvName
     :param str: byte array of serialized message, ``str``
     """
     try:
+      if self.pose is None:
+        self.pose = geometry_msgs.msg.Pose()
       end = 0
       start = end
       end += 4
@@ -87,6 +147,25 @@ string agvName
         self.agvName = str[start:end].decode('utf-8')
       else:
         self.agvName = str[start:end]
+      _x = self
+      start = end
+      end += 6
+      (_x.isWorking, _x.isAgvBoot, _x.errorInfo,) = _struct_2Bi.unpack(str[start:end])
+      self.isWorking = bool(self.isWorking)
+      self.isAgvBoot = bool(self.isAgvBoot)
+      start = end
+      end += 4
+      (length,) = _struct_I.unpack(str[start:end])
+      start = end
+      end += length
+      if python3:
+        self.working_station_name = str[start:end].decode('utf-8')
+      else:
+        self.working_station_name = str[start:end]
+      _x = self
+      start = end
+      end += 56
+      (_x.pose.position.x, _x.pose.position.y, _x.pose.position.z, _x.pose.orientation.x, _x.pose.orientation.y, _x.pose.orientation.z, _x.pose.orientation.w,) = _struct_7d.unpack(str[start:end])
       return self
     except struct.error as e:
       raise genpy.DeserializationError(e) #most likely buffer underfill
@@ -109,6 +188,19 @@ string agvName
         buff.write(struct.pack('<I%sB'%length, length, *_x))
       else:
         buff.write(struct.pack('<I%ss'%length, length, _x))
+      _x = self
+      buff.write(_struct_2Bi.pack(_x.isWorking, _x.isAgvBoot, _x.errorInfo))
+      _x = self.working_station_name
+      length = len(_x)
+      if python3 or type(_x) == unicode:
+        _x = _x.encode('utf-8')
+        length = len(_x)
+      if python3:
+        buff.write(struct.pack('<I%sB'%length, length, *_x))
+      else:
+        buff.write(struct.pack('<I%ss'%length, length, _x))
+      _x = self
+      buff.write(_struct_7d.pack(_x.pose.position.x, _x.pose.position.y, _x.pose.position.z, _x.pose.orientation.x, _x.pose.orientation.y, _x.pose.orientation.z, _x.pose.orientation.w))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
@@ -119,6 +211,8 @@ string agvName
     :param numpy: numpy python module
     """
     try:
+      if self.pose is None:
+        self.pose = geometry_msgs.msg.Pose()
       end = 0
       start = end
       end += 4
@@ -132,9 +226,30 @@ string agvName
         self.agvName = str[start:end].decode('utf-8')
       else:
         self.agvName = str[start:end]
+      _x = self
+      start = end
+      end += 6
+      (_x.isWorking, _x.isAgvBoot, _x.errorInfo,) = _struct_2Bi.unpack(str[start:end])
+      self.isWorking = bool(self.isWorking)
+      self.isAgvBoot = bool(self.isAgvBoot)
+      start = end
+      end += 4
+      (length,) = _struct_I.unpack(str[start:end])
+      start = end
+      end += length
+      if python3:
+        self.working_station_name = str[start:end].decode('utf-8')
+      else:
+        self.working_station_name = str[start:end]
+      _x = self
+      start = end
+      end += 56
+      (_x.pose.position.x, _x.pose.position.y, _x.pose.position.z, _x.pose.orientation.x, _x.pose.orientation.y, _x.pose.orientation.z, _x.pose.orientation.w,) = _struct_7d.unpack(str[start:end])
       return self
     except struct.error as e:
       raise genpy.DeserializationError(e) #most likely buffer underfill
 
 _struct_I = genpy.struct_I
 _struct_i = struct.Struct("<i")
+_struct_7d = struct.Struct("<7d")
+_struct_2Bi = struct.Struct("<2Bi")

@@ -36,11 +36,11 @@
 
   <ul>
     <li>
+    <!-- 
       <strong>任务ID</strong>
 		<select id="task-id">
-			<!-- <option value="-1">-1</option> -->
 		</select>
-    </li>
+    </li> -->
 
     <li>
       <strong>上料点</strong>
@@ -75,10 +75,16 @@
   <div class="mui--appbar-height"></div>
   <div class="mui-container-fluid">
     <br>
-    <h3>任务信息:</h3>
+    <h3>调度信息:</h3>
     <p id="connection-info"></p>
     <p id="task-info"></p>
     <p id="task-feedback"></p>
+  </div>
+  <div class="mui-divider"></div>
+
+  <div id="agv-info-list" class="mui-container-fluid">
+      <h3>叉车信息:</h3>
+      <p class="agv-info"></p>
   </div>
   <div class="mui-divider"></div>
 
@@ -91,6 +97,7 @@
   <div id="pending-tasks" class="mui-container-fluid">
       <h3>等待执行:</h3>
   </div>
+  
 </div>
 </body>
 </html>

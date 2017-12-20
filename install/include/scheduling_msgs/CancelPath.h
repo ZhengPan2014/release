@@ -40,7 +40,7 @@ template<>
 struct MD5Sum< ::scheduling_msgs::CancelPath > {
   static const char* value()
   {
-    return "db59392a901b1150779898504586c9bb";
+    return "7da36ca53b57c9ab8c96a055f5a1d1e1";
   }
 
   static const char* value(const ::scheduling_msgs::CancelPath&) { return value(); }

@@ -1,9 +1,11 @@
 <?xml version="1.0"?>
 <launch>
   <!-- group ns="$(env ROS_USER_GROUP)" -->
+    <arg name="is_scheduling_server" value="$(optenv SCHEDULING_SERVER 0)" />
     <group ns="$(optenv AGV_NAME /)">
         <include file="$(find bringup)/launch/bringup-comm.launch"/>
 
-        <include file="$(find bringup)/launch/$(optenv ROS_USER_MODEL)/$(optenv ROS_USER_MODEL bringup)-base.launch"/>
+        <include unless="$(arg is_scheduling_server)" file="$(find bringup)/launch/$(optenv ROS_USER_MODEL)/$(optenv ROS_USER_MODEL bringup)-base.launch"/>
+        <include if="$(arg is_scheduling_server)" file="$(find bringup)/launch/$(optenv ROS_USER_MODEL)/$(optenv ROS_USER_MODEL bringup)-scheduling-server.launch"/>
     </group>
 </launch>

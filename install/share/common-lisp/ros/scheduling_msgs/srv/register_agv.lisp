@@ -117,10 +117,10 @@
   "714c2174858e231e7d345289f3b87caa")
 (cl:defmethod roslisp-msg-protocol:message-definition ((type (cl:eql '<register_agv-request>)))
   "Returns full string definition for message of type '<register_agv-request>"
-  (cl:format cl:nil "int32 id~%int32 type~%string name~%bool   charging~%~%~%"))
+  (cl:format cl:nil "int32 id~%int32 type~%string name~%bool charging~%~%~%"))
 (cl:defmethod roslisp-msg-protocol:message-definition ((type (cl:eql 'register_agv-request)))
   "Returns full string definition for message of type 'register_agv-request"
-  (cl:format cl:nil "int32 id~%int32 type~%string name~%bool   charging~%~%~%"))
+  (cl:format cl:nil "int32 id~%int32 type~%string name~%bool charging~%~%~%"))
 (cl:defmethod roslisp-msg-protocol:serialization-length ((msg <register_agv-request>))
   (cl:+ 0
      4

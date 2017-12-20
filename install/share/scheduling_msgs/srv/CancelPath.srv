@@ -1,4 +1,4 @@
 int32 agvID
 int32 pathID
 ---
-bool success
+int32 feedback

@@ -155,7 +155,7 @@ struct Definition< ::scheduling_msgs::register_agvRequest_<ContainerAllocator> >
     return "int32 id\n\
 int32 type\n\
 string name\n\
-bool   charging\n\
+bool charging\n\
 ";
   }
 

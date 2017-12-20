@@ -5,20 +5,49 @@ python3 = True if sys.hexversion > 0x03000000 else False
 import genpy
 import struct
 
+import geometry_msgs.msg
 import scheduling_msgs.msg
 
 class AgvList(genpy.Message):
-  _md5sum = "159cc8fbfdec43c0feb1a4ce0218db38"
+  _md5sum = "0ab4fe433cd794e9c63428ead5835410"
   _type = "scheduling_msgs/AgvList"
   _has_header = False #flag to mark the presence of a Header object
   _full_text = """Agv[] agvList
-
 ================================================================================
 MSG: scheduling_msgs/Agv
 int32 agvID
 string agvName
+bool isWorking
+bool isAgvBoot
+#bool isTaskOverTime
+int32 errorInfo
+#0 : no error
+#1 : obstacle
+#2 : battery low
+#3 : navigation error 
+string working_station_name
+geometry_msgs/Pose pose
+================================================================================
+MSG: geometry_msgs/Pose
+# A representation of pose in free space, composed of postion and orientation. 
+Point position
+Quaternion orientation
 
+================================================================================
+MSG: geometry_msgs/Point
+# This contains the position of a point in free space
+float64 x
+float64 y
+float64 z
 
+================================================================================
+MSG: geometry_msgs/Quaternion
+# This represents an orientation in free space in quaternion form.
+
+float64 x
+float64 y
+float64 z
+float64 w
 """
   __slots__ = ['agvList']
   _slot_types = ['scheduling_msgs/Agv[]']
@@ -70,6 +99,24 @@ string agvName
           buff.write(struct.pack('<I%sB'%length, length, *_x))
         else:
           buff.write(struct.pack('<I%ss'%length, length, _x))
+        _x = val1
+        buff.write(_struct_2Bi.pack(_x.isWorking, _x.isAgvBoot, _x.errorInfo))
+        _x = val1.working_station_name
+        length = len(_x)
+        if python3 or type(_x) == unicode:
+          _x = _x.encode('utf-8')
+          length = len(_x)
+        if python3:
+          buff.write(struct.pack('<I%sB'%length, length, *_x))
+        else:
+          buff.write(struct.pack('<I%ss'%length, length, _x))
+        _v1 = val1.pose
+        _v2 = _v1.position
+        _x = _v2
+        buff.write(_struct_3d.pack(_x.x, _x.y, _x.z))
+        _v3 = _v1.orientation
+        _x = _v3
+        buff.write(_struct_4d.pack(_x.x, _x.y, _x.z, _x.w))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
@@ -100,6 +147,32 @@ string agvName
           val1.agvName = str[start:end].decode('utf-8')
         else:
           val1.agvName = str[start:end]
+        _x = val1
+        start = end
+        end += 6
+        (_x.isWorking, _x.isAgvBoot, _x.errorInfo,) = _struct_2Bi.unpack(str[start:end])
+        val1.isWorking = bool(val1.isWorking)
+        val1.isAgvBoot = bool(val1.isAgvBoot)
+        start = end
+        end += 4
+        (length,) = _struct_I.unpack(str[start:end])
+        start = end
+        end += length
+        if python3:
+          val1.working_station_name = str[start:end].decode('utf-8')
+        else:
+          val1.working_station_name = str[start:end]
+        _v4 = val1.pose
+        _v5 = _v4.position
+        _x = _v5
+        start = end
+        end += 24
+        (_x.x, _x.y, _x.z,) = _struct_3d.unpack(str[start:end])
+        _v6 = _v4.orientation
+        _x = _v6
+        start = end
+        end += 32
+        (_x.x, _x.y, _x.z, _x.w,) = _struct_4d.unpack(str[start:end])
         self.agvList.append(val1)
       return self
     except struct.error as e:
@@ -126,6 +199,24 @@ string agvName
           buff.write(struct.pack('<I%sB'%length, length, *_x))
         else:
           buff.write(struct.pack('<I%ss'%length, length, _x))
+        _x = val1
+        buff.write(_struct_2Bi.pack(_x.isWorking, _x.isAgvBoot, _x.errorInfo))
+        _x = val1.working_station_name
+        length = len(_x)
+        if python3 or type(_x) == unicode:
+          _x = _x.encode('utf-8')
+          length = len(_x)
+        if python3:
+          buff.write(struct.pack('<I%sB'%length, length, *_x))
+        else:
+          buff.write(struct.pack('<I%ss'%length, length, _x))
+        _v7 = val1.pose
+        _v8 = _v7.position
+        _x = _v8
+        buff.write(_struct_3d.pack(_x.x, _x.y, _x.z))
+        _v9 = _v7.orientation
+        _x = _v9
+        buff.write(_struct_4d.pack(_x.x, _x.y, _x.z, _x.w))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
@@ -157,6 +248,32 @@ string agvName
           val1.agvName = str[start:end].decode('utf-8')
         else:
           val1.agvName = str[start:end]
+        _x = val1
+        start = end
+        end += 6
+        (_x.isWorking, _x.isAgvBoot, _x.errorInfo,) = _struct_2Bi.unpack(str[start:end])
+        val1.isWorking = bool(val1.isWorking)
+        val1.isAgvBoot = bool(val1.isAgvBoot)
+        start = end
+        end += 4
+        (length,) = _struct_I.unpack(str[start:end])
+        start = end
+        end += length
+        if python3:
+          val1.working_station_name = str[start:end].decode('utf-8')
+        else:
+          val1.working_station_name = str[start:end]
+        _v10 = val1.pose
+        _v11 = _v10.position
+        _x = _v11
+        start = end
+        end += 24
+        (_x.x, _x.y, _x.z,) = _struct_3d.unpack(str[start:end])
+        _v12 = _v10.orientation
+        _x = _v12
+        start = end
+        end += 32
+        (_x.x, _x.y, _x.z, _x.w,) = _struct_4d.unpack(str[start:end])
         self.agvList.append(val1)
       return self
     except struct.error as e:
@@ -164,3 +281,6 @@ string agvName
 
 _struct_I = genpy.struct_I
 _struct_i = struct.Struct("<i")
+_struct_4d = struct.Struct("<4d")
+_struct_2Bi = struct.Struct("<2Bi")
+_struct_3d = struct.Struct("<3d")

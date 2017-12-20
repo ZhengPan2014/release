@@ -8,6 +8,45 @@ var sch = sch || {
 					'前往卸货工位', '开始卸货', '卸货完成', '返回', '完成']
 };
 
+class SchInfo
+{
+	constructor()
+	{
+		this._connectionInfoEl = $('#connection-infon');
+		this._taskInfoEl = $('#task-info');
+		this._taskFeedbackEl = $('#task-feedback');
+	}
+
+	reset()
+	{
+		this._connectionInfoEl.text('');
+		this._taskInfoEl.text('');
+		this._taskFeedbackEl.text('');
+	}
+
+	/**
+	 * @param  {string} info CONNECTED/ERROR/CLOSED
+	 * @param  {string} ip 	 Server ip
+	 */
+	connectionInfo(info, ip)
+	{
+		switch(info)
+		{
+			case 'CONNECTED':
+				this._connectionInfoEl.text(`[连接状态] 已连接至服务器: [${ip}]`);
+				break;
+			case 'ERROR':
+				this._connectionInfoEl.text(`[连接状态] 连接错误: [${ip}]`);
+				break;
+			case 'CLOSED':
+				this._connectionInfoEl.text(`[连接状态] 服务器已关闭连接: [${ip}]`);
+				break;
+			default:
+				break;
+		}
+	}
+}
+
 /***********************************************/
 
 class Scheduling
@@ -19,18 +58,21 @@ class Scheduling
 		this.workstations = [];
 		this.taskIDs = [-1];
 		this.isConnected = false;
+		this.bootedAGVNum = 0;
 		// HTML elements
 		this._taskIDEl = $('#task-id');
 		this._loadingStationEl = $('#loading-station');
 		this._unloadingStationEl = $('#unloading-station');
 		this._executingTasksEl = $('#executing-tasks');
 		this._pendingTasksEl = $('#pending-tasks');
+		this._agvInfoListEl = $('#agv-info-list');
 
 		this._resetUI();
 		this.ros = this._initROS();
 		this._subWorkstations();
 		this._subExecutingTasks();
 		this._subPendingTasks();
+		this._subAGVInfoList();
 		this._getAGVs();
 		this._getTaskIDs();
 		this.taskAddClient = new ROSLIB.Service({
@@ -38,7 +80,6 @@ class Scheduling
 			name: this._withNs('/add_or_modify_forklift_task'),
 			serviceType: 'scheduling_msgs/AddOrModifyForkliftTask'
 		});
-
 		this.taskCancelClient = new ROSLIB.Service({
 			ros: this.ros,
 			name: this._withNs('/cancel_specified_task'),
@@ -164,6 +205,18 @@ class Scheduling
 		});
 	}
 
+	_subAGVInfoList()
+	{
+		var topic = new ROSLIB.Topic({
+			ros: this.ros,
+			name: this._withNs('/all_agvs_info'),
+			messageType: 'scheduling_msgs/AgvList'
+		});
+		topic.subscribe((agvList) => {
+			this._updateAGVListUI(agvList.agvList);
+		});
+	}
+
 	_resetUI()
 	{
 		$('#connection-info').text('');
@@ -171,6 +224,7 @@ class Scheduling
 		$('#task-feedback').text('');
 		$('.executing-task').remove();
 		$('.pending-task').remove();
+		$('.agv-info').remove();
 		this._loadingStationEl.children().remove();
 		this._unloadingStationEl.children().remove();
 		this._taskIDEl.children().remove();
@@ -231,6 +285,41 @@ class Scheduling
 			var info = this._getTaskInfoFromElID($(el.currentTarget).attr('id'));
 			sch.scheduling.cancelTask(parseInt(info.taskID), info.loadingStation, info.unloadingStation);
 		});
+	}
+
+	_updateAGVListUI(agvList)
+	{
+		$('.agv-info').remove();
+		this.bootedAGVNum = 0;
+		var bootedListEls = '';
+		var unbootedListEls = '';
+		for (var agv of agvList)
+		{	
+			var agvName = agv.agvName.startsWith('/') ? agv.agvName.slice(1) : agv.agvName;
+			if (agv.isAgvBoot)
+			{
+				this.bootedAGVNum++;
+				var workingStatus = agv.isWorking ? '忙碌' : '空闲';
+				var stationInfo = agv.isWorking ? `工作站点: ${agv.working_station_name}` : `所在站点: ${agv.working_station_name}`; 
+				bootedListEls += `<p class="agv-info">`;
+				bootedListEls += `[叉车信息] 叉车ID: ${agv.agvID}; 名称: ${agvName}; 已开机; `;
+				bootedListEls += `工作状态: ${workingStatus}; ${stationInfo}`;
+				bootedListEls += '</p>'
+			}
+			else
+			{
+				bootedListEls += `<p class="agv-info">`;
+				bootedListEls += `[叉车信息] 叉车ID: ${agv.agvID}; 名称: ${agvName}; 未开机; `;
+				bootedListEls += '</p>'
+			}
+		}
+		if (this.bootedAGVNum < 1)
+		{
+			this._taskInfoEl.text('[叉车状态] 所有叉车均为开机');
+			this._taskFeedbackEl.text('');
+		}
+		this._agvInfoListEl.append(bootedListEls);
+		this._agvInfoListEl.append(unbootedListEls)
 	}
 
 	_getTaskInfoFromElID(idStr)
@@ -401,19 +490,19 @@ $(()=>{
 			console.log(`Server not connected.`);
 			return;
 		}
-		var taskID = parseInt($('#task-id').val());
+		// var taskID = parseInt($('#task-id').val());
 		var loadingStation = $('#loading-station').val();
 		var unloadingStation = $('#unloading-station').val();
-		if (taskID === 'NaN')
-		{	
-			$('#task-info').text(`[任务添加] 任务ID不能为空`);
-			return;
-		}
-		if (taskID === 'NaN' || !loadingStation || !unloadingStation)
+		// if (taskID === 'NaN')
+		// {	
+		// 	$('#task-info').text(`[任务添加] 任务ID不能为空`);
+		// 	return;
+		// }
+		if (!loadingStation || !unloadingStation)
 		{
-			$('#task-info').text(`[任务添加] 任务ID, 上料点和下料点均不能为空`);
+			$('#task-info').text(`[任务添加] 上料点和下料点均不能为空`);
 			return;
 		}
-		sch.scheduling.addTask(taskID, loadingStation, unloadingStation);
+		sch.scheduling.addTask(-1, loadingStation, unloadingStation);
 	});
 });

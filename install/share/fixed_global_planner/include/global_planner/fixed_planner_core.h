@@ -9,12 +9,15 @@
 #include <nav_msgs/Path.h>
 #include <scheduling_msgs/PathWithID.h>
 #include <scheduling_msgs/PathStampWithID.h>
+#include <scheduling_msgs/ClearPlannerPath.h>
+#include <scheduling_msgs/SetPlannerPath.h>
 #include <tf/transform_datatypes.h>
 #include <vector>
 #include <nav_core/base_global_planner.h>
 #include <nav_msgs/GetPlan.h>
 #include <dynamic_reconfigure/server.h>
-#include <global_planner/FixedGlobalPlannerConfig.h>
+#include <fixed_global_planner/FixedGlobalPlannerConfig.h>
+
 
 namespace global_planner {
 
@@ -96,13 +99,16 @@ protected:
         void clearRobotCell(const tf::Stamped<tf::Pose>& global_pose, unsigned int mx, unsigned int my);
 
         //Added by Pan
-        void path_callback(scheduling_msgs::PathStampWithID path);
+        void pathCallback(scheduling_msgs::PathStampWithID path);
+        bool setPlannerPathServiceCallback(scheduling_msgs::SetPlannerPath::Request &req, scheduling_msgs::SetPlannerPath::Response &resp);
+        bool clearPlannerPathServiceCallback(scheduling_msgs::ClearPlannerPath::Request &req, scheduling_msgs::ClearPlannerPath::Response &resp);
 
         ros::NodeHandle nh_;
         ros::Subscriber path_sub_;
         //nav_msgs::Path specified_path_;
         scheduling_msgs::PathStampWithID specified_path_;
         std::string sub_path_topic_;
+        std::string set_planner_path_service_name_;
         double error_retry_time_;
         double endpoint_tolerance_;
         bool retrace_path_;
@@ -117,6 +123,9 @@ protected:
         std::string tf_prefix_;
         
         ros::ServiceServer make_plan_srv_;
+        ros::ServiceServer set_plan_service_;
+        ros::ServiceServer set_planner_path_service_;
+        ros::ServiceServer clear_planner_path_service_;
 
         void outlineMap(unsigned char* costarr, int nx, int ny, unsigned char value);
         unsigned char* cost_array_;
