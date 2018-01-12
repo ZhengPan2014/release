@@ -3,6 +3,7 @@
 
 (defsystem "scheduling_msgs-msg"
   :depends-on (:roslisp-msg-protocol :roslisp-utils :geometry_msgs-msg
+               :nav_msgs-msg
                :std_msgs-msg
 )
   :components ((:file "_package")
@@ -16,6 +17,8 @@
     (:file "_package_Path" :depends-on ("_package"))
     (:file "AgvPose" :depends-on ("_package_AgvPose"))
     (:file "_package_AgvPose" :depends-on ("_package"))
+    (:file "MapStream" :depends-on ("_package_MapStream"))
+    (:file "_package_MapStream" :depends-on ("_package"))
     (:file "NewTask" :depends-on ("_package_NewTask"))
     (:file "_package_NewTask" :depends-on ("_package"))
     (:file "ServerStatus" :depends-on ("_package_ServerStatus"))

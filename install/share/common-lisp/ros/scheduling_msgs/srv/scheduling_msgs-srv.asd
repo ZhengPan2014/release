@@ -35,6 +35,8 @@
     (:file "_package_QueryPathOnly" :depends-on ("_package"))
     (:file "register_agv" :depends-on ("_package_register_agv"))
     (:file "_package_register_agv" :depends-on ("_package"))
+    (:file "RequestTask" :depends-on ("_package_RequestTask"))
+    (:file "_package_RequestTask" :depends-on ("_package"))
     (:file "PublishBufferPath" :depends-on ("_package_PublishBufferPath"))
     (:file "_package_PublishBufferPath" :depends-on ("_package"))
     (:file "QueryAGVPose" :depends-on ("_package_QueryAGVPose"))

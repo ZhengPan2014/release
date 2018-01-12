@@ -36,26 +36,22 @@
 
   <ul>
     <li>
-    <!-- 
-      <strong>任务ID</strong>
-		<select id="task-id">
-		</select>
-    </li> -->
-
-    <li>
       <strong>上料点</strong>
 		<select id="loading-station">
-		  <!--   -->
 		</select>
     </li>
 
     <li>
       <strong>下料点</strong>
 		<select id="unloading-station">
-		  <!-- <option value="">选择下料点</option> -->
 		</select>
     </li>
   </ul>
+ 
+  <div id="reverse-div">
+  	<input type="checkbox" id="reverse">
+  	<p>返程</p>
+  </div>
   <button id="add-task" class="mui-btn mui-btn--flat mui-btn--primary">确认</button>
   <div class="mui-divider"></div>
 </div>
@@ -90,7 +86,6 @@
 
   <div id="executing-tasks" class="mui-container-fluid">
       <h3>正在执行:</h3>
-      <!-- <span class="executing-task-btn" id="executing-task-${task.agv_id}-${task.loading_station}-${task.unloading_station}">X</span> -->
   </div>
   <div class="mui-divider"></div>
   

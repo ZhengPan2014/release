@@ -228,6 +228,7 @@ class Scheduling
 		this._loadingStationEl.children().remove();
 		this._unloadingStationEl.children().remove();
 		this._taskIDEl.children().remove();
+		$('#reverse').attr('checked', false);
 	}
 
 	/**
@@ -273,7 +274,6 @@ class Scheduling
 		var els = '';
 		for (var task of tasks)
 		{
-			// els += `<button class="pending-task-btn" id="pending-task#${task.task_id}#${task.loading_station}#${task.unloading_station}">X</button>`;
 			els += `<p class="pending-task" id="pending-task-${task.agv_id}">`;
 			els += `<button class="pending-task-btn" id="pending-task#${task.task_id}#${task.loading_station}#${task.unloading_station}">X</button>`;
 			els += `[任务信息] 任务ID: ${task.task_id}; AGV ID: ${task.agv_id}; 上料点: ${task.loading_station}; 下料点: ${task.unloading_station}; `;
@@ -490,19 +490,22 @@ $(()=>{
 			console.log(`Server not connected.`);
 			return;
 		}
-		// var taskID = parseInt($('#task-id').val());
 		var loadingStation = $('#loading-station').val();
 		var unloadingStation = $('#unloading-station').val();
-		// if (taskID === 'NaN')
-		// {	
-		// 	$('#task-info').text(`[任务添加] 任务ID不能为空`);
-		// 	return;
-		// }
 		if (!loadingStation || !unloadingStation)
 		{
 			$('#task-info').text(`[任务添加] 上料点和下料点均不能为空`);
 			return;
 		}
-		sch.scheduling.addTask(-1, loadingStation, unloadingStation);
+		var isReverse = $('#reverse').attr('checked') === 'checked';
+		if (isReverse)
+		{
+			sch.scheduling.addTask(-1, unloadingStation, loadingStation);
+		}
+		else
+		{
+			sch.scheduling.addTask(-1, loadingStation, unloadingStation);	
+		}
+		$('#reverse').attr('checked', false);
 	});
 });

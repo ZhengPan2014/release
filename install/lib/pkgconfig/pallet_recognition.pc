@@ -3,6 +3,6 @@ prefix=/home/ouiyeah/catkin_ws/install
 Name: pallet_recognition
 Description: Description of pallet_recognition
 Version: 0.0.0
-Cflags: 
+Cflags: -I/home/ouiyeah/catkin_ws/install/include
 Libs: -L/home/ouiyeah/catkin_ws/install/lib 
-Requires: 
+Requires: message_runtime

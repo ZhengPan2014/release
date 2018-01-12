@@ -11,6 +11,8 @@
    "PATH"
    "<AGVPOSE>"
    "AGVPOSE"
+   "<MAPSTREAM>"
+   "MAPSTREAM"
    "<NEWTASK>"
    "NEWTASK"
    "<SERVERSTATUS>"

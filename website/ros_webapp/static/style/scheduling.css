@@ -171,3 +171,21 @@ buttons {
   border-radius: 50%;
   border: none;
 }
+
+#reverse-div {
+  padding-top: 1px;
+  background: #FFFFFF;
+  height: 40px;
+}
+
+#reverse-div p{
+  display: inline-block;
+  margin-left: 50px;
+  margin-top: 2.5px
+}
+
+#reverse {
+  margin-top: 1px;
+  margin-left: 18px;
+  display: inline-block;
+}

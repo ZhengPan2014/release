@@ -264,6 +264,7 @@ var Scheduling = function () {
 			this._loadingStationEl.children().remove();
 			this._unloadingStationEl.children().remove();
 			this._taskIDEl.children().remove();
+			$('#reverse').attr('checked', false);
 		}
 
 		/**
@@ -363,7 +364,6 @@ var Scheduling = function () {
 				for (var _iterator4 = tasks[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
 					var task = _step4.value;
 
-					// els += `<button class="pending-task-btn" id="pending-task#${task.task_id}#${task.loading_station}#${task.unloading_station}">X</button>`;
 					els += '<p class="pending-task" id="pending-task-' + task.agv_id + '">';
 					els += '<button class="pending-task-btn" id="pending-task#' + task.task_id + '#' + task.loading_station + '#' + task.unloading_station + '">X</button>';
 					els += '[\u4EFB\u52A1\u4FE1\u606F] \u4EFB\u52A1ID: ' + task.task_id + '; AGV ID: ' + task.agv_id + '; \u4E0A\u6599\u70B9: ' + task.loading_station + '; \u4E0B\u6599\u70B9: ' + task.unloading_station + '; ';
@@ -603,18 +603,18 @@ $(function () {
 			console.log('Server not connected.');
 			return;
 		}
-		// var taskID = parseInt($('#task-id').val());
 		var loadingStation = $('#loading-station').val();
 		var unloadingStation = $('#unloading-station').val();
-		// if (taskID === 'NaN')
-		// {	
-		// 	$('#task-info').text(`[任务添加] 任务ID不能为空`);
-		// 	return;
-		// }
 		if (!loadingStation || !unloadingStation) {
 			$('#task-info').text('[\u4EFB\u52A1\u6DFB\u52A0] \u4E0A\u6599\u70B9\u548C\u4E0B\u6599\u70B9\u5747\u4E0D\u80FD\u4E3A\u7A7A');
 			return;
 		}
-		sch.scheduling.addTask(-1, loadingStation, unloadingStation);
+		var isReverse = $('#reverse').attr('checked') === 'checked';
+		if (isReverse) {
+			sch.scheduling.addTask(-1, unloadingStation, loadingStation);
+		} else {
+			sch.scheduling.addTask(-1, loadingStation, unloadingStation);
+		}
+		$('#reverse').attr('checked', false);
 	});
 });

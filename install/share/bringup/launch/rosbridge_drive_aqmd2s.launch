@@ -13,6 +13,7 @@
         <param name="drive_config_port_right" value="$(arg drive_port_right)"/>
         <param name="wheel_seperation" value="$(arg wheel_seperation)"/>
         <param name="wheel_ratio" value="$(arg wheel_ratio)"/>
+        <param name="cmd_vel_timeout" value="0.5"/>
         <rosparam>
             port_chain:
               - name: drive_baud_port_left
@@ -82,6 +83,8 @@
             topic_chain:
               - name: cmd_vel
                 type: subscribe
+                freq: 50.0
+                freq_overflow: false
                 stop_mode: free_stop #emergency_stop
                 wheel_model: diff
                 wheel_phase_reverse: true
