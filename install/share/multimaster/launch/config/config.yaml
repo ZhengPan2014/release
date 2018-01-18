@@ -1,4 +1,4 @@
 local_pubs: [robot_pose, nav_ctrl_status, move_base/MixedPlanner/request_path]
 foreign_pubs: [move_base_simple/goal, nav_ctrl, waypoints, trajectories, specified_path]
-local_services: [nav_ctrl_service, set_planner_path]
+local_services: [nav_ctrl_service, set_planner_path, move_base/clear_costmaps,get_line_cost]
 foreign_services: [register_agv, unregister_agv]

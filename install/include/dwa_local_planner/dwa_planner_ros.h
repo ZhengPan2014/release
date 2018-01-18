@@ -54,6 +54,7 @@
 #include <base_local_planner/latched_stop_rotate_controller.h>
 
 #include <base_local_planner/odometry_helper_ros.h>
+#include <base_local_planner/GetLineCost.h>
 
 #include <dwa_local_planner/dwa_planner.h>
 
@@ -120,6 +121,8 @@ namespace dwa_local_planner {
         return initialized_;
       }
 
+      bool getLineCostServiceCallback(base_local_planner::GetLineCost::Request& req,   base_local_planner::GetLineCost::Response& resp);
+
     private:
       /**
        * @brief Callback to update the local planner's parameters based on dynamic reconfigure
@@ -154,6 +157,9 @@ namespace dwa_local_planner {
 
       base_local_planner::OdometryHelperRos odom_helper_;
       std::string odom_topic_;
+
+      ros::ServiceServer goal_cost_server_;
+
   };
 };
 #endif
