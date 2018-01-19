@@ -35,8 +35,6 @@
                 plc_limit: 1600.0
                 wheel_base: 1.55
                 vel_linear_max: 0.7
-                Glight_forward: 68
-                RBlight_back: 132
                 angle_left: 16320 #temp for test
                 plc_io: 0
                 stop_mode: pub_manual
