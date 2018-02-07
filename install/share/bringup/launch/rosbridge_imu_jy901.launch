@@ -30,7 +30,7 @@
                     time_out: 0.1
                   - name: imu_port
                     type: write
-                    byte: [0xff, 0xaa, 0x63, 0x01, 0x00] #cali_off
+                    byte: [0xff, 0xaa, 0x63, 0x00, 0x00] #cali
                     lock: false
                   - name: imu_port
                     type: timer
@@ -82,6 +82,16 @@
                   - name: imu_port
                     type: timer
                     time_out: 0.1
+              - name: cali_set
+                type: event
+                roar: [status]
+                roar_redo: false
+                status: 0 # 0 for on, 1 for off
+                action_chain:
+                  - name: imu_port
+                    type: write
+                    byte: [0xff, 0xaa, 0x63, status, 0x00]
+                    lock: false
               - name: diagnostics
                 type: publish
         </rosparam>

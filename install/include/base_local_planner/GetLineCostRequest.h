@@ -157,7 +157,8 @@ struct Definition< ::base_local_planner::GetLineCostRequest_<ContainerAllocator>
 {
   static const char* value()
   {
-    return "float64 x\n\
+    return "\n\
+float64 x\n\
 float64 y\n\
 float64 theta\n\
 float64 x2\n\

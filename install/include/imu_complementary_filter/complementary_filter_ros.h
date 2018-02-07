@@ -33,6 +33,7 @@
 #define IMU_TOOLS_COMPLEMENTARY_FILTER_ROS_H
 
 #include <sensor_msgs/MagneticField.h>
+#include <std_msgs/Bool.h>
 #include <geometry_msgs/Twist.h>
 #include <geometry_msgs/Vector3Stamped.h>
 #include <message_filters/subscriber.h>
@@ -104,6 +105,9 @@ class ComplementaryFilterROS
 
     ros::Subscriber cmd_vel_sub_;
     void cmd_vel_cb(const geometry_msgs::Twist::ConstPtr& cmd_vel);
+    bool cmd_vel_manual_;
+    ros::Subscriber cmd_vel_manual_sub_;
+    void cmd_vel_manual_cb(const std_msgs::Bool::ConstPtr& cmd_vel_manual);
 };
 
 }  // namespace imu_tools

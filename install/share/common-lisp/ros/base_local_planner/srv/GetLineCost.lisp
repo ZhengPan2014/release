@@ -182,10 +182,10 @@
   "231df7d9fb3e622b0e5782bd23c34625")
 (cl:defmethod roslisp-msg-protocol:message-definition ((type (cl:eql '<GetLineCost-request>)))
   "Returns full string definition for message of type '<GetLineCost-request>"
-  (cl:format cl:nil "float64 x~%float64 y~%float64 theta~%float64 x2~%float64 y2~%~%~%"))
+  (cl:format cl:nil "~%float64 x~%float64 y~%float64 theta~%float64 x2~%float64 y2~%~%~%"))
 (cl:defmethod roslisp-msg-protocol:message-definition ((type (cl:eql 'GetLineCost-request)))
   "Returns full string definition for message of type 'GetLineCost-request"
-  (cl:format cl:nil "float64 x~%float64 y~%float64 theta~%float64 x2~%float64 y2~%~%~%"))
+  (cl:format cl:nil "~%float64 x~%float64 y~%float64 theta~%float64 x2~%float64 y2~%~%~%"))
 (cl:defmethod roslisp-msg-protocol:serialization-length ((msg <GetLineCost-request>))
   (cl:+ 0
      8

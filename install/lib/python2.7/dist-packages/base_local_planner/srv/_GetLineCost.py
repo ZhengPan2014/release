@@ -10,7 +10,8 @@ class GetLineCostRequest(genpy.Message):
   _md5sum = "82c316a5baa472a1d3d7362ea07a8a31"
   _type = "base_local_planner/GetLineCostRequest"
   _has_header = False #flag to mark the presence of a Header object
-  _full_text = """float64 x
+  _full_text = """
+float64 x
 float64 y
 float64 theta
 float64 x2

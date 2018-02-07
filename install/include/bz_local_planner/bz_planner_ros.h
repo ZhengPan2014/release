@@ -30,6 +30,7 @@
 #include <base_local_planner/goal_functions.h>
 
 #include <pluginlib/class_list_macros.h>
+#include <bz_local_planner/bz_planner_utility.h>
 
 namespace bz_local_planner {
 
@@ -49,7 +50,9 @@ private:
     double calcObstacleCost(base_local_planner::Trajectory& traj, std::vector<geometry_msgs::Point> footprint_spec);
     void generateSimTraj(geometry_msgs::Twist& cmd_vel, base_local_planner::Trajectory& traj);
     Eigen::Vector3f calcNewPosition(const Eigen::Vector3f& pos, const Eigen::Vector3f& vel, double dt);
-    void calcBezierVel(geometry_msgs::Twist& cmd_vel, std::vector<geometry_msgs::Pose2D>& points);
+    bool calcBezierVel(geometry_msgs::Twist& cmd_vel, std::vector<geometry_msgs::Pose2D>& points, geometry_msgs::PoseStamped& goal);
+	bool globalPlanConversion(geometry_msgs::PoseStamped& goal, std::vector<geometry_msgs::PoseStamped>& plan, Bzstruct& a);
+	void bezierParams(Bzstruct& bzstr, geometry_msgs::PoseStamped& current_p, geometry_msgs::PoseStamped& goal);
     // goal reach functions
     bool goalReachBZLen();
     bool goalReachXY();
@@ -71,6 +74,8 @@ private:
 	tf::TransformListener* tf_;
 	costmap_2d::Costmap2DROS* costmap_ros_;
 	geometry_msgs::PoseStamped goal_;
+	std::string global_frame_;
+	geometry_msgs::PoseStamped final_goal_;
 	bool initialized_;
 	// dynamic params
 	double sim_time_;
@@ -81,6 +86,12 @@ private:
 	double y_tolerance_;
 	double xy_tolerance_; // Euclidean distance
 	double yaw_tolerance_;
+	double max_vel_x_;
+	double min_vel_x_;
+	double angular_ratio_;
+	double vel_ratio_;
+	double minimum_dist_;
+	double wheel_base_;
 	/*
 	goal reach level:
 	0: by bezier curve length
@@ -98,6 +109,13 @@ private:
 	double target_v_;
 
 	double current_tolerance_;
+
+	//global plan conversion
+	bool final_goal_lock_;
+	bool convert_global_;
+
+	//The selection of forward or backward movement after the initialization of global plan 
+	Bzstruct select;
 };
 
 }; // namespace

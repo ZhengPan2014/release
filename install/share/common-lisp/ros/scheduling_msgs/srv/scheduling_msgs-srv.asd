@@ -23,6 +23,8 @@
     (:file "_package_TaskQueryAndGainPath" :depends-on ("_package"))
     (:file "CreateNewTask" :depends-on ("_package_CreateNewTask"))
     (:file "_package_CreateNewTask" :depends-on ("_package"))
+    (:file "ReportNavigationControlStatus" :depends-on ("_package_ReportNavigationControlStatus"))
+    (:file "_package_ReportNavigationControlStatus" :depends-on ("_package"))
     (:file "CancelPath" :depends-on ("_package_CancelPath"))
     (:file "_package_CancelPath" :depends-on ("_package"))
     (:file "TaskQueryPath" :depends-on ("_package_TaskQueryPath"))

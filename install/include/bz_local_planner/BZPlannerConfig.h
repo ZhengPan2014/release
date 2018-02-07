@@ -234,7 +234,18 @@ class DEFAULT
         if("y_tolerance"==(*_i)->name){y_tolerance = boost::any_cast<double>(val);}
         if("xy_tolerance"==(*_i)->name){xy_tolerance = boost::any_cast<double>(val);}
         if("yaw_tolerance"==(*_i)->name){yaw_tolerance = boost::any_cast<double>(val);}
+        if("max_vel_x"==(*_i)->name){max_vel_x = boost::any_cast<double>(val);}
+        if("min_vel_x"==(*_i)->name){min_vel_x = boost::any_cast<double>(val);}
+        if("angular_ratio"==(*_i)->name){angular_ratio = boost::any_cast<double>(val);}
+        if("vel_ratio"==(*_i)->name){vel_ratio = boost::any_cast<double>(val);}
+        if("minimum_dist"==(*_i)->name){minimum_dist = boost::any_cast<double>(val);}
+        if("wheel_base"==(*_i)->name){wheel_base = boost::any_cast<double>(val);}
+        if("x_offset_pos"==(*_i)->name){x_offset_pos = boost::any_cast<double>(val);}
+        if("x_offset_neg"==(*_i)->name){x_offset_neg = boost::any_cast<double>(val);}
+        if("current_ctrl"==(*_i)->name){current_ctrl = boost::any_cast<double>(val);}
+        if("goal_ctrl"==(*_i)->name){goal_ctrl = boost::any_cast<double>(val);}
         if("goal_reach_level"==(*_i)->name){goal_reach_level = boost::any_cast<int>(val);}
+        if("convert_global"==(*_i)->name){convert_global = boost::any_cast<bool>(val);}
       }
     }
 
@@ -246,7 +257,18 @@ double x_tolerance;
 double y_tolerance;
 double xy_tolerance;
 double yaw_tolerance;
+double max_vel_x;
+double min_vel_x;
+double angular_ratio;
+double vel_ratio;
+double minimum_dist;
+double wheel_base;
+double x_offset_pos;
+double x_offset_neg;
+double current_ctrl;
+double goal_ctrl;
 int goal_reach_level;
+bool convert_global;
 
     bool state;
     std::string name;
@@ -273,7 +295,29 @@ int goal_reach_level;
 //#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       double yaw_tolerance;
 //#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      double max_vel_x;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      double min_vel_x;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      double angular_ratio;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      double vel_ratio;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      double minimum_dist;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      double wheel_base;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      double x_offset_pos;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      double x_offset_neg;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      double current_ctrl;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      double goal_ctrl;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       int goal_reach_level;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      bool convert_global;
 //#line 218 "/opt/ros/indigo/share/dynamic_reconfigure/cmake/../templates/ConfigType.h.template"
 
     bool __fromMessage__(dynamic_reconfigure::Config &msg)
@@ -493,6 +537,106 @@ BZPlannerConfig::GroupDescription<BZPlannerConfig::DEFAULT, BZPlannerConfig> Def
 //#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<double>("yaw_tolerance", "double", 0, "yaw tolerance in radius", "", &BZPlannerConfig::yaw_tolerance)));
 //#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __min__.max_vel_x = 0.0;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __max__.max_vel_x = std::numeric_limits<double>::infinity();
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __default__.max_vel_x = 0.3;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<double>("max_vel_x", "double", 0, "Maximum of linear velocity", "", &BZPlannerConfig::max_vel_x)));
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<double>("max_vel_x", "double", 0, "Maximum of linear velocity", "", &BZPlannerConfig::max_vel_x)));
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __min__.min_vel_x = 0.0;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __max__.min_vel_x = std::numeric_limits<double>::infinity();
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __default__.min_vel_x = 0.15;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<double>("min_vel_x", "double", 0, "The scale of linear velocity when robot is close enough to the goal", "", &BZPlannerConfig::min_vel_x)));
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<double>("min_vel_x", "double", 0, "The scale of linear velocity when robot is close enough to the goal", "", &BZPlannerConfig::min_vel_x)));
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __min__.angular_ratio = 0.0;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __max__.angular_ratio = std::numeric_limits<double>::infinity();
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __default__.angular_ratio = 3.0;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<double>("angular_ratio", "double", 0, "Linear ratio of angular velocity w.r.t the change of yaw", "", &BZPlannerConfig::angular_ratio)));
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<double>("angular_ratio", "double", 0, "Linear ratio of angular velocity w.r.t the change of yaw", "", &BZPlannerConfig::angular_ratio)));
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __min__.vel_ratio = 0.0;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __max__.vel_ratio = std::numeric_limits<double>::infinity();
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __default__.vel_ratio = 0.1;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<double>("vel_ratio", "double", 0, "Linear ratio of cmd_vel", "", &BZPlannerConfig::vel_ratio)));
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<double>("vel_ratio", "double", 0, "Linear ratio of cmd_vel", "", &BZPlannerConfig::vel_ratio)));
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __min__.minimum_dist = 0.0;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __max__.minimum_dist = std::numeric_limits<double>::infinity();
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __default__.minimum_dist = 0.1;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<double>("minimum_dist", "double", 0, "The minimum judging distance for final goal", "", &BZPlannerConfig::minimum_dist)));
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<double>("minimum_dist", "double", 0, "The minimum judging distance for final goal", "", &BZPlannerConfig::minimum_dist)));
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __min__.wheel_base = 0.0;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __max__.wheel_base = std::numeric_limits<double>::infinity();
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __default__.wheel_base = 1.55;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<double>("wheel_base", "double", 0, "Magnitidude of wheelbase", "", &BZPlannerConfig::wheel_base)));
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<double>("wheel_base", "double", 0, "Magnitidude of wheelbase", "", &BZPlannerConfig::wheel_base)));
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __min__.x_offset_pos = 0.0;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __max__.x_offset_pos = std::numeric_limits<double>::infinity();
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __default__.x_offset_pos = 1.0;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<double>("x_offset_pos", "double", 0, "The positive offset of goal on the x axis", "", &BZPlannerConfig::x_offset_pos)));
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<double>("x_offset_pos", "double", 0, "The positive offset of goal on the x axis", "", &BZPlannerConfig::x_offset_pos)));
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __min__.x_offset_neg = 0.0;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __max__.x_offset_neg = std::numeric_limits<double>::infinity();
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __default__.x_offset_neg = 1.0;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<double>("x_offset_neg", "double", 0, "The negative offset of goal on the x axis", "", &BZPlannerConfig::x_offset_neg)));
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<double>("x_offset_neg", "double", 0, "The negative offset of goal on the x axis", "", &BZPlannerConfig::x_offset_neg)));
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __min__.current_ctrl = 0.0;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __max__.current_ctrl = std::numeric_limits<double>::infinity();
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __default__.current_ctrl = 0.3;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<double>("current_ctrl", "double", 0, "The contol point for the current pose", "", &BZPlannerConfig::current_ctrl)));
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<double>("current_ctrl", "double", 0, "The contol point for the current pose", "", &BZPlannerConfig::current_ctrl)));
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __min__.goal_ctrl = 0.0;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __max__.goal_ctrl = std::numeric_limits<double>::infinity();
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __default__.goal_ctrl = 0.5;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<double>("goal_ctrl", "double", 0, "The contol point for the goal point", "", &BZPlannerConfig::goal_ctrl)));
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<double>("goal_ctrl", "double", 0, "The contol point for the goal point", "", &BZPlannerConfig::goal_ctrl)));
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.goal_reach_level = 0;
 //#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.goal_reach_level = 4;
@@ -502,6 +646,16 @@ BZPlannerConfig::GroupDescription<BZPlannerConfig::DEFAULT, BZPlannerConfig> Def
       Default.abstract_parameters.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<int>("goal_reach_level", "int", 0, "goal reach level", "", &BZPlannerConfig::goal_reach_level)));
 //#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<int>("goal_reach_level", "int", 0, "goal reach level", "", &BZPlannerConfig::goal_reach_level)));
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __min__.convert_global = 0;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __max__.convert_global = 1;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __default__.convert_global = 0;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<bool>("convert_global", "bool", 0, "To convert global plan into local plan or not", "", &BZPlannerConfig::convert_global)));
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<bool>("convert_global", "bool", 0, "To convert global plan into local plan or not", "", &BZPlannerConfig::convert_global)));
 //#line 246 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.convertParams();
 //#line 246 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
