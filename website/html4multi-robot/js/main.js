@@ -176,7 +176,7 @@ function main()
             // TODO:
             // update robots on stage
         });
-        window.vueBus.emit('addRobot', [{robotID: '', robotIP: 'server'}]);
+        // window.vueBus.emit('addRobot', [{robotID: '', robotIP: 'server'}]);
     });
     // tasks handle
     var tasksVm = new Vue(Vm.task);
@@ -244,6 +244,6 @@ function single()
 }
 
 $(()=>{
-	// main();
-    single();
+	main();
+    // single();
 });

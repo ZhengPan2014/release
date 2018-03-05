@@ -77,15 +77,6 @@ class _Dev extends EventEmitter
 				let cmd = `roslaunch bringup driver_comm.launch driver_port:=${port.comName}`;
 				try
 				{
-					/*
-					shell.exec(cmd, {silent: false}, (code, stdout, stderr) => {
-						if (code)
-						{
-							console.log(code, stderr);
-						}
-					});
-					await sleep(1000);
-					*/
 					roslog.info(`Detecting port: ${port.comName}...`);
 					await pShell.exec(cmd);	
 				}

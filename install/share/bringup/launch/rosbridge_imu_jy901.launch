@@ -4,7 +4,7 @@
     <arg name="imu_port" default="/dev/ttyUSB0"/>
     <arg name="imu_frame_id" default="base_imu"/>
     <node name="$(anon rosbridge_imu)" pkg="rosbridge_driver" type="rosbridge_driver" output="screen">
-        <!--<remap from="imu" to="$(arg pub_name)"/>-->
+        <remap from="imu" to="$(arg pub_name)"/>
         <param name="imu_port" value="$(arg imu_port)"/>
         <param name="imu_config_port" value="$(arg imu_port)"/>
         <param name="imu_frame_id" value="$(arg imu_frame_id)"/>
@@ -25,16 +25,6 @@
               - name: imu_port
                 type: serial
                 action_chain:
-                  - name: imu_port
-                    type: timer
-                    time_out: 0.1
-                  - name: imu_port
-                    type: write
-                    byte: [0xff, 0xaa, 0x63, 0x00, 0x00] #cali
-                    lock: false
-                  - name: imu_port
-                    type: timer
-                    time_out: 0.1
                   - name: imu_port
                     type: write
                     byte: [0xff, 0xaa, 0x24, 0x01, 0x00] #axis

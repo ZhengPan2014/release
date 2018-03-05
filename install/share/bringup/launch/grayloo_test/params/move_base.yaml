@@ -1,0 +1,151 @@
+base_global_planner: "navfn/NavfnROS"
+base_local_planner: "dwa_local_planner/DWAPlannerROS"
+recovery_behaviors:
+  - name: 'conservative_reset'
+    type: 'clear_costmap_recovery/ClearCostmapRecovery'
+  - name: 'aggressive_reset'
+    type: 'clear_costmap_recovery/ClearCostmapRecovery'
+conservative_reset:
+    reset_distance: 3.0
+    layer_names: [obstacle_layer]
+aggressive_reset:
+    reset_distance: 0.0
+    layer_names: [obstacle_layer]
+straf_reset:
+    timeout: 10
+controller_frequency: 5.0
+planner_patience: 5.0
+controller_patience: 15.0
+oscillation_timeout: 10.0
+planner_frequency: 0.0
+max_planning_retries: 0
+global_costmap:
+    global_frame: map
+    robot_base_frame: base_footprint
+    update_frequency: 1.0 #2.0
+    publish_frequency: 0.5 #0.0
+    static_map: true
+    resolution: 0.05
+    plugins:
+      - name: static_layer
+        type: "costmap_2d::StaticLayer"
+      <!-- - name: obstacle_layer
+        type: "costmap_2d::ObstacleLayer" -->
+      - name: inflation_layer
+        type: "costmap_2d::InflationLayer"
+    static_layer:
+        map_topic: /map_edit
+    inflation_layer:
+        inflation_radius: 0.75
+    footprint_topic: footprint_setup
+local_costmap:
+    global_frame: odom
+    robot_base_frame: base_footprint
+    transform_tolerance: 0.2 #0.5
+    update_frequency: 5.0
+    publish_frequency: 1.0 #0.0
+    static_map: false
+    rolling_window: true
+    width: 6.0
+    height: 6.0
+    origin_x: -4.0
+    origin_y: 0.05
+    resolution: 0.05 #0.025
+    plugins:
+      - name: obstacle_layer
+        type: "costmap_2d::ObstacleLayer"
+      - name: inflation_layer
+        type: "costmap_2d::InflationLayer"
+    obstacle_layer:
+        observation_sources: scan_rectified_down #scan_rectified
+        scan_rectified:
+            expected_update_rate: 5.0
+            data_type: LaserScan
+            clearing: true
+            max_obstacle_height: 3.0
+            min_obstacle_height: -1.0
+            inf_is_valid: true
+        scan_rectified_down:
+            expected_update_rate: 5.0
+            data_type: LaserScan
+            clearing: true
+            max_obstacle_height: 2.0
+            min_obstacle_height: 0.0
+            obstacle_range: 1.0
+            raytrace_range: 4.0
+            inf_is_valid: true
+        track_unknown_space: true
+        footprint_clearing_enabled: false
+    inflation_layer:
+        inflation_radius: 0.75
+    footprint_topic: footprint_setup
+GlobalPlanner:
+    allow_unknown: false
+NavfnROS:
+    allow_unknown: false
+FixedGlobalPlanner:
+    allow_unknown: false
+    subscribe_path_topic: specified_path
+    endpoint_tolerance: 2.0
+    retrace_path: true
+    use_goal_direction: true
+TrajectoryPlannerROS:
+    acc_lim_x: 0.5
+    acc_lim_y: 0.0
+    acc_lim_theta: 3.2
+    min_vel_x: 0.1
+    min_in_place_vel_theta: 0.2
+    escape_vel: -0.1
+    holonomic_robot: false
+    yaw_goal_tolerance: 0.025
+    xy_goal_tolerance: 0.05
+    latch_xy_goal_tolerance: true
+    meter_scoring: true
+    occdist_scale: 0.5 #0.01
+    heading_scoring: true
+    dwa: true
+    global_frame_id: odom
+DWAPlannerROS:
+    acc_lim_x: 2.0
+    acc_lim_y: 0.0
+    acc_lim_theta: 3.2
+    min_trans_vel: 0.05
+    min_vel_x: -0.55
+    max_vel_y: 0.0
+    min_vel_y: 0.0
+    min_rot_vel: 0.05
+    forward_point_distance: 0.4
+    yaw_goal_tolerance: 0.01 #0.025
+    xy_goal_tolerance: 0.5 #0.10 #0.05
+    latch_xy_goal_tolerance: true
+    occdist_scale: 0.0
+    path_distance_bias: 32.0 #64.0
+    vx_samples: 10
+    vy_samples: 1
+    vth_samples: 20
+TebLocalPlannerROS:
+    acc_lim_x: 0.5
+    acc_lim_theta: 3.2
+    max_vel_x_backwards: 0.3 #0.2
+    min_turning_radius: 0.001
+    wheelbase: 1.555
+    footprint_model:
+        type: "polygon"
+    xy_goal_tolerance: 0.5 #0.2
+    yaw_goal_tolerance: 0.025 #0.2
+    free_goal_vel: false
+    viapoints_all_candidates: false #true
+    odom_topic: /odometry/filtered
+    map_frame: /map
+RSBandPlannerROS:
+    rear_steering_mode: 0
+    eband_to_rs_strategy: 1
+    wheelbase: 1.359 #1.425
+    xy_goal_tolerance: 0.5
+    yaw_goal_tolerance: 0.01
+    goal_dist_threshold: 0.4
+    state_checking_mode: 1
+    interpolation_num_poses: 50
+    max_planning_duration: 0.05
+    state_checking_mode: 1
+    update_sub_goal_dist_threshold: 0.2

@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<launch>
+<arg name="namespace" default="$(optenv AGV_NAME /)"/>
+<group ns="$(arg namespace)">
+
+	<node name="map_server" pkg="map_server" type="map_server" args="$(find bringup)/param/map.yaml"/>
+	<node name="map_edit_server" pkg="map_server" type="map_server" args="$(find bringup)/param/map_edit.yaml">
+        <remap from="map" to="map_edit"/>
+    </node>
+
+</group>
+</launch>

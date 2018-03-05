@@ -51,8 +51,11 @@ class Robot extends EventEmitter2
 				this.initParams(stageInfo);
 			});
 		}
+		this.isLaserUpsideDown = null;
 		// ros topics
 		this.topics = {}; 
+		// ros services
+		this.services = {};
 		// received ros messages
 		this.rosMsgs = {
 			robotId: this.robotId,
@@ -150,6 +153,7 @@ class Robot extends EventEmitter2
 	// 		bool useRepublisher: if listen to tf via tf2_web_republisher, true by default
 	// 		string name: tf topic name
 	// 		string messageType: tf topic message type
+	// 		string color: '#ff9800' by default
 	listenTf(options)
 	{
 		var options = options || {};
@@ -177,6 +181,26 @@ class Robot extends EventEmitter2
 				}		
 			});	
 		}
+	}
+
+	// params:
+	// 	1. Object opitons:
+	// 		string name: laser scan topic name, '/scan_rectified' by default,
+	// 		string messageType: 'sensor_msgs/LaserScan' by default
+	// 		int    throttle_rate: 200 by default
+	// 		string color: '#ff9800' by default
+	// 		int    skip: 10 by default
+	dispLaserScan(options)
+	{
+		var options = options || {};
+		var name = options.name || '/scan_rectified';
+		var messageType = options.messageType || 'sensor_msgs/LaserScan';
+		var throttleRate = options.throttle_rate || 200;
+		var color = opitons.color || '#ff9800';
+		var skip = options.skip || 10;
+		var laserScanTopic = this.topic(name, messageType);
+		laserScanTopic.subscribe(this.laserScanCb(name, color, skip));
+		super.on(`${this.robotId}-zoom`, this.laserScanCb(name, color, skip));
 	}
 
 	// params:
@@ -310,15 +334,127 @@ class Robot extends EventEmitter2
 	}
 
 	// switch to mapping mode
+	// return Promise
 	toMapping()
 	{
-		this.pubCmdString('gmapping');
+		var mappingSrv = this.services['/rosnodejs/mapping'];
+		if (!mappingSrv)
+		{
+			mappingSrv = this.service('/rosnodejs/mapping', 'std_srvs/Trigger');
+		}
+		var request = new ROSLIB.ServiceRequest({});
+		return new Promise((resolve, reject) => {
+			mappingSrv.callService(request, (response) => {
+				resolve(response);
+			});	
+		});
+	}
+
+	// save map
+	// return Promise
+	saveMap()
+	{
+		var saveMapSrv = this.services['/rosnodejs/save_map'];
+		if (!saveMapSrv)
+		{
+			saveMapSrv = this.service('/rosnodejs/save_map', 'std_srvs/Trigger');
+		}
+		var request = new ROSLIB.ServiceRequest({});
+		return new Promise((resolve, reject) => {
+			saveMapSrv.callService(request, (response) => {
+				resolve(response);
+			});
+		});
+	}
+
+	// save map_edit
+	// params: 
+	// 	1.geometry_msgs/Polygon[] obstacles
+	// return Promise
+	saveMapEdit(obstacles)
+	{
+		var saveMapEditSrv = this.services['/rosnodejs/save_map_edit'];
+		if (!saveMapEditSrv)
+		{
+			saveMapEditSrv = this.service('/rosnodejs/save_map_edit', 'yocs_msgs/VirtualObstacles');
+		}
+		var request = new ROSLIB.ServiceRequest({
+			obstacles: obstacles
+		});
+		return new Promise(request, (response) => {
+			resolve(response);
+		});
 	}
 
 	// switch to navigation
 	toNavigation()
 	{
+		var navSrv = this.services['/rosnodejs/navigation'];
+		if (!navSrv)
+		{
+			navSrv = this.service('/rosnodejs/navigation', 'std_srvs/Trigger');
+		}
+		var request = new ROSLIB.ServiceRequest({});
+		return new Promise((resolve, reject) => {
+			navSrv.callService(request, (response) => {
+				resolve(response);
+			})
+		});
+	}
 
+	// dbparam control
+	// params:
+	// 	1.string control: insert/delete/select/update/push/fix
+	// 	2.string params: branch's name
+	// return Promise
+	dbparamCtrl(control, params)
+	{
+		var params = params || '';
+		var dbparamCtrlSrv = this.services['/rosnodejs/dbparam_ctrl'];
+		if (!dbparamCtrlSrv)
+		{
+			dbparamCtrlSrv = this.service('/rosnodejs/dbparam_ctrl', 'yocs_msgs/DbparamControl');
+		}
+		var request = new ROSLIB.ServiceRequest({
+			control: control,
+			params: params
+		});
+		return new Promise((resolve, reject) => {
+			dbparamCtrlSrv.callService(request, (response) => {
+				resolve(response);
+			})
+		});
+	}
+
+	// set network
+	// params:
+	// 	1. Object configs(optional): 
+	// 		string mode: wifi
+	// 		string udev
+	// 		string ssid
+	// 		string password
+	// 		string address
+	// 		string mask
+	// 		string gateway
+	// 		string timestamp
+	// 		string auto
+	// return Promise
+	setNetwork(configs)
+	{
+		var configs = configs || {};
+		var netSrv = this.services['rosnodejs/set_network'];
+		if (!netSrv)
+		{
+			netSrv = this.service('rosnodejs/set_network', 'rosapi/HasParam');
+		}
+		var request = new ROSLIB.ServiceRequest({
+			name: JSON.stringify(configs)
+		});
+		return new Promise((resolve, reject) => {
+			netSrv.callService(request, (response) => {
+				resolve(response);
+			});
+		});
 	}
 	
 	// manual control by publish /cmd_vel
@@ -667,6 +803,38 @@ class Robot extends EventEmitter2
 		}
 	}
 
+	laserScanCb(name, color, skip)
+	{
+		return (laserScan) => {
+			var laserScan = this.getMsg(laserScan, name);
+			if (!laserScan)
+			{
+				return;
+			}
+			this.rosMsgs[name] = laserScan;
+			var laserScanContainer = this.containerMap[name];
+			if (laserScanContainer)
+			{
+				laserScanContainer.removeAllChildren();
+			}
+			else
+			{
+				laserScanContainer = new createjs.Container();
+			}
+			// to frame_id map
+			var frameId = laserScan.header.frame_id;
+			var transform = this.tfMap[`map2${frameId}`];
+			var rotation = transform.transform.rotation;
+			laserScan = this.tf.laserScanToMap(laserScan, transform, skip, this.isLaserUpsideDown(rotation));
+			var laserScanModel = models.laserScan(laserScan, this.tf, {
+				color: color
+			});
+			laserScanContainer.addChild(laserScanModel);
+			this.container.addChild(laserScanContainer);
+			this.containerMap[name] = laserScanContainer;
+		}
+	}
+
 	waypointsCb(name, dispTypes)
 	{
 		return (waypoints) => {
@@ -736,12 +904,12 @@ class Robot extends EventEmitter2
 	localPlanCb(name, color)
 	{
 		return (plan) => {
-			var plan = this.getMsg(plan, 'localPlan');
+			var plan = this.getMsg(plan, name);
 			if (!plan)
 			{
 				return;
 			}
-			this.rosMsgs['localPlan'] = plan;
+			this.rosMsgs[name] = plan;
 			var localPlanContainer = this.containerMap[name];
 			if (localPlanContainer)
 			{
@@ -752,6 +920,7 @@ class Robot extends EventEmitter2
 				localPlanContainer = new createjs.Container();
 			}
 			// odom -> map
+			plan = this.tf.localPlanOdomToMap(plan, this.tfMap['map2odom']);
 			var localPlanModel = models.localPlan(plan, this.tf, {
 				color: color
 			});
@@ -790,6 +959,28 @@ class Robot extends EventEmitter2
 		return true;
 	}
 
+	// check if laser is upside down
+	// params:
+	// 	1.geometry_msgs/Quaternion rotation
+	// return bool
+	isLaserUpsideDown(rotation)
+	{
+		if (this.isLaserUpsideDown !== null)
+		{
+			return this.isLaserUpsideDown;
+		}
+		var roll = this.tf.quaternionToEuler(rotation).roll;
+		if (Math.abs(roll-Math.PI) < 0.01)
+		{
+			this.isLaserUpsideDown = true;
+		}
+		else
+		{
+			this.isLaserUpsideDown = false;
+		}
+		return this.isLaserUpsideDown;
+	}
+
 	// params: 
 	// 	1. string name: topic name;
 	// 	2. string messageType;
@@ -814,10 +1005,12 @@ class Robot extends EventEmitter2
 	service(name, serviceType)
 	{
 		var serviceName = this.robotId.length === 0 ? name : '/' + this.robotId + name;
-		return ROSLIB.Service({
+		var service = new ROSLIB.Service({
 			ros: this.ros,
 			name: serviceName,
 			serviceType: serviceType
 		});
+		this.services[name] = service;
+		return service;
 	}
 }

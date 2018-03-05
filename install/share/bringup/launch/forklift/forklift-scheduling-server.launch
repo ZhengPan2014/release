@@ -4,8 +4,8 @@
     <arg name="is_scheduling_server" value="$(optenv SCHEDULING_SERVER 0)" />
     <include file="$(find yocs_waypoint_provider)/launch/provider.launch"/>
   
-	<!--node if="$(arg is_scheduling_server)" name="yk_path_system" type="yk_path_system_buffer_zone_node_test" pkg="path_system_yk" respawn="true">
+	<node if="$(arg is_scheduling_server)" name="yk_path_system" type="yk_path_system_buffer_zone_node_test" pkg="path_system_yk" respawn="true">
 		<param name="mapimg_path" value="$(find bringup)/param/map.png"/>
 	</node>
-	<node if="$(arg is_scheduling_server)" name="task_manager_test" type="task_manager_test" pkg="task_system_yk" respawn="true"/-->
+	<node if="$(arg is_scheduling_server)" name="task_manager_test" type="task_manager_test" pkg="task_system_yk" respawn="true"/>
 </launch>

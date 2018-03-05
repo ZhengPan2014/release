@@ -30,6 +30,11 @@ const EventEmitter = require('events');
 const Logging = require('./Logging.js');
 const {REGISTERING, REGISTERED, SHUTDOWN} = require('../utils/ClientStates.js');
 
+
+// grayloo
+const sleep = require('../../lib/roslog').sleep;
+// endgrayloo
+
 class ServiceServer extends EventEmitter {
   constructor(options, callback, nodeHandle) {
     super();
@@ -136,6 +141,8 @@ class ServiceServer extends EventEmitter {
     this.emit('connection', header, client.name);
   }
 
+
+/*
   _handleMessage(client, data) {
     this._log.trace('Service  ' + this.getService() + ' got message! ' + data.toString('hex'));
     // deserialize msg
@@ -159,6 +166,39 @@ class ServiceServer extends EventEmitter {
       client.end();
       delete this._clients[client.name];
     }
+  }
+*/
+  /**
+   * GrayLoo 20171019
+   * async function
+   * @param  {[type]} client [description]
+   * @param  {[type]} data   [description]
+   * @return {[type]}        [description]
+   */
+  _handleMessage(client, data) {
+    (async () => {
+      this._log.trace('Service  ' + this.getService() + ' got message! ' + data.toString('hex'));
+      // deserialize msg
+      const req = this._messageHandler.Request.deserialize(data);
+
+      // call service callback
+      let resp = new this._messageHandler.Response();
+      let success = await this._requestCallback(req, resp);
+      const serializeResponse = TcprosUtils.serializeServiceResponse(
+        this._messageHandler.Response,
+        resp,
+        success
+      );
+
+      // send service response
+      client.write(serializeResponse);
+
+      if (!client.$persist) {
+        this._log.debug('Closing non-persistent client');
+        client.end();
+        delete this._clients[client.name];
+      }  
+    })();
   }
 
   _register() {

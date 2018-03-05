@@ -1,5 +1,4 @@
 'use strict';
-
 const Koa = require('koa');
 const bodyParser = require('koa-bodyparser');
 const cors = require('koa-cors');
@@ -27,7 +26,7 @@ app.use(async (ctx, next) => {
 	var start = new Date().getTime();
 	var execTime;	
 	await next();
-	execTime = new Date().getTime();
+	execTime = new Date().getTime() - start;
 	ctx.response.set('X-Response-Time', `${execTime}ms`);
 });
 
@@ -39,7 +38,7 @@ if (!isProduction)
 
 app.use(bodyParser());
 
-app.use(templating('views', {
+app.use(templating(__dirname+'/views', {
 	noCache: !isProduction,
 	watch: !isProduction
 }));
@@ -51,5 +50,3 @@ app.use(controller());
 let server = app.listen(8808);
 
 console.log('Nodejs started at port 8808...');
-
-// app.wss = createWebSocketServer(server, onConnection, onMessage, onClose, onError);

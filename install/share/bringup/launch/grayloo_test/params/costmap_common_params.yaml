@@ -1,0 +1,44 @@
+footprint: [[0.27, -0.27], [0.27, 0.27], [-0.27, 0.27], [-0.27, -0.27]] 
+map_type: costmap 
+
+obstacle_layer: 
+  enabled:              true
+  track_unknown_space:  true 
+  publish_voxel_map:    false
+  combination_method:   1
+  max_obstacle_height:  2.0    
+  obstacle_range:       2.5
+  raytrace_range:       3.0
+  observation_sources:  scan_rectified  scan_rear  # sensor_pointcloud_first
+  scan_rectified: 
+        topic:          /scan
+        data_type:      LaserScan
+        marking:        true
+        clearing:       true
+        min_obstacle_height: -1.0
+        max_obstacle_height: 1.0 
+        inf_is_valid:   true
+
+  scan_rear: 
+        topic:          /scan_rear
+        data_type:      LaserScan
+        marking:        true
+        clearing:       true
+        min_obstacle_height: -1.0
+        max_obstacle_height: 1.0 
+        inf_is_valid:   true
+#  sensor_pointcloud_first:
+#        topic:          /camera/depth/points
+#        data_type:      PointCloud2
+#        marking:        true
+#        clearing:       true 
+#        min_obstacle_height: 0.0 
+#        max_obstacle_height: 2.0 
+
+  
+inflation_layer:
+  enabled:              true
+  inflation_radius:     0.6 #0.75  
+  cost_scaling_factor:  5  
+
+

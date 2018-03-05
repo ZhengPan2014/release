@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<launch>
+<arg name="namespace" default="$(optenv AGV_NAME /)"/>
+<group ns="$(arg namespace)">
+
+	<!-- sick_tim node params -->
+	<arg name="ip" default="192.168.0.10"/>
+	<arg name="angle_min" default="-2.1"/>
+	<arg name="angle_max" default="2.1"/>
+	<arg name="range_max" default="10.0"/>
+	<arg name="frame_id" default="base_laser"/>
+	<arg name="intensity" default="False"/>
+	<!-- tf params -->
+	<arg name="pub_rate" default="50"/>
+	<arg name="x" default="0.0"/>
+	<arg name="y" default="0.0"/>
+	<arg name="z" default="0.0"/>
+	<arg name="roll" default="0.0"/>
+	<arg name="pitch" default="0.0"/>
+	<arg name="yaw" default="0.0"/>
+	<!-- scan rectifier params -->
+	<arg name="scan_rectifier_range_max" default="20.0"/>
+	
+    <node name="lms_1xx_$(arg frame_id)" pkg="lms1xx" type="LMS1xx_node" output="screen">
+        <remap from="scan" to="scan$(arg frame_id)"/>
+        <param name="frame_id" value="$(arg frame_id)"/>
+        <param name="host" value="$(arg ip)"/>
+    </node>
+
+    <node name="tf_$(arg frame_id)" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+    	<param name="pub_rate" value="$(arg pub_rate)"/>
+		<param name="child_frame_id" value="$(arg frame_id)"/>
+        <param name="x" value="$(arg x)"/>
+        <param name="y" value="$(arg y)"/>
+        <param name="z" value="$(arg z)"/>
+        <param name="roll" value="$(arg roll)"/>
+        <param name="pitch" value="$(arg pitch)"/>
+        <param name="yaw" value="$(arg yaw)"/>
+    </node>
+
+    <node name="scan_filter_$(arg frame_id)" pkg="laser_filters" type="scan_to_scan_filter_chain" output="screen">
+        <remap from="scan" to="scan"/>
+        <remap from="scan_filtered" to="scan_filtered"/>
+        <rosparam>
+            scan_filter_chain:
+            - type: laser_filters/LaserArrayFilter
+              name: laser_median_filter
+              params: 
+                range_filter_chain:
+                  - name: median_5
+                    type: filters/MultiChannelMedianFilterFloat 
+                    params:
+                      number_of_observations: 5
+                      unused: 10
+                intensity_filter_chain:
+                  - name: median_5
+                    type: filters/MultiChannelMedianFilterFloat 
+                    params:
+                      number_of_observations: 5
+                      unused: 10
+        </rosparam>
+    </node>
+
+    <node name="scan_rectifier_$(arg frame_id)" pkg="scan_rectifier" type="scan_rectifier" output="screen">
+        <remap from="scan_input" to="scan_filtered"/>
+        <remap from="scan_output" to="scan_rectified"/>
+        <param name="max_range" value="$(arg scan_rectifier_range_max)"/>
+    </node>
+
+</group>
+</launch>

@@ -14,6 +14,45 @@ catch(e)
 	};
 }
 
+function find(target, match, begin, end)
+{
+	let begin_ = begin || 0;
+	let end_ = end || target.length;
+	for (let index = begin_; index < end_; index++)
+	{
+		if (target[index] === match)
+		{
+			return index;
+		}
+	}
+	return -1;
+}
+
+function rfind(target, match)
+{
+	for (let index = target.length-1; index > -1; index--)
+	{
+		if (target[index] === match)
+		{
+			return index;
+		}
+	}
+	return -1;
+}
+
+function find_all(target, match)
+{
+	let ret = [];
+	for (let index = 0; index < target.length; index++)
+	{
+		if (target[index] === match)
+		{
+			ret.push(index);
+		}
+	}
+	return ret;
+}
+
 /**
  * Promise style sleep
  * @param  {float} ms 
@@ -67,5 +106,8 @@ module.exports = {
 		info: info,
 		warn: warn,
 		error: error
-	}
+	},
+	find: find,
+	rfind: rfind,
+	find_all: find_all
 };

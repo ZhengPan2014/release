@@ -3,8 +3,8 @@
     <node name="teleop_keyboard" pkg="teleop_keyboard" type="teleop_keyboard" output="screen">
         <remap from="teleop_keyboard/cmd_vel" to="cmd_vel"/>
         <rosparam>
-            linear_vel_base: 0.5
-            angular_vel_base: 0.25
+            linear_vel_base: 0.4
+            angular_vel_base: 0.5
             micro_vel_factor: 0.1
         </rosparam>
     </node>

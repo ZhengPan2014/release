@@ -25,23 +25,29 @@ function createEnv(path, opts) {
     return env;
 }
 
-var env = createEnv('../launch_templates', {
-    watch: true,
-    filters: {
-        hex: function (n) {
-            return '0x' + n.toString(16);
-        }
-    }
-});
-
 module.exports = createEnv;
 
-let s = env.render('test.launch', {frame_id: 100});
-console.log(s);
+function test()
+{
 
-fs.writeFile('../launch_templates/temp/test.launch', s, (err) => {
-	if (err)
-	{
-		console.log(err);
-	}
-});
+    var env = createEnv('./', {
+        watch: true,
+        filters: {
+            hex: function (n) {
+                return '0x' + n.toString(16);
+            }
+        }
+    });
+
+
+
+    let s = env.render('launcher_pattern.js', {name: 'drive_aqmd_2', params: {drive_port_left: 'pci-111', drive_port_right: 'pci-222'}});
+    console.log(s);
+
+    fs.writeFile('../launchers/test.js', s, (err) => {
+    	if (err)
+    	{
+    		console.log(err);
+    	}
+    });
+}

@@ -1,5 +1,7 @@
+/*
+GrayLoo @ 20180119
+ */
 'use strict';
-
 const Promise = require('promise');
 const shell = require('shelljs');
 const gm = require('gm').subClass({imageMagick: true});
@@ -10,24 +12,32 @@ const pShell = require('../lib/shell_promise');
 const sleep = require('../lib/utils').sleep;
 const roslog = require('../lib/utils').roslog;
 
+const ERROR_CODE = require('../lib/ros_err_code');
+
 const PATH_BRINGUP = process.env.PATH_BRINGUP;
 const PATH_DBPARAM = PATH_BRINGUP + '/param';
+const PATH_SHELL = PATH_BRINGUP + '/shell';
 
 const CMD_STRING = {
 	MAPPING: 'gmapping',
 	SAVE_MAP: 'save_map',
 	SAVE_MAP_EDIT: 'save_map_edit',
 	NAVIGATION: 'navigation',
+	DBPARAM_INSERT: 'dbparam-insert',
+	DBPARAM_DELETE: 'dbparam-delete',
+	DBPARAM_SELECT: 'dbparam-select',
+	DBPARAM_UPDATE: 'dbparam-update'
 };
 
 const LAUNCH_CMD = {
 	MAPPING: 'roslaunch bringup bringup-gmapping.launch',
 	SAVE_MAP: 'roslaunch bringup map_saver.launch',
-	NAVIGATION: 'roslaunch bringup bringup-navigation.launch'
+	NAVIGATION: 'roslaunch bringup bringup-navigation.launch',
+	DBPARAM: 'roslaunch bringup bringup-dbparam.launch'
 }
 
 const ROS_MODE = {
-	MAPPING: 'mapping',
+	MAPPING: 'gmapping',
 	CONVERTING: 'converting',
 	SAVE_MAP: 'save_map',
 	SAVE_MAP_EDIT: 'save_map_edit',
@@ -37,15 +47,28 @@ const ROS_MODE = {
 
 class CommonRosApi
 {
-	constructor(nh, namespace='')
+	constructor(nh, namespace='', mapFormat='png', mappingMode='slam_gmapping')
 	{
+		if (process.env.BOOT_MODE === 'AUTO')
+		{
+			// TODO: rosnodejs backend for auto boot
+			roslog.warn('TODO: rosnodejs backend for auto boot');
+			return;
+		}
+
 		this.nh = nh;
 		this.namespace = namespace;
+		this.mapFormat = mapFormat.startsWith('.') ? mapFormat : `.${mapFormat}`;
+		this.mappingMode = mappingMode;
+
 		this.robotPose;
-		this.rosMode = ROS_MODE.MAPPING;
+		// this.rosMode = ROS_MODE.NAVIGATION;
+		this.rosMode = null;
 		this.network = {};
 		this.mapInfo;
 		this.mapEditImg;
+		// dbparam lock
+		this.dbparamLock = false;
 		// ros msg/srv
 		this.std_msgs = rosnodejs.require('std_msgs').msg;
 		this.geometry_msgs = rosnodejs.require('geometry_msgs').msg;
@@ -58,13 +81,21 @@ class CommonRosApi
 			latching: true
 		});
 		this.shellFeedbackPub = nh.advertise(this.withNs('/rosnodejs/shell_feedback'), 'std_msgs/String', {
-			latching: false,
+			latching: true,
 			throttleMs: -1
 		});
 		this.cmdStringSub = this.nh.subscribe(this.withNs('/rosnodejs/cmd_string'), 'std_msgs/String', this.cmdStringSubCb());
 		this.robotPoseSub = this.nh.subscribe(this.withNs('/robot_pose'), 'geometry_msgs/Pose', this.robotPoseSubCb());
-		this.virtualObstacleSub = this.nh.subscribe(this.withNs('/virtual_obstacle'), 'geometry_msgs/Polygon', this.virtualObstacleSubCb());
-		// ros srv server
+		this.virtualObstacleSub = this.nh.subscribe(this.withNs('/rosnodejs/virtual_obstacle'), 'geometry_msgs/Polygon', this.virtualObstacleSubCb(), {
+			queueSize: 1000
+		});
+		this.networkSub = this.nh.subscribe(this.withNs('/rosnodejs/network'), 'std_msgs/String', this.networkSubCb());
+		// ros services
+		this.mappingSrv = this.nh.advertiseService(this.withNs(`/rosnodejs/${CMD_STRING.MAPPING}`), 'std_srvs/Trigger', this.mappingSrvCb());
+		this.saveMapSrv = this.nh.advertiseService(this.withNs(`/rosnodejs/${CMD_STRING.SAVE_MAP}`), 'std_srvs/Trigger', this.saveMapSrvCb());
+		this.saveMapEditSrv = this.nh.advertiseService(this.withNs(`/rosnodejs/${CMD_STRING.SAVE_MAP_EDIT}`), 'std_srvs/Trigger', this.saveMapEditSrvCb());
+		this.navigationSrv = this.nh.advertiseService(this.withNs(`/rosnodejs/${CMD_STRING.NAVIGATION}`), 'std_srvs/Trigger', this.navigationSrvCb());
+
 		this.robotStatusSrv = this.nh.advertiseService(this.withNs('/rosnodejs/robot_status'), 'rosapi/SearchParam', (req, res) => {
 			if (req.name)
 			{}
@@ -72,53 +103,148 @@ class CommonRosApi
 			{
 				let status = {};
 				status['ros_mode'] = this.rosMode;
-				// status['network'] = this.network;
+				status['network'] = this.network;
 				res.global_name = JSON.stringify(status);
 				return true;
 			}
 		});
+		// switch to navigation
+		(async () => {
+			let code = await this.navigation();
+			this.reportFeedback(ERROR_CODE.navigation[code]);
+		})();
 	}
 
 	cmdStringSubCb()
 	{
-		return (msg) => {
+		return async (msg) => {
 			let cmd = msg.data;
 			roslog.info(`Rosnodejs got cmd_string: ${cmd}`);
-			switch(cmd)
+			let cmdList = cmd.split(':');
+			let cmdPrefix = cmdList[0].trim();
+			let params = cmdList.length === 2 ? cmdList[1] : '';
+			let code;
+			switch(cmdPrefix)
 			{
 				case CMD_STRING.MAPPING:
-					this.mapping();
+					code = await this.mapping();
+					this.reportFeedback(ERROR_CODE.mapping[code]);
 					break;
 				case CMD_STRING.SAVE_MAP:
-					this.saveMap();
+					code = await this.saveMap();
+					this.reportFeedback(ERROR_CODE.saveMap[code]);
 					break;
 				case CMD_STRING.SAVE_MAP_EDIT:
-					this.saveMapEdit();
+					code = await this.saveMapEdit(true);
+					this.reportFeedback(ERROR_CODE.navigation[code]);
 					break;
 				case CMD_STRING.NAVIGATION:
-					this.navigation();
+					code = await this.navigation();
+					this.reportFeedback(ERROR_CODE.navigation[code]);
+					break;
+				case CMD_STRING.DBPARAM_INSERT:
+					code = await this.addScene(params);
+					if (!code)
+					{
+						let branches = await this.gitBranches();
+						this.reportFeedback('dbparam:' + branches.join(' '));
+					}
+					else
+					{
+						this.reportFeedback('error:dbparam');
+					}
+					break;
+				case CMD_STRING.DBPARAM_DELETE:
+					code = await this.deleteScene(params);
+					if (!code)
+					{
+						let branches = await this.gitBranches();
+						this.reportFeedback('dbparam:' + branches.join(' '));
+					}
+					else
+					{
+						this.reportFeedback('error:dbparam');
+					}
+					break;
+				case CMD_STRING.DBPARAM_SELECT:
+					let branches = await this.gitBranches();
+					this.reportFeedback('dbparam:' + branches.join(' '));
+					break;
+				case CMD_STRING.DBPARAM_UPDATE:
+					code = await this.changeScene(params);
+					if (!code)
+					{
+						let branches = await this.gitBranches();
+						this.reportFeedback('dbparam:' + branches.join(' '));
+					}
+					else
+					{
+						this.reportFeedback('error:dbparam');
+					}
 					break;
 				default:
+					roslog.warn(`Unknown command: ${cmd}`);
 					break;
 			}
 		};
 	}
 
+	mappingSrvCb()
+	{
+		return async (req, res) => {
+			let code = await this.mapping();
+			res.success = !code;
+			res.message = ERROR_CODE.mapping[code];
+			return true;
+		};
+	}
+
+	saveMapSrvCb()
+	{
+		return async (req, res) => {
+			let code = await this.saveMap();
+			res.success = !code;
+			res.message = ERROR_CODE.saveMap[code];
+			return true;
+		};
+	}
+
+	saveMapEditSrvCb()
+	{
+		return async (req, res) => {
+			let code = await this.saveMapEdit();
+			res.success = !code;
+			res.message = ERROR_CODE.saveMapEdit[code];
+			return true;
+		};
+	}
+
+	navigationSrvCb()
+	{
+		return async (req, res) => {
+			let code = await this.navigation();
+			res.success = !code;
+			res.message = ERROR_CODE.navigation[code];
+			return true;
+		};
+	}
+
 	async mapping()
 	{
+		if (this.rosMode == ROS_MODE.ERROR)
+		{
+			roslog.error('ROS in error mode');
+			return 1;
+		}
 		if (this.rosMode == ROS_MODE.MAPPING)
 		{
-			roslog.warn(`Already in mode: ${ROS_MODE.MAPPING}, doing nothing`);
-			return;
+			roslog.error(`Already in mode: ${ROS_MODE.MAPPING}, doing nothing`);
+			return 2;
 		}
 		if (this.rosMode == ROS_MODE.CONVERTING)
 		{
-			roslog.warn('Busy, doing nothing');
-			return;
-		}
-		if (this.rosMode == ROS_MODE.ERROR)
-		{
-			roslog.warn('ROS in error mode, will try to switch to mapping');
+			roslog.error('Busy, doing nothing');
+			return 3;
 		}
 		this.rosMode = ROS_MODE.CONVERTING;
 		roslog.info(`Switching to mode: ${ROS_MODE.MAPPING}`);
@@ -133,20 +259,20 @@ class CommonRosApi
 			}
 			err += 'still alive after 3 attempts';
 			roslog.error(err);
-			// report
 			this.rosMode = ROS_MODE.ERROR;
-			this.reportFeedback(err);
-			return;
+			return 4;
 		}
 		// reset odom
 		this.odomResetPub.publish(new this.std_msgs.Empty());
 		// launch mapping node
-		shell.exec(LAUNCH_CMD.MAPPING, (code, stdout, stderr) => {
+		shell.exec(LAUNCH_CMD.MAPPING, {silent: false}, (code, stdout, stderr) => {
 			if (code || stderr)
 			{
 				console.log(stderr);
-				this.rosMode = ROS_MODE.ERROR;
-				this.reportFeedback(this.rosMode);
+			}
+			else
+			{
+				console.log(stdout);
 			}
 		});
 		let timeout = 5000;
@@ -156,72 +282,88 @@ class CommonRosApi
 			let allNodes = await this.rosNodes();
 			for (let node of allNodes.nodes)
 			{
-				if (node.indexOf(LAUNCH_CMD.MAPPING) !== -1)
+				// if (node.indexOf(ROS_MODE.MAPPING) !== -1)
+				if (node.indexOf('mapping') !== -1)
 				{
 					this.rosMode = ROS_MODE.MAPPING;
-					this.reportFeedback(this.rosMode);
-					return;
+					return 0;
 				}
 			}
+			await sleep(interval);
+			timeout -= interval;
 		}
 		roslog.error(`Failed to switch to mapping.`);
 		this.rosMode = ROS_MODE.ERROR;
-		this.reportFeedback(this.rosMode);
+		return 6;
 	}
 
 	async saveMap()
 	{
+		if (this.rosMode === ROS_MODE.ERROR)
+		{
+			roslog.error('ROS in error mode');
+			return 1;
+		}
 		if (this.rosMode !== ROS_MODE.MAPPING)
 		{
-			roslog.warn(`Can not save map in ros mode: ${this.rosMode}, doing nothing`);
-			return
+			roslog.error(`Can not save map in ros mode: ${this.rosMode}, doing nothing`);
+			return 2;
 		}
 		if (!this.robotPose)
 		{
 			roslog.error(`Can not get robot pose`);
-			this.reportFeedback();
-			//return;
+			return 3;
 		}
 		roslog.info('Saving map.');
-		// TODO: check if there exists more then one node publishing /map topic
 		try
 		{
 			await pShell.exec(LAUNCH_CMD.SAVE_MAP);
 		}
 		catch(err)
 		{
-			roslog.error('Failed to save map');
-			this.reportFeedback();
-			return;
+			roslog.error('Map_saver failed to save map.');
+			return 4;
 		}
 		// save map_edit
 		await sleep(1000);
 		let err = await this.saveMapEditByCp();
 		if (err)
 		{
-			roslog.error('Failed to save map_edit(default)');
-			this.reportFeedback();
-			return;
+			roslog.error('Failed to save map_edit by copy');
+			return 5;
 		}
 		this.rosMode = ROS_MODE.SAVE_MAP;
 		roslog.info('Saved map and map_edit(default)');
-		this.reportFeedback(this.rosMode);
+		return 0;
 	}
 
-	async saveMapEdit()
+	async saveMapEdit(switchToNavi=false)
 	{
 		if (!this.mapEditImg)
 		{
-			roslog.warn('Can not save map_edit, since the original map_edit image not loaded');
-			return;
+			roslog.info('no virtual obstacle received, will use the default map_edit');
+			if (switchToNavi)
+			{
+				let code = await this.navigation();	
+				return code;
+			}
+			else
+			{
+				return 0;
+			}
+			
 		}
-		let mapEditFile = PATH_DBPARAM + 'map_edit.png';
+		let mapEditFile = PATH_DBPARAM + '/map_edit' + this.mapFormat;
 		let dump = new Promise((resolve, reject) => {
 			this.mapEditImg.write(mapEditFile, (err) => {
 				if (err)
+				{
 					reject(err);
+				}
 				else
+				{
 					resolve();
+				}
 			});
 		});
 		try
@@ -230,12 +372,18 @@ class CommonRosApi
 		}
 		catch (err)
 		{
-			roslog.error('Failed to save map_edit.png');
-			this.reportFeedback();
-			return;
+			console.log(err)
+			roslog.error('Failed to save map_edit');
+			return 1;
 		}
-		// switch to navigation
-		this.navigation();
+		this.mapEditImg = null;
+		roslog.info('saved map_edit');
+		await sleep(1000);
+		if (switchToNavi)
+		{
+			let code = await this.navigation();	
+			return code;
+		}
 	}
 
 	async navigation()
@@ -243,12 +391,12 @@ class CommonRosApi
 		if (this.rosMode === ROS_MODE.CONVERTING)
 		{
 			roslog.warn('Busy, doing nothing');
-			return;
+			return 1;
 		}
 		this.rosMode = ROS_MODE.CONVERTING;
 		roslog.info(`Switching to ${ROS_MODE.NAVIGATION}`);
 		// kill nodes
-		let aliveNodes = await this.brutalKillNodes(['slam_gmapping', 'move_base', 'map_edit_server']);
+		let aliveNodes = await this.brutalKillNodes([this.mappingMode, 'move_base', 'map_edit_server']);
 		if (aliveNodes.length !== 0)
 		{
 			let err = 'FATAL:nodes ';
@@ -258,20 +406,22 @@ class CommonRosApi
 			}
 			err += 'still alive after 3 attempts';
 			roslog.error(err);
-			// report
 			this.rosMode = ROS_MODE.ERROR;
-			this.reportFeedback(err);
-			return;
+			return 2;
 		}
+		roslog.info(`alive nodes: ${aliveNodes.length}`);
 		// launch navigation nodes
-		shell.exec(LAUNCH_CMD.NAVIGATION, (code, stdout, stderr) => {
+		shell.exec(LAUNCH_CMD.NAVIGATION, {silent: false}, (code, stdout, stderr) => {
 			if (code || stderr)
 			{
 				console.log(stderr);
-				this.rosMode = ROS_MODE.ERROR;
-				this.reportFeedback(this.rosMode);
+			}
+			else
+			{
+				console.log(stdout);
 			}
 		});
+
 		let timeout = 5000;
 		let interval = 500;
 		while (timeout > 0)
@@ -279,26 +429,20 @@ class CommonRosApi
 			let allNodes = await this.rosNodes();
 			for (let node of allNodes.nodes)
 			{
-				if (node.indexOf(LAUNCH_CMD.NAVIGATION) !== -1)
+				if (node.indexOf('move_base') !== -1)
 				{
-					// set initial pose
-					let initPose = new this.geometry_msgs.PoseWithCovarianceStamped();
-					initPose.header.frame_id = 'map';
-					initPose.pose = this.robotPose;
-					initPose.pose.covariance[0] = 0.25;
-				    initPose.pose.covariance[7] = 0.25;
-				    initPose.pose.covariance[35] = 0.25;
-				    this.initialPosePub.publish(initPose);
-
+					this.setInitialPose(this.robotPose);
+					roslog.info(`switched to mode: ${ROS_MODE.NAVIGATION}`);
 					this.rosMode = ROS_MODE.NAVIGATION;
-					this.reportFeedback(this.rosMode);
-					return;
+					return 0;
 				}
 			}
+			await sleep(interval);
+			timeout -= interval;
 		}
-		roslog.error(`Failed to switch to ${LAUNCH_CMD.NAVIGATION}.`);
+		roslog.error(`Failed to switch to ${ROS_MODE.NAVIGATION}.`);
 		this.rosMode = ROS_MODE.ERROR;
-		this.reportFeedback(this.rosMode);
+		return 3;
 	}
 
 	virtualObstacleSubCb()
@@ -320,7 +464,7 @@ class CommonRosApi
 			if (!this.mapEditImg)
 			{
 				// load map_edit.png
-				let mapEditFile = PATH_DBPARAM + '/map_edit.png';
+				let mapEditFile = PATH_DBPARAM + '/map_edit' + this.mapFormat;
 				this.mapEditImg = gm(mapEditFile).fill('none');
 			}
 			let obstaclesPx = this.world2pixel(obstacles, this.mapInfo);
@@ -338,7 +482,7 @@ class CommonRosApi
 				this.mapEditImg.stroke('#000', 2);	
 			}
 			// circle
-			if (obstaclesPx.points.length === 1 && obstaclesPixel.points[0].z > 0)
+			if (obstaclesPx.points.length === 1 && obstaclesPx.points[0].z > 0)
 			{
 				let radius = obstaclesPx.points[0].z;
 				let center = obstaclesPx.points[0];
@@ -352,8 +496,8 @@ class CommonRosApi
 					let end = obstaclesPx.points[i+1];
 					this.mapEditImg.drawLine(start.x, start.y, end.x, end.y);
 				}
-				start = end;
-				end = msgMap.points[0];
+				start = obstaclesPx.points[3];
+				end = obstaclesPx.points[0];
 				this.mapEditImg.drawLine(start.x, start.y, end.x, end.y);
 			}
 			else
@@ -368,10 +512,52 @@ class CommonRosApi
 		};
 	}
 
+	networkSubCb()
+	{
+		return async (msg) => {
+			roslog.info(`network setting: ${msg.data}`);
+			let settings = JSON.parse(msg.data);
+			let mode = settings.mode;
+			let cmd = [`cd ${PATH_SHELL};./comm.sh`];
+			this.network = {};
+			if (mode === 'wifi')
+			{
+				cmd.push('-m wifi');
+				if (settings.ssid)
+				{
+					cmd.push(`-s ${settings.ssid}`);
+					this.network['ssid'] = settings.ssid;
+				}
+				if (settings.password)
+				{
+					cmd.push(`-p ${settings.password}`);
+					this.network['password'] = settings.password;
+				}
+				if (settings.ip)
+				{
+					cmd.push(`-i ${settings.ip}`);
+					this.network['ip'] = settings.ip;
+				}
+			}
+			if (settings.remember === 'true')
+			{
+				cmd.push('-a');
+			}
+			let cmdStr = cmd.join(' ');
+			shell.exec(cmdStr, {silent: false}, (code, stdout, stderr) => {
+				if (code || stderr)
+				{
+					roslog.error(`error code: ${code}`);
+					roslog.error(`${stderr}`);
+				}
+			});
+		};
+	}
+
 	async saveMapEditByCp()
 	{
 		shell.cd(PATH_DBPARAM);
-		shell.cp('map.png', 'map_edit.png');
+		shell.cp(`map${this.mapFormat}`, `map_edit${this.mapFormat}`);
 		shell.cp('map.yaml', 'map_edit.yaml');
 		let mapYaml;
 		try
@@ -383,7 +569,7 @@ class CommonRosApi
 			console.log(err);
 			return 1;
 		}
-		let mapEditYaml = mapYaml.replace(/map.png/, 'map_edit.png');
+		let mapEditYaml = mapYaml.replace(`map${this.mapFormat}`, `map_edit${this.mapFormat}`);
 		try
 		{
 			await pFs.writeFile('map_edit.yaml', mapEditYaml);
@@ -394,6 +580,180 @@ class CommonRosApi
 			return 1;
 		}
 		return 0;
+	}
+
+	async addScene(sceneName)
+	{
+		if (this.dbparamLock)
+		{
+			roslog.error('dbparam busy, ignore add');
+			return 1;
+		}
+		this.dbparamLock = true;
+		let branches = await this.gitBranches();
+		if (branches.indexOf(sceneName) !== -1)
+		{
+			roslog.error(`${sceneName} already exists`);
+			this.dbparamLock = false;
+			return 2;
+		}
+		try
+		{
+			await pShell.exec(`git branch ${sceneName}`);
+			await pShell.exec('git add .');
+			await pShell.exec(`git commit -m "insert ${sceneName}"`);
+			await pShell.exec(`git checkout ${sceneName}`);
+		}
+		catch (e)
+		{
+			roslog.error('insert error');
+			this.dbparamLock = false;
+			return 3;
+		}
+		// set initial pose
+		this.setInitialPose();
+		// cannot use await shell.exec(), 
+		// since ros nodes started by bringup-dbparam.launch will block the process
+		shell.exec(LAUNCH_CMD.DBPARAM, {silent: false, async: true});
+		// wait until launch finished
+		await sleep(5000);
+		this.dbparamLock = false;
+		return 0;
+	}
+
+	async changeScene(sceneName)
+	{
+		if (this.dbparamLock)
+		{
+			roslog.error('dbparam busy, ignore change');
+			return 1;
+		}
+		this.dbparamLock = true;
+		let branches = await this.gitBranches();
+		if (branches.indexOf(sceneName) === -1)
+		{
+			roslog.error(`${sceneName} not exist`);
+			this.dbparamLock = false;
+			return 2;
+		}
+		else if (branches[0] === sceneName)
+		{
+			roslog.warn(`already on branch ${sceneName}`);
+			this.dbparamLock = false;
+			return 3;
+		}
+		try
+		{
+			await pShell.exec('git add .');
+			await pShell.exec(`git commit -m "update ${sceneName}"`);
+			await pShell.exec(`git checkout ${sceneName}`);
+		}
+		catch (e)
+		{
+			roslog.error('git checkout error');
+			this.dbparamLock = false;
+			return 4;
+		}
+		shell.exec(LAUNCH_CMD.DBPARAM, {silent: false, async: true});
+		await sleep(5000);
+		this.setInitialPose();
+		this.dbparamLock = false;
+		return 0;
+	}
+
+	async deleteScene(sceneName)
+	{
+		if (this.dbparamLock)
+		{
+			roslog.error('dbparam busy, ignore delete');
+			return 1;
+		}
+		this.dbparamLock = true;
+		let branches = await this.gitBranches();
+		if (sceneName === 'master')
+		{
+			roslog.warn('cannot delete branch master');
+			this.dbparamLock = false;
+			return 2;
+		}
+		if (sceneName === branches[0])
+		{
+			roslog.error(`cannot delete branch ${sceneName}, which you are currently on`);
+			this.dbparamLock = false;
+			return 3;
+		}
+		try
+		{
+			await pShell.exec('git add .');
+			await pShell.exec(`git commit -m "delete ${sceneName}"`);
+			await pShell.exec(`git branch -D ${sceneName}`);
+		}
+		catch(e)
+		{
+			roslog.error('git delete error');
+			this.dbparamLock = false;
+			return 4;
+		}
+		this.dbparamLock = false;
+		return 0;
+	}
+
+	async gitBranches()
+	{
+		try
+		{
+			shell.cd(PATH_DBPARAM);
+			let branchesStr = await pShell.exec('git branch');
+			let branches = branchesStr.trim().split('\n');
+			let currentBranch = {
+				index: null,
+				name: null
+			};
+			for (let i = 0; i < branches.length; i++)
+			{
+				let branch = branches[i].trim();
+				if (branches[i].startsWith('*'))
+				{
+					currentBranch.name = branches[i].slice(1).trim();
+					currentBranch.index = i;
+					branch = currentBranch.name;
+				}
+				branches[i] = branch;
+			}
+			branches.splice(currentBranch.index, 1);
+			branches.unshift(currentBranch.name);
+			return branches;
+		}
+		catch (e)
+		{
+			let errInfo = e.stderr ? e.stderr : e;
+			roslog.error(errInfo);
+			return [];
+		}
+	}
+
+	setInitialPose(pose)
+	{
+		let initPose = new this.geometry_msgs.PoseWithCovarianceStamped();
+		initPose.header.frame_id = 'map';
+		if (pose)
+		{
+			initPose.pose.pose = pose
+		}
+		else
+		{
+			initPose.pose.pose.orientation.w = 1.0;
+		}
+		let covariance = [];
+		for (let i = 0; i < 36; i++)
+		{
+			covariance.push(0);
+		}
+		initPose.pose.covariance = covariance;
+		initPose.pose.covariance[0] = 0.25;
+	    initPose.pose.covariance[7] = 0.25;
+	    initPose.pose.covariance[35] = Math.PI * Math.PI / (12*12);
+		this.initialPosePub.publish(initPose);
 	}
 
 	getMapInfo()
@@ -414,7 +774,7 @@ class CommonRosApi
 			let cmd = 'rosnode kill ' + this.withNs(node);
 			try
 			{
-				let ret = await pShell.exec(cmd, {silent: true});
+				let ret = await pShell.exec(cmd, {silent: false});
 			}
 			catch (err)
 			{
@@ -430,7 +790,14 @@ class CommonRosApi
 		while (attempts < maxAttempts)
 		{
 			aliveNodes = [];
-			await this.killNodes(nodes);
+			try{
+				await this.killNodes(nodes);
+			}
+			catch(e)
+			{
+				console.log('++++++')
+				console.log(e)
+			}	
 			await sleep(500);
 			let allNodes = await this.rosNodes();
 			for (let node of allNodes.nodes)
@@ -444,17 +811,20 @@ class CommonRosApi
 			{
 				break;
 			}
+			attempts++;
 		}
 		return aliveNodes;
 	}
 
-	reportFeedback(info)
+	reportFeedback(info, mute)
 	{
 		if (!info)
 			return;
 		let msg = new this.std_msgs.String();
 		msg.data = info;
 		this.shellFeedbackPub.publish(msg);
+		if (!mute)
+			roslog.info(`shell feedback: ${msg.data}`);
 	}
 
 	world2pixel(obstacles, mapInfo)
@@ -469,7 +839,7 @@ class CommonRosApi
 				y: mapInfo.height - (obstacle.y - mapInfo.origin.position.y) / mapInfo.resolution,
 				z: obstacle.z / mapInfo.resolution
 			};
-			obstaclesPixel.push(point);
+			obstaclesPixel.points.push(point);
 		}
 		return obstaclesPixel;
 	}
@@ -490,7 +860,16 @@ class CommonRosApi
 
 	withNs(name)
 	{
+		return CommonRosApi.withNs(name, this.namespace);
+	}
+
+	static withNs(name, namespace)
+	{
+		let ns = (namespace === 'undefined' || namespace === '/') ? '' : namespace;
 		let shortName = name.startsWith('/') ? name : `/${name}`;
-		return this.namespace ? `/${this.namespace}${shortName}` : shortName;
+		let fullName = ns + shortName;
+		return fullName.startsWith('/') ? fullName : '/'+fullName;
 	}
 }
+
+module.exports = CommonRosApi;

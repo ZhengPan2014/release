@@ -1,0 +1,8 @@
+prefix=/home/ouiyeah/catkin_ws/install
+
+Name: robot_safety
+Description: Description of robot_safety
+Version: 0.0.0
+Cflags: -I/home/ouiyeah/catkin_ws/install/include
+Libs: -L/home/ouiyeah/catkin_ws/install/lib 
+Requires: roscpp geometry_msgs sensor_msgs std_msgs visualization_msgs tf laser_geometry dynamic_reconfigure

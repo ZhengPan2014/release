@@ -13,7 +13,7 @@ var fn_version = async (ctx, next) => {
 
 var fn_namespace = async (ctx, next) => {
 	var namespace = paramServer.getParam('namespace');
-	ctx.rest({'namespace': namespace});
+	ctx.rest({'namespace': `${namespace}`});
 }
 
 module.exports = {

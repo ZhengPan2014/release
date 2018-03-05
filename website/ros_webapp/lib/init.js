@@ -1,24 +1,24 @@
 'use strict';
 
-const paths = {
-	pathPrefix: '',
-	readmePath: '../../',
-	cfgPath: '../../workspaces/hitrobot/ros_org/src'
-};
-
 const fs = require('mz/fs');
 const os = require('os');
-var ParamServer = require('../models/param_server');
-var boot = require('./boot');
 
-var paramServer = new ParamServer({});
-var model = null;
-var pathPrefix = null;
-var version = null;
-var config = null;
+const ParamServer = require('../models/param_server');
+let paramServer = new ParamServer({});
+
+const HOME = homeDir();
+const PATH_CATKIN = process.env.PATH_CATKIN || `${HOME}/catkin_ws`;
+const PATH_BRINGUP = process.env.PATH_BRINGUP || `${PATH_CATKIN}/src/hitrobot/bringup`;
+
+function homeDir()
+{
+	let index = __dirname.indexOf('/', 6);
+	return __dirname.substring(0, index);
+}
 
 function getModel()
 {	
+	let model;
 	if (process.env.HOSTNAME)
 	{
 		model = process.env.HOSTNAME;
@@ -32,45 +32,59 @@ function getModel()
 	paramServer.setParam({'model': model});
 }
 
-function setPathPrefix(path)
+function getVersion()
 {
-	var path = path || '../../src';
-	if (fs.existsSync(path))
-	{
-		pathPrefix = '../../src/hitrobot';
-	}
-	else
-	{
-		pathPrefix = '../../install/share';
-	}
-	paramServer.setParam({'pathPrefix': pathPrefix});
-}
-
-function getVersion(path)
-{
-	var path = path || '..';
-	var file = path + '/README.md';
+	let file = PATH_CATKIN + '/README.md';
 	try
 	{
-		var readme = fs.readFileSync(file, 'utf-8');
+		let readme = fs.readFileSync(file, 'utf-8');
 		readme = readme.split('\n');
-		var versionLine = readme[4].split('|');
-		version = versionLine[1].trim();
+		let versionLine = readme[4].split('|');
+		let version = versionLine[1].trim();
 		paramServer.setParam({'version': version});
-		console.log(version);
 	}
 	catch(e)
 	{
 		// TODO
-		console.log(e);
+		// console.log(e);
+		console.log('Failed to read version from README.md');
 		paramServer.setParam({'version': 'undefined'});
 	}
 }	
 
-function getConfig(path)
+function getCfg()
 {
-	var path = path || pathPrefix;
-	var configFile = `${path}/bringup/auth/${model}/hitrobot.cfg`;
+	let cfFile = `${PATH_BRINGUP}/param/.cfg`;
+	let cfg = {};
+	try
+	{
+		let rawCfg = fs.readFileSync(cfFile, 'utf-8');
+		cfg = JSON.parse(rawCfg);
+		/*
+		if (cfg.mysql)
+		{
+			console.log('Connecting to MySQL.');
+			const db = require('../models/db');
+			db.initMysql(cfg.mysql);
+		}
+		else
+		{
+			console.log('MySQL config not found.NodeJs will start without connection to MySQL');
+		}
+		*/
+	}
+	catch(e)
+	{
+		// TODO: hitrobot.cfg not found
+		console.log('Load .cfg failed.');
+	}
+	paramServer.setParam({'cfg': cfg});
+}
+
+function getConfig()
+{
+	let model = paramServer.getParam('model');
+	let configFile = `${PATH_BRINGUP}/auth/${model}/hitrobot.cfg`;
 	try
 	{
 		var rawConfig = fs.readFileSync(configFile, 'utf-8');
@@ -108,11 +122,9 @@ function getNamespace()
 
 function init()
 {
-	// boot.init();
-
 	getModel();
-	setPathPrefix(paths.pathPrefix);
-	getVersion(paths.readmePath);	
+	getVersion();	
+	getCfg();
 	getConfig();
 	getNamespace();
 }

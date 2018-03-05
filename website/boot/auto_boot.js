@@ -3,6 +3,7 @@
 const fs = require('fs');
 const os = require('os');
 const shell = require('shelljs');
+const child_process = require('child_process');
 
 const rosnodejs = require('./lib/ros');
 
@@ -11,6 +12,7 @@ const pShell = require('./lib/shell_promise');
 const Dev = require('./lib/dev');
 const roslog = require('./lib/utils').roslog;
 const sleep = require('./lib/utils').sleep;
+const ROSLauncher = require('./lib/roslauncher');
 
 const PATH_BRINGUP = process.env.PATH_BRINGUP;
 const CFG_FILE = PATH_BRINGUP + '/param/.cfg';
@@ -30,7 +32,8 @@ class AutoBoot
 		(async ()=>{
 			this.nh = await rosnodejs.initNode('auto_boot', {onTheFly: true});
 			this.dev = await new Dev(this.namespace, this.nh);
-			this.dev.on('usbdev', this.usbDevCb());
+			this.launcher = new ROSLauncher(this.namespace);
+			this.dev.on('usbdev', this.usbDevCbTest());
 			// ros services
 			this.rebootSrv = this.nh.advertiseService(this.nameWithNs('/rosnodejs/reboot'), 
 				'std_srvs/Trigger', this.rebootCb());
@@ -39,17 +42,81 @@ class AutoBoot
 			// TODO: more than one lidars on the plantform???
 			this.calLidarSrv = this.nh.advertiseService(this.nameWithNs('/rosnodejs/calibrate_lidar'), 
 				'std_srvs/Trigger', this.calLidarCb());
-			if (!isObjEmpty(this.config))
+			if (!isObjEmpty(this.configs))
 			{
-				this.boot();
+				// this.boot();
+				this.bootFromLauncher();
 			}
 			else
 			{
-				let netDevInfo = await this.dev.checkNetDev();
-				this.handleNetDev(netDevInfo);
-				this.dev.checkUsbDev(TTY_RULES);
+				let netDevInfo = await this.dev.checkNetDev('192.168.0.10', '192.168.0.14');
+				// this.handleNetDev(netDevInfo);
+				this.handleNetDevTest(netDevInfo);
+				this.dev.checkUsbDev(TTY_RULES);		
 			}
 		})();
+	}
+
+	async bootFromLauncher()
+	{
+		let usbDevInfo = await this.dev.getUsbDevInfo();
+		roslog.info('Booting...');
+		for (let config in this.configs)
+		{
+			// remap pci to usb symLLink
+			for (let key in this.configs[config])
+			{
+				if (this.configs[config][key].startsWith('pci'))
+				{
+					this.configs[config][key] = usbDevInfo[this.configs[config][key]];
+				}
+			}
+			// remove the number at the end of config name
+			let launcherName = config;
+			if (config.indexOf('#') !== -1)
+			{
+				launcherName = config.split('#')[0];
+			}
+
+			// start ROS nodes by launch file
+			if (hasLaunchFile(launcherName))
+			{
+				this.launcher.addLaunchFile(launcherName, this.configs[config]);
+				this.launcher.run(launcherName);
+			}
+			else
+			{
+				let Launcher;
+				try
+				{
+					Launcher = require(`./launchers/${launcherName}`);
+				}
+				catch(e)
+				{
+					roslog.warn(`Launcher for [${launcherName}] not found, will ignore.`);
+					continue;
+				}
+				let launcher = new Launcher(this.configs[config]);
+				launcher.updateParam(this.configs[config]);
+				if (launcher.isVLaunch)
+				{
+					this.launcher.addVLaunch(launcherName, launcher.launch);
+				}
+				else
+				{
+					this.launcher.addLaunch(launcherName, launcher);	
+				}
+				this.launcher.run(launcherName);
+				await sleep(200);
+			} // else
+		}
+		// fork a process to start ros_webapp
+		let rosWebappProcess = child_process.fork('../ros_webapp/app.js')
+		rosWebappProcess.on('message', (msg) => {
+			roslog.info(`Received roslaunch request from child process.`);
+			this.launcher.run(msg);
+		});
+		rosWebappProcess.send(this.configs);
 	}
 
 	async boot()
@@ -137,6 +204,7 @@ class AutoBoot
 					roslog.warn(`Unknown network device: [${dev}]@[${devInfo['ip']}], will ignore.`);
 					continue;
 				}
+				
 				let laserLaunch = 'roslaunch bringup laser.launch';
 				for (let key in devInfo)
 				{
@@ -153,6 +221,7 @@ class AutoBoot
 					}
 				});
 				await sleep(500);
+				
 			}
 			else {}
 		} // for
@@ -180,6 +249,51 @@ class AutoBoot
 		let commLaunch = 'roslaunch bringup comm.launch';
 		shell.exec(commLaunch, (code, stdout, stderr)=>{});
 		roslog.info('Boot Completed.');
+	}
+
+	usbDevCbTest()
+	{
+		return async (rules) => {
+			let num = 0;
+			for (let pci in rules)
+			{
+				let symLink = rules[pci];
+				if (symLink === 'null')
+				{
+					roslog.warn(`Unknown usb device @[${pci}]`);
+					this.configs[`unknown_usb#${num}`] = {
+						port: pci
+					};
+					num++;
+					continue;
+				}
+				let portInfo = symLink.split('_');
+				let prefix = portInfo[0];
+				let type = portInfo[1];
+				let model = portInfo[2];
+				let suffix = portInfo[3];
+				// TODO: needs a better way
+				if (type === 'drive' && model === 'aqmd')
+				{
+					let portName = 'drive_port_' + suffix;
+					if (!this.configs['drive_aqmd_2#0'])
+					{
+						this.configs['drive_aqmd_2#0'] = {};	
+					}
+					this.configs['drive_aqmd_2#0'][portName] = pci;
+				}
+				else
+				{
+					let configName = type + '_' + model + '#' + num;
+					this.configs[configName] = {
+						port: pci
+					};
+				}
+				num++;
+			} // for
+			await this.dumpCfg(CFG_FILE, this.configs);
+			this.bootFromLauncher();
+		};
 	}
 
 	usbDevCb()
@@ -257,7 +371,8 @@ class AutoBoot
 			this.configs['udev'] = this.config;
 
 			await this.dumpCfg(CFG_FILE, this.configs);
-			this.boot();
+			// this.boot();
+			this.bootFromLauncher();
 		}
 	}
 
@@ -269,6 +384,7 @@ class AutoBoot
 		{
 			let devName;
 			let dev = {};
+
 			dev['ip'] = ip;
 			switch (netDev[ip])
 			{
@@ -292,16 +408,6 @@ class AutoBoot
 					ret[devName] = dev;
 					continue;
 			}
-			dev['name'] = "";
-			dev['x'] = 0.0;
-			dev['y'] = 0.0;
-			dev['z'] = 0.2;
-			dev['roll'] = 0.0;
-			dev['pitch'] = 0.0;
-			dev['yaw'] = 0.0;
-			dev['angle_min'] = -2.35619449019;
-			dev['angle_max'] = 2.35619449019;
-			dev['range_max'] = 20.0;
 			ret[devName] = dev;
 			num++;
 		} // for
@@ -314,6 +420,18 @@ class AutoBoot
 			this.config[dev] = ret[dev];
 		}
 		this.configs['udev'] = this.config;
+	}
+
+	handleNetDevTest(netDev)
+	{
+		let num = 0;
+		for (let ip in netDev)
+		{
+			let type = netDev[ip];
+			//roslog.error(`${ip}: ${type}`);
+			this.configs[`${type}#${num}`] = {ip: ip};
+			num++;
+		}
 	}
 
 	/**
@@ -393,6 +511,12 @@ async function getNamespace(detect)
 			return '';
 		}
 	}
+	if (process.env.AGV_NAME)
+	{
+		return process.env.AGV_NAME;
+	}
+	return '';
+	/*
 	// hitrobot-forklift-298ef01
 	//          --------      --
 	let hostname = os.hostname();
@@ -404,6 +528,7 @@ async function getNamespace(detect)
 		sn = fullSN.substr(fullSN.length-2);
 	}
 	return model + sn;
+	*/
 }
 
 /**
@@ -424,6 +549,18 @@ function isObjEmpty(obj)
 	return true;
 }
 
+/**
+ * check if there exists launch file
+ * @param  {string}  file : launch file name without suffix
+ * @return {Boolean}
+ */
+function hasLaunchFile(file)
+{
+	let file_ = file.replace(/_/g, "-");
+	return fs.existsSync(PATH_BRINGUP + '/launch/' + file + '.launch')
+		|| fs.existsSync(PATH_BRINGUP + '/launch/' + file_ + '.launch');
+}
+
 /*********************************/
 async function main()
 {
@@ -434,14 +571,43 @@ async function main()
 	}
 	catch(e)
 	{
-		console.log(e);
+		roslog.warn(`Failed to read or parse [${CFG_FILE}], will create one.`)
 	}
 	// in case there is no .cfg file in dbparam,
 	// or the .cfg file is empty
 	if (isObjEmpty(configs))
 	{
 		configs = {};
-		configs['base'] = {};
+	}
+	let ns = await getNamespace();
+	// if the namespace is specified in .cfg, use it.
+	if (configs.hasOwnProperty('ns'))
+	{
+		ns = configs['ns'];
+	}
+	new AutoBoot(configs, ns);
+}
+main()   
+/*********************************/
+
+/*********************************/
+async function test()
+{
+	let configs;
+	try
+	{
+		configs = await pFs.loadCfg(CFG_FILE);
+	}
+	catch(e)
+	{
+		// console.log(e);
+	}
+	// in case there is no .cfg file in dbparam,
+	// or the .cfg file is empty
+	if (isObjEmpty(configs))
+	{
+		configs = {};
+		// configs['base'] = {};
 	}
 	let ns = await getNamespace();
 	ns = ''; // debug
@@ -452,5 +618,5 @@ async function main()
 	}
 	new AutoBoot(configs, ns);
 }
-main()   
+// test()   
 /*********************************/

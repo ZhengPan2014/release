@@ -29,7 +29,7 @@ class Tf
 
 	// params:
 	// 	1. quaternion orientation;
-	// 	2. bool ignoreXY: false by default;
+	// 	2. bool ignoreXY(optional): false by default;
 	// return:
 	// 	{
 	// 		float roll: in rad,
@@ -105,6 +105,48 @@ class Tf
 			x: x - this.reg.x * this.scale.x,
 			y: y - this.reg.y * this.scale.y
 		};
+	}
+
+	// laserScan -> laserScan(frime_id: map)
+	// params:
+	// 	1. sensor_msgs/LaserScan laserScan
+	// 	2. geometry_msgs/TransformStamped transform: transform from map to laserScan frame_id
+	// 	3. int skip
+	// 	4. bool isUpsideDown
+	// return:
+	// 	geometry_msgs/Point[]
+	laserScanToMap(laserScan, transform, skip, isUpsideDown)
+	{
+		var result = [];
+		if (!this.isTfValid(laserScan.header.stamp, transform.header.stamp, 0.5))
+		{
+			rosjs.logwarn(`Tf msg from map to ${laserScan.header.frame_id} out of date`);
+			return result;
+		}
+		var tfMat = this.transformToMat(transform);
+		for (var i = 0; i < laserScan.ranges.length; i += skip)
+		{
+			if (laserScan.ranges[i] === 'inf'
+				|| laserScan.ranges[i] < laserScan.range_min
+				|| laserScan.ranges[i] > laserScan.range_max)
+			{
+				continue;
+			}
+			var angle = laserScan.angle_min + laserScan.angle_increment * i;
+			var pos = [
+				laserScan.ranges[i] * Math.cos(angle),
+				laserScan.ranges[i] * Math.sin(angle) * Math.pow(-1, isUpsideDown),
+				1
+			];
+			var posVec = $V(pos);
+			var ret = tfMat.multiply(posVec);
+			result.push({
+				x: ret.elements[0],
+				y: ret.elements[1],
+				z: 0
+			});
+		} // for
+		return result;
 	}
 
 	// localPlan(frame_id: odom) -> localPlan(frame_id: map)

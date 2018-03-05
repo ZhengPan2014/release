@@ -1,0 +1,3 @@
+global_costmap:
+    global_frame: /map
+    map_topic: {{ns}}/map

@@ -8,6 +8,7 @@ var models = models || {
 	},
     globalPlan: planModel,
     localPlan: planModel,
+    laserScan: laserScanModel,
 };
 
 // params:
@@ -115,6 +116,26 @@ function robotModel(options)
         scaleX: 0.25,
         scaleY: 0.25,
     });
+}
+
+function laserScanModel(laserScan, tf, options)
+{
+    var container = new createjs.Container();
+    var options = options || {};
+    var size = 2;
+    var fillColor = options.color;
+    var graphics = new createjs.Graphics();
+    graphics.beginFill(fillColor);
+    for (var i = 0; i < laserScan.length; i++)
+    {
+        var posPx = tf.mapToCanvas(laserScan[i]);
+        graphics.moveTo(posPx.x, posPx.y);
+        graphics.drawCircle(posPx.x, posPx.y, size);
+    }
+    graphics.endFill();
+    var shape =  new createjs.Shape(graphics);
+    container.addChild(shape);
+    return container;
 }
 
 function waypointMapModel(options)

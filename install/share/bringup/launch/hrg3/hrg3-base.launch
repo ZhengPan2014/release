@@ -141,7 +141,7 @@
         <remap from="scan_input" to="scan_filtered"/>
         <remap from="scan_output" to="scan_rectified"/>
         <rosparam>
-            max_range: 25.0
+            range_max: 25.0
         </rosparam>
     </node>
 

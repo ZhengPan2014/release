@@ -87,7 +87,7 @@
                 freq_overflow: false
                 stop_mode: free_stop #emergency_stop
                 wheel_model: diff
-                wheel_phase_reverse: true
+                wheel_phase_reverse: false # true
                 action_chain:
                   - name: drive_port_left
                     type: write
