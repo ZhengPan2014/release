@@ -279,7 +279,15 @@ class CommonRosApi
 		let interval = 500;
 		while (timeout > 0)
 		{
-			let allNodes = await this.rosNodes();
+			let allNodes = {nodes:[]};
+			try
+			{
+				allNodes = await this.rosNodes();
+			}
+			catch(e)
+			{
+				continue;
+			}
 			for (let node of allNodes.nodes)
 			{
 				// if (node.indexOf(ROS_MODE.MAPPING) !== -1)
@@ -426,7 +434,16 @@ class CommonRosApi
 		let interval = 500;
 		while (timeout > 0)
 		{
-			let allNodes = await this.rosNodes();
+			let allNodes = {nodes:[]};
+			try
+			{
+				allNodes = await this.rosNodes();
+			}
+			catch(e)
+			{
+				console.log('==== move base ====');
+				continue;
+			}
 			for (let node of allNodes.nodes)
 			{
 				if (node.indexOf('move_base') !== -1)
@@ -789,17 +806,25 @@ class CommonRosApi
 		let aliveNodes = [];
 		while (attempts < maxAttempts)
 		{
-			aliveNodes = [];
-			try{
+			let allNodes = {nodes:[]};
+			try
+			{
 				await this.killNodes(nodes);
+			}	
+			catch(e)
+			{
+				console.log('++++ kill nodes ++++');
+			}
+			await sleep(500);
+			try
+			{
+				allNodes = await this.rosNodes();
 			}
 			catch(e)
 			{
-				console.log('++++++')
-				console.log(e)
-			}	
-			await sleep(500);
-			let allNodes = await this.rosNodes();
+				console.log('==== rosnodes ====');
+				continue;
+			}
 			for (let node of allNodes.nodes)
 			{
 				if (nodes.indexOf(node) !== -1)
