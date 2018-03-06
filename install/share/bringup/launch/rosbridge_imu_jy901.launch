@@ -12,7 +12,6 @@
             port_chain:
               - name: imu_config_port
                 type: serial
-                timeout: 0.1
                 serial_baud: 9600
                 action_chain:
                   - name: imu_config_port
@@ -25,7 +24,6 @@
                     lock: false
               - name: imu_port
                 type: serial
-                timeout: 0.1
                 action_chain:
                   - name: imu_port
                     type: write

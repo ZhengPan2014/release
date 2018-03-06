@@ -34,7 +34,7 @@
             recovery_behavior_enabled: true
             clearing_rotation_allowed: false
             oscillation_timeout: 10.0
-            planner_frequency: 1.0
+            planner_frequency: 0.0 #1.0
             <!-- max_planning_retries: 0 -->
             global_costmap:
                 global_frame: map
@@ -52,9 +52,9 @@
                     type: "range_sensor_layer::RangeSensorLayer"
                   - name: side_layer
                     type: "range_sensor_layer::RangeSensorLayer" -->
-                  - name: obstacle_layer
+<!--                   - name: obstacle_layer
                     type: "costmap_2d::ObstacleLayer"
-                  - name: inflation_layer
+ -->                  - name: inflation_layer
                     type: "costmap_2d::InflationLayer"
                 static_layer:
                     map_topic: /map_edit
@@ -165,7 +165,7 @@
                 penalize_negative_x: false 
                 path_distance_bias: 32.0 
                 goal_distance_bias: 24.0
-                occdist_scale: 0.5
+                occdist_scale: 0.0 #0.5
                 oscillation_reset_dist: 0.05
          
         </rosparam>
