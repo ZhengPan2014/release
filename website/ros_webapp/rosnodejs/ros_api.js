@@ -673,7 +673,7 @@ class CommonRosApi
 		}
 		shell.exec(LAUNCH_CMD.DBPARAM, {silent: false, async: true});
 		await sleep(5000);
-		this.setInitialPose();
+		// this.setInitialPose();
 		this.dbparamLock = false;
 		return 0;
 	}
