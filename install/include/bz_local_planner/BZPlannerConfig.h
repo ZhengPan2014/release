@@ -246,6 +246,8 @@ class DEFAULT
         if("goal_ctrl"==(*_i)->name){goal_ctrl = boost::any_cast<double>(val);}
         if("goal_reach_level"==(*_i)->name){goal_reach_level = boost::any_cast<int>(val);}
         if("convert_global"==(*_i)->name){convert_global = boost::any_cast<bool>(val);}
+        if("relocation_pose_topic"==(*_i)->name){relocation_pose_topic = boost::any_cast<std::string>(val);}
+        if("relocation_mode"==(*_i)->name){relocation_mode = boost::any_cast<bool>(val);}
       }
     }
 
@@ -269,6 +271,8 @@ double current_ctrl;
 double goal_ctrl;
 int goal_reach_level;
 bool convert_global;
+std::string relocation_pose_topic;
+bool relocation_mode;
 
     bool state;
     std::string name;
@@ -318,6 +322,10 @@ bool convert_global;
       int goal_reach_level;
 //#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       bool convert_global;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      std::string relocation_pose_topic;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      bool relocation_mode;
 //#line 218 "/opt/ros/indigo/share/dynamic_reconfigure/cmake/../templates/ConfigType.h.template"
 
     bool __fromMessage__(dynamic_reconfigure::Config &msg)
@@ -551,7 +559,7 @@ BZPlannerConfig::GroupDescription<BZPlannerConfig::DEFAULT, BZPlannerConfig> Def
 //#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.min_vel_x = std::numeric_limits<double>::infinity();
 //#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __default__.min_vel_x = 0.15;
+      __default__.min_vel_x = 0.05;
 //#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.abstract_parameters.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<double>("min_vel_x", "double", 0, "The scale of linear velocity when robot is close enough to the goal", "", &BZPlannerConfig::min_vel_x)));
 //#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
@@ -656,6 +664,26 @@ BZPlannerConfig::GroupDescription<BZPlannerConfig::DEFAULT, BZPlannerConfig> Def
       Default.abstract_parameters.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<bool>("convert_global", "bool", 0, "To convert global plan into local plan or not", "", &BZPlannerConfig::convert_global)));
 //#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<bool>("convert_global", "bool", 0, "To convert global plan into local plan or not", "", &BZPlannerConfig::convert_global)));
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __min__.relocation_pose_topic = "";
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __max__.relocation_pose_topic = "";
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __default__.relocation_pose_topic = "target_mark";
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<std::string>("relocation_pose_topic", "str", 0, "The name of the relocating frame of reference ", "", &BZPlannerConfig::relocation_pose_topic)));
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<std::string>("relocation_pose_topic", "str", 0, "The name of the relocating frame of reference ", "", &BZPlannerConfig::relocation_pose_topic)));
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __min__.relocation_mode = 0;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __max__.relocation_mode = 1;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __default__.relocation_mode = 0;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<bool>("relocation_mode", "bool", 0, "Motion mode for the bezier planner. False for navigation, True for relocation", "", &BZPlannerConfig::relocation_mode)));
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<bool>("relocation_mode", "bool", 0, "Motion mode for the bezier planner. False for navigation, True for relocation", "", &BZPlannerConfig::relocation_mode)));
 //#line 246 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.convertParams();
 //#line 246 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"

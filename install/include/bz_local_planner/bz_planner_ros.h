@@ -26,13 +26,23 @@
 #include <base_local_planner/latched_stop_rotate_controller.h>
 #include <base_local_planner/obstacle_cost_function.h>
 #include <base_local_planner/odometry_helper_ros.h>
+#include <bz_local_planner/pose_helper_ros.h>
 #include <base_local_planner/trajectory.h>
 #include <base_local_planner/goal_functions.h>
 
 #include <pluginlib/class_list_macros.h>
-#include <bz_local_planner/bz_planner_utility.h>
+#include <eigen_conversions/eigen_msg.h>
+#include <Eigen/Core>
+#include <Eigen/Geometry>
+#include <boost/thread.hpp>
 
 namespace bz_local_planner {
+
+typedef struct Bzstruct_
+{
+    geometry_msgs::Pose2D pr, ps, pt, pu, pv;
+    double ps_tan, pt_tan, pr_len, px_len, px_offset, pr_dir, ps_offset, pt_offset;
+} Bzstruct;
 
 class BZPlannerROS : public nav_core::BaseLocalPlanner {
 public:
@@ -50,7 +60,7 @@ private:
     double calcObstacleCost(base_local_planner::Trajectory& traj, std::vector<geometry_msgs::Point> footprint_spec);
     void generateSimTraj(geometry_msgs::Twist& cmd_vel, base_local_planner::Trajectory& traj);
     Eigen::Vector3f calcNewPosition(const Eigen::Vector3f& pos, const Eigen::Vector3f& vel, double dt);
-    bool calcBezierVel(geometry_msgs::Twist& cmd_vel, std::vector<geometry_msgs::Pose2D>& points, geometry_msgs::PoseStamped& goal);
+    bool calcBezierVel(geometry_msgs::Twist& cmd_vel, std::vector<geometry_msgs::Pose2D>& points,geometry_msgs::PoseStamped& start, geometry_msgs::PoseStamped& goal);
 	bool globalPlanConversion(geometry_msgs::PoseStamped& goal, std::vector<geometry_msgs::PoseStamped>& plan, Bzstruct& a);
 	void bezierParams(Bzstruct& bzstr, geometry_msgs::PoseStamped& current_p, geometry_msgs::PoseStamped& goal);
     // goal reach functions
@@ -59,6 +69,11 @@ private:
     bool goalReachEucDis();
     bool goalReachXYYaw();
     bool goalReachEucDisYaw();
+	bool goalReachLocal();
+	//relocation functions:
+	bool getLocalPose(tf::Stamped<tf::Pose>& tf_pose);
+	bool getLocalGoal(tf::Stamped<tf::Pose>& tf_goal);
+	bool getLocalStatus();
 private:
 	std::string odom_topic_;
 	std::mutex dyn_params_mutex_;
@@ -70,12 +85,18 @@ private:
 	ros::Publisher local_plan_pub_;
 	base_local_planner::LocalPlannerUtil planner_util_;
 	base_local_planner::OdometryHelperRos odom_helper_;
+	bz_local_planner::PoseHelperRos pose_helper_;
+	bz_local_planner::PoseHelperRos goal_helper_;  //temporary use, todo: move to base_local_planner
 	tf::Stamped<tf::Pose> current_pose_;
+	tf::Stamped<tf::Pose> global_pose_;
+	tf::Stamped<tf::Pose> relocation_pose_tf_, relocation_goal_tf_;
 	tf::TransformListener* tf_;
 	costmap_2d::Costmap2DROS* costmap_ros_;
 	geometry_msgs::PoseStamped goal_;
 	std::string global_frame_;
 	geometry_msgs::PoseStamped final_goal_;
+	//relocation poses:
+	geometry_msgs::PoseStamped relocation_goal_, relocation_pose_;
 	bool initialized_;
 	// dynamic params
 	double sim_time_;
@@ -114,8 +135,12 @@ private:
 	bool final_goal_lock_;
 	bool convert_global_;
 
+	//relocation params
+	std::string relocation_pose_topic_;
+	bool relocation_mode_;
 	//The selection of forward or backward movement after the initialization of global plan 
 	Bzstruct select;
+
 };
 
 }; // namespace
