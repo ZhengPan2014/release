@@ -4,42 +4,8 @@
     <arg name="is_scheduling_server" value="$(optenv SCHEDULING_SERVER 0)" />
     <include file="$(find yocs_waypoint_provider)/launch/provider.launch"/>
   
-	<node if="$(arg is_scheduling_server)" name="yk_path_system" type="yk_path_system_buffer_zone_node_test" pkg="path_system_yk" respawn="false">
+	<node name="yk_path_system" type="yk_path_system_buffer_zone_node_test" pkg="path_system_yk" respawn="true">
 		<param name="mapimg_path" value="$(find bringup)/param/map.png"/>
-		<param name="map_resolution" value="0.05"/>
-		<param name="map_origin_x" value="-80.9"/>
-		<param name="map_origin_y" value="-116.6"/>
-		<param name="corner_radius" value="1.8"/>
-		<param name="on_road_tolerance" value="0.8"/>
-		<param name="road_conflict_tolerance" value="1.0"/>
-		<param name="path_point_interval" value="0.05"/>
-		<param name="path_release_thresh" value="2.0"/>
-		<param name="path_tail_length" value="0.5"/>
-		<param name="path_update_freq" value="2.0"/>
-		<param name="allow_turn_back_execute_task" value="false"/>
-		<param name="allow_agv_pose_to_path_max_degress" value="60.0"/>
 	</node>
-	<node if="$(arg is_scheduling_server)" name="task_manager_test" type="task_manager_test" pkg="task_system_yk" respawn="false">
-        <param name="publish_heartbeat" value="true"/>
-        <param name="transfer_waypoints_to_local" value="true"/>
-        <param name="lost_time_threshold" value="10.0"/>
-        <param name="endpoint_tolerance_cancel_path" value="0.3"/>
-        <param name="loading_extra_occupied_distance" value="2.0"/>
-        <param name="max_send_nav_ctrl_retry_times" value="5"/>
-        <param name="send_nav_ctrl_retry_frequency" value="1.0"/>
-        <param name="waypoint_nav_ctrl_status_topic" value="/nav_ctrl_status"/>
-        <param name="waypoint_nav_ctrl_topic" value="/nav_ctrl"/>
-        <param name="agv_origin_name_param" value="充电位_"/>
-        <param name="agv_temp_docking_station_param" value="临时停车位_"/>
-        <param name="agv_temp_docking_station_num" value="0"/>
-        <param name="agv_stop_at_temp_docking_first_X" value="38.0"/>
-        <param name="agv_stop_at_temp_docking_first_Y" value="-10.0"/>
-        <param name="max_pending_task" value="40"/>
-        <param name="publish_pending_list" value="false"/>
-        <param name="publish_executing_list" value="true"/>
-        <param name="publish_finished_list" value="false"/>
-        <param name="agv_temp_docking_time_out_minute" value="15"/>
-        <param name="allow_auto_back_to_origin" value="true"/>
-        <param name="min_distance_path" value="2.0"/>
-	</node>
+	<node name="task_manager_test" type="task_manager_test" pkg="task_system_yk" respawn="true"/>
 </launch>

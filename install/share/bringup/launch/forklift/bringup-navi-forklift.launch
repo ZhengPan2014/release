@@ -7,23 +7,28 @@
     <arg name="range_enabled" default="false"/>
     <arg name="range_topics" default="['/sonar_12oc', '/sonar_11oc', '/sonar_10oc', '/sonar_9oc', '/sonar_8oc', '/sonar_7oc', '/sonar_6oc', '/sonar_5oc', '/sonar_4oc', '/sonar_3oc', '/sonar_2oc', '/sonar_1oc']"/>
 
-    <include file="$(find bringup)/launch/amcl.launch">
+<!--     <include file="$(find bringup)/launch/amcl.launch">
        <arg name="scan_topic" value="$(arg namespace)/scan_rectified" />
        <arg name="initial_pose_x" value="0.0"/>
        <arg name="initial_pose_y" value="0.0"/>
        <arg name="initial_pose_a" value="0.0"/>
     </include>
-    <!-- <node name="amcl" pkg="amcl" type="amcl" output="screen">
-        <remap from="scan" to="scan_rectified" />
+ -->
+    <node pkg="amcl" type="amcl" name="amcl">
+        <remap from="scan" to="$(arg namespace)/scan_rectified"/>
         <rosparam>
-            initial_pose_x: 0.0
-            initial_pose_y: 0.0
-            initial_pose_a: 0.0
-            use_map_topic: false
-            odom_model_type: diff
-            tf_broadcast: true
+            update_min_d: 0.05
+            update_min_a: 0.2
+            use_map_topic: true
+            laser_model_type: likelihood_field
+            odom_model_type: diff-corrected
+            odom_alpha1: 0.005
+            odom_alpha2: 0.005
+            odom_alpha3: 0.005
+            odom_alpha4: 0.005
+            odom_alpha5: 0.005
         </rosparam>
-    </node> -->
+    </node>
 
     <node name="robot_pose_publisher" pkg="robot_pose_publisher" type="robot_pose_publisher" output="screen"/>
 
@@ -59,7 +64,7 @@
                 update_frequency: 1.0 #2.0
                 publish_frequency: 0.5 #0.0
                 static_map: true
-                resolution: 0.05
+                resolution: 0.05 #0.075
                 plugins:
                   - name: static_layer
                     type: "costmap_2d::StaticLayer"
@@ -107,7 +112,7 @@
                 height: 6.0
                 origin_x: -4.0
                 origin_y: 0.05
-                resolution: 0.05 #0.025
+                resolution: 0.05 #0.075 #0.025
                 plugins:
                   - name: obstacle_layer
                     type: "costmap_2d::ObstacleLayer"
@@ -170,11 +175,11 @@
                 dwa: true
                 global_frame_id: odom
             DWAPlannerROS:
-                acc_lim_x: 2.0
+                acc_lim_x: 1.0
                 acc_lim_y: 0.0
-                acc_lim_theta: 3.2
+                acc_lim_theta: 2.0
                 min_trans_vel: 0.05
-                min_vel_x: 0.0 #-0.55
+                min_vel_x: 0.05
                 max_vel_y: 0.0
                 min_vel_y: 0.0
                 min_rot_vel: 0.05

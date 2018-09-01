@@ -52,15 +52,20 @@
         <arg name="pub_name" value="imu"/>
     </include>
 
+    <node name="imu_rectifier" pkg="imu_rectifier" type="imu_rectifier" output="screen">
+        <remap from="imu_rectifier/imu" to="imu"/>
+        <remap from="imu_rectifier/imu_rectified" to="imu_rectified"/>
+        <rosparam>
+        </rosparam>
+    </node>
+
     <node name="imu_filter" pkg="imu_complementary_filter" type="complementary_filter_node" output="screen">
-        <remap from="imu/data_raw" to="imu"/>
+        <remap from="imu/data_raw" to="imu_rectified"/>
         <remap from="imu/data" to="imu_data"/>
         <remap from="imu_filter/cmd_vel" to="cmd_vel"/>
         <rosparam>
-            use_cmd_vel: true
-            kAngularVelocityThreshold: 0.05
-            kAccelerationThreshold: 0.5
-            kDeltaAngularVelocityThreshold: 0.005
+            use_cmd_vel: false
+            do_bias_estimation : false
             publish_debug_topics: true
         </rosparam>
     </node>
