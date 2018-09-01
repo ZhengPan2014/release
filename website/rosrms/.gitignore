@@ -1,0 +1,11 @@
+.idea
+app/Config/database.php
+app/tmp
+doc
+node_modules
+Carl*
+InteractiveWorld*
+CrowdManipulation*
+Iwmodel*
+Tutorial*
+app/webroot/resources

@@ -67,7 +67,7 @@ set(bz_local_planner_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(bz_local_planner_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/navigation-jade-devel/bz_local_planner )
+  set(bz_local_planner_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/navigation-jade-devel/bz_local_planner)
   set(bz_local_planner_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(bz_local_planner_INSTALL_PREFIX "")
   set(bz_local_planner_PREFIX ${bz_local_planner_DEVEL_PREFIX})

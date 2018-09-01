@@ -34,7 +34,6 @@
 #include <eigen_conversions/eigen_msg.h>
 #include <Eigen/Core>
 #include <Eigen/Geometry>
-#include <boost/thread.hpp>
 
 namespace bz_local_planner {
 
@@ -70,10 +69,19 @@ private:
     bool goalReachXYYaw();
     bool goalReachEucDisYaw();
 	bool goalReachLocal();
+	bool goalReachLocalinMap();
+	bool goalReachSum(int reach_level);
 	//relocation functions:
 	bool getLocalPose(tf::Stamped<tf::Pose>& tf_pose);
+	bool getLocalPose();
 	bool getLocalGoal(tf::Stamped<tf::Pose>& tf_goal);
+	bool getLocalGoal();
 	bool getLocalStatus();
+	//check quaternion valid or not:
+	unsigned int checkQuaternion(const geometry_msgs::PoseStamped& pose);
+	bool checkQuaternionOnce(const geometry_msgs::PoseStamped& pose);
+	//listening tf 
+	bool getLocalPosebyTf(const std::string& local_frame_id, geometry_msgs::PoseStamped& local_pose_by_tf);
 private:
 	std::string odom_topic_;
 	std::mutex dyn_params_mutex_;
@@ -88,11 +96,11 @@ private:
 	bz_local_planner::PoseHelperRos pose_helper_;
 	bz_local_planner::PoseHelperRos goal_helper_;  //temporary use, todo: move to base_local_planner
 	tf::Stamped<tf::Pose> current_pose_;
-	tf::Stamped<tf::Pose> global_pose_;
 	tf::Stamped<tf::Pose> relocation_pose_tf_, relocation_goal_tf_;
 	tf::TransformListener* tf_;
 	costmap_2d::Costmap2DROS* costmap_ros_;
 	geometry_msgs::PoseStamped goal_;
+	geometry_msgs::PoseStamped last_valid_pose_;
 	std::string global_frame_;
 	geometry_msgs::PoseStamped final_goal_;
 	//relocation poses:
@@ -113,6 +121,7 @@ private:
 	double vel_ratio_;
 	double minimum_dist_;
 	double wheel_base_;
+	bool test_vel_;
 	/*
 	goal reach level:
 	0: by bezier curve length
@@ -137,10 +146,20 @@ private:
 
 	//relocation params
 	std::string relocation_pose_topic_;
+	std::string relocation_frame_;
 	bool relocation_mode_;
+	bool relocation_gained_;
+	enum ud_enum{
+		RELOCATION,
+		NAVIGATION
+	}motion_status_;
+
 	//The selection of forward or backward movement after the initialization of global plan 
 	Bzstruct select;
-
+	//the number of quaternions malformed
+	unsigned int check_quad_num_;	
+	//for transform listener
+	std::string local_frame_id_;
 };
 
 }; // namespace

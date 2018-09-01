@@ -65,14 +65,14 @@
         </rosparam>
     </node>
 
-    <node name="lms1xx" pkg="lms1xx" type="LMS1xx_node">
+    <node name="lms1xx" pkg="lms1xx" type="LMS1xx_node" respawn="true">
         <rosparam>
             host: 192.168.0.10
             frame_id: base_laser
         </rosparam>
     </node>
 
-    <node name="sick_tim561" pkg="sick_tim" type="sick_tim551_2050001" respawn="false" output="screen">
+    <node name="sick_tim561" pkg="sick_tim" type="sick_tim551_2050001" respawn="true" output="screen">
         <remap from= "scan" to="scan_down"/>
         <rosparam>
             frame_id: base_laser_down

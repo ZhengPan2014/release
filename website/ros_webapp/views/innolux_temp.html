@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+	<title>群创上位机</title>	
+	<link rel="shortcut icon" type="text/css" href="../static/images/icon.png"/>
+
+	<!-- vue -->
+	<script src="../static/lib/vue.min.js"></script>
+
+	<!-- jquery -->
+	<script src="../static/lib/jquery-3.3.1.min.js"></script>
+
+	<!-- <link rel="stylesheet" href="/resources/demos/style.css"> -->
+
+	<!-- xlsx js -->
+	<script type="text/javascript" src="../static/lib/shim.min.js"></script>
+	<script type="text/javascript" src="../static/lib/xlsx.full.min.js"></script>
+
+	<!-- my style -->
+	<link rel="stylesheet" type="text/css" href="../static/style/innolux_index.css" />
+
+	<!-- myjs -->
+	<script type="text/javascript" src="../static/js/innolux_index.js"></script>
+	<script src="../static/js/colors.js" type="text/javascript" charset="utf-8"></script>
+
+	<!-- ROS -->
+	<script type="text/javascript" src="../static/js/innolux_waypoints_utils.min.js"></script>
+	<script type="text/javascript" src="../static/lib/roslib.js"></script>
+	<script type="text/javascript" src="../static/lib/eventemitter2.min.js"></script>
+
+	<!-- JQUERY UI -->
+	<script src="../static/lib/jquery-ui.min.js"></script>
+	<link rel="stylesheet" href="../static/lib/jquery-ui.min.css">
+
+
+</head>
+
+<body>
+	<!--选择Excel文件-->
+	<div id="choosefilediv">
+		<span class="spanText">请选择<span style="font-weight: 600;">Excel</span>文件：</span>
+		<span class="shadow">选择文件</span>
+		<input type="file" id="file" accept="*.xlsx,*.xls" onchange="loadExcelFile()" />
+	</div>
+
+	<div id="app">
+
+		<!--删除面板-->
+		<div id="dialog_delete" title="删除">
+			<p>确认要删除?</p>
+		</div>
+
+		<!--全部删除面板-->
+		<div id="dialog_delete_all" title="全部删除 Title">
+			<p>确认要全部删除?</p>
+		</div>
+
+		<!--搜索功能-->
+		<div id="searchContainer">
+			<input id="search" v-model="searchkey" placeholder="搜索线别" />
+			<button id="nextPage" @click="nextPage()" v-if="currentTabPage+1<totalPage">下一页</button>
+			<button id="lastPage" @click="lastPage()" v-if="currentTabPage>0">上一页</button>
+			<div id="backpage">
+				<button id="continue" @click="continueTask()">继续</button>
+				<span id="more" @click="addshow">
+					<img src="../static/images/more.png" width="40px"/>
+				</span>
+				<span id="close" @click="addhide">
+					<img src="../static/images/close.png" width="40px"/>
+				</span>
+				<button id="back" @click="backTask()">返回</button>				
+			</div>
+		</div>
+		<!--显示AGV电量-->
+		<div id="battery_div">
+			<span>电量:</span>
+			<span style="float: right;" id="battery_text">{{battery}}%</span>
+		</div>
+
+		<!-- 导航“线别”类型-->
+		<div id="window">
+			<ul id="tabNav">
+				<li v-for="(item,index) in showLines" @click="clicktab(index)" :class="{active:index == currentTab}">
+					{{item.line_name}}
+				</li>
+				<div class="clear"></div>
+			</ul>
+		</div>
+		
+		<!--站点 物料-->
+		<div id="tabCon">
+			<!--物料和站点等信息-->
+			<div id="tabCon2">
+				<ul id='id_station_ul' class="siteMateriel">
+					
+					<!--机种名称显示-->
+					<div id="div_product">
+						<ul>
+							<li>{{showProducts[showProductsIndex].product_code}}</li>
+						</ul>						
+					</div>					
+					<li v-for='showstation in showStations' id='id_station_li'>
+						<div id='id_station_div' class="site">
+							<span class="sitename">
+								{{ showstation }}
+							</span>
+						</div>
+						<div v-for='station_material in showStationMaterail ' v-if='station_material.station_name === showstation' id='id_material_li'>
+							<!-- 对于每个站点下，应该只有一个station_material -->
+							<ul id='id_material_li_ul' class="materiel">
+								<li v-for='material in station_material.materials' id='id_material_li_li' @click="addMaterial(material.material_name,material.material_code,station_material.station_name)">
+									<span>{{material.material_name}}</span>
+									<span>{{material.material_code}}</span>
+								</li>
+								<div class="clear"> </div>
+							</ul>
+						</div>
+					</li>
+					<div class="clear"> </div>
+				</ul>
+				<!--线别 站点 物料 信息展示-->
+				<div class='information'>
+					<span class="executing_task">{{executing_task}}</span>
+					<ul class="tablehead">
+						<li>线别-站点-物料名称-物料编号</li>
+					</ul>
+					<ul class="record" v-for='(item,index)  in displays'>
+						<li>
+							<span v-bind:style="{background: line_bgcolors[index]}" class="color">{{item.line_name}}</span>&nbsp;{{item.station_name}}&nbsp;<span v-bind:style="{color: line_bgcolors[index]}" class="colors">{{item.material_name}}</span>&nbsp;{{item.material_code}}
+						</li>
+					</ul>
+				</div>
+			</div>
+			<!--bottom display-->
+			<div id="display">
+				<ul id="option_container" v-if="displays.length">
+					<li v-for="(item,index)  in displays">
+						<div class="materialContainer">
+							<div id="display_div" @click="dis_delete(index)">
+								<span v-bind:style="{background: line_bgcolors[index]}">{{item.material_name}}</span>
+							</div>
+							<div id="display_arraw">
+								<span v-if="index+1 !== displays.length">→</span>
+							</div>
+						</div>
+					</li>
+				</ul>
+				<button type="button" class="addok" @click="addok" value="">确认</button>
+				<button type="button" class="allclear" @click="allclear" value="">全部清除</button>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

@@ -1,8 +1,0 @@
-prefix=/home/ouiyeah/catkin_ws/install
-
-Name: laser_sensor_pose_calibration
-Description: Description of laser_sensor_pose_calibration
-Version: 0.0.0
-Cflags: 
-Libs: -L/home/ouiyeah/catkin_ws/install/lib 
-Requires: 

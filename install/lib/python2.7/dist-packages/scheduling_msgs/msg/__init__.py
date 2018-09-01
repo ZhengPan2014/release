@@ -7,9 +7,14 @@ from ._NewTask2 import *
 from ._Path import *
 from ._PathStampWithID import *
 from ._PathWithID import *
+from ._ProductionMaterial import *
+from ._ProductionMaterialList import *
 from ._RoadSet import *
 from ._ServerStatus import *
+from ._ShelvesStatus import *
 from ._Task import *
+from ._TaskInxLineP import *
+from ._TaskInxLinePList import *
 from ._TaskList import *
 from ._TaskList2 import *
 from ._TaskStatus import *

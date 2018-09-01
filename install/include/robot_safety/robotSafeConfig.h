@@ -228,6 +228,7 @@ class DEFAULT
 
         if("outer_major_radius"==(*_i)->name){outer_major_radius = boost::any_cast<double>(val);}
         if("outer_minor_radius"==(*_i)->name){outer_minor_radius = boost::any_cast<double>(val);}
+        if("inner_base_radius"==(*_i)->name){inner_base_radius = boost::any_cast<double>(val);}
         if("inner_major_radius"==(*_i)->name){inner_major_radius = boost::any_cast<double>(val);}
         if("inner_minor_radius"==(*_i)->name){inner_minor_radius = boost::any_cast<double>(val);}
         if("restore_defaults"==(*_i)->name){restore_defaults = boost::any_cast<bool>(val);}
@@ -236,6 +237,7 @@ class DEFAULT
 
     double outer_major_radius;
 double outer_minor_radius;
+double inner_base_radius;
 double inner_major_radius;
 double inner_minor_radius;
 bool restore_defaults;
@@ -252,6 +254,8 @@ bool restore_defaults;
       double outer_major_radius;
 //#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       double outer_minor_radius;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      double inner_base_radius;
 //#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       double inner_major_radius;
 //#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
@@ -417,11 +421,21 @@ robotSafeConfig::GroupDescription<robotSafeConfig::DEFAULT, robotSafeConfig> Def
 //#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(robotSafeConfig::AbstractParamDescriptionConstPtr(new robotSafeConfig::ParamDescription<double>("outer_minor_radius", "double", 0, "The minor radius of the outer ellipse", "", &robotSafeConfig::outer_minor_radius)));
 //#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __min__.inner_base_radius = 0.0;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __max__.inner_base_radius = 20.0;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __default__.inner_base_radius = 0.4;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(robotSafeConfig::AbstractParamDescriptionConstPtr(new robotSafeConfig::ParamDescription<double>("inner_base_radius", "double", 0, "The base radius of the robot", "", &robotSafeConfig::inner_base_radius)));
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(robotSafeConfig::AbstractParamDescriptionConstPtr(new robotSafeConfig::ParamDescription<double>("inner_base_radius", "double", 0, "The base radius of the robot", "", &robotSafeConfig::inner_base_radius)));
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.inner_major_radius = 0.0;
 //#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.inner_major_radius = 20.0;
 //#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __default__.inner_major_radius = 0.4;
+      __default__.inner_major_radius = 0.6;
 //#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.abstract_parameters.push_back(robotSafeConfig::AbstractParamDescriptionConstPtr(new robotSafeConfig::ParamDescription<double>("inner_major_radius", "double", 0, "The major radius of the inner ellipse", "", &robotSafeConfig::inner_major_radius)));
 //#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"

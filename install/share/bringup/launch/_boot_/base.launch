@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<launch>
+    <include file="$(find bringup)/launch/bringup-dbparam.launch"/>
+
+    <include file="$(find bringup)/launch/bringup-navi.launch" >
+        <arg name="footprint" value="[[0.27, -0.27], [0.27, 0.27], [-0.27, 0.27], [-0.27, -0.27]]"/>
+    </include>
+
+    <node name="base_footprint" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+        <rosparam>
+            frame_id: base_footprint
+            z: 0.1
+        </rosparam>
+    </node>
+
+    <node name ="map_transport_node" pkg="map_transport" type="map_transport_node" output="screen"/>
+
+    <!-- <node name="rosbridge_shell" pkg="rosbridge_shell" type="rosbridge_shell" output="screen">
+        <rosparam if="$(optenv ROS_USER_VALID false)">
+            init_cmd: navigation
+        </rosparam>
+    </node> -->
+</launch>

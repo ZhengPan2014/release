@@ -1,5 +1,0 @@
-geometry_msgs/PoseWithCovarianceStamped raw_pose
-int32 retry_times
----
-bool success
-geometry_msgs/PoseStamped fine_pose

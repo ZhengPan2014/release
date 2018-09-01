@@ -76,6 +76,7 @@ public:
   bool getPoseStatus() const { return pose_gained_; }
 
   friend class BZPlannerROS;
+
 private:
   //odom topic
   std::string pose_topic_;

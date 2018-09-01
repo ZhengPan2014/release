@@ -61,6 +61,240 @@
                   - name: plc_port
                     type: read
                     byte: [0xf1, 0x10, 0x01, 0x62, 0x00, 0x04, crc16, little]
+              
+              - name: light_blue
+                type: event
+                action_chain:
+                  - name: plc_port
+                    type: write
+                    byte: [0xf1, 0x10, 0x01, 0x19, 0x00, 0x02, 0x04, 0x00, 0xb4, 0x64, 0x32, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0xf1, 0x10, 0x01, 0x19, 0x00, 0x02, crc16, little]
+              - name: light_yellow
+                type: event
+                action_chain:
+                  - name: plc_port
+                    type: write
+                    byte: [0xf1, 0x10, 0x01, 0x19, 0x00, 0x02, 0x04, 0x00, 0x3c, 0x64, 0x32, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0xf1, 0x10, 0x01, 0x19, 0x00, 0x02, crc16, little]
+              - name: light_red
+                type: event
+                action_chain:
+                  - name: plc_port
+                    type: write
+                    byte: [0xf1, 0x10, 0x01, 0x19, 0x00, 0x02, 0x04, 0x00, 0x00, 0x64, 0x64, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0xf1, 0x10, 0x01, 0x19, 0x00, 0x02, crc16, little]
+              - name: light_green
+                type: event
+                action_chain:
+                  - name: plc_port
+                    type: write
+                    byte: [0xf1, 0x10, 0x01, 0x19, 0x00, 0x02, 0x04, 0x00, 0x78, 0x64, 0x64, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0xf1, 0x10, 0x01, 0x19, 0x00, 0x02, crc16, little]
+              - name: buzzer_off
+                type: event
+                action_chain:
+                  - name: plc_port
+                    type: write
+                    byte: [0xf1, 0x10, 0x01, 0x1b, 0x00, 0x01, 0x02, 0x00, 0x00, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0xf1, 0x10, 0x01, 0x1b, 0x00, 0x01, crc16, little]
+              - name: buzzer_beep
+                type: event
+                action_chain:
+                  - name: plc_port
+                    type: write
+                    byte: [0xf1, 0x10, 0x01, 0x1b, 0x00, 0x01, 0x02, 0x00, 0x01, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0xf1, 0x10, 0x01, 0x1b, 0x00, 0x01, crc16, little]
+              - name: buzzer_on
+                type: event
+                action_chain:
+                  - name: plc_port
+                    type: write
+                    byte: [0xf1, 0x10, 0x01, 0x1b, 0x00, 0x01, 0x02, 0x00, 0x02, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0xf1, 0x10, 0x01, 0x1b, 0x00, 0x01, crc16, little]
+              - name: lock_emergency_stop
+                type: event
+                action_chain:
+                  - name: plc_port
+                    type: write
+                    byte: [0xf1, 0x10, 0x00, 0xef, 0x00, 0x01, 0x02, 0x00, 0x00, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0xf1, 0x10, 0x00, 0xef, 0x00, 0x01, crc16, little]
+              - name: unlock_emergency_stop
+                type: event
+                action_chain:
+                  - name: plc_port
+                    type: write
+                    byte: [0xf1, 0x10, 0x00, 0xef, 0x00, 0x01, 0x02, 0x00, 0x01, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0xf1, 0x10, 0x00, 0xef, 0x00, 0x01, crc16, little]
+              - name: charge_status
+                type: event
+                action_chain:
+                  - name: plc_port
+                    type: write
+                    byte: [0xf1, 0x03, 0x00, 0xeb, 0x00, 0x01, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0xf1, 0x03, 0x02, status, big, crc16, little]
+                echo: [status]
+              - name: emergency_status
+                type: event
+                action_chain:
+                  - name: plc_port
+                    type: write
+                    byte: [0xf1, 0x03, 0x00, 0xe8, 0x00, 0x03, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0xf1, 0x03, 0x06, bumper, big, release_btn, big, estop_btn, big, crc16, little]
+                echo: [bumper, release_btn, estop_btn]
+              - name: lock_status
+                type: event
+                action_chain:
+                  - name: plc_port
+                    type: write
+                    byte: [0xf1, 0x03, 0x00, 0xef, 0x00, 0x01, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0xf1, 0x03, 0x02, is_locked, big, crc16, little]
+                echo: [is_locked]
+              
+              <!-- elevate shelf -->
+              - name: init_layer_1
+                type: event
+                action_chain:
+                  - name: plc_port
+                    type: write
+                    byte: [0xf1, 0x10, 0x00, 0x14, 0x00, 0x01, 0x02, 0x00, 0x01, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0xf1, 0x10, 0x00, 0x14, 0x00, 0x01, crc16, little]
+              - name: init_layer_2
+                type: event
+                action_chain:
+                  - name: plc_port
+                    type: write
+                    byte: [0xf1, 0x10, 0x00, 0x15, 0x00, 0x01, 0x02, 0x00, 0x01, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0xf1, 0x10, 0x00, 0x15, 0x00, 0x01, crc16, little]
+              - name: init_layer_3
+                type: event
+                action_chain:
+                  - name: plc_port
+                    type: write
+                    byte: [0xf1, 0x10, 0x00, 0x16, 0x00, 0x01, 0x02, 0x00, 0x01, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0xf1, 0x10, 0x00, 0x16, 0x00, 0x01, crc16, little]
+              - name: layer_status
+                type: event
+                action_chain:
+                  - name: plc_port
+                    type: write
+                    byte: [0xf1, 0x03, 0x00, 0x19, 0x00, 0x03, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0xf1, 0x03, 0x06, layer_1, big, layer_2, big, layer_3, big, crc16, little]
+                echo: [layer_1, layer_2, layer_3]
+              - name: layer_height
+                type: event
+                action_chain:
+                  - name: plc_port
+                    type: write
+                    byte: [0xf1, 0x03, 0x00, 0x00, 0x00, 0x06, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0xf1, 0x03, 0x0c, layer_1, big32, big32, big32, layer_2, big32, big32, big32, layer_3, big32, big32, big32, crc16, little]
+                echo: [layer_1, layer_2, layer_3]
+              - name: elevate
+                type: event
+                roar: [layer, height]
+                layer: 0
+                height: 0
+                action_chain:
+                  - name: plc_port
+                    type: write
+                    byte: [0xf1, 0x10, layer, big, 0x00, 0x02, 0x04, height, big32, big32, big32, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0xf1, 0x10, layer, big, 0x00, 0x02, crc16, little]
+              - name: elevate_0
+                type: event
+                layer: 14
+                height: 0
+                action_chain:
+                  - name: plc_port
+                    type: write
+                    byte: [0xf1, 0x10, layer, big, 0x00, 0x02, 0x04, height, big32, big32, big32, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0xf1, 0x10, layer, big, 0x00, 0x02, crc16, little]
+              - name: elevate_500
+                type: event
+                layer: 14
+                height: 50000
+                action_chain:
+                  - name: plc_port
+                    type: write
+                    byte: [0xf1, 0x10, layer, big, 0x00, 0x02, 0x04, height, big32, big32, big32, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0xf1, 0x10, layer, big, 0x00, 0x02, crc16, little]
+              - name: elevate_900
+                type: event
+                layer: 14
+                height: 88500
+                action_chain:
+                  - name: plc_port
+                    type: write
+                    byte: [0xf1, 0x10, layer, big, 0x00, 0x02, 0x04, height, big32, big32, big32, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0xf1, 0x10, layer, big, 0x00, 0x02, crc16, little]
+              - name: stop_part
+                type: event
+                action_chain:
+                  - name: plc_port
+                    type: write
+                    byte: [0xf1, 0x10, 0x00, 0x25, 0x00, 0x01, 0x02, 0x00, 0x00, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0xf1, 0x10, 0x00, 0x25, 0x00, 0x01, crc16, little]
+              - name: up_part
+                type: event
+                action_chain:
+                  - name: plc_port
+                    type: write
+                    byte: [0xf1, 0x10, 0x00, 0x25, 0x00, 0x01, 0x02, 0x00, 0x01, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0xf1, 0x10, 0x00, 0x25, 0x00, 0x01, crc16, little]
+              - name: down_part
+                type: event
+                action_chain:
+                  - name: plc_port
+                    type: write
+                    byte: [0xf1, 0x10, 0x00, 0x25, 0x00, 0x01, 0x02, 0x00, 0x02, crc16, little]
+                  - name: plc_port
+                    type: read
+                    byte: [0xf1, 0x10, 0x00, 0x25, 0x00, 0x01, crc16, little]
+              <!-- end elevate shelf -->
 
             ### lift_status: 2-bottom 0-moving status 1-top ###
               - name: read_lift_up

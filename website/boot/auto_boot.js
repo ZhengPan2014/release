@@ -52,7 +52,7 @@ class AutoBoot
 				let netDevInfo = await this.dev.checkNetDev('192.168.0.10', '192.168.0.14');
 				// this.handleNetDev(netDevInfo);
 				this.handleNetDevTest(netDevInfo);
-				this.dev.checkUsbDev(TTY_RULES);		
+				this.dev.checkUsbDev(TTY_RULES);
 			}
 		})();
 	}
@@ -558,6 +558,8 @@ function hasLaunchFile(file)
 {
 	let file_ = file.replace(/_/g, "-");
 	return fs.existsSync(PATH_BRINGUP + '/launch/' + file + '.launch')
+		|| fs.existsSync(PATH_BRINGUP + '/launch/_boot_/' + file + '.launch')
+		|| fs.existsSync(PATH_BRINGUP + '/launch/_boot_/' + file_ + '.launch')
 		|| fs.existsSync(PATH_BRINGUP + '/launch/' + file_ + '.launch');
 }
 

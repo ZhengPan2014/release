@@ -2,7 +2,7 @@
 <launch>
     <arg name="drive_port_left" default="/dev/ttyUSB0"/>
     <arg name="drive_port_right" default="/dev/ttyUSB1"/>
-    <arg name="wheel_seperation" default="0.466"/>
+    <arg name="wheel_seperation" default="0.43"/>
     <arg name="wheel_ratio" default="23333.3"/>
     <node name="rosbridge_drive" pkg="rosbridge_driver" type="rosbridge_driver" output="screen">
         <param name="drive_port_left" value="$(arg drive_port_left)"/>

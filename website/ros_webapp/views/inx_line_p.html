@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+		<link rel="shortcut icon" type="text/css" href="../static/images/icon.png"/>
+		<!--ros js-->
+		<script src="../static/lib/eventemitter2.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../static/lib/roslib.js" type="text/javascript" charset="utf-8"></script>
+		<!--jQuery js-->
+		<script src="../static/lib/jquery-1.8.3.min.js" type="text/javascript" charset="utf-8"></script>
+		<!--my js-->
+		<script src="../static/js/inx_line_p.js" type="text/javascript" charset="utf-8"></script>
+		<!--my css-->
+		<link rel="stylesheet" type="text/css" href="../static/style/inx_line_p.css"/>
+		<!--vue js-->
+		<script src="../static/lib/vue.min.js" type="text/javascript" charset="utf-8"></script>
+	</head
+	<body>
+		<div id="app">
+			<div class="content">
+				<button class="switch" @click="start()" v-bind:style="{ backgroundImage: defaultImage }"></button>
+				<span class="startUp" v-bind:style="{ color: defaultColor }">{{startUp}}</span>
+				
+				<span class="stateName">任务管理程序状态:&nbsp;&nbsp;<span class="titleSpan">{{data_data}}</span></span>
+				<ul class="state">
+					<li class="stateLi1" v-if="agv_ints.length !== 0 || station_shelves.length !== 0">
+						<span class="stateName">货架状态:</span>
+						<ul class="currency">
+							<li v-for="agv_int in agv_ints">AGV货架ID:&nbsp;&nbsp;<span>{{agv_int}}</span>&nbsp;&nbsp;超时</li>
+							<div class="clear"></div>
+						</ul>
+						<ul class="currency">
+							<li v-for="station_shelve in station_shelves">工位货架ID:&nbsp;&nbsp;<span>{{station_shelve}}</span>&nbsp;&nbsp;超时</li>
+							<div class="clear"></div>
+						</ul>
+					</li>
+					<li class="stateLi2">
+						<span class="stateName">正在执行任务状态:</span>
+						<span class="shelf_id colorW">工位货架ID:&nbsp;&nbsp;{{shelf_id}}</span>
+						<span class="task_type colorW">任务类型:&nbsp;&nbsp;{{task_type}}</span>
+						<ul class="currencys currencyTop colorW">
+							<li class="materiarls_string colorW" v-for="materiarls_string in materiarls_strings">物料名称:&nbsp;&nbsp;{{materiarls_string}}</li>
+							<div class="clear"></div>
+						</ul>
+						<ul class="currencys colorW">
+							<li class="layers_int colorW" v-for="layers_int in layers_ints">货架层数:&nbsp;&nbsp;{{layers_int}}</li>
+							<div class="clear"></div>
+						</ul>
+					</li>
+					<li class="stateLi3">
+						<span class="stateName">等待执行任务状态:</span>
+						<ul>
+							<li class="line" v-for="all in alls">
+								<span class="shelf_id_pending">工位货架ID:&nbsp;&nbsp;<span class="titleSpan">{{all.shelf_id}}</span></span>
+								<span class="task_type_pending">任务类型:&nbsp;&nbsp;<span class="titleSpan">{{all.task_type}}</span></span>
+								<ul class="currencys">
+									<li class="materiarls_string" v-for="material in all.materials">物料名称:&nbsp;&nbsp;<span>{{material}}</span></li>
+									<div class="clear"></div>
+								</ul>
+								<ul class="currencys">
+									<li class="layers_int" v-for="layer in all.layers">货架层数:&nbsp;&nbsp;<span>{{layer}}</span></li>
+									<div class="clear"></div>
+								</ul>								
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</body>
+</html>

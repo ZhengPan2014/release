@@ -247,7 +247,10 @@ class DEFAULT
         if("goal_reach_level"==(*_i)->name){goal_reach_level = boost::any_cast<int>(val);}
         if("convert_global"==(*_i)->name){convert_global = boost::any_cast<bool>(val);}
         if("relocation_pose_topic"==(*_i)->name){relocation_pose_topic = boost::any_cast<std::string>(val);}
-        if("relocation_mode"==(*_i)->name){relocation_mode = boost::any_cast<bool>(val);}
+        if("relocation_frame"==(*_i)->name){relocation_frame = boost::any_cast<std::string>(val);}
+        if("local_frame_id"==(*_i)->name){local_frame_id = boost::any_cast<std::string>(val);}
+        if("motion_status"==(*_i)->name){motion_status = boost::any_cast<int>(val);}
+        if("test_vel"==(*_i)->name){test_vel = boost::any_cast<bool>(val);}
       }
     }
 
@@ -272,7 +275,10 @@ double goal_ctrl;
 int goal_reach_level;
 bool convert_global;
 std::string relocation_pose_topic;
-bool relocation_mode;
+std::string relocation_frame;
+std::string local_frame_id;
+int motion_status;
+bool test_vel;
 
     bool state;
     std::string name;
@@ -325,7 +331,13 @@ bool relocation_mode;
 //#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       std::string relocation_pose_topic;
 //#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      bool relocation_mode;
+      std::string relocation_frame;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      std::string local_frame_id;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      int motion_status;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      bool test_vel;
 //#line 218 "/opt/ros/indigo/share/dynamic_reconfigure/cmake/../templates/ConfigType.h.template"
 
     bool __fromMessage__(dynamic_reconfigure::Config &msg)
@@ -559,7 +571,7 @@ BZPlannerConfig::GroupDescription<BZPlannerConfig::DEFAULT, BZPlannerConfig> Def
 //#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.min_vel_x = std::numeric_limits<double>::infinity();
 //#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __default__.min_vel_x = 0.05;
+      __default__.min_vel_x = 0.15;
 //#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.abstract_parameters.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<double>("min_vel_x", "double", 0, "The scale of linear velocity when robot is close enough to the goal", "", &BZPlannerConfig::min_vel_x)));
 //#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
@@ -675,15 +687,45 @@ BZPlannerConfig::GroupDescription<BZPlannerConfig::DEFAULT, BZPlannerConfig> Def
 //#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<std::string>("relocation_pose_topic", "str", 0, "The name of the relocating frame of reference ", "", &BZPlannerConfig::relocation_pose_topic)));
 //#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __min__.relocation_mode = 0;
+      __min__.relocation_frame = "";
 //#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __max__.relocation_mode = 1;
+      __max__.relocation_frame = "";
 //#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __default__.relocation_mode = 0;
+      __default__.relocation_frame = "map";
 //#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      Default.abstract_parameters.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<bool>("relocation_mode", "bool", 0, "Motion mode for the bezier planner. False for navigation, True for relocation", "", &BZPlannerConfig::relocation_mode)));
+      Default.abstract_parameters.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<std::string>("relocation_frame", "str", 0, "The name of the relocating frame of reference ", "", &BZPlannerConfig::relocation_frame)));
 //#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __param_descriptions__.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<bool>("relocation_mode", "bool", 0, "Motion mode for the bezier planner. False for navigation, True for relocation", "", &BZPlannerConfig::relocation_mode)));
+      __param_descriptions__.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<std::string>("relocation_frame", "str", 0, "The name of the relocating frame of reference ", "", &BZPlannerConfig::relocation_frame)));
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __min__.local_frame_id = "";
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __max__.local_frame_id = "";
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __default__.local_frame_id = "base_shelf";
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<std::string>("local_frame_id", "str", 0, "The name of the relocating frame of reference ", "", &BZPlannerConfig::local_frame_id)));
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<std::string>("local_frame_id", "str", 0, "The name of the relocating frame of reference ", "", &BZPlannerConfig::local_frame_id)));
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __min__.motion_status = 0;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __max__.motion_status = 1;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __default__.motion_status = 0;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<int>("motion_status", "int", 0, "A motion status parameter which is edited via an enum", "{'enum_description': 'An enum to set motion status', 'enum': [{'srcline': 9, 'description': 'Motion in relocation mode', 'srcfile': '/home/ouiyeah/catkin_ws/src/navigation-jade-devel/bz_local_planner/cfg/BZPlanner.cfg', 'cconsttype': 'const int', 'value': 0, 'ctype': 'int', 'type': 'int', 'name': 'RELOCATION'}, {'srcline': 10, 'description': 'Motion in navigation mode', 'srcfile': '/home/ouiyeah/catkin_ws/src/navigation-jade-devel/bz_local_planner/cfg/BZPlanner.cfg', 'cconsttype': 'const int', 'value': 1, 'ctype': 'int', 'type': 'int', 'name': 'NAVIGATION'}]}", &BZPlannerConfig::motion_status)));
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<int>("motion_status", "int", 0, "A motion status parameter which is edited via an enum", "{'enum_description': 'An enum to set motion status', 'enum': [{'srcline': 9, 'description': 'Motion in relocation mode', 'srcfile': '/home/ouiyeah/catkin_ws/src/navigation-jade-devel/bz_local_planner/cfg/BZPlanner.cfg', 'cconsttype': 'const int', 'value': 0, 'ctype': 'int', 'type': 'int', 'name': 'RELOCATION'}, {'srcline': 10, 'description': 'Motion in navigation mode', 'srcfile': '/home/ouiyeah/catkin_ws/src/navigation-jade-devel/bz_local_planner/cfg/BZPlanner.cfg', 'cconsttype': 'const int', 'value': 1, 'ctype': 'int', 'type': 'int', 'name': 'NAVIGATION'}]}", &BZPlannerConfig::motion_status)));
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __min__.test_vel = 0;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __max__.test_vel = 1;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __default__.test_vel = 1;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<bool>("test_vel", "bool", 0, "To convert global plan into local plan or not", "", &BZPlannerConfig::test_vel)));
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<bool>("test_vel", "bool", 0, "To convert global plan into local plan or not", "", &BZPlannerConfig::test_vel)));
 //#line 246 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.convertParams();
 //#line 246 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
@@ -763,7 +805,10 @@ BZPlannerConfig::GroupDescription<BZPlannerConfig::DEFAULT, BZPlannerConfig> Def
     return statics;
   }
 
-
+//#line 9 "/home/ouiyeah/catkin_ws/src/navigation-jade-devel/bz_local_planner/cfg/BZPlanner.cfg"
+      const int BZPlanner_RELOCATION = 0;
+//#line 10 "/home/ouiyeah/catkin_ws/src/navigation-jade-devel/bz_local_planner/cfg/BZPlanner.cfg"
+      const int BZPlanner_NAVIGATION = 1;
 }
 
 #endif // __BZPLANNERRECONFIGURATOR_H__
