@@ -1,9 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-    <arg name="hokuyo_urg" default="false"/>
-    <arg name="sick_tim" default="false"/>
-    <arg name="sick_lms" default="false"/>
-    <arg name="sick_s300" default="false"/>
+    <arg name="akelc_aqmd6010" default="false"/>
     <arg name="name" default=""/>
     <arg name="drive_port_left" default="/dev/ttyUSB0"/>
     <arg name="drive_port_right" default="/dev/ttyUSB1"/>

@@ -55,8 +55,6 @@
     <node name="imu_rectifier" pkg="imu_rectifier" type="imu_rectifier" output="screen">
         <remap from="imu_rectifier/imu" to="imu"/>
         <remap from="imu_rectifier/imu_rectified" to="imu_rectified"/>
-        <rosparam>
-        </rosparam>
     </node>
 
     <node name="imu_filter" pkg="imu_complementary_filter" type="complementary_filter_node" output="screen">

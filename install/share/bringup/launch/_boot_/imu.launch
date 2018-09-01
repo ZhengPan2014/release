@@ -1,20 +1,28 @@
 <?xml version="1.0"?>
 <launch>
-	<!-- imu node params -->
-    <arg name="frame_id" default="base_imu"/>
-	<!-- tf params -->
-	<arg name="pub_rate" default="50"/>
-	<arg name="x" default="0.0"/>
-	<arg name="y" default="0.0"/>
-	<arg name="z" default="0.0"/>
-	<arg name="roll" default="0.0"/>
-	<arg name="pitch" default="0.0"/>
-	<arg name="yaw" default="0.0"/>
-
+    <arg name="wit_wt901c" default="false"/>
     <arg name="name" default=""/>
+    <arg name="rate" default="50.0"/>
+    <arg name="x" default="0.0"/>
+    <arg name="y" default="0.0"/>
+    <arg name="z" default="0.0"/>
+    <arg name="roll" default="0.0"/>
+    <arg name="pitch" default="0.0"/>
+    <arg name="yaw" default="0.0"/>
     <arg name="port" default="/dev/ttyUSB0"/>
 
-    <node name="rosbridge_imu$(arg name)" pkg="rosbridge_driver" type="rosbridge_driver" output="screen">
+    <node name="base_imu$(arg name)" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
+        <param name="pub_rate" value="$(arg rate)"/>
+        <param name="child_frame_id" value="base_imu$(arg name)"/>
+        <param name="x" value="$(arg x)"/>
+        <param name="y" value="$(arg y)"/>
+        <param name="z" value="$(arg z)"/>
+        <param name="roll" value="$(arg roll)"/>
+        <param name="pitch" value="$(arg pitch)"/>
+        <param name="yaw" value="$(arg yaw)"/>
+    </node>
+
+    <node name="rosbridge_imu$(arg name)" pkg="rosbridge_driver" type="rosbridge_driver" output="screen" if="$(arg imu_jy901)">
         <remap from="imu" to="imu_data$(arg name)"/>
         <param name="imu_frame_id" value="base_imu$(arg name)"/>
         <param name="imu_port" value="$(arg port)"/>
@@ -73,14 +81,19 @@
         </rosparam>
     </node>
 
-    <node name="tf_$(arg frame_id)" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
-        <param name="pub_rate" value="$(arg pub_rate)"/>
-        <param name="child_frame_id" value="$(arg frame_id)"/>
-        <param name="x" value="$(arg x)"/>
-        <param name="y" value="$(arg y)"/>
-        <param name="z" value="$(arg z)"/>
-        <param name="roll" value="$(arg roll)"/>
-        <param name="pitch" value="$(arg pitch)"/>
-        <param name="yaw" value="$(arg yaw)"/>
+    <node name="imu_rectifier$(arg name)" pkg="imu_rectifier" type="imu_rectifier" output="screen">
+        <remap from="imu" to="/imu$(arg name)"/>
+        <remap from="imu_rectified" to="/imu_rectified$(arg name)"/>
+    </node>
+
+    <node name="imu_filter$(arg name)" pkg="imu_complementary_filter" type="complementary_filter_node" output="screen">
+        <remap from="imu/data_raw" to="imu_rectified$(arg name)"/>
+        <remap from="imu/data" to="imu_data"/>
+        <remap from="imu_filter/cmd_vel" to="cmd_vel"/>
+        <rosparam>
+            use_cmd_vel: false
+            do_bias_estimation : false
+            publish_debug_topics: true
+        </rosparam>
     </node>
 </launch>
