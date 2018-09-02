@@ -24,14 +24,11 @@
 
     <node name ="map_transport" pkg="map_transport" type="map_transport_node" output="screen"/>
 
-    <include file="$(find yocs_waypoint_provider)/launch/provider.launch" unless="$(arg is_client)"/>
-
-    <node pkg="yocs_waypoints_navi" type="yocs_waypoints_navi_node" name="waypoints_navi">
-        <param name="ns" value="$(arg ns)"/>
-        <param name="frequency"    value="5.0"/>
-        <param name="close_enough" value="0.2"/>
-        <param name="goal_timeout" value="60.0"/>
+    <node name="waypoint_provider" pkg="yocs_waypoint_provider" type="waypoint_provider" output="screen" unless="$(arg is_client)">
+        <param name="filename" value="$(find bringup)/param/waypoints.yaml"/>
     </node>
+
+    <node name="waypoints_navi" pkg="yocs_waypoints_navi" type="yocs_waypoints_navi_node" output="screen"/>
 
     <node name="laser_scan_matcher" pkg="laser_scan_matcher" type="laser_scan_matcher_node" output="screen">
         <remap from="scan" to="scan_rectified"/>
