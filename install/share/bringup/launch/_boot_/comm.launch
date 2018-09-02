@@ -1,8 +1,9 @@
 <?xml version="1.0"?>
 <launch>
-    <include file="$(find bringup)/launch/map_server.launch"/>
-
-    <include file="$(find bringup)/launch/map_edit_server.launch"/>
+    <arg name="ns" default=""/>
+    <arg name="is_client" default="false"/>
+    <arg name="robot_pose_ekf" default="false"/>
+    <arg name="ekf_localization" default="true"/>
 
     <node name="base_footprint" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
         <rosparam>
@@ -11,17 +12,31 @@
         </rosparam>
     </node>
 
+    <include if="$(arg is_client)" file="$(find multimaster)/launch/master.launch">
+        <arg name="master" value="hitrobot-forklift-server" />
+    </include>
+
+    <node name="map_server" pkg="map_server" type="map_server" args="$(find bringup)/param/map.yaml"/>
+
+    <node name="map_edit_server" pkg="map_server" type="map_server" args="$(find bringup)/param/map_edit.yaml">
+        <remap from="map" to="map_edit"/>
+    </node>
+
     <node name ="map_transport" pkg="map_transport" type="map_transport_node" output="screen"/>
 
-    <include unless="$(arg has_server)" file="$(find yocs_waypoint_provider)/launch/provider.launch"/>
+    <include file="$(find yocs_waypoint_provider)/launch/provider.launch" unless="$(arg is_client)"/>
 
-    <include file="$(find yocs_waypoints_navi)/launch/waypoints_navi.launch"/>
+    <node pkg="yocs_waypoints_navi" type="yocs_waypoints_navi_node" name="waypoints_navi">
+        <param name="ns" value="$(arg ns)"/>
+        <param name="frequency"    value="5.0"/>
+        <param name="close_enough" value="0.2"/>
+        <param name="goal_timeout" value="60.0"/>
+    </node>
 
-    <node pkg="laser_scan_matcher" type="laser_scan_matcher_node" name="laser_scan_matcher_node"      output="screen">
+    <node name="laser_scan_matcher" pkg="laser_scan_matcher" type="laser_scan_matcher_node" output="screen">
         <remap from="scan" to="scan_rectified"/>
         <remap from="imu/data" to="imu_data"/>
         <remap from="pose_with_covariance_stamped" to="scan_matcher_pose"/>
-        <remap from="pose_stamped" to="matcher_pose"/>
         <rosparam>
             fixed_frame: map
             base_frame: base_footprint
@@ -29,7 +44,6 @@
             use_odom: false
             publish_tf: false
             publish_pose: false
-            publish_pose_stamped: false
             publish_pose_with_covariance_stamped: true
             max_iterations: 1000
             max_correspondence_dist: 2.0
@@ -38,7 +52,7 @@
         </rosparam>
     </node>
 
-    <node name="robot_pose_ekf" pkg="robot_pose_ekf" type="robot_pose_ekf">
+    <node name="robot_pose_ekf" pkg="robot_pose_ekf" type="robot_pose_ekf" if="$(arg robot_pose_ekf)">
         <rosparam>
             output_frame: odom
             base_footprint_frame: base_footprint
@@ -50,29 +64,12 @@
         </rosparam>
     </node>
 
-    <node pkg="robot_localization" type="ekf_localization_node" name="ekf_se" clear_params="true">
+    <node name="ekf_localization" pkg="robot_localization" type="ekf_localization_node" clear_params="true" if="$(arg ekf_localization)">
         <rosparam command="load" file="$(find bringup)/launch/forklift/ekf_csm.yaml" />
-        <param name="pose0" value="$(arg namespace)/scan_matcher_pose"/>
-        <param name="imu0" value="$(arg namespace)/imu_data"/>
+        <param name="pose0" value="scan_matcher_pose"/>
+        <param name="imu0" value="imu_data"/>
     </node>
 
-    <node pkg="amcl" type="amcl" name="amcl">
-        <remap from="scan" to="/scan_rectified"/>
-        <rosparam>
-            update_min_d: 0.2
-            update_min_a: 0.2
-            use_map_topic: true
-            laser_model_type: likelihood_field
-            odom_model_type: diff-corrected
-            odom_alpha1: 0.005
-            odom_alpha2: 0.005
-            odom_alpha3: 0.005
-            odom_alpha4: 0.005
-            odom_alpha5: 0.005
-        </rosparam>
-    </node>
-
-    <arg name="namespace" default="$(optenv AGV_NAME)"/>
     <arg name="max_vel_x" default="0.55"/>
     <arg name="max_vel_theta" default="1.0"/>
     <arg name="xy_goal_tolerance" default="0.05"/>
@@ -81,8 +78,8 @@
     <arg name="range_enabled" default="false"/>
     <arg name="range_topics" default="['/sonar_12oc', '/sonar_11oc', '/sonar_10oc', '/sonar_9oc', '/sonar_8oc', '/sonar_7oc', '/sonar_6oc', '/sonar_5oc', '/sonar_4oc', '/sonar_3oc', '/sonar_2oc', '/sonar_1oc']"/>
 
-    <node pkg="amcl" type="amcl" name="amcl">
-        <remap from="scan" to="$(arg namespace)/scan_rectified"/>
+    <node name="amcl" pkg="amcl" type="amcl" output="screen">
+        <remap from="scan" to="scan_rectified"/>
         <rosparam>
             update_min_d: 0.05
             update_min_a: 0.2
@@ -98,10 +95,10 @@
     </node>
 
     <node name="move_base" pkg="move_base" type="move_base" output="screen">
-        <remap from="odom" to="$(arg namespace)/odometry/filtered"/>
+        <remap from="odom" to="$(arg ns)/odometry/filtered"/>
         <rosparam>
             base_global_planner: "global_planner/MixedPlanner" <!--"navfn/NavfnROS"--> <!--"global_planner/FixedGlobalPlanner"--> 
-            base_local_planner: "dwa_local_planner/DWAPlannerROS"<!--"teb_local_planner/TebLocalPlannerROS"--><!-- "dwa_local_planner/DWAPlannerROS" --> <!--"rsband_local_planner/RSBandPlannerROS"-->
+            base_local_planner: "dwa_local_planner/DWAPlannerROS"<!--"teb_local_planner/TebLocalPlannerROS"-->
             recovery_behaviors:
               - name: 'conservative_reset'
                 type: 'clear_costmap_recovery/ClearCostmapRecovery'
@@ -326,14 +323,14 @@
 
         <rosparam file="$(find bringup)/launch/forklift/teb_local_planner_params_forklift.yaml" command="load" />
 
-        <param name="global_costmap/static_layer/map_topic" value="$(arg namespace)/map_edit"/>
-        <param name="global_costmap/footprint_topic" value="$(arg namespace)/footprint_setup"/>
-        <param name="local_costmap/obstacle_layer/scan_rectified/topic" value="$(arg namespace)/scan_rectified"/>
-        <param name="local_costmap/obstacle_layer/scan_rectified_down/topic" value="$(arg namespace)/scan_rectified_down"/>
-        <param name="local_costmap/footprint_topic" value="$(arg namespace)/footprint_setup"/>
-        <param name="TebLocalPlannerROS/odom_topic" value="$(arg namespace)/odometry/filtered"/>
-        <param name="TebLocalPlannerROS/costmap_converter/CostmapToPolygonsDBSConcaveHull/costmap_topic" value="$(arg namespace)/move_base/local_costmap/costmap"/>
-        <param name="TebLocalPlannerROS/costmap_converter/CostmapToPolygonsDBSConcaveHull/odom_topic" value="$(arg namespace)/odometry/filtered"/>
+        <param name="global_costmap/static_layer/map_topic" value="$(arg ns)/map_edit"/>
+        <param name="global_costmap/footprint_topic" value="$(arg ns)/footprint_setup"/>
+        <param name="local_costmap/obstacle_layer/scan_rectified/topic" value="$(arg ns)/scan_rectified"/>
+        <param name="local_costmap/obstacle_layer/scan_rectified_down/topic" value="$(arg ns)/scan_rectified_down"/>
+        <param name="local_costmap/footprint_topic" value="$(arg ns)/footprint_setup"/>
+        <param name="TebLocalPlannerROS/odom_topic" value="$(arg ns)/odometry/filtered"/>
+        <param name="TebLocalPlannerROS/costmap_converter/CostmapToPolygonsDBSConcaveHull/costmap_topic" value="$(arg ns)/move_base/local_costmap/costmap"/>
+        <param name="TebLocalPlannerROS/costmap_converter/CostmapToPolygonsDBSConcaveHull/odom_topic" value="$(arg ns)/odometry/filtered"/>
     </node>
 
     <node name="robot_pose_publisher" pkg="robot_pose_publisher" type="robot_pose_publisher" output="screen"/>
@@ -350,12 +347,7 @@
 
     <node name="rosbridge_websocket" pkg="rosbridge_server" type="rosbridge_websocket" output="screen"/>
 
-	<node name="tf2_web_republisher" pkg="tf2_web_republisher" type="tf2_web_republisher" output="screen"/>
-
-    <arg name="has_server" value="$(optenv HAS_SERVER 0)" />
-    <include if="$(arg has_server)" file="$(find multimaster)/launch/master.launch">
-        <arg name="master" value="hitrobot-forklift-server" />
-    </include>
+    <node name="tf2_web_republisher" pkg="tf2_web_republisher" type="tf2_web_republisher" output="screen"/>
 
     <node name="jsnode" pkg="joy" type="joy_node" />
 
@@ -405,6 +397,4 @@ analyzers:
         remove_prefix: 'ps3_joy'
         </rosparam>
     </node>
-
-    <node name="rviz" pkg="rviz" type="rviz"/>
 </launch>

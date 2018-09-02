@@ -36,7 +36,7 @@
         <param name="angle_max" value="$(arg angle_max)"/>
     </node>
 
-    <node name="scan_laser$(arg name)" pkg="sick_tim" type="sick_tim551_2050001" output="screen" if="$(arg sick_tim)">
+    <node name="scan_laser$(arg name)" pkg="sick_tim" type="sick_tim551_2050001" output="screen" respawn="true" if="$(arg sick_tim)">
         <remap from="scan" to="scan$(arg name)"/>
         <param name="frame_id" value="base_laser$(arg name)"/>
         <param name="hostname" value="$(arg port)"/>
@@ -45,7 +45,7 @@
         <param name="range_max" value="$(arg range_max)"/>
     </node>
 
-    <node name="scan_laser$(arg name)" pkg="lms1xx" type="LMS1xx_node" output="screen" if="$(arg sick_lms)">
+    <node name="scan_laser$(arg name)" pkg="lms1xx" type="LMS1xx_node" output="screen" respawn="true" if="$(arg sick_lms)">
         <remap from="scan" to="scan$(arg name)"/>
         <param name="frame_id" value="base_laser$(arg name)"/>
         <param name="host" value="$(arg port)"/>
