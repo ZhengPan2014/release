@@ -7,7 +7,7 @@
     <arg name="wheel_seperation" default="0.466"/>
     <arg name="wheel_ratio" default="23333.3"/>
 
-    <node name="rosbridge_drive" pkg="rosbridge_driver" type="rosbridge_driver" output="screen">
+    <node name="rosbridge_drive$(arg name)" pkg="rosbridge_driver" type="rosbridge_driver" output="screen">
         <param name="drive_port_left" value="$(arg drive_port_left)"/>
         <param name="drive_baud_port_left" value="$(arg drive_port_left)"/>
         <param name="drive_config_port_left" value="$(arg drive_port_left)"/>
