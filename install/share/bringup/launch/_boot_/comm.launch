@@ -7,7 +7,7 @@
     <node name="base_footprint" pkg="tf_broadcaster" type="tf_broadcaster" output="screen">
         <rosparam>
             frame_id: base_footprint
-            z: 0.1
+            z: 0.05
         </rosparam>
     </node>
 

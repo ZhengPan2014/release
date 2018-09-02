@@ -22,7 +22,7 @@
         <param name="yaw" value="$(arg yaw)"/>
     </node>
 
-    <node name="rosbridge_imu$(arg name)" pkg="rosbridge_driver" type="rosbridge_driver" output="screen" if="$(arg imu_jy901)">
+    <node name="rosbridge_imu$(arg name)" pkg="rosbridge_driver" type="rosbridge_driver" output="screen" if="$(arg wit_wt901c)">
         <remap from="imu" to="imu_data$(arg name)"/>
         <param name="imu_frame_id" value="base_imu$(arg name)"/>
         <param name="imu_port" value="$(arg port)"/>
