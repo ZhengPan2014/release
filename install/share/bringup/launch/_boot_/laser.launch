@@ -81,8 +81,8 @@
     </node>
 
     <node name="scan_rectifier$(arg name)" pkg="scan_rectifier" type="scan_rectifier" output="screen">
-        <remap from="scan_input" to="scan_filtered$(arg name)"/>
-        <remap from="scan_output" to="scan_rectified$(arg name)"/>
+        <remap from="scan" to="scan_filtered$(arg name)"/>
+        <remap from="scan_rectified" to="scan_rectified$(arg name)"/>
         <param name="range_max" value="$(arg range_max)"/>
     </node>
 </launch>

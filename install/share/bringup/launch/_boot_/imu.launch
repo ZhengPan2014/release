@@ -23,7 +23,7 @@
     </node>
 
     <node name="rosbridge_imu$(arg name)" pkg="rosbridge_driver" type="rosbridge_driver" output="screen" if="$(arg wit_wt901c)">
-        <remap from="imu" to="imu_data$(arg name)"/>
+        <remap from="imu" to="imu$(arg name)"/>
         <param name="imu_frame_id" value="base_imu$(arg name)"/>
         <param name="imu_port" value="$(arg port)"/>
         <param name="imu_config_port" value="$(arg port)"/>
@@ -58,7 +58,7 @@
                     lock: false
                   - name: imu_port
                     type: write
-                    byte: [0xff, 0xaa, 0x63, 0x01, 0x00] #freq
+                    byte: [0xff, 0xaa, 0x63, 0x01, 0x00] #cali
                     lock: false
             topic_chain:
               - name: odom
@@ -82,18 +82,15 @@
     </node>
 
     <node name="imu_rectifier$(arg name)" pkg="imu_rectifier" type="imu_rectifier" output="screen">
-        <remap from="imu" to="/imu$(arg name)"/>
-        <remap from="imu_rectified" to="/imu_rectified$(arg name)"/>
+        <remap from="imu" to="imu$(arg name)"/>
+        <remap from="imu_rectified" to="imu_rectified$(arg name)"/>
     </node>
 
     <node name="imu_filter$(arg name)" pkg="imu_complementary_filter" type="complementary_filter_node" output="screen">
         <remap from="imu/data_raw" to="imu_rectified$(arg name)"/>
-        <remap from="imu/data" to="imu_data"/>
-        <remap from="imu_filter/cmd_vel" to="cmd_vel"/>
+        <remap from="imu/data" to="imu_data$(arg name)"/>
         <rosparam>
-            use_cmd_vel: false
             do_bias_estimation : false
-            publish_debug_topics: true
         </rosparam>
     </node>
 </launch>
