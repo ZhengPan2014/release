@@ -88,18 +88,13 @@ class ComplementaryFilter
                 double mx, double my, double mz,
                 double dt);
 
-    void setBiasEstimationThresholds(double kGravity, double gamma, 
-                                     double kAngularVelocityThreshold, 
-                                     double kAccelerationThreshold, 
-                                     double kDeltaAngularVelocityThreshold);
-
   private:
-    double kGravity_;
-    double gamma_;
+    static const double kGravity;
+    static const double gamma_;
     // Bias estimation steady state thresholds
-    double kAngularVelocityThreshold_;
-    double kAccelerationThreshold_;
-    double kDeltaAngularVelocityThreshold_;
+    static const double kAngularVelocityThreshold;
+    static const double kAccelerationThreshold;
+    static const double kDeltaAngularVelocityThreshold;
 
     // Gain parameter for the complementary filter, belongs in [0, 1].
     double gain_acc_;
