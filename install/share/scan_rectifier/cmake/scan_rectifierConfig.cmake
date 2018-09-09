@@ -67,7 +67,7 @@ set(scan_rectifier_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(scan_rectifier_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/scan_rectifier)
+  set(scan_rectifier_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/hitrobot/scan_rectifier)
   set(scan_rectifier_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(scan_rectifier_INSTALL_PREFIX "")
   set(scan_rectifier_PREFIX ${scan_rectifier_DEVEL_PREFIX})
