@@ -1,0 +1,7 @@
+<launch>
+   
+  <node name="rfid_driver_hinson" pkg="lighthouse_navigation" type="rfid_driver_hinson" output="screen" />
+
+    <param name="serial_dev"                value="/dev/usb_top42"    type="string"/>
+  
+</launch>

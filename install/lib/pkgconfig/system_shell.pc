@@ -1,8 +1,0 @@
-prefix=/home/ouiyeah/catkin_ws/install
-
-Name: system_shell
-Description: Description of system_shell
-Version: 0.0.0
-Cflags: 
-Libs: -L/home/ouiyeah/catkin_ws/install/lib 
-Requires: 
