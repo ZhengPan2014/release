@@ -29,13 +29,13 @@
 
     <node name="waypoints_navi" pkg="yocs_waypoints_navi" type="yocs_waypoints_navi_node" output="screen"/>
 
-    <node name="scan_rectifier_test" pkg="scan_rectifier" type="scan_rectifier" output="screen">
-        <remap from="scan_rectified" to="scan_rectified_test"/>
+    <node name="scan_matcher_rectifier" pkg="scan_rectifier" type="scan_rectifier" output="screen">
+        <remap from="scan_rectified" to="scan_matcher_rectified"/>
         <param name="range_max" value="20.0"/>
     </node>
 
     <node name="laser_scan_matcher" pkg="laser_scan_matcher" type="laser_scan_matcher_node" output="screen">
-        <remap from="scan" to="scan_rectified_test"/>
+        <remap from="scan" to="scan_matcher_rectified"/>
         <remap from="imu/data" to="imu_data"/>
         <remap from="pose_with_covariance_stamped" to="scan_matcher_pose"/>
         <rosparam>
@@ -43,15 +43,13 @@
             base_frame: base_footprint
             use_imu: true
             use_odom: false
-            use_vel: true
             publish_tf: false
-            publish_pose: falses
+            publish_pose: false
             publish_pose_with_covariance_stamped: true
-            kf_dist_linear: 0.02 #0.1
-            kf_dist_angular: 0.01 #0.1
+            kf_dist_linear: 0.02
+            kf_dist_angular: 0.01
             max_iterations: 1000
             max_correspondence_dist: 2.0
-            max_angular_correction_deg: 10.0
             max_linear_correction: 0.2
             do_compute_covariance: 1
         </rosparam>
@@ -91,7 +89,6 @@
             use_map_topic: true
             laser_model_type: likelihood_field
             odom_model_type: diff-corrected
-            laser_max_range: 20
             odom_alpha1: 0.005
             odom_alpha2: 0.005
             odom_alpha3: 0.005
@@ -251,7 +248,7 @@
                 max_vel_y: 0.0
                 min_vel_y: 0.0
                 min_rot_vel: 0.05
-                forward_point_distance: 2.0 #0.4
+                forward_point_distance: 0.4
                 yaw_goal_tolerance: 3.1416 #0.01
                 xy_goal_tolerance: 2.0 #0.5
                 latch_xy_goal_tolerance: true
@@ -273,8 +270,8 @@
                 yaw_goal_tolerance: 0.025 #0.2
                 free_goal_vel: false
                 viapoints_all_candidates: false #true
-                odom_topic: /odometry/filtered
-                map_frame: /map -->
+                odom_topic: odometry/filtered
+                map_frame: map -->
         </rosparam>
         
         <param name="TrajectoryPlannerROS/max_vel_x" value="$(arg max_vel_x)"/>
@@ -328,7 +325,6 @@
 
 
         <rosparam file="$(find bringup)/launch/forklift/teb_local_planner_params_forklift.yaml" command="load" />
-
     </node>
 
     <node name="robot_pose_publisher" pkg="robot_pose_publisher" type="robot_pose_publisher" output="screen"/>
