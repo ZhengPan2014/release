@@ -39,7 +39,7 @@ while getopts "m:u:s:p:i:k:g:t:ah" ARG; do
     a)
         COMM_AUTO="true";
         ;;
-    ?)
+    h|?)
         echo "comm.sh usage:";
         echo -e "\t-m\tcomm mode (default for auto)";
         echo -e "\t-u\tudev name (default for eth0 or wlan0)";
@@ -50,6 +50,7 @@ while getopts "m:u:s:p:i:k:g:t:ah" ARG; do
         echo -e "\t-g\tip gateway (default for xxx.xxx.xxx.1)";
         echo -e "\t-t\ttimestamp (default for 15 seconds)";
         echo -e "\t-a\tauto connect (default for false)";
+        echo -e "\t-h\thelp info";
         exit 1;
         ;;
     esac

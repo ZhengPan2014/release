@@ -10,9 +10,10 @@ while getopts ":s:h" ARG; do
     :)
         TIMESTAMP=0;
         ;;
-    ?)
+    h|?)
         echo "lock.sh usage:";
         echo -e "\t-s\ttimestamp seconds (default or zero for inf)";
+        echo -e "\t-h\thelp info";
         exit 1;
         ;;
     esac

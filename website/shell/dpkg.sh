@@ -19,13 +19,14 @@ while getopts "n:d:a:t:p:h" ARG; do
     p)
         DPKG_PATH=$OPTARG;
         ;;
-    ?)
+    h|?)
         echo "dpkg.sh usage:";
         echo -e "\t-n\tdpkg name (required)";
         echo -e "\t-d\tdpkg distro (default for missing)";
         echo -e "\t-a\tdpkg architecture (default for missing, option as dpkg)";
         echo -e "\t-t\tdpkg file type (default for zip)";
         echo -e "\t-p\tdpkg file path (default for ~/Downloads)";
+        echo -e "\t-h\thelp info";
         exit 1;
         ;;
     esac

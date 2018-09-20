@@ -10,10 +10,11 @@ while getopts "p:fh" ARG; do
     f)
         GIT_FSCK="ENABLED";
         ;;
-    ?)
+    h|?)
         echo "gitx.sh usage:";
         echo -e "\t-p\tgit path (default for .)";
         echo -e "\t-f\tgit fsck enabled";
+        echo -e "\t-h\thelp info";
         exit 1;
         ;;
     esac

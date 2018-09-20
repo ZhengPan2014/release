@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# ouiyeah @ 2018-02-22
-
 while getopts "sdfah" ARG; do
     case $ARG in
     s)
@@ -22,6 +20,7 @@ while getopts "sdfah" ARG; do
         echo -e "\t-d\tsystem daemon enabled";
         echo -e "\t-f\tforce update enabled";
         echo -e "\t-f\tauto boot enabled";
+        echo -e "\t-h\thelp info";
         exit 1;
         ;;
     esac
@@ -124,7 +123,12 @@ fi
 if [ $NODEJS_ORG_ERROR -eq 0 ]; then
     $PATH_SHELL/roslog-update.sh; # TODO: use other strategy to replace this
     if [ $AUTO_BOOT ]; then
-        node $PATH_CATKIN/www/node/boot.js -a;
+        $PATH_SHELL/pass.sh;
+        export PASS_ERROR=$?;
+        if [ $PASS_ERROR -eq 0 ]; then
+            roslaunch bringup boot.launch;
+        fi
+        # node $PATH_CATKIN/www/node/boot.js -a;
     else
         node $PATH_CATKIN/www/node/boot.js;
     fi
