@@ -3,6 +3,7 @@
     <arg name="akelc_aqmd6010" default="false"/>
     <arg name="wangjin" default="false"/>
     <arg name="name" default=""/>
+    <arg name="plc_port" default="/dev/ttyUSB0"/>
     <arg name="drive_port_left" default="/dev/ttyUSB0"/>
     <arg name="drive_port_right" default="/dev/ttyUSB1"/>
     <arg name="wheel_seperation" default="0.5"/>
@@ -290,7 +291,7 @@
 
               - name: pub_lift_up
                 type: event
-                up_vel: 100    
+                up_vel: 100
                 action_chain:
                   - name: plc_port
                     type: write
