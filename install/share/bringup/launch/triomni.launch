@@ -1,5 +1,0 @@
-<?xml version="1.0"?>
-<launch>
-    <node name="triomni_driver" pkg="wheelcontrol" type="triomni_driver.py" output="screen">
-    </node>
-</launch>

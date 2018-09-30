@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-<launch>
-	<param name="camera/driver/data_skip" value="1"/>
-	<include file="$(find bringup)/launch/openni2.launch">
-		<arg name="rgb_camera_info_url" value="file://$(find bringup)/param/xtion_calibration.yaml"/>
-    	<arg name="tf_frame_files" value="$(find bringup)/launch/xtion_frames.launch"/>
-    </include>
-</launch>

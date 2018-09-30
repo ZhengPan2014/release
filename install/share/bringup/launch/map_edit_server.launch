@@ -1,6 +1,0 @@
-<?xml version="1.0"?>
-<launch>
-    <node name="map_edit_server" pkg="map_server" type="map_server" args="$(find bringup)/param/map_edit.yaml">
-        <remap from="map" to="map_edit"/>
-    </node>
-</launch>

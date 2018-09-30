@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-<launch>
-    <include file="$(find bringup)/launch/bringup-dbparam.launch" />
-
-    <include file="$(find bringup)/launch/bb8/bringup-navi8.launch" >
-        <!-- <arg name="footprint" value="[[0.30, -0.235], [0.30, 0.235], [-0.30, 0.235], [-0.30, -0.235]]"/> -->
-         <arg name="footprint" value="[[0.45, -0.235], [0.45, 0.235], [-0.30, 0.235], [-0.30, -0.235]]"/>
-    </include>
-</launch>
