@@ -2,7 +2,7 @@ prefix=/home/ouiyeah/catkin_ws/install
 
 Name: ecl_eigen
 Description: Description of ecl_eigen
-Version: 0.61.15
-Cflags: -I/home/ouiyeah/catkin_ws/install/include
+Version: 0.61.18
+Cflags: -I/home/ouiyeah/catkin_ws/install/include -I/usr/include/eigen3
 Libs: -L/home/ouiyeah/catkin_ws/install/lib 
 Requires: 

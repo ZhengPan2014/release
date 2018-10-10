@@ -1,0 +1,8 @@
+prefix=/home/ouiyeah/catkin_ws/install
+
+Name: ncd_parser
+Description: Description of ncd_parser
+Version: 0.3.2
+Cflags: 
+Libs: -L/home/ouiyeah/catkin_ws/install/lib 
+Requires: 

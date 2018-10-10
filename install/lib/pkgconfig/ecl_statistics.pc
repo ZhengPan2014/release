@@ -2,7 +2,7 @@ prefix=/home/ouiyeah/catkin_ws/install
 
 Name: ecl_statistics
 Description: Description of ecl_statistics
-Version: 0.61.15
+Version: 0.61.18
 Cflags: -I/home/ouiyeah/catkin_ws/install/include
 Libs: -L/home/ouiyeah/catkin_ws/install/lib -lecl_statistics
 Requires: ecl_build ecl_config ecl_linear_algebra ecl_mpl ecl_type_traits

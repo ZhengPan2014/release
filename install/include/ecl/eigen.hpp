@@ -11,7 +11,7 @@
 #ifndef ECL_EIGEN_HPP_
 #define ECL_EIGEN_HPP_
 
-#define ECL_EIGEN_IS_INTERNAL_3_1_2
+/* #undef ECL_EIGEN_IS_INTERNAL_3_1_2 */
 #define ECL_EIGEN_IS_EXTERNAL
 
 /* #undef ECL_EIGEN_IS_INTERNAL_3_2_1 */

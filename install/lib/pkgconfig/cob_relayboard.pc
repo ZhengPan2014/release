@@ -1,0 +1,8 @@
+prefix=/home/ouiyeah/catkin_ws/install
+
+Name: cob_relayboard
+Description: Description of cob_relayboard
+Version: 0.6.12
+Cflags: -I/home/ouiyeah/catkin_ws/install/include
+Libs: -L/home/ouiyeah/catkin_ws/install/lib -lcob_relayboard_SerialIO -lcob_relayboard
+Requires: 

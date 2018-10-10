@@ -227,10 +227,12 @@ class DEFAULT
         (*_i)->getValue(config, val);
 
         if("yaml_cfg_file"==(*_i)->name){yaml_cfg_file = boost::any_cast<std::string>(val);}
+        if("yaml_cfg_data"==(*_i)->name){yaml_cfg_data = boost::any_cast<std::string>(val);}
       }
     }
 
     std::string yaml_cfg_file;
+std::string yaml_cfg_data;
 
     bool state;
     std::string name;
@@ -242,6 +244,8 @@ class DEFAULT
 
 //#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       std::string yaml_cfg_file;
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      std::string yaml_cfg_data;
 //#line 218 "/opt/ros/indigo/share/dynamic_reconfigure/cmake/../templates/ConfigType.h.template"
 
     bool __fromMessage__(dynamic_reconfigure::Config &msg)
@@ -390,6 +394,16 @@ reloadConfig::GroupDescription<reloadConfig::DEFAULT, reloadConfig> Default("Def
       Default.abstract_parameters.push_back(reloadConfig::AbstractParamDescriptionConstPtr(new reloadConfig::ParamDescription<std::string>("yaml_cfg_file", "str", 0, "Pathname to a yaml file for re-configuration of the mux", "", &reloadConfig::yaml_cfg_file)));
 //#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(reloadConfig::AbstractParamDescriptionConstPtr(new reloadConfig::ParamDescription<std::string>("yaml_cfg_file", "str", 0, "Pathname to a yaml file for re-configuration of the mux", "", &reloadConfig::yaml_cfg_file)));
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __min__.yaml_cfg_data = "";
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __max__.yaml_cfg_data = "";
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __default__.yaml_cfg_data = "";
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(reloadConfig::AbstractParamDescriptionConstPtr(new reloadConfig::ParamDescription<std::string>("yaml_cfg_data", "str", 0, "Yaml-formatted string for re-configuration of the mux", "", &reloadConfig::yaml_cfg_data)));
+//#line 293 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(reloadConfig::AbstractParamDescriptionConstPtr(new reloadConfig::ParamDescription<std::string>("yaml_cfg_data", "str", 0, "Yaml-formatted string for re-configuration of the mux", "", &reloadConfig::yaml_cfg_data)));
 //#line 246 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.convertParams();
 //#line 246 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"

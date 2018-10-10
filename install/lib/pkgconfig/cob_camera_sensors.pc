@@ -1,0 +1,8 @@
+prefix=/home/ouiyeah/catkin_ws/install
+
+Name: cob_camera_sensors
+Description: Description of cob_camera_sensors
+Version: 0.6.12
+Cflags: -I/home/ouiyeah/catkin_ws/install/include -I/usr/include -I/usr/include/opencv
+Libs: -L/home/ouiyeah/catkin_ws/install/lib -l:/usr/lib/x86_64-linux-gnu/libboost_filesystem.so -l:/usr/lib/x86_64-linux-gnu/libboost_thread.so -l:/usr/lib/x86_64-linux-gnu/libpthread.so -l:/usr/lib/x86_64-linux-gnu/libopencv_videostab.so.2.4.8 -l:/usr/lib/x86_64-linux-gnu/libopencv_video.so.2.4.8 -l:/usr/lib/x86_64-linux-gnu/libopencv_superres.so.2.4.8 -l:/usr/lib/x86_64-linux-gnu/libopencv_stitching.so.2.4.8 -l:/usr/lib/x86_64-linux-gnu/libopencv_photo.so.2.4.8 -l:/usr/lib/x86_64-linux-gnu/libopencv_ocl.so.2.4.8 -l:/usr/lib/x86_64-linux-gnu/libopencv_objdetect.so.2.4.8 -l:/usr/lib/x86_64-linux-gnu/libopencv_ml.so.2.4.8 -l:/usr/lib/x86_64-linux-gnu/libopencv_legacy.so.2.4.8 -l:/usr/lib/x86_64-linux-gnu/libopencv_imgproc.so.2.4.8 -l:/usr/lib/x86_64-linux-gnu/libopencv_highgui.so.2.4.8 -l:/usr/lib/x86_64-linux-gnu/libopencv_gpu.so.2.4.8 -l:/usr/lib/x86_64-linux-gnu/libopencv_flann.so.2.4.8 -l:/usr/lib/x86_64-linux-gnu/libopencv_features2d.so.2.4.8 -l:/usr/lib/x86_64-linux-gnu/libopencv_core.so.2.4.8 -l:/usr/lib/x86_64-linux-gnu/libopencv_contrib.so.2.4.8 -l:/usr/lib/x86_64-linux-gnu/libopencv_calib3d.so.2.4.8
+Requires: cmake_modules cob_vision_utils message_runtime roscpp sensor_msgs

@@ -2,7 +2,7 @@ prefix=/home/ouiyeah/catkin_ws/install
 
 Name: ecl_formatters
 Description: Description of ecl_formatters
-Version: 0.61.15
+Version: 0.61.18
 Cflags: -I/home/ouiyeah/catkin_ws/install/include
 Libs: -L/home/ouiyeah/catkin_ws/install/lib -lecl_formatters
 Requires: ecl_config ecl_exceptions ecl_converters

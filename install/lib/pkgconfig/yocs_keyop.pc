@@ -2,7 +2,7 @@ prefix=/home/ouiyeah/catkin_ws/install
 
 Name: yocs_keyop
 Description: Description of yocs_keyop
-Version: 0.9.1
+Version: 0.12.0
 Cflags: 
 Libs: -L/home/ouiyeah/catkin_ws/install/lib 
 Requires: 

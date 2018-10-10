@@ -1,0 +1,8 @@
+prefix=/home/ouiyeah/catkin_ws/install
+
+Name: cob_generic_can
+Description: Description of cob_generic_can
+Version: 0.6.12
+Cflags: -I/home/ouiyeah/catkin_ws/install/include
+Libs: -L/home/ouiyeah/catkin_ws/install/lib -lcob_generic_can_peaksysusb -lcob_generic_can_peaksys -lcob_generic_can_esd -lcob_generic_can_socketcan
+Requires: socketcan_interface cob_utilities libntcan libpcan
