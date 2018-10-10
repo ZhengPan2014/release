@@ -12,8 +12,6 @@
  * @package		app.Controller
  */
 
-define('WEBSERVICES','on');
-
 // debug output level -- 0 = off, 1 = warnings, 2 = full debug
 Configure::write('debug', 1);
 
