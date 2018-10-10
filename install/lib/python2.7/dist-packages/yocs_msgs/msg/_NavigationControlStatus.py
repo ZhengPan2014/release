@@ -23,8 +23,7 @@ int8 SUB_CANCELLED = 5
 
 # Human-readable status description
 string status_desc
-string waypoint_name
-"""
+string waypoint_name"""
   # Pseudo-constants
   ERROR = -1
   IDLING = 0

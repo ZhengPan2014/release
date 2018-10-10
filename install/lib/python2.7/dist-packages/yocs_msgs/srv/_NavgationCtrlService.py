@@ -24,8 +24,7 @@ int8 PAUSE = 2
 
 # name of the way point(s) / trajectory to be execute
 # leave empty, when stopping or pausing
-string goal_name
-"""
+string goal_name"""
   __slots__ = ['msg']
   _slot_types = ['yocs_msgs/NavigationControl']
 
