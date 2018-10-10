@@ -67,7 +67,7 @@ set(fixed_global_planner_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(fixed_global_planner_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/fixed_global_planner)
+  set(fixed_global_planner_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/hitrobot/fixed_global_planner)
   set(fixed_global_planner_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(fixed_global_planner_INSTALL_PREFIX "")
   set(fixed_global_planner_PREFIX ${fixed_global_planner_DEVEL_PREFIX})

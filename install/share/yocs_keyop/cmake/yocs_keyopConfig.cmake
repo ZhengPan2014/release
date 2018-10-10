@@ -67,7 +67,7 @@ set(yocs_keyop_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(yocs_keyop_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/yujin_ocs-devel/yocs_keyop)
+  set(yocs_keyop_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/yujin_ocs/yocs_keyop)
   set(yocs_keyop_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(yocs_keyop_INSTALL_PREFIX "")
   set(yocs_keyop_PREFIX ${yocs_keyop_DEVEL_PREFIX})

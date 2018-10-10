@@ -67,7 +67,7 @@ set(yocs_rapps_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(yocs_rapps_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/yujin_ocs-devel/yocs_rapps)
+  set(yocs_rapps_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/yujin_ocs/yocs_rapps)
   set(yocs_rapps_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(yocs_rapps_INSTALL_PREFIX "")
   set(yocs_rapps_PREFIX ${yocs_rapps_DEVEL_PREFIX})

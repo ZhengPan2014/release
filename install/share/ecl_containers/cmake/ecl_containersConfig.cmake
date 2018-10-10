@@ -67,7 +67,7 @@ set(ecl_containers_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(ecl_containers_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/ecl_core-devel/ecl_containers)
+  set(ecl_containers_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/ecl_core/ecl_containers)
   set(ecl_containers_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(ecl_containers_INSTALL_PREFIX "")
   set(ecl_containers_PREFIX ${ecl_containers_DEVEL_PREFIX})

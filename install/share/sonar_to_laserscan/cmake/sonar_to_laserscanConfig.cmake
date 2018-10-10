@@ -67,7 +67,7 @@ set(sonar_to_laserscan_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(sonar_to_laserscan_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/sonar_to_laserscan)
+  set(sonar_to_laserscan_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/hitrobot/sonar_to_laserscan)
   set(sonar_to_laserscan_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(sonar_to_laserscan_INSTALL_PREFIX "")
   set(sonar_to_laserscan_PREFIX ${sonar_to_laserscan_DEVEL_PREFIX})

@@ -67,7 +67,7 @@ set(rosbridge_driver_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(rosbridge_driver_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/rosbridge_driver)
+  set(rosbridge_driver_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/hitrobot/rosbridge_driver)
   set(rosbridge_driver_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(rosbridge_driver_INSTALL_PREFIX "")
   set(rosbridge_driver_PREFIX ${rosbridge_driver_DEVEL_PREFIX})

@@ -67,7 +67,7 @@ set(ecl_time_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(ecl_time_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/ecl_core-devel/ecl_time)
+  set(ecl_time_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/ecl_core/ecl_time)
   set(ecl_time_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(ecl_time_INSTALL_PREFIX "")
   set(ecl_time_PREFIX ${ecl_time_DEVEL_PREFIX})

@@ -67,7 +67,7 @@ set(ecl_manipulators_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(ecl_manipulators_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/ecl_manipulation-devel/ecl_manipulators)
+  set(ecl_manipulators_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/ecl_manipulation/ecl_manipulators)
   set(ecl_manipulators_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(ecl_manipulators_INSTALL_PREFIX "")
   set(ecl_manipulators_PREFIX ${ecl_manipulators_DEVEL_PREFIX})

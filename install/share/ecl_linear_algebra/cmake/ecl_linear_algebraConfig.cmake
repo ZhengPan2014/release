@@ -67,7 +67,7 @@ set(ecl_linear_algebra_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(ecl_linear_algebra_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/ecl_core-devel/ecl_linear_algebra)
+  set(ecl_linear_algebra_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/ecl_core/ecl_linear_algebra)
   set(ecl_linear_algebra_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(ecl_linear_algebra_INSTALL_PREFIX "")
   set(ecl_linear_algebra_PREFIX ${ecl_linear_algebra_DEVEL_PREFIX})

@@ -67,7 +67,7 @@ set(robot_pose_recorder_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(robot_pose_recorder_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/robot_pose_recorder)
+  set(robot_pose_recorder_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/hitrobot/robot_pose_recorder)
   set(robot_pose_recorder_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(robot_pose_recorder_INSTALL_PREFIX "")
   set(robot_pose_recorder_PREFIX ${robot_pose_recorder_DEVEL_PREFIX})

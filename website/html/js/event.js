@@ -1,1 +1,22 @@
-"use strict";var EVENT=EVENT||{mapClickHandle:function(n){},timerClickHandle:function(n){},puberClickHandle:function(n){},suberClickHandle:function(n){},pubsuberClickHandle:function(n){}};
+'use strict';
+var EVENT = EVENT || {
+	mapClickHandle: (event) => {
+
+	},
+
+	timerClickHandle: (event) => {
+
+	},
+
+	puberClickHandle: (event) => {
+
+	},
+
+	suberClickHandle: (event) => {
+
+	},
+
+	pubsuberClickHandle: (event) => {
+
+	},
+};

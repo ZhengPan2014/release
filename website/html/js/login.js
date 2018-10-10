@@ -1,1 +1,109 @@
-"use strict";function isPasswdValid(e){return!!/^(\w){6,20}$/.exec(e)}function isUserNameValid(e){return!!/^[a-zA-Z]{1}([a-zA-Z0-9]|[._]){4,19}$/.exec(e)}$(function(){$("#entry_button").on("click",function(){var e=$("#loginUsername").val(),s=$("#loginPassword").val();console.log(e,s);$.ajax({type:"post",url:"http://localhost:8808/api/login",data:{username:e,password:s},async:!0,success:function(e){"auth:login_success"==e.code?($("#loginInfo").text(""),$("#login").css("display","none")):"auth:user_not_found"==e.code?$("#loginInfo").text("用户名不存在"):""==e.code?$("#loginInfo").text("该用户已在其他设备登录"):"auth:wrong_password"==e.code&&$("#loginInfo").text("密码错误")},dataType:"json"})}),$("#register").on("click",function(){$("#registers").css("display","block")}),$("#register_button").on("click",function(){var e=$("#registerName").val().trim();if(isUserNameValid(e)){var s=$("#registerPw").val(),t=$("#registerPwRepeat").val();if(isPasswdValid(s))if(s===t){var a=s,r=$("#registerAuthCode").val().trim();$.ajax({type:"post",url:"http://localhost:8808/api/register",data:{username:e,password:a,authcode:r},async:!0,success:function(e){e.code.startsWith("auth:register_success")?($("#registerName").val(""),$("#registerPw").val(""),$("#registerPwRepeat").val(""),$("#registerAuthCode").val(""),$("#registers").css("display","none")):"auth:bad_auth_code"==e.code?$("#registerInfo").text("授权码无效"):"auth:username_exists"==e.code&&$("#registerInfo").text("用户名已存在")},dataType:"json"})}else $("#registerInfo").text("密码不一致");else $("#registerInfo").text("密码无效")}else $("#registerInfo").text("用户名无效")}),$(".registers_back").on("click",function(){$("#registers").css("display","none")})});
+'use strict';
+$(function(){
+	// login
+	$('#entry_button').on('click', function(){
+		var username = $('#loginUsername').val();
+		var password = $('#loginPassword').val();
+		console.log(username, password);
+		var url = 'http://localhost:8808/api/login';
+		$.ajax({
+            type: 'post',
+            url: url,
+            data: { username: username, password: password },
+            async: true,
+            success: function (data) {
+                if (data.code == 'auth:login_success') {
+                	$('#loginInfo').text('');
+                	$('#login').css('display', 'none');
+                }
+                else if (data.code == 'auth:user_not_found') {
+                	$('#loginInfo').text('用户名不存在');
+                }
+                else if (data.code == '') {
+                	$('#loginInfo').text('该用户已在其他设备登录');
+                }
+                else if (data.code == 'auth:wrong_password') {
+                	$('#loginInfo').text('密码错误');
+                }
+            },
+            dataType: "json"
+        });//ajax
+	});
+
+	$('#register').on('click', function(){
+		$('#registers').css('display', 'block');
+	});
+
+	$('#register_button').on('click', function(){
+		var username = $('#registerName').val().trim();
+		if (!isUserNameValid(username))
+		{
+			$('#registerInfo').text('用户名无效');
+			return;
+		}
+		var pd1 = $('#registerPw').val();
+		var pd2 = $('#registerPwRepeat').val();
+		if (!isPasswdValid(pd1))
+		{
+			$('#registerInfo').text('密码无效');
+			return;
+		}
+		if (pd1 !== pd2)
+		{
+			$('#registerInfo').text('密码不一致');
+			return;
+		}
+		var password = pd1;
+		var authcode = $('#registerAuthCode').val().trim();
+		var url = 'http://localhost:8808/api/register';
+		$.ajax({
+            type: 'post',
+            url: url,
+            data: { username: username, password: password, authcode: authcode },
+            async: true,
+            success: function (data) {
+                if (data.code.startsWith('auth:register_success')) 
+                {
+                	$('#registerName').val('');
+                	$('#registerPw').val('');
+                	$('#registerPwRepeat').val('');
+                	$('#registerAuthCode').val('');
+                	$('#registers').css('display', 'none');
+                }
+                else if (data.code == 'auth:bad_auth_code') 
+                {
+                	$('#registerInfo').text('授权码无效');
+                }
+                else if (data.code == 'auth:username_exists') 
+                {
+                	$('#registerInfo').text('用户名已存在');
+                }
+            },
+            dataType: "json"
+        });//ajax
+	});
+
+	$('.registers_back').on('click', function(){
+		$('#registers').css('display', 'none');
+	})
+});
+
+function isPasswdValid(s) 
+{
+    var patrn = /^(\w){6,20}$/;
+    if (!patrn.exec(s))
+    {
+        return false;
+    }
+    return true;
+}
+
+function isUserNameValid(s) 
+{
+    var patrn = /^[a-zA-Z]{1}([a-zA-Z0-9]|[._]){4,19}$/;
+    if (!patrn.exec(s)) 
+    {
+    	return false;	
+    }
+    return true;
+}

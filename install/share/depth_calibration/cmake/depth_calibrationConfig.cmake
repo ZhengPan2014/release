@@ -67,7 +67,7 @@ set(depth_calibration_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(depth_calibration_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/depth_calibration)
+  set(depth_calibration_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/hitrobot/depth_calibration)
   set(depth_calibration_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(depth_calibration_INSTALL_PREFIX "")
   set(depth_calibration_PREFIX ${depth_calibration_DEVEL_PREFIX})

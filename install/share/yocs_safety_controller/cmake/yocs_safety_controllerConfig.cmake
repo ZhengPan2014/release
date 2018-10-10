@@ -67,7 +67,7 @@ set(yocs_safety_controller_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(yocs_safety_controller_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/yujin_ocs-devel/yocs_safety_controller)
+  set(yocs_safety_controller_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/yujin_ocs/yocs_safety_controller)
   set(yocs_safety_controller_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(yocs_safety_controller_INSTALL_PREFIX "")
   set(yocs_safety_controller_PREFIX ${yocs_safety_controller_DEVEL_PREFIX})

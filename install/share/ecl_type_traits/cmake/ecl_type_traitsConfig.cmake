@@ -67,7 +67,7 @@ set(ecl_type_traits_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(ecl_type_traits_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/ecl_core-devel/ecl_type_traits)
+  set(ecl_type_traits_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/ecl_core/ecl_type_traits)
   set(ecl_type_traits_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(ecl_type_traits_INSTALL_PREFIX "")
   set(ecl_type_traits_PREFIX ${ecl_type_traits_DEVEL_PREFIX})

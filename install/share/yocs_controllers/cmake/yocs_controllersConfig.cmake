@@ -67,7 +67,7 @@ set(yocs_controllers_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(yocs_controllers_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/yujin_ocs-devel/yocs_controllers)
+  set(yocs_controllers_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/yujin_ocs/yocs_controllers)
   set(yocs_controllers_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(yocs_controllers_INSTALL_PREFIX "")
   set(yocs_controllers_PREFIX ${yocs_controllers_DEVEL_PREFIX})

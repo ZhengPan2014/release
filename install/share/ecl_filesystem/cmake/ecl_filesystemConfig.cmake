@@ -67,7 +67,7 @@ set(ecl_filesystem_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(ecl_filesystem_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/ecl_core-devel/ecl_filesystem)
+  set(ecl_filesystem_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/ecl_core/ecl_filesystem)
   set(ecl_filesystem_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(ecl_filesystem_INSTALL_PREFIX "")
   set(ecl_filesystem_PREFIX ${ecl_filesystem_DEVEL_PREFIX})

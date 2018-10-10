@@ -1,1 +1,405 @@
-"use strict";var ICON=ICON||{goal:mapIcon,timer:timerIcon,puber:puberIcon,suber:suberIcon,pubsuber:pubsuberIcon,robot:robotIcon,globalPlan:planShape,localPlan:planShape,footprint:footprintShape,laserScan:laserScanShape};function robotIcon(e){var r=e.size||30,o=e.strokeSize||2,i=(e.strokeColor,e.fillColor||"#ffe83b"),t=e.fillColorExt||createjs.Graphics.getRGB(0,150,136,.7),n=new createjs.Graphics;return n.beginFill(t),n.drawCircle(2*r,2*r,1.5*r),n.endFill(),n.beginFill(i),n.drawCircle(2*r,2*r,r/1.2),n.endFill(),n.setStrokeStyle(o),n.beginFill(i),n.moveTo(2*r,.6*r),n.lineTo(1.3*r,2*r),n.lineTo(2.7*r,2*r),n.closePath(),n.endFill(),n.endStroke(),iconWrapper(n,{regX:2*r,regY:2*r,rotation:90,scaleX:.25,scaleY:.25})}function mapIcon(e){var r=e.size||20,o=e.strokeSize||10,i=e.strokeColor||"rgba(0,0,0,0)",t=e.fillColor||"#0f89f5",n=new createjs.Graphics;return n.beginFill(t),n.moveTo(2*r,.5*-r),n.lineTo(1.25*r,r/2),n.lineTo(2*r,.35*r),n.lineTo(2.75*r,r/2),n.beginFill(t),n.closePath(),n.setStrokeStyle(o),n.beginStroke(i),n.beginFill(t),n.drawCircle(2*r,2*r,1.3*r),n.endStroke(),n.endFill(),iconWrapper(n,{regX:2*r,regY:2*r,rotation:90,scaleX:.2,scaleY:.2})}function timerIcon(e){var r=e.size||30,o=e.strokeSize||4,i=e.strokeColor||"#ffffff",t=e.fillColor||"#ec6941",n=new createjs.Graphics;return n.beginStroke(i),n.beginFill(t),n.drawCircle(2*r,2*r,1.8*r),n.endFill(),n.beginStroke(i),n.setStrokeStyle(o),n.drawCircle(2*r,2*r,r),n.endFill(),n.beginStroke(i),n.setStrokeStyle(o),n.moveTo(2*r,1.2*r),n.lineTo(2*r,2*r),n.moveTo(2*r,2*r),n.lineTo(1.5*r,2*r),n.closePath(),iconWrapper(n,{regX:2*r,regY:2*r,rotation:90,scaleX:.15,scaleY:.15})}function puberIcon(e){var r=e.size||30,o=e.strokeSize||3,i=e.strokeColor||"#ffffff",t=e.fillColor||"#cfa972",n=new createjs.Graphics;return n.beginStroke(i),n.beginFill(t),n.drawCircle(2*r,2*r,1.8*r),n.endFill(),n.beginStroke(i),n.setStrokeStyle(o),n.moveTo(2.2*r,1.5*r),n.lineTo(3*r,2*r),n.moveTo(3*r,2*r),n.lineTo(r,2*r),n.moveTo(3*r,2*r),n.lineTo(2.2*r,2.5*r),n.closePath(),iconWrapper(n,{regX:2*r,regY:2*r,rotation:90,scaleX:.2,scaleY:.2})}function suberIcon(e){var r=e.size||30,o=e.strokeSize||5,i=e.strokeColor||"#ffffff",t=e.fillColor||"#0068b7",n=new createjs.Graphics;return n.beginStroke(i),n.beginFill(t),n.drawCircle(2*r,2*r,1.8*r),n.endFill(),n.setStrokeStyle(o),n.beginStroke(i),n.moveTo(3*r,2*r),n.lineTo(r,2*r),n.closePath(),iconWrapper(n,{regX:2*r,regY:2*r,rotation:90,scaleX:.2,scaleY:.2})}function pubsuberIcon(e){var r=e.size||30,o=e.strokeSize||3,i=e.strokeColor||"#ffffff",t=e.fillColor||"#13b5b1",n=new createjs.Graphics;return n.beginStroke(i),n.beginFill(t),n.drawCircle(2*r,2*r,1.8*r),n.endFill(),n.setStrokeStyle(o),n.beginStroke(i),n.moveTo(2.6*r,1.6*r),n.lineTo(3.1*r,2*r),n.moveTo(3.1*r,2*r),n.lineTo(.9*r,2*r),n.moveTo(3.1*r,2*r),n.lineTo(2.6*r,2.4*r),n.moveTo(.9*r,2*r),n.lineTo(1.4*r,2.4*r),n.moveTo(.9*r,2*r),n.lineTo(1.4*r,1.6*r),n.closePath(),iconWrapper(n,{regX:2*r,regY:2*r,rotation:90,scaleX:.2,scaleY:.2})}function chargeStationIcon(e){var r=e.size||30,o=(e.strokeSize,e.strokeColor||"#ffffff"),i=e.fillColor||"#ffffff",t=new createjs.Graphics;return t.beginStroke(o),t.beginFill(i),t.drawCircle(2*r,2*r,1.8*r),t.endFill(),t.beginFill(i),t.moveTo(2.2*r,r),t.lineTo(r/2,2*r),t.lineTo(2*r,2*r),t.lineTo(1.8*r,3*r),t.lineTo(3.6*r,2*r),t.lineTo(2*r,2*r),t.closePath(),iconWrapper(t,{regX:2*r,regY:2*r,rotation:90,scaleX:.2,scaleY:.2})}function planShape(e,r){var o=new createjs.Container;if(e.poses.length<2)return o;var i=r.strokeSize||1,t=r.strokeColor||createjs.Graphics.getRGB(0,255,0,1),n=new createjs.Graphics;n.setStrokeStyle(i),n.beginStroke(t);var a=e.poses[0].pose.position,l=TF.rosToPx(a);n.moveTo(l.x,l.y);for(var s=1;s<e.poses.length;s++)a=e.poses[s].pose.position,l=TF.rosToPx(a),n.lineTo(l.x,l.y),n.moveTo(l.x,l.y);n.endStroke();var c=new createjs.Shape(n);return o.addChild(c),o}function footprintShape(e,r){var o=new createjs.Container;if(e.polygon.points.length<3)return o;var i=r.strokeSize||2,t=r.strokeColor||createjs.Graphics.getRGB(0,255,0,1),n=new createjs.Graphics;n.setStrokeStyle(i),n.beginStroke(t);var a=e.polygon.points[0],l=TF.rosToPx(a),s=l;n.moveTo(l.x,l.y);for(var c=1;c<e.polygon.points.length;c++)a=e.polygon.points[c],l=TF.rosToPx(a),n.lineTo(l.x,l.y),n.moveTo(l.x,l.y);n.lineTo(s.x,s.y),n.endStroke();var g=new createjs.Shape(n);return o.addChild(g),o}function laserScanShape(e,r){var o=new createjs.Container;if(!e)return o;var i=r.size||2,t=r.fillColor||createjs.Graphics.getRGB(244,67,54,1),n=new createjs.Graphics;n.beginFill(t);for(var a=0;a<e.length;a++){var l=e[a],s=TF.rosToPx(l);n.moveTo(s.x,s.y),n.drawCircle(s.x,s.y,i)}n.endFill();var c=new createjs.Shape(n);return o.addChild(c),o}function tempIcon(e){var r=e.size||12,o=e.strokeSize||1.75,i=e.strokeColor||createjs.Graphics.getRGB(0,0,255,1),t=e.fillColor||createjs.Graphics.getRGB(0,255,0,1),n=new createjs.Graphics;return n.setStrokeStyle(o),n.moveTo(-r/2,-r/2),n.beginStroke(i),n.beginFill(t),n.lineTo(r,0),n.lineTo(-r/2,r/2),n.lineTo(r/10,0),n.closePath(),n.endFill(),n.endStroke(),iconWrapper(n,{})}function tempRobotIcon(e){var r=e.size||40,o=new createjs.Bitmap("./image/map.png"),i=0,t=-20;o.regX=o.image.width/2+i,o.regY=o.image.height/2+t,o.rotation=-90;var n=new createjs.Container;n.addChild(o);var a={x:r/o.image.width,y:r/o.image.height};return n.scaleX=a.x,n.scaleY=a.y,DATA.stage.stage.setChildIndex(n,DATA.stage.stage.getNumChildren()-1),n}function tempMapIcon(e){var r=e.size||35,o=new createjs.Bitmap("./image/down.png"),i=0,t=0;o.regX=o.image.width/2+i,o.regY=o.image.height/2+t,o.rotation=-90;var n=new createjs.Container;n.addChild(o);var a={x:r/o.image.width,y:r/o.image.height};return n.scaleX=a.x,n.scaleY=a.y,n}function iconWrapper(e,r){r.size;var o={x:r.regX||0,y:r.regY||0,rotation:r.rotation||0},i={x:r.scaleX||1,y:r.scaleY||1},t=new createjs.Container,n=new createjs.Shape(e);return n.regX=o.x,n.regY=o.y,n.rotation=o.rotation,t.addChild(n),t.scaleX=i.x,t.scaleY=i.y,t}
+'use strict';
+
+var ICON = ICON || {
+    goal: mapIcon,
+    timer: timerIcon,
+    puber: puberIcon,
+    suber: suberIcon,
+    pubsuber: pubsuberIcon,
+    robot: robotIcon,
+    globalPlan: planShape,
+    localPlan: planShape,
+    footprint: footprintShape,
+    laserScan: laserScanShape
+};
+
+function robotIcon(options) {
+    var size = options.size || 30;
+    var strokeSize = options.strokeSize || 2;
+    var strokeColor = options.strokeColor || '#3b6dde'; //e8eaf6
+    var fillColor = options.fillColor || '#ffe83b';
+    var fillColorExt = options.fillColorExt || createjs.Graphics.getRGB(0,150,136,0.7);
+    var graphics = new createjs.Graphics();
+    graphics.beginFill(fillColorExt);  
+    graphics.drawCircle(size*2,size*2,size*1.5);  
+    graphics.endFill();
+    graphics.beginFill(fillColor);  
+    graphics.drawCircle(size*2,size*2,size/1.2);  
+    graphics.endFill();
+    graphics.setStrokeStyle(strokeSize);
+    graphics.beginFill(fillColor);
+    graphics.moveTo(size*2, size*0.6);
+    graphics.lineTo(size*1.3, size*2);
+    graphics.lineTo(size*2.7, size*2);
+    graphics.closePath()
+    graphics.endFill();
+    graphics.endStroke();
+    return iconWrapper(graphics, {
+        regX: size * 2,
+        regY: size * 2,
+        rotation: 90,
+        scaleX: 0.25,
+        scaleY: 0.25,
+    });
+}
+
+// waypoint.map
+function mapIcon(options)
+{
+    var size = options.size || 20;
+    var strokeSize = options.strokeSize || 10;
+    var strokeColor = options.strokeColor || 'rgba(0,0,0,0)';
+    var fillColor = options.fillColor || '#0f89f5';
+    var graphics = new createjs.Graphics();
+    graphics.beginFill(fillColor);
+    graphics.moveTo(size*2, -size*0.5);
+    graphics.lineTo(size*1.25, size/2);
+    graphics.lineTo(size*2, size*0.35);
+    graphics.lineTo(size*2.75, size/2);
+    graphics.beginFill(fillColor); 
+
+    graphics.closePath();
+    graphics.setStrokeStyle(strokeSize); 
+    graphics.beginStroke(strokeColor);
+    graphics.beginFill(fillColor);
+    graphics.drawCircle(size*2,size*2,size*1.3);
+    graphics.endStroke();
+    graphics.endFill();
+    return iconWrapper(graphics, {
+        regX: size * 2,
+        regY: size * 2,
+        rotation: 90,
+        scaleX: 0.2,
+        scaleY: 0.2   
+    });
+}
+
+// waypoint.timer
+function timerIcon(options)
+{
+    var size = options.size || 30;
+    var strokeSize = options.strokeSize || 4;
+    var strokeColor = options.strokeColor || '#ffffff';
+    var fillColor = options.fillColor || '#ec6941';
+    var graphics = new createjs.Graphics();
+    graphics.beginStroke(strokeColor);
+    graphics.beginFill(fillColor);  
+    graphics.drawCircle(size*2,size*2,size*1.8);  
+    graphics.endFill();
+    graphics.beginStroke(strokeColor); 
+    graphics.setStrokeStyle(strokeSize);
+    graphics.drawCircle(size*2,size*2,size);  
+    graphics.endFill();
+    graphics.beginStroke(strokeColor);
+    graphics.setStrokeStyle(strokeSize); 
+    graphics.moveTo(size*2, size*1.2);
+    graphics.lineTo(size*2, size*2);
+    graphics.moveTo(size*2, size*2);
+    graphics.lineTo(size*1.5, size*2);
+    graphics.closePath()
+    return iconWrapper(graphics, {
+        regX: size * 2,
+        regY: size * 2,
+        rotation: 90,
+        scaleX: 0.15,
+        scaleY: 0.15
+    });
+}
+
+// waypoint.puber
+function puberIcon(options)
+{
+    var size = options.size || 30;
+    var strokeSize = options.strokeSize || 3;
+    var strokeColor = options.strokeColor || '#ffffff';
+    var fillColor = options.fillColor || '#cfa972';
+    var graphics = new createjs.Graphics();
+    graphics.beginStroke(strokeColor);
+    graphics.beginFill(fillColor);  
+    graphics.drawCircle(size*2,size*2,size*1.8);  
+    graphics.endFill();
+    graphics.beginStroke(strokeColor); 
+    graphics.setStrokeStyle(strokeSize);
+    graphics.moveTo(size*2.2, size*1.5);
+    graphics.lineTo(size*3, size*2);
+    graphics.moveTo(size*3, size*2);
+    graphics.lineTo(size, size*2);
+    graphics.moveTo(size*3, size*2);
+    graphics.lineTo(size*2.2, size*2.5);
+    graphics.closePath()
+    return iconWrapper(graphics, {
+        regX: size * 2,
+        regY: size * 2,
+        rotation: 90,
+        scaleX: 0.2,
+        scaleY: 0.2
+    });
+}
+
+// waypoint.suber
+function suberIcon(options)
+{
+    var size = options.size || 30;
+    var strokeSize = options.strokeSize || 5;
+    var strokeColor = options.strokeColor || '#ffffff';
+    var fillColor = options.fillColor || '#0068b7';
+    var graphics = new createjs.Graphics();
+    graphics.beginStroke(strokeColor);
+    graphics.beginFill(fillColor);  
+    graphics.drawCircle(size*2,size*2,size*1.8);  
+    graphics.endFill();
+    graphics.setStrokeStyle(strokeSize);
+    graphics.beginStroke(strokeColor); 
+    graphics.moveTo(size*3, size*2);
+    graphics.lineTo(size, size*2);
+    graphics.closePath()
+    return iconWrapper(graphics, {
+        regX: size * 2,
+        regY: size * 2,
+        rotation: 90,
+        scaleX: 0.2,
+        scaleY: 0.2
+    });
+}
+
+function pubsuberIcon(options)
+{
+    var size = options.size || 30;
+    var strokeSize = options.strokeSize || 3;
+    var strokeColor = options.strokeColor || '#ffffff';
+    var fillColor = options.fillColor || '#13b5b1';
+    var graphics = new createjs.Graphics();
+    graphics.beginStroke(strokeColor);
+    graphics.beginFill(fillColor);  
+    graphics.drawCircle(size*2,size*2,size*1.8);  
+    graphics.endFill();
+    graphics.setStrokeStyle(strokeSize);
+    graphics.beginStroke(strokeColor);
+    graphics.moveTo(size*2.6, size*1.6);
+    graphics.lineTo(size*3.1, size*2);
+    graphics.moveTo(size*3.1, size*2);
+    graphics.lineTo(size*0.9, size*2);
+    graphics.moveTo(size*3.1, size*2);
+    graphics.lineTo(size*2.6, size*2.4);
+    graphics.moveTo(size*0.9, size*2);
+    graphics.lineTo(size*1.4, size*2.4);
+    graphics.moveTo(size*0.9, size*2);
+    graphics.lineTo(size*1.4, size*1.6);
+    graphics.closePath();
+    return iconWrapper(graphics, {
+        regX: size * 2,
+        regY: size * 2,
+        rotation: 90,
+        scaleX: 0.2,
+        scaleY: 0.2
+    });
+}
+
+function chargeStationIcon(options)
+{
+    var size = options.size || 30;
+    var strokeSize = options.strokeSize || 3;
+    var strokeColor = options.strokeColor || '#ffffff';
+    var fillColor = options.fillColor || '#ffffff';
+    var graphics = new createjs.Graphics();
+    graphics.beginStroke(strokeColor);
+    graphics.beginFill(fillColor);  
+    graphics.drawCircle(size*2,size*2,size*1.8);  
+    graphics.endFill();
+    graphics.beginFill(fillColor);
+    graphics.moveTo(size*2.2, size);
+    graphics.lineTo(size/2, size*2);
+    graphics.lineTo(size*2, size*2);
+    graphics.lineTo(size*1.8, size*3);
+    graphics.lineTo(size*3.6, size*2);
+    graphics.lineTo(size*2, size*2);
+    graphics.closePath()
+    return iconWrapper(graphics, {
+        regX: size * 2,
+        regY: size * 2,
+        rotation: 90,
+        scaleX: 0.2,
+        scaleY: 0.2
+    });
+
+}
+
+function planShape(plan, options)
+{
+    var container = new createjs.Container();
+    if (plan.poses.length < 2)
+    {
+        return container;
+    }
+    var strokeSize = options.strokeSize || 1;
+    var strokeColor = options.strokeColor || createjs.Graphics.getRGB(0,255,0,1);
+    var graphics = new createjs.Graphics();
+    graphics.setStrokeStyle(strokeSize);
+    graphics.beginStroke(strokeColor);
+    var posRos = plan.poses[0].pose.position;
+    var posPx = TF.rosToPx(posRos);
+    graphics.moveTo(posPx.x, posPx.y);
+    for (var i = 1; i < plan.poses.length; i++)
+    {
+        posRos = plan.poses[i].pose.position;
+        posPx = TF.rosToPx(posRos);
+        graphics.lineTo(posPx.x, posPx.y);
+        graphics.moveTo(posPx.x, posPx.y);
+    }
+    graphics.endStroke();
+    var shape = new createjs.Shape(graphics);
+    container.addChild(shape);
+    return container;
+}
+
+function footprintShape(footprint, options)
+{
+    var container = new createjs.Container();
+    if (footprint.polygon.points.length < 3)
+    {
+        return container;
+    }
+    var strokeSize = options.strokeSize || 2;
+    var strokeColor = options.strokeColor || createjs.Graphics.getRGB(0,255,0,1);
+    var graphics = new createjs.Graphics();
+    graphics.setStrokeStyle(strokeSize);
+    graphics.beginStroke(strokeColor);
+    var posRos = footprint.polygon.points[0];
+    var posPx = TF.rosToPx(posRos);
+    var posPxOrg = posPx;
+    graphics.moveTo(posPx.x, posPx.y);
+    for (var i = 1; i < footprint.polygon.points.length; i++)
+    {
+        posRos = footprint.polygon.points[i];
+        posPx = TF.rosToPx(posRos);
+        graphics.lineTo(posPx.x, posPx.y);
+        graphics.moveTo(posPx.x, posPx.y);
+    }
+    graphics.lineTo(posPxOrg.x, posPxOrg.y);
+    graphics.endStroke();
+    var shape = new createjs.Shape(graphics);
+    container.addChild(shape);
+    return container;
+}
+
+function laserScanShape(laserScanPoints, options)
+{
+    var container = new createjs.Container();
+    if (!laserScanPoints)
+    {
+        return container;
+    }
+    var size = options.size || 2;
+    var fillColor = options.fillColor || createjs.Graphics.getRGB(244, 67, 54, 1);
+    var graphics = new createjs.Graphics();
+    graphics.beginFill(fillColor); 
+    for (var i = 0; i < laserScanPoints.length; i++)
+    {
+        var posRos = laserScanPoints[i];
+        var posPx = TF.rosToPx(posRos);
+        graphics.moveTo(posPx.x, posPx.y);
+        graphics.drawCircle(posPx.x, posPx.y, size);      
+    }
+    graphics.endFill();
+    var shape = new createjs.Shape(graphics);
+    container.addChild(shape);
+    return container;
+}
+
+function tempIcon(options)
+{
+    var size = options.size || 12;
+    var strokeSize = options.strokeSize || 1.75;
+    var strokeColor = options.strokeColor || createjs.Graphics.getRGB(0,0,255,1);
+    var fillColor = options.fillColor || createjs.Graphics.getRGB(0,255,0,1);
+    var graphics = new createjs.Graphics();
+    graphics.setStrokeStyle(strokeSize);
+    graphics.moveTo(-size / 2.0, -size / 2.0);
+    graphics.beginStroke(strokeColor);
+    graphics.beginFill(fillColor);
+    graphics.lineTo(size, 0);
+    graphics.lineTo(-size / 2.0, size / 2.0);
+    graphics.lineTo(size / 10.0, 0);
+    graphics.closePath();
+    graphics.endFill();
+    graphics.endStroke();
+    return iconWrapper(graphics, {});
+}
+
+function tempRobotIcon(options)
+{
+    var size = options.size || 40;
+    var bitmap = new createjs.Bitmap('./image/map.png');
+    var offset = {
+        x: 0,
+        y: -20
+    };
+    bitmap.regX = bitmap.image.width / 2 + offset.x;
+    bitmap.regY = bitmap.image.height / 2 + offset.y;
+    bitmap.rotation = -90;
+    var container = new createjs.Container();
+    container.addChild(bitmap);
+    var scale = {
+        x: size / bitmap.image.width,
+        y: size / bitmap.image.height
+    };
+    container.scaleX = scale.x;
+    container.scaleY = scale.y;
+    DATA.stage.stage.setChildIndex(container, DATA.stage.stage.getNumChildren()-1);
+    return container;
+}
+
+function tempMapIcon(options)
+{
+    var size = options.size || 35;
+    var bitmap = new createjs.Bitmap('./image/down.png');
+    var offset = {
+        x: 0,
+        y: 0
+    };
+    bitmap.regX = bitmap.image.width / 2 + offset.x;
+    bitmap.regY = bitmap.image.height / 2 + offset.y;
+    bitmap.rotation = -90;
+    var container = new createjs.Container();
+    container.addChild(bitmap);
+    var scale = {
+        x: size / bitmap.image.width,
+        y: size / bitmap.image.height
+    };
+    container.scaleX = scale.x;
+    container.scaleY = scale.y;
+    return container;
+}
+
+// icon wrapper for graphics icon
+// params:
+//     1. iconGraphics: createjs graphics icon;
+//     2. options:
+//         regX: the left offset for the registration point
+//         regY: the y offset for the registration point
+//         scaleX: the factor to stretch horizontally
+//         scaleY: the factor to stretch vertically
+// return:
+//     createjs.Container
+function iconWrapper(iconGraphics, options)
+{
+    var size = options.size || 10;
+    var reg = {
+        x: options.regX || 0,
+        y: options.regY || 0,
+        rotation: options.rotation || 0
+    };
+    var scale = {
+        x: options.scaleX || 1,
+        y: options.scaleY || 1
+    };
+    var container = new createjs.Container();
+    var shape = new createjs.Shape(iconGraphics);
+    shape.regX = reg.x;
+    shape.regY = reg.y;
+    shape.rotation = reg.rotation;
+    container.addChild(shape);
+    container.scaleX = scale.x;
+    container.scaleY = scale.y;
+    return container;
+}

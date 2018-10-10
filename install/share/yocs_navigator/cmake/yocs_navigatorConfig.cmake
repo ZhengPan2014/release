@@ -67,7 +67,7 @@ set(yocs_navigator_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(yocs_navigator_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/yujin_ocs-devel/yocs_navigator)
+  set(yocs_navigator_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/yujin_ocs/yocs_navigator)
   set(yocs_navigator_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(yocs_navigator_INSTALL_PREFIX "")
   set(yocs_navigator_PREFIX ${yocs_navigator_DEVEL_PREFIX})

@@ -67,7 +67,7 @@ set(yocs_virtual_sensor_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(yocs_virtual_sensor_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/yujin_ocs-devel/yocs_virtual_sensor)
+  set(yocs_virtual_sensor_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/yujin_ocs/yocs_virtual_sensor)
   set(yocs_virtual_sensor_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(yocs_virtual_sensor_INSTALL_PREFIX "")
   set(yocs_virtual_sensor_PREFIX ${yocs_virtual_sensor_DEVEL_PREFIX})

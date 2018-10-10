@@ -67,7 +67,7 @@ set(tf_broadcaster_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(tf_broadcaster_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/tf_broadcaster)
+  set(tf_broadcaster_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/hitrobot/tf_broadcaster)
   set(tf_broadcaster_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(tf_broadcaster_INSTALL_PREFIX "")
   set(tf_broadcaster_PREFIX ${tf_broadcaster_DEVEL_PREFIX})

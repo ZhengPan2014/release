@@ -67,7 +67,7 @@ set(yocs_math_toolkit_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(yocs_math_toolkit_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/yujin_ocs-devel/yocs_math_toolkit)
+  set(yocs_math_toolkit_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/yujin_ocs/yocs_math_toolkit)
   set(yocs_math_toolkit_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(yocs_math_toolkit_INSTALL_PREFIX "")
   set(yocs_math_toolkit_PREFIX ${yocs_math_toolkit_DEVEL_PREFIX})

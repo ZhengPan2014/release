@@ -67,7 +67,7 @@ set(laser_scan_matcher_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(laser_scan_matcher_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/laser_scan_matcher)
+  set(laser_scan_matcher_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/scan_tools/laser_scan_matcher)
   set(laser_scan_matcher_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(laser_scan_matcher_INSTALL_PREFIX "")
   set(laser_scan_matcher_PREFIX ${laser_scan_matcher_DEVEL_PREFIX})

@@ -67,7 +67,7 @@ set(base_calibration_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(base_calibration_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/base_calibration)
+  set(base_calibration_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/hitrobot/base_calibration)
   set(base_calibration_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(base_calibration_INSTALL_PREFIX "")
   set(base_calibration_PREFIX ${base_calibration_DEVEL_PREFIX})

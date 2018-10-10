@@ -67,7 +67,7 @@ set(path_recorder_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(path_recorder_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/path_recorder)
+  set(path_recorder_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/hitrobot/path_recorder)
   set(path_recorder_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(path_recorder_INSTALL_PREFIX "")
   set(path_recorder_PREFIX ${path_recorder_DEVEL_PREFIX})

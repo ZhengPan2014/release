@@ -67,7 +67,7 @@ set(yocs_joyop_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(yocs_joyop_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/yujin_ocs-devel/yocs_joyop)
+  set(yocs_joyop_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/yujin_ocs/yocs_joyop)
   set(yocs_joyop_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(yocs_joyop_INSTALL_PREFIX "")
   set(yocs_joyop_PREFIX ${yocs_joyop_DEVEL_PREFIX})

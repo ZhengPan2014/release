@@ -67,7 +67,7 @@ set(rosbridge_shell_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(rosbridge_shell_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/rosbridge_shell)
+  set(rosbridge_shell_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/hitrobot/rosbridge_shell)
   set(rosbridge_shell_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(rosbridge_shell_INSTALL_PREFIX "")
   set(rosbridge_shell_PREFIX ${rosbridge_shell_DEVEL_PREFIX})

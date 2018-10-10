@@ -67,7 +67,7 @@ set(yocs_cmd_vel_mux_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(yocs_cmd_vel_mux_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/yocs_cmd_vel_mux)
+  set(yocs_cmd_vel_mux_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/yujin_ocs/yocs_cmd_vel_mux)
   set(yocs_cmd_vel_mux_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(yocs_cmd_vel_mux_INSTALL_PREFIX "")
   set(yocs_cmd_vel_mux_PREFIX ${yocs_cmd_vel_mux_DEVEL_PREFIX})

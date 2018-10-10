@@ -67,7 +67,7 @@ set(straf_recovery_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(straf_recovery_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/straf_recovery-master)
+  set(straf_recovery_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/straf_recovery)
   set(straf_recovery_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(straf_recovery_INSTALL_PREFIX "")
   set(straf_recovery_PREFIX ${straf_recovery_DEVEL_PREFIX})

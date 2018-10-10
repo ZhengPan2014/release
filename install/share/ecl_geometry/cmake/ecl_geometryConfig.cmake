@@ -67,7 +67,7 @@ set(ecl_geometry_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(ecl_geometry_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/ecl_core-devel/ecl_geometry)
+  set(ecl_geometry_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/ecl_core/ecl_geometry)
   set(ecl_geometry_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(ecl_geometry_INSTALL_PREFIX "")
   set(ecl_geometry_PREFIX ${ecl_geometry_DEVEL_PREFIX})

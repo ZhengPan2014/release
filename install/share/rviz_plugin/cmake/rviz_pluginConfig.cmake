@@ -67,7 +67,7 @@ set(rviz_plugin_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(rviz_plugin_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/rviz_plugin)
+  set(rviz_plugin_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/hitrobot/rviz_plugin)
   set(rviz_plugin_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(rviz_plugin_INSTALL_PREFIX "")
   set(rviz_plugin_PREFIX ${rviz_plugin_DEVEL_PREFIX})

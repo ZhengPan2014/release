@@ -67,7 +67,7 @@ set(scan_marker_edit_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(scan_marker_edit_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/scan_marker_edit)
+  set(scan_marker_edit_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/hitrobot/scan_marker_edit)
   set(scan_marker_edit_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(scan_marker_edit_INSTALL_PREFIX "")
   set(scan_marker_edit_PREFIX ${scan_marker_edit_DEVEL_PREFIX})

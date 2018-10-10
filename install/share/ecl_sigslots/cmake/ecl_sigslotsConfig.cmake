@@ -67,7 +67,7 @@ set(ecl_sigslots_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(ecl_sigslots_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/ecl_core-devel/ecl_sigslots)
+  set(ecl_sigslots_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/ecl_core/ecl_sigslots)
   set(ecl_sigslots_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(ecl_sigslots_INSTALL_PREFIX "")
   set(ecl_sigslots_PREFIX ${ecl_sigslots_DEVEL_PREFIX})

@@ -67,7 +67,7 @@ set(lms1xx_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(lms1xx_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/LMS1xx-master)
+  set(lms1xx_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/LMS1xx)
   set(lms1xx_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(lms1xx_INSTALL_PREFIX "")
   set(lms1xx_PREFIX ${lms1xx_DEVEL_PREFIX})

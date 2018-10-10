@@ -67,7 +67,7 @@ set(task_manager_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(task_manager_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/task_manager)
+  set(task_manager_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/hitrobot/task_manager)
   set(task_manager_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(task_manager_INSTALL_PREFIX "")
   set(task_manager_PREFIX ${task_manager_DEVEL_PREFIX})

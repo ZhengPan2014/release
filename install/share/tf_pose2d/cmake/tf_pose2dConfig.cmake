@@ -67,7 +67,7 @@ set(tf_pose2d_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(tf_pose2d_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/tf_pose2d)
+  set(tf_pose2d_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/hitrobot/tf_pose2d)
   set(tf_pose2d_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(tf_pose2d_INSTALL_PREFIX "")
   set(tf_pose2d_PREFIX ${tf_pose2d_DEVEL_PREFIX})

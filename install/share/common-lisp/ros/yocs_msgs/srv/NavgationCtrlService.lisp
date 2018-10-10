@@ -49,10 +49,10 @@
   "7a0a7e8479acaa6ce70d517956274341")
 (cl:defmethod roslisp-msg-protocol:message-definition ((type (cl:eql '<NavgationCtrlService-request>)))
   "Returns full string definition for message of type '<NavgationCtrlService-request>"
-  (cl:format cl:nil "NavigationControl msg~%~%================================================================================~%MSG: yocs_msgs/NavigationControl~%# control the way point/trajectory navigation~%int8 control~%~%int8 STOP  = 0~%int8 START = 1~%int8 PAUSE = 2~%~%# name of the way point(s) / trajectory to be execute~%# leave empty, when stopping or pausing~%string goal_name~%~%~%"))
+  (cl:format cl:nil "NavigationControl msg~%~%================================================================================~%MSG: yocs_msgs/NavigationControl~%# control the way point/trajectory navigation~%int8 control~%~%int8 STOP  = 0~%int8 START = 1~%int8 PAUSE = 2~%~%# name of the way point(s) / trajectory to be execute~%# leave empty, when stopping or pausing~%string goal_name~%~%"))
 (cl:defmethod roslisp-msg-protocol:message-definition ((type (cl:eql 'NavgationCtrlService-request)))
   "Returns full string definition for message of type 'NavgationCtrlService-request"
-  (cl:format cl:nil "NavigationControl msg~%~%================================================================================~%MSG: yocs_msgs/NavigationControl~%# control the way point/trajectory navigation~%int8 control~%~%int8 STOP  = 0~%int8 START = 1~%int8 PAUSE = 2~%~%# name of the way point(s) / trajectory to be execute~%# leave empty, when stopping or pausing~%string goal_name~%~%~%"))
+  (cl:format cl:nil "NavigationControl msg~%~%================================================================================~%MSG: yocs_msgs/NavigationControl~%# control the way point/trajectory navigation~%int8 control~%~%int8 STOP  = 0~%int8 START = 1~%int8 PAUSE = 2~%~%# name of the way point(s) / trajectory to be execute~%# leave empty, when stopping or pausing~%string goal_name~%~%"))
 (cl:defmethod roslisp-msg-protocol:serialization-length ((msg <NavgationCtrlService-request>))
   (cl:+ 0
      (roslisp-msg-protocol:serialization-length (cl:slot-value msg 'msg))

@@ -67,7 +67,7 @@ set(ecl_threads_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(ecl_threads_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/ecl_core-devel/ecl_threads)
+  set(ecl_threads_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/ecl_core/ecl_threads)
   set(ecl_threads_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(ecl_threads_INSTALL_PREFIX "")
   set(ecl_threads_PREFIX ${ecl_threads_DEVEL_PREFIX})

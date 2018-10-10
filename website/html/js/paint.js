@@ -1,1 +1,352 @@
-"use strict";var PAINT=PAINT||{editContainer:null,obstaclePoints:[],pointLastPos:null,pointGraphics:null,lineStartPoint:null,lineStartPointShape:null,circleCenterPoint:null,circleCenterPointShape:null,rectStartPoint:null,rectStartPointShape:null,rubberLastPos:null,rubberGraphics:null,poseStartPoint:null,poseStartPointShape:null,move:function(e){},point:function(e){var t=createjs.Graphics.getRGB(40,53,147,1),a=new createjs.Graphics;a.setStrokeStyle(2),a.beginStroke(t);var n={x:e.stageX,y:e.stageY},i=TF.pxToRos(n);PAINT.obstaclePoints.push({x:i.x,y:i.y,z:0}),PAINT.pointLastPos?a.moveTo(PAINT.pointLastPos.x,PAINT.pointLastPos.y):(a.moveTo(n.x,n.y),PAINT.editContainer=new createjs.Container,PAINT.editContainer.name="mapEdit",DATA.stage.stage.addChild(PAINT.editContainer)),a.lineTo(n.x,n.y),PAINT.pointLastPos=n,a.closePath(),a.endStroke();var r=new createjs.Shape(a);PAINT.editContainer.addChild(r)},line:function(e){var t=createjs.Graphics.getRGB(40,53,147,1),a={x:e.stageX,y:e.stageY};if(PAINT.lineStartPoint){var n=new createjs.Graphics;n.setStrokeStyle(2),n.beginStroke(t),n.moveTo(PAINT.lineStartPoint.x,PAINT.lineStartPoint.y),n.lineTo(a.x,a.y);var i=TF.pxToRos(PAINT.lineStartPoint),r=TF.pxToRos(a),o=[{x:i.x,y:i.y,z:0},{x:r.x,y:r.y,z:0}];DATA.mapEditObstacleList.push(o),DATA.stage.stage.removeChild(PAINT.lineStartPointShape),PAINT.lineStartPointShape=null,n.endStroke();var s=new createjs.Shape(n);PAINT.editContainer.addChild(s),DATA.mapEditStageList.push(PAINT.editContainer),PAINT.editContainer=null,PAINT.lineStartPoint=null}else{PAINT.lineStartPoint=a,PAINT.editContainer=new createjs.Container,PAINT.editContainer.name="mapEdit";var P=new createjs.Graphics;P.beginFill("#ff0000"),P.drawCircle(a.x,a.y,3),PAINT.lineStartPointShape=new createjs.Shape(P),DATA.stage.stage.addChild(PAINT.editContainer,PAINT.lineStartPointShape)}},circle:function(e){var t=createjs.Graphics.getRGB(40,53,147,1),a={x:e.stageX,y:e.stageY};if(PAINT.circleCenterPoint){var n=new createjs.Graphics;n.setStrokeStyle(2),n.beginStroke(t);var i=Math.sqrt(Math.pow(a.x-PAINT.circleCenterPoint.x,2)+Math.pow(a.y-PAINT.circleCenterPoint.y,2));n.drawCircle(PAINT.circleCenterPoint.x,PAINT.circleCenterPoint.y,i);var r=TF.pxToRos(PAINT.circleCenterPoint),o=TF.pxToRos(a),s=Math.sqrt(Math.pow(o.x-r.x,2)+Math.pow(o.y-r.y,2)),P=[{x:r.x,y:r.y,z:s}];DATA.mapEditObstacleList.push(P),DATA.stage.stage.removeChild(PAINT.circleCenterPointShape),PAINT.circleCenterPointShape=null,n.endStroke();var T=new createjs.Shape(n);PAINT.editContainer.addChild(T),DATA.mapEditStageList.push(PAINT.editContainer),PAINT.editContainer=null,PAINT.circleCenterPoint=null}else{PAINT.circleCenterPoint=a,PAINT.editContainer=new createjs.Container,PAINT.editContainer.name="mapEdit";var l=new createjs.Graphics;l.beginFill("#ff0000"),l.drawCircle(a.x,a.y,3),PAINT.circleCenterPointShape=new createjs.Shape(l),DATA.stage.stage.addChild(PAINT.editContainer,PAINT.circleCenterPointShape)}},rect:function(e){var t=createjs.Graphics.getRGB(40,53,147,1),a={x:e.stageX,y:e.stageY};if(PAINT.rectStartPoint){var n=new createjs.Graphics;n.setStrokeStyle(2),n.beginStroke(t);var i=a.x-PAINT.rectStartPoint.x,r=a.y-PAINT.rectStartPoint.y,o=[];o[0]=PAINT.rectStartPoint,o[1]={x:PAINT.rectStartPoint.x+i,y:PAINT.rectStartPoint.y},o[2]={x:PAINT.rectStartPoint.x+i,y:PAINT.rectStartPoint.y+r},o[3]={x:PAINT.rectStartPoint.x,y:PAINT.rectStartPoint.y+r},n.moveTo(o[0].x,o[0].y),n.lineTo(o[1].x,o[1].y),n.lineTo(o[2].x,o[2].y),n.lineTo(o[3].x,o[3].y),n.lineTo(o[0].x,o[0].y);for(var s=[],P=0;P<o.length;P++){var T=TF.pxToRos(o[P]);s.push({x:T.x,y:T.y,z:0})}DATA.mapEditObstacleList.push(s),DATA.stage.stage.removeChild(PAINT.rectStartPointShape),PAINT.rectStartPointShape=null,n.endStroke();var l=new createjs.Shape(n);PAINT.editContainer.addChild(l),DATA.mapEditStageList.push(PAINT.editContainer),PAINT.editContainer=null,PAINT.rectStartPoint=null}else{PAINT.rectStartPoint=a,PAINT.editContainer=new createjs.Container,PAINT.editContainer.name="mapEdit";var A=new createjs.Graphics;A.beginFill("#ff0000"),A.drawCircle(a.x,a.y,3),PAINT.rectStartPointShape=new createjs.Shape(A),DATA.stage.stage.addChild(PAINT.editContainer,PAINT.rectStartPointShape)}},rubber:function(e){var t=createjs.Graphics.getRGB(234,234,246,1),a=new createjs.Graphics;a.setStrokeStyle(5),a.beginStroke(t);var n={x:e.stageX,y:e.stageY},i=TF.pxToRos(n);PAINT.obstaclePoints.push({x:i.x,y:i.y,z:-1}),PAINT.rubberLastPos?a.moveTo(PAINT.rubberLastPos.x,PAINT.rubberLastPos.y):(a.moveTo(n.x,n.y),PAINT.editContainer=new createjs.Container,PAINT.editContainer.name="mapEdit",DATA.stage.stage.addChild(PAINT.editContainer)),a.lineTo(n.x,n.y),PAINT.rubberLastPos=n,a.closePath(),a.endStroke();var r=new createjs.Shape(a);PAINT.editContainer.addChild(r)},pose:function(e){var t={x:e.stageX,y:e.stageY};if(PAINT.poseStartPoint){var a=new createjs.Graphics;a.setStrokeStyle(2),a.beginStroke("#00ff00"),a.moveTo(PAINT.poseStartPoint.x,PAINT.poseStartPoint.y),a.lineTo(t.x,t.y);var n=TF.pxToRos(PAINT.poseStartPoint),i=TF.pxToRos(t),r=Math.sqrt(Math.pow(n.x-i.x,2)+Math.pow(n.y-i.y,2)),o=(i.y-n.y)/r,s=(i.x-n.x)/r,P=Math.acos(s);o<0&&(P=2*Math.PI-P);var T={position:{x:n.x,y:n.y,z:0},orientation:TF.thetaToQuaternion(P)};NAV.sendInitialPose(T),a.endStroke();var l=new createjs.Shape(a);PAINT.editContainer.addChild(l),PAINT.poseStartPoint=null,DATA.stage.stage.removeChild(l),DATA.stage.stage.removeEventListener("click",PAINT.pose),$("#pose_estimate").css("background-color","transparent"),setTimeout(function(){DATA.stage.stage.removeChild(PAINT.editContainer,PAINT.poseStartPointShape),PAINT.editContainer=null,PAINT.poseStartPointShape=null},500)}else{PAINT.poseStartPoint=t,PAINT.editContainer=new createjs.Container,PAINT.editContainer.name="poseEstimate";var A=new createjs.Graphics;A.beginFill("#00ff00"),A.drawCircle(t.x,t.y,5),PAINT.poseStartPointShape=new createjs.Shape(A),DATA.stage.stage.addChild(PAINT.editContainer,PAINT.poseStartPointShape)}},pressupHandle:function(){PAINT.pointLastPos?PAINT.pointLastPos=null:PAINT.rubberLastPos&&(PAINT.rubberLastPos=null),DATA.mapEditObstacleList.push(PAINT.obstaclePoints),DATA.mapEditStageList.push(PAINT.editContainer),PAINT.obstaclePoints=[],PAINT.editContainer=null}};
+'use strict';
+var PAINT = PAINT || {
+	editContainer: null,
+	obstaclePoints: [],
+
+	pointLastPos: null,
+	pointGraphics: null,
+
+	lineStartPoint: null,
+	lineStartPointShape: null,
+
+	circleCenterPoint: null,
+	circleCenterPointShape: null,
+
+	rectStartPoint: null,
+	rectStartPointShape: null,
+
+	rubberLastPos: null,
+	rubberGraphics: null,
+
+	poseStartPoint: null,
+	poseStartPointShape: null,
+
+	move: (event) => {
+	},
+
+	point: (event) => {
+		var strokeSize = 2;
+		var strokeColor = createjs.Graphics.getRGB(40,53,147,1);
+		var graphics = new createjs.Graphics();
+		graphics.setStrokeStyle(strokeSize);
+    	graphics.beginStroke(strokeColor);
+    	var pos = {
+	    	x: event.stageX,
+	    	y: event.stageY
+	    }
+	    var mapPos = TF.pxToRos(pos);
+	    PAINT.obstaclePoints.push({
+	    	x: mapPos.x,
+	    	y: mapPos.y,
+	    	z: 0
+	    });
+
+    	if (!PAINT.pointLastPos)
+		{
+			graphics.moveTo(pos.x, pos.y);
+			PAINT.editContainer = new createjs.Container();
+			PAINT.editContainer.name = 'mapEdit';
+			DATA.stage.stage.addChild(PAINT.editContainer);
+		}
+	    else
+	    {
+	    	graphics.moveTo(PAINT.pointLastPos.x, PAINT.pointLastPos.y);
+	    }
+	    graphics.lineTo(pos.x, pos.y);
+	    PAINT.pointLastPos = pos;
+	    graphics.closePath();
+	    graphics.endStroke();
+	    var shape = new createjs.Shape(graphics);
+	    PAINT.editContainer.addChild(shape);
+	},
+
+	line: (event) => {
+		var strokeSize = 2;
+		var strokeColor = createjs.Graphics.getRGB(40,53,147,1);
+		// var graphics = new createjs.Graphics();
+    	var pos = {
+	    	x: event.stageX,
+	    	y: event.stageY
+	    };
+	    if (!PAINT.lineStartPoint)
+	    {
+	    	PAINT.lineStartPoint = pos;
+			PAINT.editContainer = new createjs.Container();
+			PAINT.editContainer.name = 'mapEdit';
+			// draw line start point
+			var graphics = new createjs.Graphics();
+			graphics.beginFill('#ff0000');
+			graphics.drawCircle(pos.x, pos.y, 3);
+			PAINT.lineStartPointShape = new createjs.Shape(graphics);
+			DATA.stage.stage.addChild(PAINT.editContainer, PAINT.lineStartPointShape);
+	    }
+	    else
+	    {
+	    	var lineGraphics = new createjs.Graphics();
+	    	lineGraphics.setStrokeStyle(strokeSize);
+    		lineGraphics.beginStroke(strokeColor);
+	    	lineGraphics.moveTo(PAINT.lineStartPoint.x, PAINT.lineStartPoint.y);
+	    	lineGraphics.lineTo(pos.x, pos.y);
+	    	// convert to map 
+	    	var startRos = TF.pxToRos(PAINT.lineStartPoint);
+	    	var endRos = TF.pxToRos(pos);
+	 		var linePoints = [
+	 		{
+	 			x: startRos.x,
+	 			y: startRos.y,
+	 			z: 0
+	 		}, 
+	 		{
+	 			x: endRos.x,
+	 			y: endRos.y,
+	 			z: 0
+	 		}];
+	    	DATA.mapEditObstacleList.push(linePoints);
+	    	// remove start point
+	    	DATA.stage.stage.removeChild(PAINT.lineStartPointShape);
+	    	PAINT.lineStartPointShape = null;
+	    	lineGraphics.endStroke();
+	    	var shape = new createjs.Shape(lineGraphics);
+	    	PAINT.editContainer.addChild(shape);
+	    	DATA.mapEditStageList.push(PAINT.editContainer);
+	    	PAINT.editContainer = null;
+	    	PAINT.lineStartPoint = null;
+	    }
+	},
+
+	circle: (event) => {
+		var strokeSize = 2;
+		var strokeColor = createjs.Graphics.getRGB(40,53,147,1);
+    	var pos = {
+	    	x: event.stageX,
+	    	y: event.stageY
+	    }
+	    if (!PAINT.circleCenterPoint)
+	    {
+	    	PAINT.circleCenterPoint = pos;
+			PAINT.editContainer = new createjs.Container();
+			PAINT.editContainer.name = 'mapEdit';
+			// draw center point
+			var graphics = new createjs.Graphics();
+			graphics.beginFill('#ff0000');
+			graphics.drawCircle(pos.x, pos.y, 3);
+
+			PAINT.circleCenterPointShape = new createjs.Shape(graphics);
+			DATA.stage.stage.addChild(PAINT.editContainer, PAINT.circleCenterPointShape);
+	    }
+	    else
+	    {
+	    	var circleGraphics = new createjs.Graphics();
+	    	circleGraphics.setStrokeStyle(strokeSize);
+    		circleGraphics.beginStroke(strokeColor);
+	    	var radius = Math.sqrt(Math.pow((pos.x-PAINT.circleCenterPoint.x),2)
+	    		+ Math.pow((pos.y-PAINT.circleCenterPoint.y),2));
+	    	circleGraphics.drawCircle(PAINT.circleCenterPoint.x, 
+	    		PAINT.circleCenterPoint.y, radius);
+	    	// convert to map
+	    	var centerRos = TF.pxToRos(PAINT.circleCenterPoint);
+	    	var arcRos = TF.pxToRos(pos);
+	    	var radiusRos = Math.sqrt(Math.pow((arcRos.x-centerRos.x),2)
+	    		+ Math.pow((arcRos.y-centerRos.y),2));
+	    	var circlePoints = [{
+	    		x: centerRos.x,
+	    		y: centerRos.y, 
+	    		z: radiusRos
+	    	}];
+	    	DATA.mapEditObstacleList.push(circlePoints);
+	    	// remove start point
+	    	DATA.stage.stage.removeChild(PAINT.circleCenterPointShape);
+	    	PAINT.circleCenterPointShape = null;
+	    	circleGraphics.endStroke();
+	    	var shape = new createjs.Shape(circleGraphics);
+	    	PAINT.editContainer.addChild(shape);
+	    	DATA.mapEditStageList.push(PAINT.editContainer);
+	    	PAINT.editContainer = null;
+	    	PAINT.circleCenterPoint = null;
+	    }
+	},
+
+	rect: (event) => {
+		var strokeSize = 2;
+		var strokeColor = createjs.Graphics.getRGB(40,53,147,1);
+    	var pos = {
+	    	x: event.stageX,
+	    	y: event.stageY
+	    };
+	    if (!PAINT.rectStartPoint)
+	    {
+	    	PAINT.rectStartPoint = pos;
+			PAINT.editContainer = new createjs.Container();
+			PAINT.editContainer.name = 'mapEdit';
+			// draw start point
+			var graphics = new createjs.Graphics();
+			graphics.beginFill('#ff0000');
+			graphics.drawCircle(pos.x, pos.y, 3);
+			PAINT.rectStartPointShape = new createjs.Shape(graphics);
+			DATA.stage.stage.addChild(PAINT.editContainer, PAINT.rectStartPointShape);
+	    }
+	    else
+	    {
+	    	var rectGraphics = new createjs.Graphics();
+	    	rectGraphics.setStrokeStyle(strokeSize);
+    		rectGraphics.beginStroke(strokeColor);
+	    	var width = pos.x - PAINT.rectStartPoint.x;
+	    	var height = pos.y - PAINT.rectStartPoint.y;
+	    	var rectPointsPx = [];
+	    	rectPointsPx[0] = PAINT.rectStartPoint;
+	    	rectPointsPx[1] = {
+	    		x: PAINT.rectStartPoint.x+width,
+	    		y: PAINT.rectStartPoint.y
+	    	};
+	    	rectPointsPx[2] = {
+	    		x: PAINT.rectStartPoint.x+width,
+	    		y: PAINT.rectStartPoint.y+height
+	    	};
+	    	rectPointsPx[3] = {
+	    		x: PAINT.rectStartPoint.x,
+	    		y: PAINT.rectStartPoint.y+height
+	    	};
+	    	rectGraphics.moveTo(rectPointsPx[0].x, rectPointsPx[0].y);
+	    	rectGraphics.lineTo(rectPointsPx[1].x, rectPointsPx[1].y);
+	    	rectGraphics.lineTo(rectPointsPx[2].x, rectPointsPx[2].y);
+	    	rectGraphics.lineTo(rectPointsPx[3].x, rectPointsPx[3].y);
+	    	rectGraphics.lineTo(rectPointsPx[0].x, rectPointsPx[0].y);  
+	    	// convert to map
+	    	var rectPoints = [];
+	    	for (var i = 0; i < rectPointsPx.length; i++)
+	    	{
+	    		var p = TF.pxToRos(rectPointsPx[i]);
+	    		rectPoints.push({
+	    			x: p.x,
+	    			y: p.y,
+	    			z: 0
+	    		});
+	    	}
+	    	DATA.mapEditObstacleList.push(rectPoints);
+	    	// remove start point
+	    	DATA.stage.stage.removeChild(PAINT.rectStartPointShape);
+	    	PAINT.rectStartPointShape = null;
+	    	rectGraphics.endStroke();
+	    	var shape = new createjs.Shape(rectGraphics);
+	    	PAINT.editContainer.addChild(shape);
+	    	DATA.mapEditStageList.push(PAINT.editContainer);
+	    	PAINT.editContainer = null;
+	    	PAINT.rectStartPoint = null;
+	    }
+	},
+
+	rubber: (event) => {
+		var strokeSize = 5;
+		var strokeColor = createjs.Graphics.getRGB(234, 234, 246, 1);
+		var graphics = new createjs.Graphics();
+		graphics.setStrokeStyle(strokeSize);
+    	graphics.beginStroke(strokeColor);
+    	var pos = {
+	    	x: event.stageX,
+	    	y: event.stageY
+	    }
+	    var mapPos = TF.pxToRos(pos);
+	    PAINT.obstaclePoints.push({
+	    	x: mapPos.x,
+	    	y: mapPos.y,
+	    	z: -1
+	    });
+
+    	if (!PAINT.rubberLastPos)
+		{
+			graphics.moveTo(pos.x, pos.y);
+			PAINT.editContainer = new createjs.Container();
+			PAINT.editContainer.name = 'mapEdit';
+			DATA.stage.stage.addChild(PAINT.editContainer);
+		}
+	    else
+	    {
+	    	graphics.moveTo(PAINT.rubberLastPos.x, PAINT.rubberLastPos.y);
+	    }
+	    graphics.lineTo(pos.x, pos.y);
+	    PAINT.rubberLastPos = pos;
+	    graphics.closePath();
+	    graphics.endStroke();
+	    var shape = new createjs.Shape(graphics);
+	    PAINT.editContainer.addChild(shape);
+	},
+
+	pose: (event) => {
+		var strokeSize = 2;
+		var strokeColor = '#00ff00';
+		// var graphics = new createjs.Graphics();
+    	var pos = {
+	    	x: event.stageX,
+	    	y: event.stageY
+	    };
+	    if (!PAINT.poseStartPoint)
+	    {
+	    	PAINT.poseStartPoint = pos;
+			PAINT.editContainer = new createjs.Container();
+			PAINT.editContainer.name = 'poseEstimate';
+			// draw start point
+			var graphics = new createjs.Graphics();
+			graphics.beginFill('#00ff00');
+			graphics.drawCircle(pos.x, pos.y, 5);
+			PAINT.poseStartPointShape = new createjs.Shape(graphics);
+			DATA.stage.stage.addChild(PAINT.editContainer, PAINT.poseStartPointShape);
+	    }
+	    else
+	    {
+	    	var poseGraphics = new createjs.Graphics();
+	    	poseGraphics.setStrokeStyle(strokeSize);
+    		poseGraphics.beginStroke(strokeColor);
+	    	poseGraphics.moveTo(PAINT.poseStartPoint.x, PAINT.poseStartPoint.y);
+	    	poseGraphics.lineTo(pos.x, pos.y);
+	    	// convert to map 
+	    	var startRos = TF.pxToRos(PAINT.poseStartPoint);
+	    	var endRos = TF.pxToRos(pos);
+	    	var dis = Math.sqrt(Math.pow((startRos.x-endRos.x),2)+Math.pow((startRos.y-endRos.y),2));
+	    	var sin = (endRos.y - startRos.y) / dis;
+	    	var cos = (endRos.x - startRos.x) / dis;
+	    	var yaw = Math.acos(cos);
+	    	if (sin < 0)
+	    	{
+	    		yaw = 2 * Math.PI - yaw;		
+	    	}
+	    	var pose = {
+	    		position: {
+	    			x: startRos.x,
+	    			y: startRos.y,
+	    			z: 0
+	    		},
+	    		orientation: TF.thetaToQuaternion(yaw)
+	    	};
+	    	NAV.sendInitialPose(pose);
+	    	poseGraphics.endStroke();
+	    	var shape = new createjs.Shape(poseGraphics);
+	    	PAINT.editContainer.addChild(shape);
+	    	PAINT.poseStartPoint = null;
+	    	DATA.stage.stage.removeChild(shape);
+	    	DATA.stage.stage.removeEventListener('click', PAINT.pose);
+	    	$('#pose_estimate').css('background-color', 'transparent');	
+	    	setTimeout(function(){
+	    		// remove pose estimate arrow
+	    		DATA.stage.stage.removeChild(PAINT.editContainer, PAINT.poseStartPointShape);
+	    		PAINT.editContainer = null;
+	    		PAINT.poseStartPointShape = null;
+	    	}, 500);
+	    }
+	},
+
+	pressupHandle: () => {
+		if (PAINT.pointLastPos)
+		{
+			PAINT.pointLastPos = null;	
+		}
+		else if (PAINT.rubberLastPos)
+		{
+			PAINT.rubberLastPos = null;
+		}
+		DATA.mapEditObstacleList.push(PAINT.obstaclePoints);
+		DATA.mapEditStageList.push(PAINT.editContainer);
+		PAINT.obstaclePoints = [];
+		PAINT.editContainer = null;	
+	}
+};
+

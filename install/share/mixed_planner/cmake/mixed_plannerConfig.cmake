@@ -67,7 +67,7 @@ set(mixed_planner_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(mixed_planner_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/mixed_planner)
+  set(mixed_planner_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/hitrobot/mixed_planner)
   set(mixed_planner_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(mixed_planner_INSTALL_PREFIX "")
   set(mixed_planner_PREFIX ${mixed_planner_DEVEL_PREFIX})

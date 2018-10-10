@@ -67,7 +67,7 @@ set(ecl_eigen_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(ecl_eigen_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/ecl_core-devel/ecl_eigen)
+  set(ecl_eigen_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/ecl_core/ecl_eigen)
   set(ecl_eigen_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(ecl_eigen_INSTALL_PREFIX "")
   set(ecl_eigen_PREFIX ${ecl_eigen_DEVEL_PREFIX})
@@ -91,9 +91,9 @@ endif()
 # flag project as catkin-based to distinguish if a find_package()-ed project is a catkin project
 set(ecl_eigen_FOUND_CATKIN_PROJECT TRUE)
 
-if(NOT "include " STREQUAL " ")
+if(NOT "include;/usr/include/eigen3 " STREQUAL " ")
   set(ecl_eigen_INCLUDE_DIRS "")
-  set(_include_dirs "include")
+  set(_include_dirs "include;/usr/include/eigen3")
   foreach(idir ${_include_dirs})
     if(IS_ABSOLUTE ${idir} AND IS_DIRECTORY ${idir})
       set(include ${idir})

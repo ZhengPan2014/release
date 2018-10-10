@@ -67,7 +67,7 @@ set(ecl_exceptions_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(ecl_exceptions_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/ecl_core-devel/ecl_exceptions)
+  set(ecl_exceptions_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/ecl_core/ecl_exceptions)
   set(ecl_exceptions_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(ecl_exceptions_INSTALL_PREFIX "")
   set(ecl_exceptions_PREFIX ${ecl_exceptions_DEVEL_PREFIX})

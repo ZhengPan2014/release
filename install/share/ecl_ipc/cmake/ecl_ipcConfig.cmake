@@ -67,7 +67,7 @@ set(ecl_ipc_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(ecl_ipc_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/ecl_core-devel/ecl_ipc)
+  set(ecl_ipc_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/ecl_core/ecl_ipc)
   set(ecl_ipc_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(ecl_ipc_INSTALL_PREFIX "")
   set(ecl_ipc_PREFIX ${ecl_ipc_DEVEL_PREFIX})

@@ -67,7 +67,7 @@ set(yocs_diff_drive_pose_controller_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(yocs_diff_drive_pose_controller_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/yujin_ocs-devel/yocs_diff_drive_pose_controller)
+  set(yocs_diff_drive_pose_controller_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/yujin_ocs/yocs_diff_drive_pose_controller)
   set(yocs_diff_drive_pose_controller_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(yocs_diff_drive_pose_controller_INSTALL_PREFIX "")
   set(yocs_diff_drive_pose_controller_PREFIX ${yocs_diff_drive_pose_controller_DEVEL_PREFIX})

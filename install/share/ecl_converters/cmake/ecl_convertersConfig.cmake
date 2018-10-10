@@ -67,7 +67,7 @@ set(ecl_converters_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(ecl_converters_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/ecl_core-devel/ecl_converters)
+  set(ecl_converters_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/ecl_core/ecl_converters)
   set(ecl_converters_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(ecl_converters_INSTALL_PREFIX "")
   set(ecl_converters_PREFIX ${ecl_converters_DEVEL_PREFIX})

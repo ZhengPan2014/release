@@ -67,7 +67,7 @@ set(yocs_waypoint_provider_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(yocs_waypoint_provider_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/yocs_waypoint_provider)
+  set(yocs_waypoint_provider_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/yujin_ocs/yocs_waypoint_provider)
   set(yocs_waypoint_provider_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(yocs_waypoint_provider_INSTALL_PREFIX "")
   set(yocs_waypoint_provider_PREFIX ${yocs_waypoint_provider_DEVEL_PREFIX})

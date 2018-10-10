@@ -67,7 +67,7 @@ set(map_transport_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(map_transport_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/map_transport)
+  set(map_transport_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/hitrobot/map_transport)
   set(map_transport_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(map_transport_INSTALL_PREFIX "")
   set(map_transport_PREFIX ${map_transport_DEVEL_PREFIX})

@@ -67,7 +67,7 @@ set(ecl_mpl_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(ecl_mpl_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/ecl_core-devel/ecl_mpl)
+  set(ecl_mpl_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/ecl_core/ecl_mpl)
   set(ecl_mpl_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(ecl_mpl_INSTALL_PREFIX "")
   set(ecl_mpl_PREFIX ${ecl_mpl_DEVEL_PREFIX})

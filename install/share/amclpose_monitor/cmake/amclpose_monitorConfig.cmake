@@ -67,7 +67,7 @@ set(amclpose_monitor_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(amclpose_monitor_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/amclpose_monitor)
+  set(amclpose_monitor_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/hitrobot/amclpose_monitor)
   set(amclpose_monitor_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(amclpose_monitor_INSTALL_PREFIX "")
   set(amclpose_monitor_PREFIX ${amclpose_monitor_DEVEL_PREFIX})

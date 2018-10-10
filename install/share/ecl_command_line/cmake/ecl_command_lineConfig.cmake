@@ -67,7 +67,7 @@ set(ecl_command_line_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(ecl_command_line_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/ecl_core-devel/ecl_command_line)
+  set(ecl_command_line_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/ecl_core/ecl_command_line)
   set(ecl_command_line_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(ecl_command_line_INSTALL_PREFIX "")
   set(ecl_command_line_PREFIX ${ecl_command_line_DEVEL_PREFIX})

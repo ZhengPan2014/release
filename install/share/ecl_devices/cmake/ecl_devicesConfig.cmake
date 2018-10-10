@@ -67,7 +67,7 @@ set(ecl_devices_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(ecl_devices_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/ecl_core-devel/ecl_devices)
+  set(ecl_devices_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/ecl_core/ecl_devices)
   set(ecl_devices_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(ecl_devices_INSTALL_PREFIX "")
   set(ecl_devices_PREFIX ${ecl_devices_DEVEL_PREFIX})

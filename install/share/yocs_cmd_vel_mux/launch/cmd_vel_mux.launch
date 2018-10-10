@@ -8,7 +8,6 @@
 
   <node pkg="nodelet" type="nodelet" name="yocs_cmd_vel_mux"
         args="load yocs_cmd_vel_mux/CmdVelMuxNodelet $(arg nodelet_manager_name)">
-    <remap from="/yocs_cmd_vel_mux/output/cmd_vel" to="cmd_vel"/>
     <param name="yaml_cfg_file" value="$(arg config_file)"/>
   </node>
 </launch>

@@ -67,7 +67,7 @@ set(ultrasonic_speed_filter_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(ultrasonic_speed_filter_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/ultrasonic_speed_filter)
+  set(ultrasonic_speed_filter_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/hitrobot/ultrasonic_speed_filter)
   set(ultrasonic_speed_filter_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(ultrasonic_speed_filter_INSTALL_PREFIX "")
   set(ultrasonic_speed_filter_PREFIX ${ultrasonic_speed_filter_DEVEL_PREFIX})

@@ -67,7 +67,7 @@ set(scheduling_msgs_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(scheduling_msgs_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/scheduling_msgs)
+  set(scheduling_msgs_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/hitrobot/scheduling_msgs)
   set(scheduling_msgs_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(scheduling_msgs_INSTALL_PREFIX "")
   set(scheduling_msgs_PREFIX ${scheduling_msgs_DEVEL_PREFIX})
