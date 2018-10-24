@@ -171,10 +171,6 @@ abstract class AppController extends Controller {
 								'url' => array('admin' => true, 'controller' => 'logs', 'action' => 'index')
 							),
 							array(
-								'title' => 'Anon Tokens',
-								'url' => array('admin' => true, 'controller' => 'anonymousUser', 'action' => 'index')
-							),
-							array(
 								'title' => 'Send Announcement',
 								'url' => array(
 									'admin' => true,

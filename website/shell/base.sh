@@ -25,15 +25,15 @@ export PATH=${NODE_HOME}/bin:$PATH;
 #     fi;
 # fi;
 
-ROS_USER_MODEL=`hostname | awk -F '-' '{print $2}'`;
-roscd bringup;
-if [ -d "launch/$ROS_USER_MODEL" ]; then
-    export ROS_USER_VALID=true;
-    export ROS_USER_MODEL=$ROS_USER_MODEL;
-else
-    export ROS_USER_VALID=false;
-    unset ROS_USER_MODEL;
-fi;
-cd ~;
+# ROS_USER_MODEL=`hostname | awk -F '-' '{print $2}'`;
+# roscd bringup;
+# if [ -d "launch/$ROS_USER_MODEL" ]; then
+#     export ROS_USER_VALID=true;
+#     export ROS_USER_MODEL=$ROS_USER_MODEL;
+# else
+#     export ROS_USER_VALID=false;
+#     unset ROS_USER_MODEL;
+# fi;
+# cd ~;
 
-export ROS_USER_GROUP=`hostname`;
+# export ROS_USER_GROUP=`hostname`;

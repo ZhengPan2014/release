@@ -36,6 +36,18 @@ class Log extends AppModel {
 				'required' => 'update'
 			)
 		),
+		'appointment_id' => array(
+			'notEmpty' => array(
+				'rule' => 'notEmpty',
+				'message' => 'Please enter a valid appointment.',
+				'required' => true
+			),
+			'gt' => array(
+				'rule' => array('comparison', '>', 0),
+				'message' => 'Appointment IDs must be greater than 0.',
+				'required' => true
+			)
+		),
 		'type_id' => array(
 			'notEmpty' => array(
 				'rule' => 'notEmpty',
@@ -84,9 +96,9 @@ class Log extends AppModel {
 	);
 
 /**
- * All logs belong to a single  type.
+ * All logs belong to a single appointment and type.
  *
  * @var array
  */
-	public $belongsTo = array( 'Type');
+	public $belongsTo = array('Appointment', 'Type');
 }

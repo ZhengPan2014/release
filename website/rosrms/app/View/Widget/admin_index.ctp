@@ -81,7 +81,6 @@
 					<th>ID</th>
 					<th>Name</th>
 					<th>Topic</th>
-					<th>TF Frame</th>
 					<th>Size</th>
 					<th>Quality</th>
 					<th>Invert</th>
@@ -126,9 +125,6 @@
 						</td>
 						<td data-title="Quality">
 							<?php echo ($stream['Stream']['quality']) ? h($stream['Stream']['quality']) : 'N/A'; ?>
-						</td>
-						<td data-title="TF Frame">
-							<?php echo h($stream['Stream']['tf_frame']); ?>
 						</td>
 						<td data-title="Invert">
 							<?php echo ($stream['Stream']['invert']) ? 'Yes' : 'No'; ?>
