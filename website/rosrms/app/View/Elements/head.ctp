@@ -14,6 +14,7 @@
 ?>
 
 <head>
+	
 	<?php echo $this->Html->charset(); ?>
 	<title>
 		<?php echo __('%s: %s', h($setting['Setting']['title']), h($title_for_layout)); ?>
@@ -30,7 +31,7 @@
 
 	<?php
 	echo $this->Html->script(array(
-		'//code.jquery.com/jquery-1.10.2.min.js',
+		'jquery.min',
 		'rms'
 	));
 
@@ -40,7 +41,7 @@
 			'skel.min',
 			'skel-layers.min',
 			'init.min',
-			'rms'
+			'rms',
 		));
 	}
 
@@ -51,6 +52,7 @@
 				'eventemitter2',
 				'roslib.min',
 			));
+
 		}
 		if (isset($rwt['keyboardteleopjs'])) {
 			echo $this->Html->script(
@@ -80,7 +82,7 @@
 		}
 		if (isset($rwt['mjpegcanvasjs'])) {
 			echo $this->Html->script(array(
-				'mjpegcanvas.min'
+				'rosweb/src/js/mjpegcanvas.min'
 			));
 		}
 		if (isset($rwt['rosqueuejs'])) {
@@ -90,17 +92,27 @@
 		}
 		if(isset($rwt['roswebjs'])){
 			echo $this->Html->script(array(
-				'handlebars.min',
-				'templates',
-				'bundle',
-				'three.min',
-				//'ros3d.min',
-				'widgets.bundle',
-				'd3.v4.min'
+				'rosweb/src/js/handlebars.min',
+				'rosweb/src/js/templates',
+				'rosweb/src/js/bundle',
+				'rosweb/src/js/three.min',
+				'rosweb/src/js/ros3d.min',
+				'rosweb/src/js/widgets.bundle',
+				'rosweb/src/js/d3.v4.min'
 			));
 			echo $this->Html->css(array(
-				'main',
-				'widgets'
+				'rosweb/src/main',
+				'rosweb/src/widgets'
+			));
+		}
+		if(isset($rwt['diehl'])){
+			echo $this->Html->script(array(
+				'diehl/diehl',
+				//'diehl/navigation'
+			));
+			echo $this->Html->css(array(
+				'diehl/diehl'
+				
 			));
 		}
 	}
@@ -110,11 +122,8 @@
 		<noscript>
 			<?php echo $this->Html->css(array('skel', 'style', 'style-noscript')); ?>
 		</noscript>
-
 		<!--[if lte IE 8]><?php echo $this->Html->css('ie/v8'); ?><![endif]-->
 		<!--[if lte IE 9]><?php echo $this->Html->css('ie/v9'); ?><![endif]-->
-		<?php echo $this->Html->css('main'); ?>
-		<?php echo $this->Html->css('widgets'); ?>
 	<?php endif; ?>
 
 	<?php
@@ -124,22 +133,15 @@
 	}
 	?>
 
-	<?php if ($setting['Setting']['analytics']): ?>
-		<script>
-			var _gaq = _gaq || [];
-			_gaq.push(["_setAccount", "<?php echo h($setting['Setting']['analytics']); ?>"]);
-			_gaq.push(["_trackPageview"]);
-			(function() {
-			var ga = document.createElement("script"); ga.type = "text/javascript"; ga.async = true;
-			ga.src = ("https:" == document.location.protocol ? "https://ssl" : "http://www") + ".google-analytics.com/ga.js";
-			var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(ga, s);
-			})();
-		</script>
+	<?php if (!$setting['Setting']['analytics']): ?>
+		
 	<?php endif; ?>
+	
 
 	<?php
 	echo $this->fetch('meta');
 	echo $this->fetch('css');
 	echo $this->fetch('script');
 	?>
+	
 </head>
