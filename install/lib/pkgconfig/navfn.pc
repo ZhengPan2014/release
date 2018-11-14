@@ -2,7 +2,7 @@ prefix=/home/ouiyeah/catkin_ws/install
 
 Name: navfn
 Description: Description of navfn
-Version: 1.12.16
+Version: 1.13.0
 Cflags: -I/home/ouiyeah/catkin_ws/install/include
 Libs: -L/home/ouiyeah/catkin_ws/install/lib -lnavfn
-Requires: geometry_msgs message_runtime nav_core nav_msgs pluginlib roscpp visualization_msgs
+Requires: nav_core roscpp pluginlib

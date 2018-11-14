@@ -142,6 +142,17 @@ namespace dwa_local_planner {
        */
       bool setPlan(const std::vector<geometry_msgs::PoseStamped>& orig_global_plan);
 
+/* ouiyeah @ 2017-06-19
+Add setFootprint to revise the footprint missing when rotate at start.
+//*/
+#ifdef IGNORE_OUIYEAH
+#else
+      /**
+       * sets footprint_spec_
+       */
+      void setFootprintSpec(std::vector<geometry_msgs::Point> footprint_spec);
+#endif
+
     private:
 
       base_local_planner::LocalPlannerUtil *planner_util_;

@@ -2,7 +2,7 @@ prefix=/home/ouiyeah/catkin_ws/install
 
 Name: move_base
 Description: Description of move_base
-Version: 1.12.16
+Version: 1.12.13
 Cflags: -I/home/ouiyeah/catkin_ws/install/include
 Libs: -L/home/ouiyeah/catkin_ws/install/lib 
 Requires: dynamic_reconfigure geometry_msgs move_base_msgs nav_msgs roscpp

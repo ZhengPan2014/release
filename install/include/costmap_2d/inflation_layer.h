@@ -43,7 +43,7 @@
 #include <costmap_2d/layered_costmap.h>
 #include <costmap_2d/InflationPluginConfig.h>
 #include <dynamic_reconfigure/server.h>
-#include <boost/thread.hpp>
+#include <queue>
 
 namespace costmap_2d
 {
@@ -56,6 +56,7 @@ class CellData
 public:
   /**
    * @brief  Constructor for a CellData objects
+   * @param  d The distance to the nearest obstacle, used for ordering in the priority queue
    * @param  i The index of the cell in the cost map
    * @param  x The x coordinate of the cell in the cost map
    * @param  y The y coordinate of the cell in the cost map
@@ -63,14 +64,24 @@ public:
    * @param  sy The y coordinate of the closest obstacle cell in the costmap
    * @return
    */
-  CellData(double i, unsigned int x, unsigned int y, unsigned int sx, unsigned int sy) :
-      index_(i), x_(x), y_(y), src_x_(sx), src_y_(sy)
+  CellData(double d, double i, unsigned int x, unsigned int y, unsigned int sx, unsigned int sy) :
+      distance_(d), index_(i), x_(x), y_(y), src_x_(sx), src_y_(sy)
   {
   }
+  double distance_;
   unsigned int index_;
   unsigned int x_, y_;
   unsigned int src_x_, src_y_;
 };
+
+/**
+ * @brief Provide an ordering between CellData objects in the priority queue
+ * @return We want the lowest distance to have the highest priority... so this returns true if a has higher priority than b
+ */
+inline bool operator<(const CellData &a, const CellData &b)
+{
+  return a.distance_ > b.distance_;
+}
 
 class InflationLayer : public Layer
 {
@@ -116,16 +127,9 @@ public:
     return cost;
   }
 
-  /**
-   * @brief Change the values of the inflation radius parameters
-   * @param inflation_radius The new inflation radius
-   * @param cost_scaling_factor The new weight
-   */
-  void setInflationParameters(double inflation_radius, double cost_scaling_factor);
-
 protected:
   virtual void onFootprintChanged();
-  boost::recursive_mutex* inflation_access_;
+  boost::shared_mutex* access_;
 
 private:
   /**
@@ -167,13 +171,13 @@ private:
     return layered_costmap_->getCostmap()->cellDistance(world_dist);
   }
 
-  inline void enqueue(unsigned int index, unsigned int mx, unsigned int my,
-                      unsigned int src_x, unsigned int src_y);
+  inline void enqueue(unsigned char* grid, unsigned int index, unsigned int mx, unsigned int my, unsigned int src_x,
+                      unsigned int src_y);
 
   double inflation_radius_, inscribed_radius_, weight_;
   unsigned int cell_inflation_radius_;
   unsigned int cached_cell_inflation_radius_;
-  std::map<double, std::vector<CellData> > inflation_cells_;
+  std::priority_queue<CellData> inflation_queue_;
 
   double resolution_;
 
@@ -182,7 +186,6 @@ private:
 
   unsigned char** cached_costs_;
   double** cached_distances_;
-  double last_min_x_, last_min_y_, last_max_x_, last_max_y_;
 
   dynamic_reconfigure::Server<costmap_2d::InflationPluginConfig> *dsrv_;
   void reconfigureCB(costmap_2d::InflationPluginConfig &config, uint32_t level);

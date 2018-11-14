@@ -2,7 +2,7 @@ prefix=/home/ouiyeah/catkin_ws/install
 
 Name: move_slow_and_clear
 Description: Description of move_slow_and_clear
-Version: 1.12.16
+Version: 1.13.0
 Cflags: -I/home/ouiyeah/catkin_ws/install/include
 Libs: -L/home/ouiyeah/catkin_ws/install/lib -lmove_slow_and_clear
-Requires: geometry_msgs nav_core pluginlib roscpp
+Requires: roscpp pluginlib nav_core
