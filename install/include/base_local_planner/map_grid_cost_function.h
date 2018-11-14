@@ -118,14 +118,6 @@ public:
   // used for easier debugging
   double getCellCosts(unsigned int cx, unsigned int cy);
 
-/* ouiyeah @ 2017-04-21
-Add cost_mask to reuse updatePathCell within map_grid_costs.
-//*/
-#ifdef IGNORE_OUIYEAH
-#else
-  void setCostMask(bool cost_mask) { map_.cost_mask_ = cost_mask; }
-#endif
-
 private:
   std::vector<geometry_msgs::PoseStamped> target_poses_;
   costmap_2d::Costmap2D* costmap_;

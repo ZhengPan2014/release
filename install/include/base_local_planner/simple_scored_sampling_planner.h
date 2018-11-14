@@ -44,14 +44,6 @@
 #include <base_local_planner/trajectory_sample_generator.h>
 #include <base_local_planner/trajectory_search.h>
 
-/* ouiyeah @ 2017-04-21
-Reuse scoreTrajectory within map_grid_costs.
-//*/
-#ifdef IGNORE_OUIYEAH
-#else
-#include <base_local_planner/map_grid_cost_function.h>
-#endif
-
 namespace base_local_planner {
 
 /**
@@ -86,16 +78,7 @@ public:
    * of positive costs, aborting as soon as a negative cost are found or costs greater
    * than positive best_traj_cost accumulated
    */
-
-/* ouiyeah @ 2017-04-19
-Add bool param to reuse scoreTrajectory with or without obstacle_costs.
-//*/
-#ifdef IGNORE_OUIYEAH
   double scoreTrajectory(Trajectory& traj, double best_traj_cost);
-#else
-  double scoreTrajectory(Trajectory& traj, double best_traj_cost);
-  double scoreTrajectory2(Trajectory& traj, double best_traj_cost, bool& obstacle_costs_enabled);
-#endif
 
   /**
    * Calls generator until generator has no more samples or max_samples is reached.
