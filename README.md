@@ -10,7 +10,7 @@
 
 rosbridge provides a JSON interface to ROS, allowing any client to send JSON to publish or subscribe to ROS topics, call ROS services, and more. rosbridge supports a variety of transport layers, including WebSockets and TCP. For information on the protocol itself, see the [rosbridge protocol specification](https://github.com/RobotWebTools/rosbridge_suite/blob/develop/ROSBRIDGE_PROTOCOL.md).
 
-## 0 Common functions
+## common functions
 
 ### 0.0 Custom publish string
 
@@ -51,9 +51,7 @@ navigation    : in the mode of navigation                     //导航模式
 busy          : in the mode switching status                  //系统模式切换中
 ```
 
-### 4.3 Conventional operations
-
-#### 4.3.1 Get Robot Pose
+## get robot pose
 
 ```json
 { "op": "subscribe",
@@ -69,7 +67,7 @@ callback <geometry_msgs/Pose>
 }
 ```
 
-#### 4.3.2 Set Robot Pose
+## set robot pose
 
 ```json
 { "op": "advertise",
