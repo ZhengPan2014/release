@@ -1,4 +1,4 @@
-# history:
+# history
 
 | version         | date            | author          | remark
 | --------------- | --------------- | --------------- | ---------------
