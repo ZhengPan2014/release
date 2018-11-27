@@ -67,7 +67,7 @@ callback <geometry_msgs/Pose>
 }
 ```
 
-## set robot pose
+### set robot pose
 
 ```json
 { "op": "advertise",
@@ -86,7 +86,11 @@ callback <geometry_msgs/Pose>
 ```json
 msg <geometry_msgs/PoseWithCovarianceStamped>
 { "header": { "frame_id": "/map" },
-  "pose": { "pose": <geometry_msgs/Pose> }
+  "pose": { "pose": 
+    { "positon": { "x": <float64>, "y": <float64>, "z": <float64> },
+      "orientation": { "x": <float64>, "y": <float64>, "z": <float64>, "w": <float64> }
+    }
+  }
 }
 ```
 
