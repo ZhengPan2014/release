@@ -51,7 +51,7 @@ navigation    : in the mode of navigation                     //导航模式
 busy          : in the mode switching status                  //系统模式切换中
 ```
 
-## get robot pose
+### get robot pose
 
 ```json
 { "op": "subscribe",
