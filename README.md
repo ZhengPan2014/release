@@ -51,6 +51,23 @@ navigation    : in the mode of navigation                     //导航模式
 busy          : in the mode switching status                  //系统模式切换中
 ```
 
+#### get robot map
+
+```json
+{ "op": "subscribe",
+  "topic": "/map",
+  "type": "nav_msgs/OccupancyGrid",
+}
+```
+
+```json
+callback <nav_msgs/OccupancyGrid>
+{ "header": { "seq": <uint32>, "stamp": { "sec": <int>, "nsec": <int> }, "frame_id": <string> },
+  "info": { "map_load_time": { "sec": <int>, "nsec": <int> }, "resolution": <float32>, "width": <uint32>, "height": <uint32>, "origin": <geometry_msgs/Pose> },
+  "data": [ <uint8> ]
+}
+```
+
 #### get robot pose
 
 ```json
@@ -118,39 +135,6 @@ msg <move_base_msgs/MoveBaseActionGoal>
 }
 ```
 
-
-#### get robot map
-
-```json
-{ "op": "subscribe",
-  "topic": "/map",
-  "type": "nav_msgs/OccupancyGrid",
-}
-```
-
-```json
-callback <nav_msgs/OccupancyGrid>
-{ "header": { "seq": <uint32>, "stamp": { "sec": <int>, "nsec": <int> }, "frame_id": <string> },
-  "info": { "map_load_time": { "sec": <int>, "nsec": <int> }, "resolution": <float32>, "width": <uint32>, "height": <uint32>, "origin": <geometry_msgs/Pose> },
-  "data": [ <uint8> ]
-}
-```
-
-#### 4.3.5 Set Robot Map
-
-```json
-{ "op": "advertise",
-  "topic": "/map",
-  "type": "nav_msgs/OccupancyGrid",
-}
-```
-
-```json
-{ "op": "publish",
-  "topic": "/move_base/goal",
-  "msg": <nav_msgs/OccupancyGrid>,
-}
-```
 
 #### 4.3.6 Set Robot Velocity
 
