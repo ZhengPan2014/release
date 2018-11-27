@@ -8,6 +8,8 @@
 
 # protocol
 
+rosbridge provides a JSON interface to ROS, allowing any client to send JSON to publish or subscribe to ROS topics, call ROS services, and more. rosbridge supports a variety of transport layers, including WebSockets and TCP. For information on the protocol itself, see the [rosbridge protocol specification](https://github.com/RobotWebTools/rosbridge_suite/blob/develop/ROSBRIDGE_PROTOCOL.md).
+
 hitrobot Websocket/Tcp Protocol Specification
 
 This document outlines the hitrobot websocket/tcp protocol. The hitrobot protocol
