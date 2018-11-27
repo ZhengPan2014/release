@@ -51,7 +51,7 @@ navigation    : in the mode of navigation                     //导航模式
 busy          : in the mode switching status                  //系统模式切换中
 ```
 
-### get robot pose
+#### get robot pose
 
 ```json
 { "op": "subscribe",
@@ -67,19 +67,19 @@ callback <geometry_msgs/Pose>
 }
 ```
 
-### set robot pose
+#### set robot pose
 
 ```json
 { "op": "advertise",
   "topic": "/initialpose",
-  "type": "geometry_msgs/PoseWithCovarianceStamped",
+  "type": "geometry_msgs/PoseWithCovarianceStamped"
 }
 ```
 
 ```json
 { "op": "publish",
   "topic": "/initialpose",
-  "msg": <geometry_msgs/PoseWithCovarianceStamped>,
+  "msg": <geometry_msgs/PoseWithCovarianceStamped>
 }
 ```
 
@@ -94,7 +94,7 @@ msg <geometry_msgs/PoseWithCovarianceStamped>
 }
 ```
 
-#### 4.3.3 Set Robot Goal
+#### set robot goal
 
 ```json
 { "op": "advertise",
@@ -119,7 +119,7 @@ msg <move_base_msgs/MoveBaseActionGoal>
 ```
 
 
-#### 4.3.4 Get Robot Map
+#### get robot map
 
 ```json
 { "op": "subscribe",
