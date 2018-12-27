@@ -1,0 +1,16 @@
+Metadata-Version: 1.0
+Name: cob_twist_controller
+Version: 0.6.17
+Summary: The main purpose of the cob_twist_controller is to convert target twists into joint velocities. 
+  Therefore it makes use of several implemented inverse kinematics approaches at the first order dif...
+Home-page: UNKNOWN
+Author: Felix Messmer
+Author-email: felixmessmer@gmail.com
+License: Apache 2.0
+Description: The main purpose of the cob_twist_controller is to convert target twists into joint velocities. 
+          Therefore it makes use of several implemented inverse kinematics approaches at the first order differential level. 
+          The inverse differential kinematics solver considers kinematic chain extensions, singularity robustness, 
+          redundancy resolution and priority-based methods.
+          To avoid hardware destruction there is a limiter interface active as well. 
+          Via parameter server users can dynamically configure the solving strategy.
+Platform: UNKNOWN

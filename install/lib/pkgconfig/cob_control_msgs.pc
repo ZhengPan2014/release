@@ -1,0 +1,8 @@
+prefix=/home/ouiyeah/catkin_ws/install
+
+Name: cob_control_msgs
+Description: Description of cob_control_msgs
+Version: 0.6.17
+Cflags: -I/home/ouiyeah/catkin_ws/install/include
+Libs: -L/home/ouiyeah/catkin_ws/install/lib 
+Requires: geometry_msgs message_runtime std_msgs

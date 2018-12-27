@@ -1,0 +1,8 @@
+prefix=/home/ouiyeah/catkin_ws/install
+
+Name: cob_control_mode_adapter
+Description: Description of cob_control_mode_adapter
+Version: 0.6.17
+Cflags: 
+Libs: -L/home/ouiyeah/catkin_ws/install/lib 
+Requires: 

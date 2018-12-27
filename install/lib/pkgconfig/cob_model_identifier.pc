@@ -1,0 +1,8 @@
+prefix=/home/ouiyeah/catkin_ws/install
+
+Name: cob_model_identifier
+Description: Description of cob_model_identifier
+Version: 0.6.17
+Cflags: 
+Libs: -L/home/ouiyeah/catkin_ws/install/lib 
+Requires: 

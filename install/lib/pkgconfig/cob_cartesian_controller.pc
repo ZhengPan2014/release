@@ -1,0 +1,8 @@
+prefix=/home/ouiyeah/catkin_ws/install
+
+Name: cob_cartesian_controller
+Description: Description of cob_cartesian_controller
+Version: 0.6.17
+Cflags: -I/home/ouiyeah/catkin_ws/install/include -I/usr/include
+Libs: -L/home/ouiyeah/catkin_ws/install/lib -lprofile_generator -ltrajectory_interpolator -lcartesian_controller -lcartesian_controller_utils
+Requires: actionlib_msgs actionlib cob_srvs geometry_msgs message_runtime roscpp std_msgs std_srvs tf visualization_msgs

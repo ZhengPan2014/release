@@ -1,0 +1,8 @@
+prefix=/home/ouiyeah/catkin_ws/install
+
+Name: cob_frame_tracker
+Description: Description of cob_frame_tracker
+Version: 0.6.17
+Cflags: -I/home/ouiyeah/catkin_ws/install/include -I/usr/include
+Libs: -L/home/ouiyeah/catkin_ws/install/lib -lcob_frame_tracker -linteractive_frame_target -l:/usr/lib/x86_64-linux-gnu/libboost_thread.so -l:/usr/lib/x86_64-linux-gnu/libpthread.so
+Requires: actionlib_msgs actionlib cob_srvs control_toolbox dynamic_reconfigure geometry_msgs interactive_markers kdl_parser message_runtime roscpp sensor_msgs std_msgs std_srvs tf visualization_msgs

@@ -1,0 +1,8 @@
+prefix=/home/ouiyeah/catkin_ws/install
+
+Name: cob_omni_drive_controller
+Description: Description of cob_omni_drive_controller
+Version: 0.6.17
+Cflags: -I/home/ouiyeah/catkin_ws/install/include -I/usr/include
+Libs: -L/home/ouiyeah/catkin_ws/install/lib -lcob_omni_drive_geom -lcob_omni_drive_controller -l:/usr/lib/x86_64-linux-gnu/libboost_thread.so -l:/usr/lib/x86_64-linux-gnu/libpthread.so
+Requires: angles controller_interface dynamic_reconfigure geometry_msgs hardware_interface message_runtime nav_msgs sensor_msgs std_msgs std_srvs tf tf2 urdf

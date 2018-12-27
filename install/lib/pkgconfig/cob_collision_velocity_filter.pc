@@ -1,0 +1,8 @@
+prefix=/home/ouiyeah/catkin_ws/install
+
+Name: cob_collision_velocity_filter
+Description: Description of cob_collision_velocity_filter
+Version: 0.6.17
+Cflags: -I/home/ouiyeah/catkin_ws/install/include
+Libs: -L/home/ouiyeah/catkin_ws/install/lib 
+Requires: 

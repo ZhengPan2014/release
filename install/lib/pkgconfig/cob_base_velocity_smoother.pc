@@ -1,0 +1,8 @@
+prefix=/home/ouiyeah/catkin_ws/install
+
+Name: cob_base_velocity_smoother
+Description: Description of cob_base_velocity_smoother
+Version: 0.6.17
+Cflags: -I/home/ouiyeah/catkin_ws/install/include
+Libs: -L/home/ouiyeah/catkin_ws/install/lib 
+Requires: 
