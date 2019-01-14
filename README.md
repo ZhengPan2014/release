@@ -2,8 +2,8 @@
 
 | version         | date            | author          | remark
 | --------------- | --------------- | --------------- | ---------------
-| 1.2.0.1_alpha   | 2018-09-01      | ouiyeah         | restructure git
 | 1.2.0.2_alpha   | 2018-12-30      | ouiyeah         | upgrade kernel
+| 1.2.0.1_alpha   | 2018-09-01      | ouiyeah         | restructure git
 
 ***
 
