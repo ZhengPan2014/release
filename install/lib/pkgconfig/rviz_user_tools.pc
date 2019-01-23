@@ -1,0 +1,8 @@
+prefix=/home/ouiyeah/catkin_ws/install
+
+Name: rviz_user_tools
+Description: Description of rviz_user_tools
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/ouiyeah/catkin_ws/install/lib 
+Requires: rviz

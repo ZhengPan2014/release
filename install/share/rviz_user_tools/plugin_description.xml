@@ -1,0 +1,17 @@
+<library path="lib/librviz_user_tools">
+    <class name="rviz_user_tools/Homing"
+           type="rviz_user_tools::goal_homing_tool"
+           base_class_type="rviz::Tool">
+        <description>
+            Tool for going to the map home.
+        </description>
+    </class>
+    <class name="rviz_user_tools/Cancel"
+           type="rviz_user_tools::goal_cancel_tool"
+           base_class_type="rviz::Tool">
+        <description>
+            Tool for cancelling the nav goal.
+        </description>
+    </class>
+</library>
+

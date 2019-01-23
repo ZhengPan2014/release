@@ -85,7 +85,7 @@ namespace dwa_local_planner {
       /**
        * @brief Reconfigures the trajectory planner
        */
-      void reconfigure(DWAPlannerConfig &cfg);
+      void reconfigure(DWAPlannerConfig &cfg, const std::vector<geometry_msgs::Point> &footprint_spec);
 
       /**
        * @brief  Check if a trajectory is legal for a position/velocity pair

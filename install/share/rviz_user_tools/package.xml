@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package>
-  <name>rviz_plugin</name>
+  <name>rviz_user_tools</name>
   <version>0.0.0</version>
-  <description>The rviz_plugin package</description>
+  <description>The rviz_user_tools package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag --> 
   <!-- Example:  -->
@@ -19,7 +19,7 @@
   <!-- Url tags are optional, but mutiple are allowed, one per tag -->
   <!-- Optional attribute type can be: website, bugtracker, or repository -->
   <!-- Example: -->
-  <!-- <url type="website">http://wiki.ros.org/rviz_plugin</url> -->
+  <!-- <url type="website">http://wiki.ros.org/rviz_user_tools</url> -->
 
 
   <!-- Author tags are optional, mutiple are allowed, one per tag -->
