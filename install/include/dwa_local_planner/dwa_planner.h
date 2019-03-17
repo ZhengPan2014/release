@@ -109,8 +109,7 @@ namespace dwa_local_planner {
       base_local_planner::Trajectory findBestPath(
           tf::Stamped<tf::Pose> global_pose,
           tf::Stamped<tf::Pose> global_vel,
-          tf::Stamped<tf::Pose>& drive_velocities,
-          std::vector<geometry_msgs::Point> footprint_spec);
+          tf::Stamped<tf::Pose>& drive_velocities);
 
       /**
        * @brief  Update the cost functions before planning
