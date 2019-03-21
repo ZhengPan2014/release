@@ -238,17 +238,29 @@ class DEFAULT
 
         if("robot_half_length"==(*_i)->name){robot_half_length = boost::any_cast<double>(val);}
         if("robot_half_width"==(*_i)->name){robot_half_width = boost::any_cast<double>(val);}
-        if("wall_safe_distance"==(*_i)->name){wall_safe_distance = boost::any_cast<double>(val);}
-        if("decelerate_distance"==(*_i)->name){decelerate_distance = boost::any_cast<double>(val);}
         if("stop_distance"==(*_i)->name){stop_distance = boost::any_cast<double>(val);}
+        if("decelerate_distance"==(*_i)->name){decelerate_distance = boost::any_cast<double>(val);}
+        if("wall_safe_distance"==(*_i)->name){wall_safe_distance = boost::any_cast<double>(val);}
+        if("beta"==(*_i)->name){beta = boost::any_cast<double>(val);}
+        if("if_get_footprint"==(*_i)->name){if_get_footprint = boost::any_cast<bool>(val);}
+        if("if_view_limit"==(*_i)->name){if_view_limit = boost::any_cast<bool>(val);}
+        if("start_rad"==(*_i)->name){start_rad = boost::any_cast<double>(val);}
+        if("end_rad"==(*_i)->name){end_rad = boost::any_cast<double>(val);}
+        if("if_shelf_leg_remove"==(*_i)->name){if_shelf_leg_remove = boost::any_cast<bool>(val);}
       }
     }
 
     double robot_half_length;
 double robot_half_width;
-double wall_safe_distance;
-double decelerate_distance;
 double stop_distance;
+double decelerate_distance;
+double wall_safe_distance;
+double beta;
+bool if_get_footprint;
+bool if_view_limit;
+double start_rad;
+double end_rad;
+bool if_shelf_leg_remove;
 
     bool state;
     std::string name;
@@ -263,11 +275,23 @@ double stop_distance;
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       double robot_half_width;
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      double wall_safe_distance;
+      double stop_distance;
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       double decelerate_distance;
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      double stop_distance;
+      double wall_safe_distance;
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      double beta;
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      bool if_get_footprint;
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      bool if_view_limit;
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      double start_rad;
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      double end_rad;
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      bool if_shelf_leg_remove;
 //#line 228 "/opt/ros/indigo/share/dynamic_reconfigure/cmake/../templates/ConfigType.h.template"
 
     bool __fromMessage__(dynamic_reconfigure::Config &msg)
@@ -413,9 +437,9 @@ DynReconf1Config::GroupDescription<DynReconf1Config::DEFAULT, DynReconf1Config> 
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __default__.robot_half_length = 0.5;
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      Default.abstract_parameters.push_back(DynReconf1Config::AbstractParamDescriptionConstPtr(new DynReconf1Config::ParamDescription<double>("robot_half_length", "double", 0, "Length to baselink", "", &DynReconf1Config::robot_half_length)));
+      Default.abstract_parameters.push_back(DynReconf1Config::AbstractParamDescriptionConstPtr(new DynReconf1Config::ParamDescription<double>("robot_half_length", "double", 0, "length of robot from baselink", "", &DynReconf1Config::robot_half_length)));
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __param_descriptions__.push_back(DynReconf1Config::AbstractParamDescriptionConstPtr(new DynReconf1Config::ParamDescription<double>("robot_half_length", "double", 0, "Length to baselink", "", &DynReconf1Config::robot_half_length)));
+      __param_descriptions__.push_back(DynReconf1Config::AbstractParamDescriptionConstPtr(new DynReconf1Config::ParamDescription<double>("robot_half_length", "double", 0, "length of robot from baselink", "", &DynReconf1Config::robot_half_length)));
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.robot_half_width = 0.0;
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
@@ -423,29 +447,9 @@ DynReconf1Config::GroupDescription<DynReconf1Config::DEFAULT, DynReconf1Config> 
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __default__.robot_half_width = 0.2;
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      Default.abstract_parameters.push_back(DynReconf1Config::AbstractParamDescriptionConstPtr(new DynReconf1Config::ParamDescription<double>("robot_half_width", "double", 0, "Half width of robot", "", &DynReconf1Config::robot_half_width)));
+      Default.abstract_parameters.push_back(DynReconf1Config::AbstractParamDescriptionConstPtr(new DynReconf1Config::ParamDescription<double>("robot_half_width", "double", 0, "width of robot from baselink", "", &DynReconf1Config::robot_half_width)));
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __param_descriptions__.push_back(DynReconf1Config::AbstractParamDescriptionConstPtr(new DynReconf1Config::ParamDescription<double>("robot_half_width", "double", 0, "Half width of robot", "", &DynReconf1Config::robot_half_width)));
-//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __min__.wall_safe_distance = 0.0;
-//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __max__.wall_safe_distance = 10.0;
-//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __default__.wall_safe_distance = 0.4;
-//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      Default.abstract_parameters.push_back(DynReconf1Config::AbstractParamDescriptionConstPtr(new DynReconf1Config::ParamDescription<double>("wall_safe_distance", "double", 0, "A safe distance to wall before ellipse transform", "", &DynReconf1Config::wall_safe_distance)));
-//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __param_descriptions__.push_back(DynReconf1Config::AbstractParamDescriptionConstPtr(new DynReconf1Config::ParamDescription<double>("wall_safe_distance", "double", 0, "A safe distance to wall before ellipse transform", "", &DynReconf1Config::wall_safe_distance)));
-//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __min__.decelerate_distance = 0.0;
-//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __max__.decelerate_distance = 10.0;
-//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __default__.decelerate_distance = 1.0;
-//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      Default.abstract_parameters.push_back(DynReconf1Config::AbstractParamDescriptionConstPtr(new DynReconf1Config::ParamDescription<double>("decelerate_distance", "double", 0, "Distance for decelerating", "", &DynReconf1Config::decelerate_distance)));
-//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __param_descriptions__.push_back(DynReconf1Config::AbstractParamDescriptionConstPtr(new DynReconf1Config::ParamDescription<double>("decelerate_distance", "double", 0, "Distance for decelerating", "", &DynReconf1Config::decelerate_distance)));
+      __param_descriptions__.push_back(DynReconf1Config::AbstractParamDescriptionConstPtr(new DynReconf1Config::ParamDescription<double>("robot_half_width", "double", 0, "width of robot from baselink", "", &DynReconf1Config::robot_half_width)));
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.stop_distance = 0.0;
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
@@ -453,9 +457,89 @@ DynReconf1Config::GroupDescription<DynReconf1Config::DEFAULT, DynReconf1Config> 
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __default__.stop_distance = 0.5;
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      Default.abstract_parameters.push_back(DynReconf1Config::AbstractParamDescriptionConstPtr(new DynReconf1Config::ParamDescription<double>("stop_distance", "double", 0, "Distance for stopping", "", &DynReconf1Config::stop_distance)));
+      Default.abstract_parameters.push_back(DynReconf1Config::AbstractParamDescriptionConstPtr(new DynReconf1Config::ParamDescription<double>("stop_distance", "double", 0, "distance for stopping", "", &DynReconf1Config::stop_distance)));
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __param_descriptions__.push_back(DynReconf1Config::AbstractParamDescriptionConstPtr(new DynReconf1Config::ParamDescription<double>("stop_distance", "double", 0, "Distance for stopping", "", &DynReconf1Config::stop_distance)));
+      __param_descriptions__.push_back(DynReconf1Config::AbstractParamDescriptionConstPtr(new DynReconf1Config::ParamDescription<double>("stop_distance", "double", 0, "distance for stopping", "", &DynReconf1Config::stop_distance)));
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __min__.decelerate_distance = 0.0;
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __max__.decelerate_distance = 10.0;
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __default__.decelerate_distance = 1.0;
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(DynReconf1Config::AbstractParamDescriptionConstPtr(new DynReconf1Config::ParamDescription<double>("decelerate_distance", "double", 0, "distance for decelerating", "", &DynReconf1Config::decelerate_distance)));
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(DynReconf1Config::AbstractParamDescriptionConstPtr(new DynReconf1Config::ParamDescription<double>("decelerate_distance", "double", 0, "distance for decelerating", "", &DynReconf1Config::decelerate_distance)));
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __min__.wall_safe_distance = 0.0;
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __max__.wall_safe_distance = 10.0;
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __default__.wall_safe_distance = 0.4;
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(DynReconf1Config::AbstractParamDescriptionConstPtr(new DynReconf1Config::ParamDescription<double>("wall_safe_distance", "double", 0, "safe distance to wall before ellipse transform", "", &DynReconf1Config::wall_safe_distance)));
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(DynReconf1Config::AbstractParamDescriptionConstPtr(new DynReconf1Config::ParamDescription<double>("wall_safe_distance", "double", 0, "safe distance to wall before ellipse transform", "", &DynReconf1Config::wall_safe_distance)));
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __min__.beta = 0.01;
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __max__.beta = 0.99;
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __default__.beta = 0.6;
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(DynReconf1Config::AbstractParamDescriptionConstPtr(new DynReconf1Config::ParamDescription<double>("beta", "double", 0, "scale ratio", "", &DynReconf1Config::beta)));
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(DynReconf1Config::AbstractParamDescriptionConstPtr(new DynReconf1Config::ParamDescription<double>("beta", "double", 0, "scale ratio", "", &DynReconf1Config::beta)));
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __min__.if_get_footprint = 0;
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __max__.if_get_footprint = 1;
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __default__.if_get_footprint = 0;
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(DynReconf1Config::AbstractParamDescriptionConstPtr(new DynReconf1Config::ParamDescription<bool>("if_get_footprint", "bool", 0, "if get robot size from footprint topic", "", &DynReconf1Config::if_get_footprint)));
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(DynReconf1Config::AbstractParamDescriptionConstPtr(new DynReconf1Config::ParamDescription<bool>("if_get_footprint", "bool", 0, "if get robot size from footprint topic", "", &DynReconf1Config::if_get_footprint)));
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __min__.if_view_limit = 0;
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __max__.if_view_limit = 1;
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __default__.if_view_limit = 0;
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(DynReconf1Config::AbstractParamDescriptionConstPtr(new DynReconf1Config::ParamDescription<bool>("if_view_limit", "bool", 0, "if limit field of view", "", &DynReconf1Config::if_view_limit)));
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(DynReconf1Config::AbstractParamDescriptionConstPtr(new DynReconf1Config::ParamDescription<bool>("if_view_limit", "bool", 0, "if limit field of view", "", &DynReconf1Config::if_view_limit)));
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __min__.start_rad = -3.14;
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __max__.start_rad = 3.14;
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __default__.start_rad = 0.0;
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(DynReconf1Config::AbstractParamDescriptionConstPtr(new DynReconf1Config::ParamDescription<double>("start_rad", "double", 0, "start rad of fov", "", &DynReconf1Config::start_rad)));
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(DynReconf1Config::AbstractParamDescriptionConstPtr(new DynReconf1Config::ParamDescription<double>("start_rad", "double", 0, "start rad of fov", "", &DynReconf1Config::start_rad)));
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __min__.end_rad = -3.14;
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __max__.end_rad = 3.14;
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __default__.end_rad = 3.14;
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(DynReconf1Config::AbstractParamDescriptionConstPtr(new DynReconf1Config::ParamDescription<double>("end_rad", "double", 0, "end rad of fov", "", &DynReconf1Config::end_rad)));
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(DynReconf1Config::AbstractParamDescriptionConstPtr(new DynReconf1Config::ParamDescription<double>("end_rad", "double", 0, "end rad of fov", "", &DynReconf1Config::end_rad)));
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __min__.if_shelf_leg_remove = 0;
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __max__.if_shelf_leg_remove = 1;
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __default__.if_shelf_leg_remove = 0;
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(DynReconf1Config::AbstractParamDescriptionConstPtr(new DynReconf1Config::ParamDescription<bool>("if_shelf_leg_remove", "bool", 0, "if filter shelf leg", "", &DynReconf1Config::if_shelf_leg_remove)));
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(DynReconf1Config::AbstractParamDescriptionConstPtr(new DynReconf1Config::ParamDescription<bool>("if_shelf_leg_remove", "bool", 0, "if filter shelf leg", "", &DynReconf1Config::if_shelf_leg_remove)));
 //#line 245 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.convertParams();
 //#line 245 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"

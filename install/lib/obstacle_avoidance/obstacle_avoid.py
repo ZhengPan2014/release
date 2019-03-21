@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
 # Author: lei.zeng@tu-dortmund.de
+# 2019.03.16: detectFootprintCallback
+#             dynamic_reconfigure: beta, if_get_footprint
 
 import rospy
 import math
@@ -12,6 +14,7 @@ import operator
 from dynamic_reconfigure.server import Server
 from obstacle_avoidance.cfg import DynReconf1Config
 import dynamic_reconfigure.client
+from geometry_msgs.msg import PolygonStamped
 
 
 class ObstacleAvoidance:
@@ -19,11 +22,13 @@ class ObstacleAvoidance:
         # self.client = dynamic_reconfigure.client.Client(
         # "obstacle_avoidance", timeout=30, config_callback=self.clientCallback)
         self.srv = Server(DynReconf1Config, self.srvCallback)
+        self.sub_footprint = rospy.Subscriber("/move_base/local_costmap/footprint", PolygonStamped,
+                                              self.detectFootprintCallback, queue_size=10)
         self.sub_obstacles = rospy.Subscriber("/raw_obstacles", Obstacles,
                                               self.detectObstaclesCallback, queue_size=10)
         self.sub_obstacles = rospy.Subscriber("/move_base_vel", Twist,
                                               self.moveBaseVelCallback, queue_size=10)
-        self.pub_vel = rospy.Publisher('/cmd_vel_rectified', Twist, queue_size=10)
+        self.pub_vel = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
 
         # rospy.get_param("navigation_local_planner")
         self.navigation_local_planner = rospy.get_param(
@@ -33,28 +38,41 @@ class ObstacleAvoidance:
         # param: robot size
         self.robot_length = 0.5
         self.robot_width = 0.3
+        self.if_use_footprint = rospy.get_param(
+            "/obstacle_avoidance/if_get_footprint", False)
+        self.paramUpdate()
 
         # param: wall setting (rad,degree):(0.1,6)(0.2,11)(0.3,17) (0.4, 23) (0.5,29) (0.6,34)
-        self.wall_safe_distance = 0.3
         self.wall_safe_slope = math.tan(0.3)
 
-        # param: common setting
-        self.decelerate_distance = 1.5
-        self.stop_distance = 0.5
-        self.fatal_distance = self.stop_distance/2.0 + self.robot_length
         # const
         self.rad_start = 0.6
         self.rad_end = 2.5
-        self.scale_beta = 0.60  # (0,1]
+        self.scale_beta = 0.70  # (0,1]
         self.min_circle_distance = 100
         self.min_line_distance = 100
         self.min_obstacle_distance = 100
 
+    def detectFootprintCallback(self, footprintMsg):
+        foot_points = footprintMsg.polygon.points
+        if (len(foot_points)) == 4 and self.if_use_footprint:
+            x = self.pointDistanceRobot(
+                foot_points[0].x - foot_points[1].x, foot_points[0].y - foot_points[1].y)
+            y = self.pointDistanceRobot(
+                foot_points[1].x - foot_points[2].x, foot_points[1].y - foot_points[2].y)
+            length = max(x, y)
+            width = min(x, y)
+            self.robot_length = 0.5*length
+            self.robot_width = 0.5*width
+        else:
+            pass
+
     def paramUpdate(self):
-        self.robot_length = rospy.get_param(
-            "/obstacle_avoidance/robot_half_length", 0.5)
-        self.robot_width = rospy.get_param(
-            "/obstacle_avoidance/robot_half_width", 0.3)
+        if not self.if_use_footprint:
+            self.robot_length = rospy.get_param(
+                "/obstacle_avoidance/robot_half_length", 0.5)
+            self.robot_width = rospy.get_param(
+                "/obstacle_avoidance/robot_half_width", 0.3)
 
         self.wall_safe_distance = rospy.get_param(
             "/obstacle_avoidance/wall_safe_distance", 0.3)
@@ -70,19 +88,55 @@ class ObstacleAvoidance:
 
         self.fatal_distance = (
             self.stop_distance-self.robot_length)/2.0 + self.robot_length
-       
+        self.scale_beta = rospy.get_param("/obstacle_avoidance/beta", 0.6)
+        self.if_use_footprint = rospy.get_param(
+            "/obstacle_avoidance/if_get_footprint", False)
+
+        self.if_fov_limit = rospy.get_param(
+            "/obstacle_avoidance/if_view_limit", False)
+        self.rad_start = rospy.get_param(
+            "/obstacle_avoidance/start_rad", 0.0)
+        self.rad_end = rospy.get_param(
+            "/obstacle_avoidance/end_rad", 3.14)
+        self.if_shelf_remove = rospy.get_param(
+            "/obstacle_avoidance/if_shelf_leg_remove", False)
+
     def srvCallback(self, config, level):
         return config
-    # def clientCallback(self,config):
-    #     self.robot_length = "{robot_half_length}".format(**config)
-    #     print self.robot_length
+
+    def detectShelfLeg(self, circle_obstacle):
+        distance_leg = self.pointDistanceRobot(
+            circle_obstacle.center.x, circle_obstacle.center.y)
+        distance_standard = self.pointDistanceRobot(
+            self.robot_length, self.robot_width)
+        rad_leg = self.pointRadRobot(
+            circle_obstacle.center.x, abs(circle_obstacle.center.y))
+        rad_standard = self.pointRadRobot(self.robot_length, self.robot_width)
+
+        if_distance = ((distance_leg - distance_standard)**2 < 0.07**2)
+        if_rad = (rad_leg - rad_standard)**2 < 0.2**2
+
+        if if_distance and if_rad:
+            return True
+        else:
+            return False
 
     def detectObstaclesCallback(self, obstaclesMsg):
         self.paramUpdate()
         # (1) process circles
         circle_obstacles = list(obstaclesMsg.circles)
-        circle_obstacles = filter(lambda c: self.distanceCircleToRobotCenter(
-            c) < self.obstacle_consider_range and self.rad_start < self.pointRadRobot(c.center.x, c.center.y) < self.rad_end, circle_obstacles)
+        # circle_obstacles = filter(lambda c: self.detectShelfLeg(c) == False and self.distanceCircleToRobotCenter(
+        #     c) < self.obstacle_consider_range and self.rad_start < self.pointRadRobot(c.center.x, c.center.y) < self.rad_end, circle_obstacles)
+        circle_obstacles = filter(lambda c:  self.distanceCircleToRobotCenter(
+            c) < self.obstacle_consider_range, circle_obstacles)
+        if self.if_fov_limit:
+            circle_obstacles = filter(lambda c:  self.rad_start < self.pointRadRobot(
+                c.center.x, c.center.y) < self.rad_end, circle_obstacles)
+            print('FOV LIMIT')
+        if self.if_shelf_remove:
+            circle_obstacles = filter(
+                lambda c: self.detectShelfLeg(c) == False, circle_obstacles)
+            print('REMOVE SHELF')
 
         if len(circle_obstacles) > 0:
             circle_distances = map(
@@ -100,8 +154,16 @@ class ObstacleAvoidance:
 
         self.min_obstacle_distance = min(
             self.min_circle_distance, self.min_line_distance)
-        # print ('O:', format(self.min_circle_distance, '0.2f'), 'L:', format(self.min_line_distance, '0.2f'),
-        #        format(self.min_obstacle_distance, '0.2f'), self.robot_length, self.stop_distance, self.decelerate_distance)
+        print(self.min_obstacle_distance, self.robot_length, self.robot_width,
+              self.stop_distance, self.decelerate_distance)
+        # print ('O', format(self.min_circle_distance, '0.2f'),
+        #        'L', format(self.min_line_distance, '0.2f'),
+        #        'min_dist:', format(self.min_obstacle_distance, '0.2f'),
+        #        'half_len:', format(self.robot_length, '0.2f'),
+        #        'stop_dist:', format(self.stop_distance, '0.2f'),
+        #        'dec_dist:', format(self.decelerate_distance, '0.2f'),
+        #        'beta:', format(self.scale_beta, '0.2f'),
+        #        self.if_use_footprint)
 
     def pointDistanceRobot(self, x, y):
         return numpy.sqrt(x**2 + y**2)
@@ -211,7 +273,7 @@ class ObstacleAvoidance:
         else:
             twist_avoidace = navVelMsg
         self.pub_vel.publish(twist_avoidace)
-        print(self.stop_distance, self.decelerate_distance)
+        
 
 
 def main():

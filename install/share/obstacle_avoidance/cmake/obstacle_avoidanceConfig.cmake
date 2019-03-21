@@ -67,7 +67,7 @@ set(obstacle_avoidance_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(obstacle_avoidance_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/obstacle_avoidance)
+  set(obstacle_avoidance_SOURCE_PREFIX /home/ouiyeah/catkin_ws/src/hitrobot/obstacle_avoidance)
   set(obstacle_avoidance_DEVEL_PREFIX /home/ouiyeah/catkin_ws/devel)
   set(obstacle_avoidance_INSTALL_PREFIX "")
   set(obstacle_avoidance_PREFIX ${obstacle_avoidance_DEVEL_PREFIX})
