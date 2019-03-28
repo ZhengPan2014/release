@@ -3,6 +3,8 @@
 # Author: lei.zeng@tu-dortmund.de
 # 2019.03.16: detectFootprintCallback
 #             dynamic_reconfigure: beta, if_get_footprint
+# 2019.03.25: obstcale clearing when nothing in consideration
+#             dynamic_reconfigure: if_specific_planner, local_planner
 
 import rospy
 import math
@@ -31,8 +33,10 @@ class ObstacleAvoidance:
         self.pub_vel = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
 
         # rospy.get_param("navigation_local_planner")
+        self.if_certain_planner = rospy.get_param(
+            "/obstacle_avoidance/if_specific_planner", False)
         self.navigation_local_planner = rospy.get_param(
-            "navigation_local_planner", "teb_local_planner/TebLocalPlannerROS")
+            "/obstacle_avoidance/local_planner", "teb_local_planner/TebLocalPlannerROS")
 
         self.obstacle_consider_range = 2.5  # to robot center, to do
         # param: robot size
@@ -101,6 +105,11 @@ class ObstacleAvoidance:
         self.if_shelf_remove = rospy.get_param(
             "/obstacle_avoidance/if_shelf_leg_remove", False)
 
+        self.if_certain_planner = rospy.get_param(
+            "/obstacle_avoidance/if_specific_planner", False)
+        self.navigation_local_planner = rospy.get_param(
+            "/obstacle_avoidance/local_planner", "teb_local_planner/TebLocalPlannerROS")
+
     def srvCallback(self, config, level):
         return config
 
@@ -142,6 +151,8 @@ class ObstacleAvoidance:
             circle_distances = map(
                 self.distanceCircleToRobotCenter, circle_obstacles)
             self.min_circle_distance = min(circle_distances)
+        else:
+            self.min_circle_distance = 98
 
         # (2) process lines:
         line_obstacles = list(obstaclesMsg.segments)
@@ -151,11 +162,13 @@ class ObstacleAvoidance:
             line_distances = map(
                 self.distanceLineToRobotCenter, line_obstacles)
             self.min_line_distance = min(line_distances)
+        else:
+            self.min_line_distance = 99
 
         self.min_obstacle_distance = min(
             self.min_circle_distance, self.min_line_distance)
-        print(self.min_obstacle_distance, self.robot_length, self.robot_width,
-              self.stop_distance, self.decelerate_distance)
+        # print(self.min_obstacle_distance, self.robot_length, self.robot_width,
+        #       self.stop_distance, self.decelerate_distance)
         # print ('O', format(self.min_circle_distance, '0.2f'),
         #        'L', format(self.min_line_distance, '0.2f'),
         #        'min_dist:', format(self.min_obstacle_distance, '0.2f'),
@@ -249,8 +262,10 @@ class ObstacleAvoidance:
 
     def moveBaseVelCallback(self, navVelMsg):
         twist_avoidace = Twist()
-        local_planner = rospy.get_param("/move_base/base_local_planner")
-        if local_planner == self.navigation_local_planner:
+        local_planner_using = rospy.get_param("/move_base/base_local_planner")
+        # print(self.if_certain_planner, self.navigation_local_planner, local_planner_using)
+        if (not self.if_certain_planner) or(self.if_certain_planner and local_planner_using == self.navigation_local_planner):
+            # print('obstacle avoidance')
             if self.stop_distance < self.min_obstacle_distance <= self.decelerate_distance:
                 twist_avoidace.linear.x = navVelMsg.linear.x * \
                     (self.min_obstacle_distance-self.stop_distance/2.0) / \
@@ -271,9 +286,9 @@ class ObstacleAvoidance:
                 #     navVelMsg.angular.z = 0.0
                 twist_avoidace = navVelMsg
         else:
+            # print('NO obstacle avoidance')
             twist_avoidace = navVelMsg
         self.pub_vel.publish(twist_avoidace)
-        
 
 
 def main():

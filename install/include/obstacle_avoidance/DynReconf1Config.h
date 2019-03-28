@@ -247,6 +247,8 @@ class DEFAULT
         if("start_rad"==(*_i)->name){start_rad = boost::any_cast<double>(val);}
         if("end_rad"==(*_i)->name){end_rad = boost::any_cast<double>(val);}
         if("if_shelf_leg_remove"==(*_i)->name){if_shelf_leg_remove = boost::any_cast<bool>(val);}
+        if("if_specific_planner"==(*_i)->name){if_specific_planner = boost::any_cast<bool>(val);}
+        if("local_planner"==(*_i)->name){local_planner = boost::any_cast<std::string>(val);}
       }
     }
 
@@ -261,6 +263,8 @@ bool if_view_limit;
 double start_rad;
 double end_rad;
 bool if_shelf_leg_remove;
+bool if_specific_planner;
+std::string local_planner;
 
     bool state;
     std::string name;
@@ -292,6 +296,10 @@ bool if_shelf_leg_remove;
       double end_rad;
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       bool if_shelf_leg_remove;
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      bool if_specific_planner;
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      std::string local_planner;
 //#line 228 "/opt/ros/indigo/share/dynamic_reconfigure/cmake/../templates/ConfigType.h.template"
 
     bool __fromMessage__(dynamic_reconfigure::Config &msg)
@@ -540,6 +548,26 @@ DynReconf1Config::GroupDescription<DynReconf1Config::DEFAULT, DynReconf1Config> 
       Default.abstract_parameters.push_back(DynReconf1Config::AbstractParamDescriptionConstPtr(new DynReconf1Config::ParamDescription<bool>("if_shelf_leg_remove", "bool", 0, "if filter shelf leg", "", &DynReconf1Config::if_shelf_leg_remove)));
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(DynReconf1Config::AbstractParamDescriptionConstPtr(new DynReconf1Config::ParamDescription<bool>("if_shelf_leg_remove", "bool", 0, "if filter shelf leg", "", &DynReconf1Config::if_shelf_leg_remove)));
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __min__.if_specific_planner = 0;
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __max__.if_specific_planner = 1;
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __default__.if_specific_planner = 0;
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(DynReconf1Config::AbstractParamDescriptionConstPtr(new DynReconf1Config::ParamDescription<bool>("if_specific_planner", "bool", 0, "if filter shelf leg", "", &DynReconf1Config::if_specific_planner)));
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(DynReconf1Config::AbstractParamDescriptionConstPtr(new DynReconf1Config::ParamDescription<bool>("if_specific_planner", "bool", 0, "if filter shelf leg", "", &DynReconf1Config::if_specific_planner)));
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __min__.local_planner = "";
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __max__.local_planner = "";
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __default__.local_planner = "teb_local_planner/TebLocalPlannerROS";
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(DynReconf1Config::AbstractParamDescriptionConstPtr(new DynReconf1Config::ParamDescription<std::string>("local_planner", "str", 0, "local planner", "", &DynReconf1Config::local_planner)));
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(DynReconf1Config::AbstractParamDescriptionConstPtr(new DynReconf1Config::ParamDescription<std::string>("local_planner", "str", 0, "local planner", "", &DynReconf1Config::local_planner)));
 //#line 245 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.convertParams();
 //#line 245 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
