@@ -1,6 +1,12 @@
 #!/usr/bin/env python
 
+# subscribe to: /move_base/local_costmap/footprint
+#               /raw_obstacles
+#               /move_base_vel
+# publish to :  /cmd_vel
+
 # Author: lei.zeng@tu-dortmund.de
+
 # 2019.03.16: detectFootprintCallback
 #             dynamic_reconfigure: beta, if_get_footprint
 # 2019.03.25: obstcale clearing when nothing in consideration
@@ -106,7 +112,7 @@ class ObstacleAvoidance:
             "/obstacle_avoidance/if_shelf_leg_remove", False)
 
         self.if_certain_planner = rospy.get_param(
-            "/obstacle_avoidance/if_specific_planner", False)
+            "/obstacle_avoidance/if_specific_planner", True)
         self.navigation_local_planner = rospy.get_param(
             "/obstacle_avoidance/local_planner", "teb_local_planner/TebLocalPlannerROS")
 
@@ -122,8 +128,8 @@ class ObstacleAvoidance:
             circle_obstacle.center.x, abs(circle_obstacle.center.y))
         rad_standard = self.pointRadRobot(self.robot_length, self.robot_width)
 
-        if_distance = ((distance_leg - distance_standard)**2 < 0.07**2)
-        if_rad = (rad_leg - rad_standard)**2 < 0.2**2
+        if_distance = ((distance_leg - distance_standard)**2 < 0.1**2)
+        if_rad = (rad_leg - rad_standard)**2 < 0.3**2
 
         if if_distance and if_rad:
             return True
@@ -187,9 +193,9 @@ class ObstacleAvoidance:
 
     def scaledDistanceRatio(self, x, y):
         # to do
-        cos_phi = x/numpy.sqrt(x**2 + y**2)
+        cos_phi = x/self.denominatorZero(numpy.sqrt(x**2 + y**2))
         cos_phi = abs(cos_phi)
-        ratio = (1-self.scale_beta*cos_phi)/(1-self.scale_beta)
+        ratio = (1-self.scale_beta*cos_phi)/self.denominatorZero(1-self.scale_beta)
         return ratio
 
     def distanceCircleToRobotCenter(self, circle_obstacle):
@@ -206,8 +212,8 @@ class ObstacleAvoidance:
         #     (line_obstacle.last_point.x - line_obstacle.first_point.x)
         k = self.line_slope(line_obstacle)
         b = line_obstacle.first_point.y - k*line_obstacle.first_point.x
-        intersection_x = b/(-k-1.0/k)
-        intersection_y = -1.0/k * intersection_x
+        intersection_x = b/self.denominatorZero(-k-1.0/k)
+        intersection_y = -1.0/self.denominatorZero(k * intersection_x)
         if intersection_x < min(line_obstacle.last_point.x, line_obstacle.first_point.x) or intersection_x > max(line_obstacle.last_point.x, line_obstacle.first_point.x):
             distance_line = min(self.pointDistanceRobot(line_obstacle.first_point.x, line_obstacle.first_point.y),
                                 self.pointDistanceRobot(line_obstacle.last_point.x, line_obstacle.last_point.y))
@@ -245,10 +251,19 @@ class ObstacleAvoidance:
     def line_slope(self, line_obstacle):
         line_obstacle.last_point.y = float(line_obstacle.last_point.y)
         delta_x = line_obstacle.last_point.x - line_obstacle.first_point.x
-        if abs(delta_x) < 0.01:
-            delta_x = 0.01*(delta_x)/abs(delta_x)
-        k = (line_obstacle.last_point.y - line_obstacle.first_point.y) / delta_x
+        k = (line_obstacle.last_point.y - line_obstacle.first_point.y) / self.denominatorZero(delta_x)
         return k
+
+
+    def denominatorZero(self, d):
+        numd = d
+        if d == 0:
+            numd = 0.0001
+        if -0.001 < d < 0:
+            numd = -0.001
+        if 0 < d < 0.001:
+            numd = 0.001
+        return numd
 
     def wallSide(self, line_obstacle):
         wall_distance = self.distanceLineToRobotCenter(line_obstacle)
@@ -265,11 +280,11 @@ class ObstacleAvoidance:
         local_planner_using = rospy.get_param("/move_base/base_local_planner")
         # print(self.if_certain_planner, self.navigation_local_planner, local_planner_using)
         if (not self.if_certain_planner) or(self.if_certain_planner and local_planner_using == self.navigation_local_planner):
-            # print('obstacle avoidance')
+            print('obstacle avoidance')
             if self.stop_distance < self.min_obstacle_distance <= self.decelerate_distance:
                 twist_avoidace.linear.x = navVelMsg.linear.x * \
                     (self.min_obstacle_distance-self.stop_distance/2.0) / \
-                    (self.decelerate_distance)
+                    self.denominatorZero(self.decelerate_distance)
                 twist_avoidace.angular.z = navVelMsg.angular.z
                 rospy.logwarn('slow down')
             elif self.min_obstacle_distance <= self.stop_distance:
@@ -286,7 +301,7 @@ class ObstacleAvoidance:
                 #     navVelMsg.angular.z = 0.0
                 twist_avoidace = navVelMsg
         else:
-            # print('NO obstacle avoidance')
+            print('NO obstacle avoidance')
             twist_avoidace = navVelMsg
         self.pub_vel.publish(twist_avoidace)
 

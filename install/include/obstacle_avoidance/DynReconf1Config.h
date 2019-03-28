@@ -553,7 +553,7 @@ DynReconf1Config::GroupDescription<DynReconf1Config::DEFAULT, DynReconf1Config> 
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.if_specific_planner = 1;
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __default__.if_specific_planner = 0;
+      __default__.if_specific_planner = 1;
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.abstract_parameters.push_back(DynReconf1Config::AbstractParamDescriptionConstPtr(new DynReconf1Config::ParamDescription<bool>("if_specific_planner", "bool", 0, "if filter shelf leg", "", &DynReconf1Config::if_specific_planner)));
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
