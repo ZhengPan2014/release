@@ -1,4 +1,9 @@
 #!/usr/bin/env python
+
+# /task_switch:
+#              (1)slam
+#              (2)shelf
+
 import roslaunch
 import rospy
 import sys
@@ -22,10 +27,15 @@ class systemTask:
         self.sub = rospy.Subscriber(
             '/task_switch', Header, self.taskSitchCallback)
 
+        self.startShelfDetector = False
+        self.excutedShelfDetector = False
+
     def taskSitchCallback(self, taskMsg):
         # deal with logic None.
         if taskMsg.frame_id.find("slam") != -1:
             self.startSLAM = self.switchFlag("slam", taskMsg)
+        if taskMsg.frame_id.find("shelf") != -1:
+            self.startShelfDetector = self.switchFlag("shelf", taskMsg)
 
     # switchFlag: used to check for startup or shutdown tasks
     def switchFlag(self, strName, headerMsg):
@@ -64,6 +74,8 @@ class pubStates:
         self.addState("cartographer_node")
         self.addState("amcl")
         self.addState("move_base")
+        self.addState("shelf_detector")
+
         # just need to add here new task state you want to monitor, e.g: self.addState("one REPRESENTATIVE node name of the task")
 
     def addState(self, stateName):
@@ -144,12 +156,12 @@ def main():
             uuid = roslaunch.rlutil.get_or_generate_uuid(None, False)
             roslaunch.configure_logging(uuid)
             launch = roslaunch.parent.ROSLaunchParent(
-                uuid, ["/tmp/.sor/quiz.cfg/slam.cfg"])
+                uuid, [slam_launch_path])
             try:
                 launch.start()
                 time.sleep(3)  # enough time for launch to complete
                 print(
-                    "\033[1;30;42m\t-------- rosbridge_system: SLAM is launched   --------\t    \033[0m")
+                    "\033[1;37;42m\t\t\trosbridge_system: SLAM is launched\t\t\t\033[0m")
                 systemTaskSwitcher.excutedSLAM = True
             except:
                 systemTaskSwitcher.excutedSLAM = False
@@ -158,12 +170,12 @@ def main():
                 # deactivate /base_laser for publish tf between /base_footprint and /base_laser
                 pubTaskSwitch('base_laser', 0, 2)
                 print(
-                    "\033[1;37;44m\t rosbridge_system: setting taskl base_laser False within 2s \033[0m")
+                    "\033[1;37;44m\t rosbridge_system: setting task base_laser False within 2s \033[0m")
 
                 # deactivate /amcl node for publish tf between /map and /odom
                 dynamicParameterSet('amcl', 'tf_broadcast', False)
                 print(
-                    "\033[1;37;44m\t rosbridge_system: setting amcl tf False \033[0m")
+                    "\033[1;37;44m\t rosbridge_system: setting AMCL tf False \033[0m")
                 # os.system("rosrun dynamic_reconfigure dynparam set /amcl tf_broadcast fasle")
             except:
                 pass
@@ -172,16 +184,15 @@ def main():
         if (systemTaskSwitcher.startSLAM == False) and systemTaskSwitcher.excutedSLAM:
             slam_laser_x, slam_laser_y, slam_laser_quat = getAMCLPose(
                 'map', 'base_laser_link')
-            print(
-                "\033[1;37;44m\t rosbridge_system: getting SLAM pose \033[0m")
+            print("\033[1;37;44m\t rosbridge_system: getting SLAM pose \033[0m")
             time.sleep(2)
             try:
                 dynamicParameterSet('amcl', 'tf_broadcast', True)
                 print(
-                    "\033[1;37;44m\t rosbridge_system: setting amcl tf True \033[0m")
+                    "\033[1;37;44m\t rosbridge_system: setting AMCL tf True \033[0m")
                 pubTaskSwitch('base_laser', 1, 2)
                 print(
-                    "\033[1;37;44m\t rosbridge_system: setting taskl base_laser True within 2s \033[0m")
+                    "\033[1;37;44m\t rosbridge_system: setting task base_laser True within 2s \033[0m")
             except:
                 pass
 
@@ -189,18 +200,41 @@ def main():
                 launch.shutdown()
                 time.sleep(3)  # enough time for shutdown to complete
                 print(
-                    "\033[1;30;41m\t-------- rosbridge_system: SLAM is shutdown  --------\t    \033[0m")
+                    "\033[1;37;41m\t\t\trosbridge_system: SLAM is shutdown\t\t\t\033[0m")
                 systemTaskSwitcher.excutedSLAM = False
             except:
                 systemTaskSwitcher.excutedSLAM = True
 
             # publish slam pose to /initialpose for amcl
             print(
-                "\033[1;37;44m\t rosbridge_system: pulish amcl pose to /initialpose within 2s \033[0m")
+                "\033[1;37;44m\t rosbridge_system: pulish AMCL pose to /initialpose within 2s \033[0m")
             pubAMCLPoseAMCLInitial(
                 slam_laser_x, slam_laser_y, slam_laser_quat, 2)
             print(
-                "\033[1;37;44m\t rosbridge_system: finish AMCL task \033[0m")
+                "\033[1;37;44m\t rosbridge_system: finish SLAM task \033[0m")
+
+        if systemTaskSwitcher.startShelfDetector and (systemTaskSwitcher.excutedShelfDetector == False):
+            uuid = roslaunch.rlutil.get_or_generate_uuid(None, False)
+            roslaunch.configure_logging(uuid)
+            launch_shelf = roslaunch.parent.ROSLaunchParent(
+                uuid, [shelf_launch_path])
+            try:
+                launch_shelf.start()
+                time.sleep(2)
+                print(
+                    "\033[1;37;42m\t\t\trosbridge_system: SHELF_DETECT is launched\t\t\t\033[0m")
+                systemTaskSwitcher.excutedShelfDetector = True
+            except:
+                systemTaskSwitcher.excutedShelfDetector = False
+        if systemTaskSwitcher.startShelfDetector == False and systemTaskSwitcher.excutedShelfDetector:
+            try:
+                launch_shelf.shutdown()
+                time.sleep(2)
+                print(
+                    "\033[1;37;41m\t\t\trosbridge_system: SHELF_DETECT is shutdown\t\t\t\033[0m")
+                systemTaskSwitcher.excutedShelfDetector = False
+            except:
+                systemTaskSwitcher.excutedShelfDetector = True
 
         # publish tasks state
         pub.publishing()
@@ -215,4 +249,6 @@ def main():
 
 
 if __name__ == '__main__':
+    slam_launch_path = "/tmp/.sor/quiz.cfg/slam.cfg"
+    shelf_launch_path = "/tmp/.sor/quiz.cfg/shelf_detector.cfg"
     main()
