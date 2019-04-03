@@ -3,7 +3,6 @@
 # /task_switch:
 #              (1)slam
 #              (2)shelf
-
 import roslaunch
 import rospy
 import sys
@@ -21,11 +20,14 @@ from geometry_msgs.msg import PoseWithCovarianceStamped
 class systemTask:
 
     def __init__(self):
+        self.sub = rospy.Subscriber(
+            '/task_switch', Header, self.taskSitchCallback)
+
         # Two parameters for switching and reset
         self.startSLAM = False
         self.excutedSLAM = False
-        self.sub = rospy.Subscriber(
-            '/task_switch', Header, self.taskSitchCallback)
+        self.slamReset = False
+        self.slamContinue = False
 
         self.startShelfDetector = False
         self.excutedShelfDetector = False
@@ -34,6 +36,10 @@ class systemTask:
         # deal with logic None.
         if taskMsg.frame_id.find("slam") != -1:
             self.startSLAM = self.switchFlag("slam", taskMsg)
+            if taskMsg.seq == 1:
+                self.slamReset = True
+            elif taskMsg.seq == 2:
+                self.slamContinue = True
         if taskMsg.frame_id.find("shelf") != -1:
             self.startShelfDetector = self.switchFlag("shelf", taskMsg)
 
@@ -105,6 +111,7 @@ def dynamicParameterSet(clien_name, parameter, value):
 
 def getAMCLPose(parent_frame, child_frame):
     pose_x, pose_y, pose_theta = 0, 0, 0
+    pose_quat = []
     # todo: Clearing TF buffer.
     buf = tf2_ros.Buffer()
     listener = tf2_ros.TransformListener(buf)
@@ -153,10 +160,18 @@ def main():
         # launch slam
         if systemTaskSwitcher.startSLAM and (systemTaskSwitcher.excutedSLAM == False):
 
+            if systemTaskSwitcher.slamReset:
+                slam_launch_path = slam_reset_launch_path
+                print('SLAM reset mode')
+            elif systemTaskSwitcher.slamContinue:
+                slam_launch_path = slam_continue_launch_path
+                print('SLAM continue mode')
+
             uuid = roslaunch.rlutil.get_or_generate_uuid(None, False)
             roslaunch.configure_logging(uuid)
             launch = roslaunch.parent.ROSLaunchParent(
                 uuid, [slam_launch_path])
+
             try:
                 launch.start()
                 time.sleep(3)  # enough time for launch to complete
@@ -166,19 +181,20 @@ def main():
             except:
                 systemTaskSwitcher.excutedSLAM = False
 
-            try:
-                # deactivate /base_laser for publish tf between /base_footprint and /base_laser
-                pubTaskSwitch('base_laser', 0, 2)
-                print(
-                    "\033[1;37;44m\t rosbridge_system: setting task base_laser False within 2s \033[0m")
+            if systemTaskSwitcher.excutedSLAM:
+                try:
+                    # deactivate /base_laser for publish tf between /base_footprint and /base_laser
+                    pubTaskSwitch('base_laser', 0, 2)
+                    print(
+                        "\033[1;37;44m\t rosbridge_system: setting task base_laser False within 2s \033[0m")
 
-                # deactivate /amcl node for publish tf between /map and /odom
-                dynamicParameterSet('amcl', 'tf_broadcast', False)
-                print(
-                    "\033[1;37;44m\t rosbridge_system: setting AMCL tf False \033[0m")
-                # os.system("rosrun dynamic_reconfigure dynparam set /amcl tf_broadcast fasle")
-            except:
-                pass
+                    # deactivate /amcl node for publish tf between /map and /odom
+                    dynamicParameterSet('amcl', 'tf_broadcast', False)
+                    print(
+                        "\033[1;37;44m\t rosbridge_system: setting AMCL tf False \033[0m")
+                    # os.system("rosrun dynamic_reconfigure dynparam set /amcl tf_broadcast fasle")
+                except:
+                    pass
         # shutdown slam: (1)record slam pose                  (2)shutdown
         #                (3)recover tf of amcl and base_laser (4) publish slam pose to /initialpose
         if (systemTaskSwitcher.startSLAM == False) and systemTaskSwitcher.excutedSLAM:
@@ -202,6 +218,8 @@ def main():
                 print(
                     "\033[1;37;41m\t\t\trosbridge_system: SLAM is shutdown\t\t\t\033[0m")
                 systemTaskSwitcher.excutedSLAM = False
+                systemTaskSwitcher.slamReset = False
+                systemTaskSwitcher.slamContinue = False
             except:
                 systemTaskSwitcher.excutedSLAM = True
 
@@ -249,6 +267,7 @@ def main():
 
 
 if __name__ == '__main__':
-    slam_launch_path = "/tmp/.sor/quiz.cfg/slam.cfg"
+    slam_reset_launch_path = "/tmp/.sor/quiz.cfg/slam.cfg"
+    slam_continue_launch_path = "/tmp/.sor/quiz.cfg/slam_load.cfg"
     shelf_launch_path = "/tmp/.sor/quiz.cfg/shelf_detector.cfg"
     main()
