@@ -111,10 +111,10 @@ private:
 	double sim_granularity_;
 	double stop_time_buffer_;
 	double bz_length_tolerance_;
-	double x_goal_tolerance_;
-	double y_goal_tolerance_;
-	double xy_goal_tolerance_; // Euclidean distance
-	double yaw_goal_tolerance_;
+	double x_tolerance_;
+	double y_tolerance_;
+	double xy_tolerance_; // Euclidean distance
+	double yaw_tolerance_;
 	double max_vel_x_;
 	double min_vel_x_;
 	double angular_ratio_;
