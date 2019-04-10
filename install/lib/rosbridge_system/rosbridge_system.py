@@ -199,7 +199,7 @@ def main():
         #                (3)recover tf of amcl and base_laser (4) publish slam pose to /initialpose
         if (systemTaskSwitcher.startSLAM == False) and systemTaskSwitcher.excutedSLAM:
             slam_laser_x, slam_laser_y, slam_laser_quat = getAMCLPose(
-                'map', 'base_laser_link')
+                'map', 'base_laser')
             print("\033[1;37;44m\t rosbridge_system: getting SLAM pose \033[0m")
             time.sleep(2)
             try:
