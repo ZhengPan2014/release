@@ -240,10 +240,10 @@ class DEFAULT
         if("sim_granularity"==(*_i)->name){sim_granularity = boost::any_cast<double>(val);}
         if("stop_time_buffer"==(*_i)->name){stop_time_buffer = boost::any_cast<double>(val);}
         if("bz_length_tolerance"==(*_i)->name){bz_length_tolerance = boost::any_cast<double>(val);}
-        if("x_tolerance"==(*_i)->name){x_tolerance = boost::any_cast<double>(val);}
-        if("y_tolerance"==(*_i)->name){y_tolerance = boost::any_cast<double>(val);}
-        if("xy_tolerance"==(*_i)->name){xy_tolerance = boost::any_cast<double>(val);}
-        if("yaw_tolerance"==(*_i)->name){yaw_tolerance = boost::any_cast<double>(val);}
+        if("x_goal_tolerance"==(*_i)->name){x_goal_tolerance = boost::any_cast<double>(val);}
+        if("y_goal_tolerance"==(*_i)->name){y_goal_tolerance = boost::any_cast<double>(val);}
+        if("xy_goal_tolerance"==(*_i)->name){xy_goal_tolerance = boost::any_cast<double>(val);}
+        if("yaw_goal_tolerance"==(*_i)->name){yaw_goal_tolerance = boost::any_cast<double>(val);}
         if("max_vel_x"==(*_i)->name){max_vel_x = boost::any_cast<double>(val);}
         if("min_vel_x"==(*_i)->name){min_vel_x = boost::any_cast<double>(val);}
         if("angular_ratio"==(*_i)->name){angular_ratio = boost::any_cast<double>(val);}
@@ -268,10 +268,10 @@ class DEFAULT
 double sim_granularity;
 double stop_time_buffer;
 double bz_length_tolerance;
-double x_tolerance;
-double y_tolerance;
-double xy_tolerance;
-double yaw_tolerance;
+double x_goal_tolerance;
+double y_goal_tolerance;
+double xy_goal_tolerance;
+double yaw_goal_tolerance;
 double max_vel_x;
 double min_vel_x;
 double angular_ratio;
@@ -307,13 +307,13 @@ bool test_vel;
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       double bz_length_tolerance;
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      double x_tolerance;
+      double x_goal_tolerance;
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      double y_tolerance;
+      double y_goal_tolerance;
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      double xy_tolerance;
+      double xy_goal_tolerance;
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      double yaw_tolerance;
+      double yaw_goal_tolerance;
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       double max_vel_x;
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
@@ -527,45 +527,45 @@ BZPlannerConfig::GroupDescription<BZPlannerConfig::DEFAULT, BZPlannerConfig> Def
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<double>("bz_length_tolerance", "double", 0, "bezier curve length tolerance in meters", "", &BZPlannerConfig::bz_length_tolerance)));
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __min__.x_tolerance = 0.0;
+      __min__.x_goal_tolerance = 0.0;
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __max__.x_tolerance = std::numeric_limits<double>::infinity();
+      __max__.x_goal_tolerance = std::numeric_limits<double>::infinity();
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __default__.x_tolerance = 0.05;
+      __default__.x_goal_tolerance = 0.05;
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      Default.abstract_parameters.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<double>("x_tolerance", "double", 0, "x tolerance in meters", "", &BZPlannerConfig::x_tolerance)));
+      Default.abstract_parameters.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<double>("x_goal_tolerance", "double", 0, "x tolerance in meters", "", &BZPlannerConfig::x_goal_tolerance)));
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __param_descriptions__.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<double>("x_tolerance", "double", 0, "x tolerance in meters", "", &BZPlannerConfig::x_tolerance)));
+      __param_descriptions__.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<double>("x_goal_tolerance", "double", 0, "x tolerance in meters", "", &BZPlannerConfig::x_goal_tolerance)));
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __min__.y_tolerance = 0.0;
+      __min__.y_goal_tolerance = 0.0;
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __max__.y_tolerance = std::numeric_limits<double>::infinity();
+      __max__.y_goal_tolerance = std::numeric_limits<double>::infinity();
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __default__.y_tolerance = 0.05;
+      __default__.y_goal_tolerance = 0.05;
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      Default.abstract_parameters.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<double>("y_tolerance", "double", 0, "y tolerance in meters", "", &BZPlannerConfig::y_tolerance)));
+      Default.abstract_parameters.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<double>("y_goal_tolerance", "double", 0, "y tolerance in meters", "", &BZPlannerConfig::y_goal_tolerance)));
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __param_descriptions__.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<double>("y_tolerance", "double", 0, "y tolerance in meters", "", &BZPlannerConfig::y_tolerance)));
+      __param_descriptions__.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<double>("y_goal_tolerance", "double", 0, "y tolerance in meters", "", &BZPlannerConfig::y_goal_tolerance)));
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __min__.xy_tolerance = 0.0;
+      __min__.xy_goal_tolerance = 0.0;
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __max__.xy_tolerance = std::numeric_limits<double>::infinity();
+      __max__.xy_goal_tolerance = std::numeric_limits<double>::infinity();
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __default__.xy_tolerance = 0.05;
+      __default__.xy_goal_tolerance = 0.05;
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      Default.abstract_parameters.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<double>("xy_tolerance", "double", 0, "Euclidean distance tolerance in meters", "", &BZPlannerConfig::xy_tolerance)));
+      Default.abstract_parameters.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<double>("xy_goal_tolerance", "double", 0, "Euclidean distance tolerance in meters", "", &BZPlannerConfig::xy_goal_tolerance)));
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __param_descriptions__.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<double>("xy_tolerance", "double", 0, "Euclidean distance tolerance in meters", "", &BZPlannerConfig::xy_tolerance)));
+      __param_descriptions__.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<double>("xy_goal_tolerance", "double", 0, "Euclidean distance tolerance in meters", "", &BZPlannerConfig::xy_goal_tolerance)));
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __min__.yaw_tolerance = 0.0;
+      __min__.yaw_goal_tolerance = 0.0;
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __max__.yaw_tolerance = std::numeric_limits<double>::infinity();
+      __max__.yaw_goal_tolerance = std::numeric_limits<double>::infinity();
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __default__.yaw_tolerance = 0.05;
+      __default__.yaw_goal_tolerance = 0.05;
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      Default.abstract_parameters.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<double>("yaw_tolerance", "double", 0, "yaw tolerance in radius", "", &BZPlannerConfig::yaw_tolerance)));
+      Default.abstract_parameters.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<double>("yaw_goal_tolerance", "double", 0, "yaw tolerance in radius", "", &BZPlannerConfig::yaw_goal_tolerance)));
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __param_descriptions__.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<double>("yaw_tolerance", "double", 0, "yaw tolerance in radius", "", &BZPlannerConfig::yaw_tolerance)));
+      __param_descriptions__.push_back(BZPlannerConfig::AbstractParamDescriptionConstPtr(new BZPlannerConfig::ParamDescription<double>("yaw_goal_tolerance", "double", 0, "yaw tolerance in radius", "", &BZPlannerConfig::yaw_goal_tolerance)));
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.max_vel_x = 0.0;
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
