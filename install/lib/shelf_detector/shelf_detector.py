@@ -28,23 +28,34 @@ import dynamic_reconfigure.client
 
 class ShelfDetect:
     def __init__(self):
-        self.size_informed = False
+        # shelf size settings
+        self.at_least_full_rec = rospy.get_param(
+            "/shelf_detector/shelf_at_least_four", True)
+        self.at_least_half_rec = rospy.get_param(
+            "/shelf_detector/shelf_at_least_three", False)
+        self.size_informed = rospy.get_param(
+            "/shelf_detector/shelf_size_informed", False)
+        self.shelf_footprint = rospy.get_param(
+            "/shelf_detector/set_shelf_footprint", False)
+        self.length = rospy.get_param(
+            "/shelf_detector/shelf_front_rear", 2.2)  # including radius
+        self.width = rospy.get_param("/shelf_detector/shelf_left_right", 1.3)
 
-        self.length = rospy.get_param("long_side", 2.2)  # including radius
-        self.width = rospy.get_param("short_side", 1.3)
         self.diagonal = numpy.sqrt(self.width**2 + self.length**2)
-        self.radius = rospy.get_param("leg_radius", 0.1)
-        self.edge_tolerance = 0.05
-        self.radius_tolerance = 0.1
+        self.radius = rospy.get_param("/shelf_detector/leg_radius", 0.1)
+
+        # tolerance settings
+        self.edge_tolerance = rospy.get_param(
+            "/shelf_detector/edge_tolerance", 0.05)
+        self.right_angle_tolerance = rospy.get_param(
+            "/shelf_detector/right_angle_tolerance", 0.08)
         self.timeout = 10.0
+        self.radius_tolerance = 0.1
+        self.horizontal_rad = rospy.get_param(
+            "/shelf_detector/horizontal_criterion", 0.38)
+        self.vertical_rad = rospy.get_param(
+            "/shelf_detector/vertical_criterion", 1.19)
 
-        self.horizontal_rad = math.pi*0.12
-        self.vertical_rad = math.pi * 0.38
-
-        self.sub_shelf = rospy.Subscriber("/raw_obstacles", Obstacles,
-                                          self.detectShelfFeetCallback, queue_size=10)
-        self.sub_odom = rospy.Subscriber("/odom", Odometry,
-                                         self.detectOdomCallback, queue_size=10)
         self.odom_x = 0
         self.odom_y = 0
         self.odom_x_initial = float('inf')
@@ -62,14 +73,14 @@ class ShelfDetect:
         self.length_detect = []
         self.width_detect = []
 
-        self.right_angle_tolerance = 0.08
-        self.at_least_full_rec = True
-        self.at_least_half_rec = False
+        self.sub_shelf = rospy.Subscriber("/raw_obstacles", Obstacles,
+                                          self.detectShelfFeetCallback, queue_size=10)
+        self.sub_odom = rospy.Subscriber("/odom", Odometry,
+                                         self.detectOdomCallback, queue_size=10)
 
     def distance2Feet(self, foot1, foot2):
         distance = numpy.sqrt(pow(foot1.center.x - foot2.center.x, 2)
                               + pow(foot1.center.y - foot2.center.y, 2))
-        # print (round(foot1.center.x, 2),round(foot1.center.y, 2), round(foot2.center.x, 2),round(foot2.center.y, 2),'dis=',distance)
         return distance
 
     def feetSlope(self, foot1, foot2):
@@ -82,7 +93,7 @@ class ShelfDetect:
                 and abs(self.distance2Feet(foot1, foot2) - self.length) < self.edge_tolerance:
             return "horizontal"  # 20 degree
         elif abs(self.feetSlope(foot1, foot2)) > math.tan(self.vertical_rad)\
-                and abs(self.distance2Feet(foot1, foot2) - self.width) < self.edge_tolerance + self.init_wid_detect*0.3:
+                and abs(self.distance2Feet(foot1, foot2) - self.width) < self.edge_tolerance:
             return "vertical"  # 70 degree
         else:
             return "unsure"
@@ -134,13 +145,13 @@ class ShelfDetect:
         if self.odom_x_initial == float('inf'):
             self.odom_x_initial = data_odom.pose.pose.position.x
             self.odom_y_initial = data_odom.pose.pose.position.y
-            print("\133[0;32;40m\todom initial:\033[0m")
-            print(self.odom_x_initial, self.odom_y_initial)
+            # print("\133[0;32;40m\todom initial:\033[0m")
+            # print(self.odom_x_initial, self.odom_y_initial)
         self.odom_x = data_odom.pose.pose.position.x
         self.odom_y = data_odom.pose.pose.position.y
 
     def detectShelfFeetCallback(self, data_feet):
-        print("\033[1;37;41m\t\t\tCALLBACK\t\t\t\033[0m")
+        # print("\033[1;37;41m\t\t\tCALLBACK\t\t\t\033[0m")
         feet_frame = data_feet.header.frame_id
         feet = list(data_feet.circles)
 
@@ -257,7 +268,6 @@ class ShelfDetect:
                                                 lst[i], lst[j])
                                             self.length_detect = []
                                             self.length_detect.append(l)
-                                            print('33333', l)
                                             self.init_len_detect = False
                                             self.radius = lst[0].true_radius
                                             init_half_rectangle = True
@@ -275,7 +285,7 @@ class ShelfDetect:
             #     self.init_len_detect = False
             #     self.radius = feet_shelf_size[0].true_radius
 
-            # At least half a rectangle at initialization.
+            # At least half rectangle at initialization.
             if self.init_len_detect:
                 rospy.logwarn('[ShelfDetector271] no shelf to detect')
                 return
@@ -298,22 +308,14 @@ class ShelfDetect:
             self.diagonal = numpy.sqrt(self.width**2 + self.length**2)
 
         # -------- distance relation between neighour feet --------
-        print('\t delete from distance')
+        # print('\t delete from distance')
         ngh = 0
         while ngh != len(feet):
             if self.neighourDistanceRelation(feet[ngh], feet, self.length, self.width, self.diagonal, self.edge_tolerance):
                 ngh = ngh+1
             else:
-                print('delete ngh', ngh)
+                # print('delete ngh', ngh)
                 feet.pop(ngh)
-
-        # print('----------------///--------------------')
-
-        # for f in feet:
-        #     print(round(f.center.x, 2), round(f.center.y, 2),
-        #           round(f.center.z, 2), round(f.true_radius, 2))
-
-        # print('----------------++++--------------------')
 
         # -------- only once to get initial front and rear feet x position --------
         if len(feet) >= 1 and self.front_x_initial == float('inf'):
@@ -330,7 +332,7 @@ class ShelfDetect:
         if_find_full_rectangle = False
         if_find_half_rectangle = False
         if len(feet) >= 4:
-            rospy.loginfo('[ShelfDetector323] more feet actual presence')
+            # rospy.loginfo('[ShelfDetector323] more feet actual presence')
             rec_to_robot = 100
             for a in range(0, len(feet)-3):
                 for b in range(a+1, len(feet)-2):
@@ -356,10 +358,10 @@ class ShelfDetect:
                                     continue
                                 feet4_temp = lst
                                 if_find_full_rectangle = True
-                                print(
-                                    "\033[1;37;43m\t\t\tfind FULL REC before turn:\t\t\t\033[0m")
-                                print(a, b, c,
-                                      d, self.extractFullRectangle(lst))
+                                # print(
+                                #     "\033[1;37;43m\t\t\tfind FULL REC before turn:\t\t\t\033[0m")
+                                # print(a, b, c,
+                                #       d, self.extractFullRectangle(lst))
 
         if if_find_full_rectangle:
             feet = feet4_temp
@@ -472,7 +474,7 @@ class ShelfDetect:
                         target_y.append(target[1])
                         target_yaw.append(target[2])
 
-        print('--------------- ???? ----------------')
+        # print('--------------- ???? ----------------')
         if if_find_full_rectangle:
             x_list = map(lambda f: f.center.x, feet)
             y_list = map(lambda f: f.center.y, feet)
@@ -497,25 +499,29 @@ class ShelfDetect:
         tx = numpy.mean(target_x)
         ty = numpy.mean(target_y)
         tyaw = numpy.mean(target_yaw)
-        rospy.loginfo('\t mean shelf center')
-        print('-----------------------------------------',
-              round(tx, 2), round(ty, 2), round(tyaw, 2))
+        # rospy.loginfo('\t mean shelf center')
+        # print('-----------------------------------------',
+        #       round(tx, 2), round(ty, 2), round(tyaw, 2))
 
         tdelta = pow(tx - self.last_tx, 2) + \
             pow(ty - self.last_ty, 2) + pow(tyaw-self.last_yaw, 2)
 
         # -------- Exclude exception results and send TF transformations --------
         if pow(self.last_tx, 2) + pow(self.last_tx, 2)+pow(self.last_yaw, 2) == 0 or\
-                tdelta < 0.02 or \
+                tdelta < 0.1**2 or \
                 (time.time() - self.time_start) > self.timeout:
             # print(
             #     "\033[1;37;46m\t\t\t current TF PUB:\t\t\t\033[0m")
-            print ('tf delta:', tdelta)
+            # print ('tf delta:', tdelta)
             self.shelfTFBroadcaster(tx, ty, tyaw)
             self.time_start = time.time()
             self.last_tx = tx
             self.last_ty = ty
             self.last_yaw = tyaw
+            if self.shelf_footprint and tx < 0.5:
+                self.setShelfFootprint(
+                    round(self.length*0.5, 3), round(self.width*0.5, 3))
+                self.shelf_footprint = False
 
     def shelfTFBroadcaster(self, tx, ty, tyaw):
         quat = tf.transformations.quaternion_from_euler(
@@ -669,21 +675,49 @@ class ShelfDetect:
                             (foot1.center.y + foot2.center.y)*0.5)
         return right_center
 
+    def RectangleSize(self, feet_list):
+        long_edge = 0
+        short_edge = 0
+        if len(feet_list) == 4:
+            l1 = self.distance2Feet(feet_list[0], feet_list[1])
+            l2 = self.distance2Feet(feet_list[0], feet_list[2])
+            l2 = self.distance2Feet(feet_list[0], feet_list[3])
+            lst = sorted([l1, l2, l3])
+            long_edge = lst[1]
+            short_edge = lst[0]
+        else:
+            print('error use RectangleSize')
+        return (long_edge, short_edge)
 
-def setShelfFootprint(half_length, half_width):
-    # [[-0.3,-0.2],[0.3,-0.2],[0.3,0.2],[-0.3,0.2]]
-    client_recfg_local = dynamic_reconfigure.client.Client(
-        'move_base/local_costmap')
-    client_recfg_global = dynamic_reconfigure.client.Client(
-        'move_base/global_costmap')
-    params = {
-        'footprint': [[-half_length, -half_width], [half_length, -half_width], [half_length, half_width], [-half_length, half_width]]}
-    recfg = client_recfg_local.update_configuration(params)
-    recfg = client_recfg_global.update_configuration(params)
+    def setShelfFootprint(self, half_length, half_width):
+        client_recfg_local = dynamic_reconfigure.client.Client(
+            'move_base/local_costmap')
+        client_recfg_global = dynamic_reconfigure.client.Client(
+            'move_base/global_costmap')
+        params = {
+            'footprint': [[-half_length, -half_width], [half_length, -half_width], [half_length, half_width], [-half_length, half_width]]}
+        recfg = client_recfg_local.update_configuration(params)
+        recfg = client_recfg_global.update_configuration(params)
+
+
+def medianFilterBaseShelf(tf_list):
+    cost_list = []
+    for i in range(0, len(tf_list)):
+        cost = 0
+        for j in range(0, len(tf_list)):
+            cost = cost + numpy.sqrt((tf_list[i].transform.translation.x - tf_list[j].transform.translation.x)**2 + (
+                tf_list[i].transform.translation.y - tf_list[j].transform.translation.y)**2)
+        cost_list.append((cost, i))
+
+    cost_list = sorted(cost_list)
+    idx = cost_list[0][1]
+    return tf_list[idx]
 
 
 def main():
     rospy.init_node('shelf_detector')
+    median_filter_group = rospy.get_param(
+        "/shelf_detector/median_filter_group", 10)
     x_list = []
     y_list = []
     qx_list = []
@@ -692,25 +726,35 @@ def main():
     qw_list = []
 
     shelf_detect = ShelfDetect()
+    time.sleep(0.05)
     # listener_tf = tf.TransformListener()
 
     buf = tf2_ros.Buffer()
     listener = tf2_ros.TransformListener(buf)
+    tf_list = []
+    tf_initial = False
+
     while not rospy.is_shutdown():
+        time.sleep(0.1)
         try:
             tform = buf.lookup_transform(
                 "odom", "shelf_current", rospy.Time(0), timeout=rospy.Duration(1))
             # (trans,rot) = listener_tf.lookupTransform('odom', 'shelf_current', rospy.Time(0))
+            tf_list.append(tform)
 
-            if len(x_list) > 2:
+            if len(tf_list) >= median_filter_group and not tf_initial:
+                tform = medianFilterBaseShelf(tf_list)
+                tf_initial = True
+
+            if tf_list and len(tf_list) >= median_filter_group:
+                # print(len(tf_list))
+                tform = medianFilterBaseShelf(tf_list)
+                tf_list.pop(0)
+
+            if len(x_list) > 2 and tf_initial:
                 if(numpy.sqrt((tform.transform.translation.x - x_mean)**2
                               + (tform.transform.translation.y - y_mean)**2
                               + (tform.transform.rotation.w - qw_mean)**2) < 0.05):
-
-                    if len(x_list) < 0:
-                        setShelfFootprint(round(0.5*shelf_detect.length, 3),
-                                          round(0.5*shelf_detect.width, 3))
-
                     x_list.append(tform.transform.translation.x)
                     y_list.append(tform.transform.translation.y)
                     qx_list.append(tform.transform.rotation.x)
@@ -718,7 +762,7 @@ def main():
                     qz_list.append(tform.transform.rotation.z)
                     qw_list.append(tform.transform.rotation.w)
 
-            else:
+            elif tf_initial:
                 x_list.append(tform.transform.translation.x)
                 y_list.append(tform.transform.translation.y)
                 qx_list.append(tform.transform.rotation.x)
