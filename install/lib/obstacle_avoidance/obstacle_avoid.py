@@ -128,7 +128,7 @@ class ObstacleAvoidance:
             circle_obstacle.center.x, abs(circle_obstacle.center.y))
         rad_standard = self.pointRadRobot(self.robot_length, self.robot_width)
 
-        if_distance = ((distance_leg - distance_standard)**2 < 0.1**2)
+        if_distance = ((distance_leg - distance_standard)**2 < 0.2**2)
         if_rad = ((rad_leg - rad_standard)**2 < 0.35**2)
 
         if if_distance and if_rad:
