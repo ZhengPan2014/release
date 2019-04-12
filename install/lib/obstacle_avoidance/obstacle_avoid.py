@@ -38,7 +38,7 @@ class ObstacleAvoidance:
                                               self.moveBaseVelCallback, queue_size=10)
         self.pub_vel = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
 
-        self.obstacle_consider_range = 4  # to robot center, to do
+        self.obstacle_consider_range = 10  # to robot center, to do
 
         # param: robot size
         self.robot_length = 0.5
@@ -112,6 +112,9 @@ class ObstacleAvoidance:
             "/obstacle_avoidance/if_specific_planner", True)
         self.navigation_local_planner = rospy.get_param(
             "/obstacle_avoidance/local_planner", "teb_local_planner/TebLocalPlannerROS")
+
+        self.if_print_info = rospy.get_param(
+            "/obstacle_avoidance/if_print_info", False)
 
     def srvCallback(self, config, level):
         return config
@@ -210,13 +213,15 @@ class ObstacleAvoidance:
 
         self.min_obstacle_distance = min(
             self.min_circle_distance, self.min_line_distance)
-       
-        # print('O_min:', round(self.min_circle_distance, 2),  'L_min', round(
-        #     self.min_line_distance, 2), 'min_dist:', round(self.min_obstacle_distance, 2))
-        # print('robot_half_len:', round(self.robot_length, 2),
-        #       'robot_half_width:', round(self.robot_width, 2))
-        # print('stop_dist:', round(self.stop_distance, 2),  'dec_dist', round(
-        #     self.decelerate_distance, 2), 'beta:', round(self.scale_beta, 2))
+
+        if self.if_print_info:
+            print('\t')
+            print('O_min:', round(self.min_circle_distance, 2),  'L_min', round(
+                self.min_line_distance, 2), 'min_dist:', round(self.min_obstacle_distance, 2))
+            print('robot_half_len:', round(self.robot_length, 2),
+                  'robot_half_width:', round(self.robot_width, 2))
+            print('stop_dist:', round(self.stop_distance, 2),  'dec_dist', round(
+                self.decelerate_distance, 2), 'beta:', round(self.scale_beta, 2))
 
     def pointDistanceRobot(self, x, y):
         return numpy.sqrt(x**2 + y**2)
@@ -338,6 +343,12 @@ class ObstacleAvoidance:
         else:
             # print('NO obstacle avoidance')
             twist_avoidace = navVelMsg
+        if self.if_print_info:
+            print('-------------')
+            print('move_base cmd:', round(navVelMsg.linear.x, 2),
+                  round(navVelMsg.angular.z, 2))
+            print('obstacle_cmd: ', round(twist_avoidace.linear.x, 2),
+                  round(twist_avoidace.angular.z, 2))
         self.pub_vel.publish(twist_avoidace)
 
 

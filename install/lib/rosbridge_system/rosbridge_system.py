@@ -1,8 +1,16 @@
 #!/usr/bin/env python
 
-# /task_switch:
-#              (1)slam
+# subscirbe to: /task_switch
+#               /nav_ctrl_status
+#               /battery
+
+# publish to :  /task_state  ('cartographer_node', 'amcl', 'move_base', 'shelf_detector')
+#               /task_switch (frame_id: 'base_laser')
+
+# systemTask:  (1)slam( seq==1: reset slam;  seq==2:continue slam )
 #              (2)shelf
+#              (3)battery monitor
+
 import roslaunch
 import rospy
 import sys
@@ -15,13 +23,19 @@ import dynamic_reconfigure.client
 from std_msgs.msg import Header
 from diagnostic_msgs.msg import KeyValue, DiagnosticStatus
 from geometry_msgs.msg import PoseWithCovarianceStamped
+from sensor_msgs.msg import BatteryState
+from yocs_msgs.msg import NavigationControlStatus, NavigationControl
 
 
 class systemTask:
 
     def __init__(self):
-        self.sub = rospy.Subscriber(
+        self.taskSub = rospy.Subscriber(
             '/task_switch', Header, self.taskSitchCallback)
+        self.navCtrlSub = rospy.Subscriber(
+            '/nav_ctrl_status', NavigationControlStatus, self.navCtrlCallback, queue_size=10)
+        self.batterySub = rospy.Subscriber(
+            "/battery", BatteryState, self.monitorBatteryCallback, queue_size=10)
 
         # Two parameters for switching and reset
         self.startSLAM = False
@@ -31,6 +45,9 @@ class systemTask:
 
         self.startShelfDetector = False
         self.excutedShelfDetector = False
+
+        self.battery_percentage = 1
+        self.navCtrlStatus = 'buzzy'  # 'free'
 
     def taskSitchCallback(self, taskMsg):
         # deal with logic None.
@@ -52,6 +69,16 @@ class systemTask:
         if strMsg.find(strName) != -1 and headerMsg.seq == 0:
             return False  # to stop
 
+    def monitorBatteryCallback(self, batteryMsg):
+        self.battery_percentage = batteryMsg.percentage
+
+    def navCtrlCallback(self, navCtrlMsg):
+        # IDLING=0, RUNNING=1, PAUSED=2, COMPLETED=3, CANCELLED=4, ERROR=-1
+        if navCtrlMsg.status == 0 or navCtrlMsg.status == 4:
+            self.navCtrlStatus = 'free'
+        else:
+            self.navCtrlStatus = 'buzzy'
+
 
 # publish info switch_seq to /task_switch wthin time_pub
 def pubTaskSwitch(task_name, switch_seq, time_pub):
@@ -66,6 +93,15 @@ def pubTaskSwitch(task_name, switch_seq, time_pub):
         pubTask.publish(taskPubMsg)
         time.sleep(0.2)
         count_idx = count_idx+1
+
+
+def pubAutoCharge(ctrl, goal_name):
+    pubAutoCharge = rospy.Publisher(
+        '/nav_ctrl', NavigationControl, queue_size=10)
+    autoChargeMsg = NavigationControl()
+    autoChargeMsg.control = ctrl
+    autoChargeMsg.goal_name = goal_name
+    pubAutoCharge.publish(autoChargeMsg)
 
 
 class pubStates:
@@ -154,6 +190,7 @@ def main():
     rospy.init_node('rosbridge_system')
     systemTaskSwitcher = systemTask()
     pub = pubStates()
+    charge_reset = True
     # to do: TF_OLD_DATA caused by simulation environment: send an Empty message the topic /reset_time
 
     while not rospy.is_shutdown():
@@ -162,10 +199,12 @@ def main():
 
             if systemTaskSwitcher.slamReset:
                 slam_launch_path = slam_reset_launch_path
-                print('SLAM reset mode')
+                print(
+                    "\033[1;37;42m\t\t\trosbridge_system: SLAM reset mode\t\t\t\033[0m")
             elif systemTaskSwitcher.slamContinue:
                 slam_launch_path = slam_continue_launch_path
-                print('SLAM continue mode')
+                print(
+                    "\033[1;37;42m\t\t\trosbridge_system: SLAM continue mode\t\t\t\033[0m")
 
             uuid = roslaunch.rlutil.get_or_generate_uuid(None, False)
             roslaunch.configure_logging(uuid)
@@ -254,11 +293,18 @@ def main():
             except:
                 systemTaskSwitcher.excutedShelfDetector = True
 
+        if systemTaskSwitcher.battery_percentage < 0.2 and systemTaskSwitcher.navCtrlStatus == 'free' and charge_reset:
+            pubAutoCharge(1, 'autocharge_on')
+            charge_reset = False
+            print('autocharge_on')
+        if not charge_reset and systemTaskSwitcher.battery_percentage > 0.25:
+            charge_reset = True
+
         # publish tasks state
         pub.publishing()
 
         # to do: Inbound TCP/IP connection
-        time.sleep(0.2)
+        time.sleep(0.1)
 
     try:
         rospy.spin()
@@ -267,6 +313,10 @@ def main():
 
 
 if __name__ == '__main__':
+    # slam_reset_launch_path = "/home/zeng/catkin_ws/src/agv_stage_simulation/launch/agv_diff_drive_in_stage.launch"
+    # slam_continue_launch_path = "/home/zeng/catkin_ws/src/robot_mrobot/mrobot_gazebo/launch/mrobot_laser_nav_gazebo.launch"
+    # shelf_launch_path = "/home/zeng/catkin_ws/src/shelf_detector/launch/shelf_detector_example.launch"
+
     slam_reset_launch_path = "/tmp/.sor/quiz.cfg/slam.cfg"
     slam_continue_launch_path = "/tmp/.sor/quiz.cfg/slam_load.cfg"
     shelf_launch_path = "/tmp/.sor/quiz.cfg/shelf_detector.cfg"

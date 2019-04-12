@@ -249,6 +249,7 @@ class DEFAULT
         if("if_shelf_leg_remove"==(*_i)->name){if_shelf_leg_remove = boost::any_cast<bool>(val);}
         if("if_specific_planner"==(*_i)->name){if_specific_planner = boost::any_cast<bool>(val);}
         if("local_planner"==(*_i)->name){local_planner = boost::any_cast<std::string>(val);}
+        if("if_print_info"==(*_i)->name){if_print_info = boost::any_cast<bool>(val);}
       }
     }
 
@@ -265,6 +266,7 @@ double end_rad;
 bool if_shelf_leg_remove;
 bool if_specific_planner;
 std::string local_planner;
+bool if_print_info;
 
     bool state;
     std::string name;
@@ -300,6 +302,8 @@ std::string local_planner;
       bool if_specific_planner;
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       std::string local_planner;
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      bool if_print_info;
 //#line 228 "/opt/ros/indigo/share/dynamic_reconfigure/cmake/../templates/ConfigType.h.template"
 
     bool __fromMessage__(dynamic_reconfigure::Config &msg)
@@ -568,6 +572,16 @@ DynReconf1Config::GroupDescription<DynReconf1Config::DEFAULT, DynReconf1Config> 
       Default.abstract_parameters.push_back(DynReconf1Config::AbstractParamDescriptionConstPtr(new DynReconf1Config::ParamDescription<std::string>("local_planner", "str", 0, "local planner", "", &DynReconf1Config::local_planner)));
 //#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(DynReconf1Config::AbstractParamDescriptionConstPtr(new DynReconf1Config::ParamDescription<std::string>("local_planner", "str", 0, "local planner", "", &DynReconf1Config::local_planner)));
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __min__.if_print_info = 0;
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __max__.if_print_info = 1;
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __default__.if_print_info = 0;
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(DynReconf1Config::AbstractParamDescriptionConstPtr(new DynReconf1Config::ParamDescription<bool>("if_print_info", "bool", 0, "if print calculation info for debugging", "", &DynReconf1Config::if_print_info)));
+//#line 290 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(DynReconf1Config::AbstractParamDescriptionConstPtr(new DynReconf1Config::ParamDescription<bool>("if_print_info", "bool", 0, "if print calculation info for debugging", "", &DynReconf1Config::if_print_info)));
 //#line 245 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.convertParams();
 //#line 245 "/opt/ros/indigo/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
