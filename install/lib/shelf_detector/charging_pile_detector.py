@@ -149,7 +149,7 @@ def main():
             br.sendTransform((x_mean, y_mean, 0),
                              (qx_mean, qy_mean, qz_mean, qw_mean),
                              rospy.Time.now(),
-                             "base_charging_pile",
+                             "base_shelf",
                              "odom")
 
     try:
