@@ -95,13 +95,15 @@ def pubTaskSwitch(task_name, switch_seq, time_pub):
         count_idx = count_idx+1
 
 
-def pubAutoCharge(ctrl, goal_name):
-    pubAutoCharge = rospy.Publisher(
-        '/nav_ctrl', NavigationControl, queue_size=10)
-    autoChargeMsg = NavigationControl()
-    autoChargeMsg.control = ctrl
-    autoChargeMsg.goal_name = goal_name
-    pubAutoCharge.publish(autoChargeMsg)
+# def pubAutoCharge(ctrl, goal_name):
+#     pubCharge = rospy.Publisher(
+#         '/nav_ctrl', NavigationControl, queue_size=10)
+#     print('*****')
+#     autoChargeMsg = NavigationControl()
+#     autoChargeMsg.control = 1
+#     autoChargeMsg.goal_name = 'autocharge_on'
+#     print autoChargeMsg
+#     pubCharge.publish(autoChargeMsg)
 
 
 class pubStates:
@@ -191,6 +193,12 @@ def main():
     systemTaskSwitcher = systemTask()
     pub = pubStates()
     charge_reset = True
+
+    pub_charge = rospy.Publisher('/nav_ctrl', NavigationControl, queue_size=10)
+    charge_msg = NavigationControl()
+    charge_msg.control = 1
+    charge_msg.goal_name = "autocharge_on"
+
     # to do: TF_OLD_DATA caused by simulation environment: send an Empty message the topic /reset_time
 
     while not rospy.is_shutdown():
@@ -294,9 +302,15 @@ def main():
                 systemTaskSwitcher.excutedShelfDetector = True
 
         if systemTaskSwitcher.battery_percentage < 0.2 and systemTaskSwitcher.navCtrlStatus == 'free' and charge_reset:
-            pubAutoCharge(1, 'autocharge_on')
-            charge_reset = False
-            print('autocharge_on')
+            # pubAutoCharge(1, 'autocharge_on')
+            try:
+                pub_charge.publish(charge_msg)
+                time.sleep(0.2)
+                print('autocharge_on')
+                charge_reset = False
+            except:
+                charge_reset = True
+
         if not charge_reset and systemTaskSwitcher.battery_percentage > 0.25:
             charge_reset = True
 

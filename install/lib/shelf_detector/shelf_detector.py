@@ -36,7 +36,7 @@ class ShelfDetect:
         self.size_informed = rospy.get_param(
             "/shelf_detector/shelf_size_informed", False)
         self.shelf_footprint = rospy.get_param(
-            "/shelf_detector/set_shelf_footprint", False)
+            "/shelf_detector/set_shelf_footprint", True)
         self.length = rospy.get_param(
             "/shelf_detector/shelf_front_rear", 2.2)  # including radius
         self.width = rospy.get_param("/shelf_detector/shelf_left_right", 1.3)
