@@ -34,8 +34,8 @@ class ObstacleAvoidance:
                                               self.detectFootprintCallback, queue_size=10)
         self.sub_obstacles = rospy.Subscriber("/raw_obstacles", Obstacles,
                                               self.detectObstaclesCallback, queue_size=10)
-        self.sub_obstacles = rospy.Subscriber("/move_base_vel", Twist,
-                                              self.moveBaseVelCallback, queue_size=10)
+        self.sub_vel = rospy.Subscriber("/move_base_vel", Twist,
+                                        self.moveBaseVelCallback, queue_size=10)
         self.pub_vel = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
 
         self.obstacle_consider_range = 10  # to robot center, to do
@@ -47,6 +47,8 @@ class ObstacleAvoidance:
         self.if_use_footprint = rospy.get_param(
             "/obstacle_avoidance/if_get_footprint", False)
         self.paramUpdate()
+        self.shelf_slant_rad = rospy.get_param(
+            "/obstacle_avoidance/shelf_slant_rad", 0.2)
 
         # param: wall setting (rad,degree):(0.1,6)(0.2,11)(0.3,17) (0.4, 23) (0.5,29) (0.6,34)
         self.wall_safe_slope = math.tan(0.3)
@@ -192,6 +194,19 @@ class ObstacleAvoidance:
 
             # circle_obstacles = filter(
             #     lambda c: self.detectShelfLeg(c) == False, circle_obstacles)
+            try:
+                ratio_shelf = (shelf_foot1.center.x - shelf_foot2.center.x) / \
+                    (shelf_foot1.center.y - shelf_foot2.center.y)
+                shelf_yaw = math.atan2(ratio_shelf, 1)
+                shelf_rmin = min(shelf_foot1.true_radius,
+                                 shelf_foot2.true_radius)
+                shelf_rmax = max(shelf_foot1.true_radius,
+                                 shelf_foot2.true_radius)
+                if abs(shelf_yaw) > self.shelf_slant_rad and shelf_rmin/shelf_rmax > 0.6:
+                    rospy.logerr(
+                        '[ObstacleAvoidance]: shelf on agv is slant')
+            except:
+                pass
 
         if len(circle_obstacles) > 0:
             circle_distances = map(

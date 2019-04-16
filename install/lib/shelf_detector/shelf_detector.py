@@ -7,6 +7,8 @@
 #                     odom -> base_shelf
 
 # 2019.03.26 : extractFullRectangle, extractHalfRectangle
+# 2019.04.14 : radiusConsistency
+# 2019.04.16 : object detection timeout
 
 # Author: lei.zeng@tu-dortmund.de
 
@@ -50,11 +52,14 @@ class ShelfDetect:
         self.right_angle_tolerance = rospy.get_param(
             "/shelf_detector/right_angle_tolerance", 0.08)
         self.timeout = 10.0
-        self.radius_tolerance = 0.1
+        self.radius_ratio_tolerance = rospy.get_param(
+            "/shelf_detector/radius_ratio_tolerance", 0.4)
         self.horizontal_rad = rospy.get_param(
             "/shelf_detector/horizontal_criterion", 0.38)
         self.vertical_rad = rospy.get_param(
             "/shelf_detector/vertical_criterion", 1.19)
+        self.object_timeout = rospy.get_param(
+            "/shelf_detector/object_timeout", 30)
 
         self.odom_x = 0
         self.odom_y = 0
@@ -73,10 +78,12 @@ class ShelfDetect:
         self.length_detect = []
         self.width_detect = []
 
+        self.sucess_check = False
+
         self.sub_shelf = rospy.Subscriber("/raw_obstacles", Obstacles,
                                           self.detectShelfFeetCallback, queue_size=10)
-        self.sub_odom = rospy.Subscriber("/odom", Odometry,
-                                         self.detectOdomCallback, queue_size=10)
+        # self.sub_odom = rospy.Subscriber("/odom", Odometry,
+        #                                  self.detectOdomCallback, queue_size=10)
 
     def distance2Feet(self, foot1, foot2):
         distance = numpy.sqrt(pow(foot1.center.x - foot2.center.x, 2)
@@ -119,16 +126,12 @@ class ShelfDetect:
         # lst is sorted!
         if len(lst) >= 3 and lst[1]-lst[0] > 0.1:
             lst.pop(0)
-            print('listNormalization!')
         if len(lst) >= 3 and lst[-1]-lst[-2] > 0.1:
             lst.pop(-1)
-            print('listNormalization!')
         if len(lst) >= 3 and lst[1]-lst[0] > 0.1:
             lst.pop(0)
-            print('listNormalization!')
         if len(lst) >= 3 and lst[-1]-lst[-2] > 0.1:
             lst.pop(-1)
-            print('listNormalization!')
         return lst
 
     def denominatorZero(self, d):
@@ -151,6 +154,9 @@ class ShelfDetect:
         self.odom_y = data_odom.pose.pose.position.y
 
     def detectShelfFeetCallback(self, data_feet):
+        if time.time() - self.time_start > self.object_timeout:
+            rospy.logerr(
+                '[ShelfDetector317] Detect no object within specified time ')
         # print("\033[1;37;41m\t\t\tCALLBACK\t\t\t\033[0m")
         feet_frame = data_feet.header.frame_id
         feet = list(data_feet.circles)
@@ -181,8 +187,9 @@ class ShelfDetect:
                     for b in range(a+1, len(feet)-2):
                         for c in range(b+1, len(feet)-1):
                             for d in range(c+1, len(feet)):
-                                # print('*************',a,b,c,d)
                                 lst = [feet[a], feet[b], feet[c], feet[d]]
+                                if not self.radiusConsistency(lst):
+                                    continue
                                 if self.extractFullRectangle(lst):
                                     lst = sorted(
                                         lst, key=lambda CircleObstacle: CircleObstacle.center.x)
@@ -224,13 +231,14 @@ class ShelfDetect:
                                                 self.width_detect.append(w)
                                                 self.init_wid_detect = False
 
-            if len(feet) >= 3 and not init_full_rectangle:
+            if len(feet) >= 3 and not init_full_rectangle and not self.at_least_full_rec:
                 rec_to_robot = 100
                 for a in range(0, len(feet)-2):
                     for b in range(a+1, len(feet)-1):
                         for c in range(b+1, len(feet)):
-
                             lst = [feet[a], feet[b], feet[c]]
+                            if not self.radiusConsistency(lst):
+                                continue
                             if self.extractHalfRectangle(lst):
                                 lst = sorted(
                                     lst, key=lambda CircleObstacle: CircleObstacle.center.x)
@@ -246,8 +254,6 @@ class ShelfDetect:
                                     feet[a], feet[b], feet[c])
                                 temp_dist = self.pointDistanceRobot(
                                     right_center[0], right_center[1])
-                                # print('***333333:', a, b, c,
-                                #       temp_dist, rec_to_robot)
 
                                 if temp_dist > rec_to_robot:
                                     continue
@@ -287,34 +293,28 @@ class ShelfDetect:
 
             # At least half rectangle at initialization.
             if self.init_len_detect:
-                rospy.logwarn('[ShelfDetector271] no shelf to detect')
+                # rospy.logwarn('[ShelfDetector271] no shelf to detect')
                 return
 
             if not self.init_len_detect:
                 if len(self.length_detect) < 1:
                     rospy.logwarn('[ShelfDetector276] cannot get shelf size')
                     return
-                print('self.length_detect:', self.length_detect)
                 self.length = numpy.mean(self.length_detect)
                 self.width = 0.5 * self.width
-            print("\033[1;37;42m\t\t\tget shelf len:\t\t\t\033[0m")
-            print(round(self.length, 2))
 
             if not self.init_wid_detect:
-                print('self.width_detect', self.width_detect)
                 self.width = numpy.mean(self.width_detect)
-                print("\033[1;37;42m\t\t\tget shelf wid:\t\t\t\033[0m")
-                print(round(self.width, 2))
+                print("\033[1;37;42m\t\t\tget shelf (len, wid):\t\t\t\033[0m")
+                print(round(self.length, 2), round(self.width, 2))
             self.diagonal = numpy.sqrt(self.width**2 + self.length**2)
 
         # -------- distance relation between neighour feet --------
-        # print('\t delete from distance')
         ngh = 0
         while ngh != len(feet):
             if self.neighourDistanceRelation(feet[ngh], feet, self.length, self.width, self.diagonal, self.edge_tolerance):
                 ngh = ngh+1
             else:
-                # print('delete ngh', ngh)
                 feet.pop(ngh)
 
         # -------- only once to get initial front and rear feet x position --------
@@ -328,6 +328,22 @@ class ShelfDetect:
             rospy.logwarn(
                 "[ShelfDetector317] no enough shelf feet for calculating.")
             return
+        if self.sucess_check:
+            try:
+                shelf_foot1 = feet[0]
+                shelf_foot2 = feet[1]
+                ratio_shelf = (shelf_foot1.center.x - shelf_foot2.center.x) / \
+                    (shelf_foot1.center.y - shelf_foot2.center.y)
+                shelf_yaw = math.atan2(ratio_shelf, 1)
+                shelf_rmin = min(shelf_foot1.true_radius,
+                                 shelf_foot2.true_radius)
+                shelf_rmax = max(shelf_foot1.true_radius,
+                                 shelf_foot2.true_radius)
+                if abs(shelf_yaw) > 0.1 or shelf_rmin/shelf_rmax < 0.5:
+                    rospy.logerr(
+                        '[ShelfDetector] shelf detect potential error')
+            except:
+                pass
 
         if_find_full_rectangle = False
         if_find_half_rectangle = False
@@ -338,8 +354,9 @@ class ShelfDetect:
                 for b in range(a+1, len(feet)-2):
                     for c in range(b+1, len(feet)-1):
                         for d in range(c+1, len(feet)):
-                            # print('*****', a, b, c, d)
                             lst = [feet[a], feet[b], feet[c], feet[d]]
+                            if not self.radiusConsistency(lst):
+                                continue
                             if self.extractFullRectangle(lst):
                                 y_lst = [feet[a].center.y, feet[b].center.y,
                                          feet[c].center.y, feet[d].center.y]
@@ -358,10 +375,6 @@ class ShelfDetect:
                                     continue
                                 feet4_temp = lst
                                 if_find_full_rectangle = True
-                                # print(
-                                #     "\033[1;37;43m\t\t\tfind FULL REC before turn:\t\t\t\033[0m")
-                                # print(a, b, c,
-                                #       d, self.extractFullRectangle(lst))
 
         if if_find_full_rectangle:
             feet = feet4_temp
@@ -376,6 +389,8 @@ class ShelfDetect:
                 for b in range(a+1, num_len-1):
                     for c in range(b+1, num_len):
                         lst = [feet[a], feet[b], feet[c]]
+                        if not self.radiusConsistency(lst):
+                            continue
                         if self.extractHalfRectangle(lst):
                             y_lst = [feet[a].center.y,
                                      feet[b].center.y, feet[c].center.y]
@@ -401,20 +416,6 @@ class ShelfDetect:
                                   c, self.extractHalfRectangle(lst))
         if if_find_half_rectangle:
             feet = feet3_temp
-            # for i in range(0, 2):
-            #     for j in range(i+1, 3):
-            #         print(i, j)
-            #         if abs(self.feetSlope(lst[i], lst[j])) < math.tan(self.horizontal_rad):
-            #             l = self.distance2Feet(lst[i], lst[j])
-            #             self.length_detect.append(l)
-            #         elif abs(self.feetSlope(lst[i], lst[j])) > math.tan(self.vertical_rad):
-            #             w = self.distance2Feet(lst[i], lst[j])
-            #             self.width_detect.append(w)
-            # self.length = numpy.mean(self.length_detect)
-            # self.width = numpy.mean(self.width_detect)
-
-            # print('len detect', self.length_detect)
-            # print('wid detect', self.width_detect)
         elif self.at_least_half_rec and not if_find_full_rectangle:
             rospy.logwarn('[ShelfDetector345] HALF rectangle is requirement.')
             return
@@ -435,7 +436,6 @@ class ShelfDetect:
         target_yaw = []
         for i in range(0, len(feet)-1):
             for j in range(i+1, len(feet)):
-                        # print(i, j, self.feetRelation(feet[i], feet[j]))
                 if self.feetRelation(feet[i], feet[j]) == "vertical":
                     if not self.size_informed and self.init_wid_detect:
                         self.width = self.distance2Feet(feet[i], feet[j])
@@ -447,22 +447,26 @@ class ShelfDetect:
                     target_y.append(target[1])
                     target_yaw.append(target[2])
                 elif self.feetRelation(feet[i], feet[j]) == "horizontal":
-                    if abs(self.robotDisplacement(self.odom_x, self.odom_y) + feet[i].center.x - self.front_x_initial) < 0.3:
-                        target = self.frontRearCalculate(
-                            1, feet[i], feet[j], True)
-                        # print(i, j, "HORI", round(target[0], 2), round(
-                        #     target[1], 2), round(target[2], 2))
-                        target_x.append(target[0])
-                        target_y.append(target[1])
-                        target_yaw.append(target[2])
-                    if abs(self.robotDisplacement(self.odom_x, self.odom_y) + feet[i].center.x - self.rear_x_initial) < 0.3:
-                        target = self.frontRearCalculate(
-                            -1, feet[i], feet[j], True)
-                        # print(i, j, "HORI", round(target[0], 2), round(
-                        #     target[1], 2), round(target[2], 2))
-                        target_x.append(target[0])
-                        target_y.append(target[1])
-                        target_yaw.append(target[2])
+                    target = self.frontRearCalculate(
+                        1, feet[i], feet[j], True)
+                    target_yaw.append(target[2])
+
+                    # if abs(self.robotDisplacement(self.odom_x, self.odom_y) + feet[i].center.x - self.front_x_initial) < 0.3:
+                    #     target = self.frontRearCalculate(
+                    #         1, feet[i], feet[j], True)
+                    #     # print(i, j, "HORI", round(target[0], 2), round(
+                    #     #     target[1], 2), round(target[2], 2))
+                    #     target_x.append(target[0])
+                    #     target_y.append(target[1])
+                    #     target_yaw.append(target[2])
+                    # if abs(self.robotDisplacement(self.odom_x, self.odom_y) + feet[i].center.x - self.rear_x_initial) < 0.3:
+                    #     target = self.frontRearCalculate(
+                    #         -1, feet[i], feet[j], True)
+                    #     # print(i, j, "HORI", round(target[0], 2), round(
+                    #     #     target[1], 2), round(target[2], 2))
+                    #     target_x.append(target[0])
+                    #     target_y.append(target[1])
+                    #     target_yaw.append(target[2])
                 else:
                     if abs(self.distance2Feet(feet[i], feet[j]) - self.diagonal) < self.edge_tolerance*1.5 + self.init_wid_detect*0.3\
                             and abs(math.atan(abs(self.feetSlope(feet[i], feet[j]))) - math.atan(self.width/self.length)) < 0.35:
@@ -499,9 +503,6 @@ class ShelfDetect:
         tx = numpy.mean(target_x)
         ty = numpy.mean(target_y)
         tyaw = numpy.mean(target_yaw)
-        # rospy.loginfo('\t mean shelf center')
-        # print('-----------------------------------------',
-        #       round(tx, 2), round(ty, 2), round(tyaw, 2))
 
         tdelta = pow(tx - self.last_tx, 2) + \
             pow(ty - self.last_ty, 2) + pow(tyaw-self.last_yaw, 2)
@@ -510,9 +511,6 @@ class ShelfDetect:
         if pow(self.last_tx, 2) + pow(self.last_tx, 2)+pow(self.last_yaw, 2) == 0 or\
                 tdelta < 0.1**2 or \
                 (time.time() - self.time_start) > self.timeout:
-            # print(
-            #     "\033[1;37;46m\t\t\t current TF PUB:\t\t\t\033[0m")
-            # print ('tf delta:', tdelta)
             self.shelfTFBroadcaster(tx, ty, tyaw)
             self.time_start = time.time()
             self.last_tx = tx
@@ -522,6 +520,8 @@ class ShelfDetect:
                 self.setShelfFootprint(
                     round(self.length*0.5, 3), round(self.width*0.5, 3))
                 self.shelf_footprint = False
+            if not self.sucess_check and tx < 0.2:
+                self.sucess_check = True
 
     def shelfTFBroadcaster(self, tx, ty, tyaw):
         quat = tf.transformations.quaternion_from_euler(
@@ -577,19 +577,9 @@ class ShelfDetect:
             numpy.sqrt(1.0 + ratio*ratio) * self.length * \
             0.5 * (1 - detect_long_edge)
 
-        target_yaw = math.atan(ratio)
-        # tempy = inverse*abs(ratio)/numpy.sqrt(1.0 + ratio*ratio) * self.width*0.5 * detect_long_edge \
-        #     + inverse*abs(ratio) / \
-        #     numpy.sqrt(1.0 + ratio*ratio) * self.length * \
-        #     0.5 * (1 - detect_long_edge)
-        # tempx=ratio_symbol * inverse / numpy.sqrt(1.0 + ratio*ratio) * self.width*0.5 * detect_long_edge \
-        #     + ratio_symbol*inverse / numpy.sqrt(1.0 + ratio*ratio) * \
-        #     self.length * 0.5 * (1 - detect_long_edge)
+        target_yaw = math.atan(ratio_feet)
 
-        # print(inverse, ratio,  0.5*(foot1.center.x + foot2.center.x), tempx )
-        # print(inverse, ratio, 0.5*(foot1.center.y + foot2.center.y), tempy)
-
-        return(target_x, target_y, ratio_feet)
+        return(target_x, target_y, target_yaw)
 
     def diagonalCalculate(self, foot1, foot2):
         target_x = 0.5*(foot1.center.x + foot2.center.x)
@@ -601,7 +591,6 @@ class ShelfDetect:
             target_yaw = math.atan(ratio_feet)-math.atan(tan_diag)
         else:
             target_yaw = math.atan(ratio_feet)+math.atan(tan_diag)
-        # print(math.atan(ratio_feet), math.atan(tan_diag))
 
         return(target_x, target_y, target_yaw)
 
@@ -640,10 +629,7 @@ class ShelfDetect:
                 self.denominatorZero(numpy.sqrt(
                     x1**2 + y1**2) * numpy.sqrt(x2**2 + y2**2))
             theta = math.acos(cos_theta)
-            # print ('theta:',cos_theta,theta,  self.denominatorZero(numpy.sqrt(
-            #         x1**2 + y1**2) * numpy.sqrt(x2**2 + y2**2)) , dot_product  )
             if abs(theta - math.pi/2) < self.right_angle_tolerance:
-                # print theta
                 half_rect = True
 
         return half_rect
@@ -699,6 +685,17 @@ class ShelfDetect:
         recfg = client_recfg_local.update_configuration(params)
         recfg = client_recfg_global.update_configuration(params)
 
+    def radiusConsistency(self, feet_list):
+        r_list = map(lambda f: f.true_radius, feet_list)
+        # print('minR:', min(r_list), 'max_r:', max(
+        #     r_list), 'ratio:', min(r_list) / max(r_list))
+        if min(r_list) / max(r_list) > self.radius_ratio_tolerance:
+            return True
+        else:
+            # rospy.logwarn(
+            #     '[ShelfDetector463] Radius of the points inconsistent')
+            return False
+
 
 def medianFilterBaseShelf(tf_list):
     cost_list = []
@@ -747,7 +744,6 @@ def main():
                 tf_initial = True
 
             if tf_list and len(tf_list) >= median_filter_group:
-                # print(len(tf_list))
                 tform = medianFilterBaseShelf(tf_list)
                 tf_list.pop(0)
 
